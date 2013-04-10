@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,14 +7,17 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class SampleServer {
-	public static void main(String[] args) throws IOException {
+import client.KnockKnockProtocol;
 
+public class Server {
+	
+	public Server(int port) throws IOException {
+		
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(4444);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 4444.");
+            System.err.println("Could not listen on port: " + port + ".");
             System.exit(1);
         }
 

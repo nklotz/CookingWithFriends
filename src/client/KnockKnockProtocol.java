@@ -1,4 +1,4 @@
-package Server;
+package client;
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
@@ -52,7 +52,6 @@ public class KnockKnockProtocol {
                                  "Is there an echo in here?" };
 
     public String processInput(String theInput) {
-    	System.out.println("HEREEEEE");
         String theOutput = null;
 
         if (state == WAITING) {
