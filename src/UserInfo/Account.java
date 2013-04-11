@@ -46,11 +46,4 @@ public class Account {
 		_user = u;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 }
