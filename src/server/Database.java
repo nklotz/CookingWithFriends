@@ -94,7 +94,7 @@ public class Database {
 		i.add("BEER");
 		i.add("QUINA");
 		String[] arr2 = {"protien", "ice", "milk", "banana"};
-		ingredients = new ArrayList<String>(Arrays.asList(arr));
+		ingredients = new ArrayList<String>(Arrays.asList(arr2));
 		
 		sl = new HashSet<String>();
 		sl.add("MORE BEER");
@@ -108,7 +108,7 @@ public class Database {
 		acc.setRecipes(recipes);
 		acc.setIngredients(i);
 		acc.setShoppingList(sl);
-		nameToAccount_.put("Eddie", acc2);
+		nameToAccount_.put("Eddie", acc);
 		
 		//Jon
 		User Jon = new User("Jon", userToPassword_.get("Jon"));

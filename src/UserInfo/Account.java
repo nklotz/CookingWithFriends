@@ -2,6 +2,7 @@ package UserInfo;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -59,11 +60,15 @@ public class Account implements Serializable {
 		_shoppingList = SL;
 	}
 	
+	public Set<String> getShoppingList(){
+		return _shoppingList;
+	}
+	
 	/**
 	 * Returns the list of ingredients in this account.
 	 * @return HashSet<String> List of ingredients.
 	 */
-	public HashSet<String> getIngredients(){
+	public Set<String> getIngredients(){
 		return _ingredients;
 	}
 	
@@ -79,7 +84,7 @@ public class Account implements Serializable {
 	 * Returns the list of recipes in this account.
 	 * @return HashSet<String> List of recipes.
 	 */
-	public HashSet<Recipe> getRecipes(){
+	public Set<Recipe> getRecipes(){
 		return _recipes;
 	}
 	
