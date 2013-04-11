@@ -3,6 +3,7 @@ package client;
 import java.io.*;
 import java.net.*;
 
+import GUI.LoginWindow;
 import Test.SerializableTest;
 
 public class Client {
@@ -17,6 +18,8 @@ public class Client {
             kkSocket = new Socket("localhost", port);
             out = new PrintWriter(kkSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
+            LoginWindow login = new LoginWindow(this);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: localhost.");
             System.exit(1);
