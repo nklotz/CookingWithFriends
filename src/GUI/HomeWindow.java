@@ -185,14 +185,14 @@ public class HomeWindow extends JFrame {
 	public void updateRecipes(Set<Recipe> recipes){
 		_recipes.setText("");
 		for (Recipe recipe : recipes){
-			_recipes.append("--" + recipe._id);
+			_recipes.append("--" + recipe._id+ "\n");
 		}
 	}
 	
 	public void updateShoppingList(Set<String> list){
 		_shoppingList.setText("");
 		for (String item : list){
-			_shoppingList.append("--" + item);
+			_shoppingList.append("--" + item+ "\n");
 		}
 	}
 	
