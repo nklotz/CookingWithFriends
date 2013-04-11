@@ -3,6 +3,7 @@ package client;
 import java.io.*;
 import java.net.*;
 
+import GUI.HomeWindow;
 import GUI.LoginWindow;
 import Test.SerializableTest;
 import UserInfo.Account;
@@ -18,13 +19,13 @@ public class Client {
 	
     public Client(int port) throws IOException {
 
-
         try {
             _kkSocket = new Socket("localhost", port);
             _out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
             _objIn = new ObjectInputStream(_kkSocket.getInputStream());
             _login = new LoginWindow(this);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: localhost.");
             System.exit(1);
