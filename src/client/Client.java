@@ -15,7 +15,7 @@ public class Client {
     private BufferedReader _in = null;
     private ObjectInputStream _objIn = null;
     private LoginWindow _login = null;
-    //private HomeWindow _gui = null;
+    private HomeWindow _gui = null;
 	
     public Client(int port) throws IOException {
 
@@ -46,17 +46,15 @@ public class Client {
 			try {
 				Account account = (Account) _objIn.readObject();
 				System.out.println("account: " + account.getUser().getName());
-				close();
-				//_gui = new HomeWindow(Account);
+				_gui = new HomeWindow(account);
 			} catch (ClassNotFoundException e) {
 				System.err.println("ERROR: CLASS (ACCOUNT) NOT FOUND!");
 			}
 			
 		
-			//while(_gui.not closed){
-				
-			//}
-			//close();
+			while(_gui.isActive()){
+			}
+			close();
 			
 		}
 		else{
