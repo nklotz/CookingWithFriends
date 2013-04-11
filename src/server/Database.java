@@ -30,6 +30,7 @@ public class Database {
 		userToPassword_.put("Jon", "Jon");
 		userToPassword_.put("Eddie", "Beyonce");
 		
+		populateDataBase();
 		///ACCOUNT THING
 	
 	}
@@ -88,9 +89,8 @@ public class Database {
 		
 		//Eddie
 		User eddie = new User("Eddie", userToPassword_.get("Beyonce"));
-		hann.setAddress("Near Darwins");
+		eddie.setAddress("Near Darwins");
 		i = new HashSet<String>();
-		i.add("BEER");
 		i.add("BEER");
 		i.add("QUINA");
 		String[] arr2 = {"protien", "ice", "milk", "banana"};
@@ -104,7 +104,7 @@ public class Database {
 		recipes = new HashSet<Recipe>();
 		recipes.add(rec);
 		
-		acc = new Account(hann);
+		acc = new Account(eddie);
 		acc.setRecipes(recipes);
 		acc.setIngredients(i);
 		acc.setShoppingList(sl);
@@ -112,7 +112,7 @@ public class Database {
 		
 		//Jon
 		User Jon = new User("Jon", userToPassword_.get("Jon"));
-		hann.setAddress("Brown University");
+		Jon.setAddress("Brown University");
 		i = new HashSet<String>();
 		i.add("Peanuts");
 		i.add("Hipster Food");
@@ -127,7 +127,7 @@ public class Database {
 		recipes = new HashSet<Recipe>();
 		recipes.add(rec);
 		
-		acc = new Account(hann);
+		acc = new Account(Jon);
 		acc.setRecipes(recipes);
 		acc.setIngredients(i);
 		acc.setShoppingList(sl);
@@ -135,7 +135,7 @@ public class Database {
 		
 		//Natalie
 		User Natalie = new User("Natalie", userToPassword_.get("Natalie"));
-		hann.setAddress("CIT");
+		Natalie.setAddress("CIT");
 		i = new HashSet<String>();
 		i.add("String Cheese");
 		i.add("Left Over Mac n Cheese");
@@ -149,7 +149,7 @@ public class Database {
 		recipes = new HashSet<Recipe>();
 		recipes.add(rec);
 		
-		acc = new Account(hann);
+		acc = new Account(Natalie);
 		acc.setRecipes(recipes);
 		acc.setIngredients(i);
 		acc.setShoppingList(sl);
