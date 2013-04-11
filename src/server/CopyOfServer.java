@@ -11,11 +11,9 @@ import java.util.ArrayList;
 
 import Test.SerializableTest;
 
-public class Server {
+public class CopyOfServer {
 	private Database db_;
-	private PrintWriter _out;
-	
-	public Server(int port) throws IOException {
+	public CopyOfServer(int port) throws IOException {
 		System.out.println("creating server");
 		db_ = new Database();
         ServerSocket serverSocket = null;
@@ -36,7 +34,7 @@ public class Server {
 	            System.exit(1);
 	        }
 	
-	        _out = new PrintWriter(clientSocket.getOutputStream(), true);
+	        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 	        OutputStream outStream = clientSocket.getOutputStream();
 	        
 	        ObjectOutputStream oos = new ObjectOutputStream(outStream);
@@ -45,6 +43,16 @@ public class Server {
 	                new InputStreamReader(
 	                clientSocket.getInputStream()));
 	        String inputLine, outputLine;
+	        //out.println("Hello! Please enter username and password separated by a comma.");
+	
+            SerializableTest test1 = new SerializableTest();
+	        test1.setA("FIRST");
+	        ArrayList<String> list1 = new ArrayList();
+	        list1.add("hi");
+	        list1.add("crap");
+	        test1.setB(list1);
+        	oos.writeObject(test1);
+
 	        
 	        while ((inputLine = in.readLine()) != null) {
 		        
@@ -52,27 +60,22 @@ public class Server {
 	        		clientSocket.close();
 	        		 break;
 	        	}
-	        	else if (inputLine.equals("Close server")){
+	        	if (inputLine.equals("Close server")){
 	        		clientSocket.close();
-	                _out.close();
+	                out.close();
 	                in.close();
 	                serverSocket.close();
 	        		break;
 	        	}
 	        	
-	        	else{
-	        		parseInput(inputLine);
-	        	}
-	        	
-        	//System.out.println("called");
-	        //SerializableTest test = new SerializableTest();
-	        //test.setA(inputLine);
-	        //ArrayList<String> list = new ArrayList();
-	        //list.add("hi");
-	       //list.add("crap");
-	        //test.setB(list);
-        	
-        	//oos.writeObject(test);
+	        	System.out.println("called");
+		        SerializableTest test = new SerializableTest();
+		        test.setA(inputLine);
+		        ArrayList<String> list = new ArrayList();
+		        list.add("hi");
+		        list.add("crap");
+		        test.setB(list);
+	        	oos.writeObject(test);
 	        	
 	        	//outputLine = kkp.processInput(inputLine);
 //	        	String[] arr = inputLine.split(",");
@@ -92,18 +95,5 @@ public class Server {
 		// 2. Check if password = password form database.
 		System.out.println("checking user: " + username + " password: " + password);
 		return db_.getPasswordFromUser(username).equals(password);
-	}
-	
-	public void parseInput(String input){
-		if(input.startsWith("Check Password")){
-			System.out.println("check pass");
-			String[] inputArr = input.split(" ");
-			if(checkPassword(inputArr[2], inputArr[3])){
-				_out.println("True");
-			}
-			else{
-				_out.println("False");
-			}
-		}
 	}
 }

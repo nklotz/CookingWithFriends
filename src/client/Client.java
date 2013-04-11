@@ -8,67 +8,59 @@ import Test.SerializableTest;
 
 public class Client {
 	
+    private Socket _kkSocket = null;
+    private PrintWriter _out = null;
+    private BufferedReader _in = null;
+    private ObjectInputStream _objIn = null;
+    private LoginWindow _login = null;
+	
     public Client(int port) throws IOException {
-    
-        Socket kkSocket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+
 
         try {
-            kkSocket = new Socket("localhost", port);
-            out = new PrintWriter(kkSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
-            LoginWindow login = new LoginWindow(this);
-
+            _kkSocket = new Socket("localhost", port);
+            _out = new PrintWriter(_kkSocket.getOutputStream(), true);
+            _in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
+            _objIn = new ObjectInputStream(_kkSocket.getInputStream());
+            _login = new LoginWindow(this);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: localhost.");
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to: localhost.");
             System.exit(1);
-        }
-
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        String fromServer, fromUser;
-
-        //System.out.println("Try: " + kkSocket.
-        //Recipe r = Converter.toRecipe(output.readLine());
-        //
+        }       
         
-        ObjectInputStream ois = new ObjectInputStream(kkSocket.getInputStream());
-        try {
-        	SerializableTest test;
-
-        while ((test = (SerializableTest) ois.readObject()) != null) {
-            //System.out.println("Server: " + fromServer);
-
-			System.out.println("test");
-			System.out.println(test.getA());
-			for(String b: test.getB()){
-				System.out.println(b);
-			}
-            //if (fromServer.equals("Bye."))
-              //  break;
-		    
-            fromUser = stdIn.readLine();
-		    if (fromUser != null) {
-                System.out.println("Client: " + fromUser);
-                out.println(fromUser);
-		    }
+        while(_login.isActive()){
+        			
         }
-        
-        } catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        close();
 
-        out.close();
-        in.close();
-        stdIn.close();
-        kkSocket.close();
     }
     
-    public void checkPassword(String username, String password){
+    public void checkPassword(String username, String password) throws IOException{
+    	String messageToServer = "Check Password " + username + " " + password;
+    	_out.println(messageToServer);	
+		String result = _in.readLine();
+		if(result.equals("True")){
+			_login.dispose();
+		}
+		else{
+			_login.displayLoginError();
+		}
+
     	
+    }
+    
+    public void close(){
+        try {
+        	_out.println("exit");
+            _out.close();
+            _in.close();
+			_kkSocket.close();
+		} catch (IOException e) {
+			System.err.println("ERROR trying to close client resources");
+			System.exit(1);
+		}
     }
 }
