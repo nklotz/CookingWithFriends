@@ -3,13 +3,14 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * @author hacheson
  * The class containing the preferences for the gui.
  */
-public class Preferences {
+public class Preferences implements Serializable {
 
 	//Maps a list of preferences to whether the user user's preference (boolean).
 	public HashMap<String, Boolean> _preferences;

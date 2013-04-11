@@ -1,12 +1,13 @@
 package UserInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Recipe stored by the user.
  * @author hacheson
  *
  */
-public class Recipe {
+public class Recipe implements Serializable {
 
 	public final String _name;
 	public final String _id;

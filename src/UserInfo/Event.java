@@ -3,13 +3,14 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  * @author hacheson
  * This class represents an event: contains a date, name, and list of user.
  */
-public class Event {
+public class Event implements Serializable {
 
 	private String _date;
 	private String _name;

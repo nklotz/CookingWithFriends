@@ -10,10 +10,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import Test.SerializableTest;
+import UserInfo.Account;
 
 public class Server {
 	private Database db_;
 	private PrintWriter _out;
+	private ObjectOutputStream  _oos;
 	
 	public Server(int port) throws IOException {
 		System.out.println("creating server");
@@ -39,7 +41,7 @@ public class Server {
 	        _out = new PrintWriter(clientSocket.getOutputStream(), true);
 	        OutputStream outStream = clientSocket.getOutputStream();
 	        
-	        ObjectOutputStream oos = new ObjectOutputStream(outStream);
+	        _oos = new ObjectOutputStream(outStream);
 	        
 	        BufferedReader in = new BufferedReader(
 	                new InputStreamReader(
@@ -94,6 +96,10 @@ public class Server {
 		return db_.getPasswordFromUser(username).equals(password);
 	}
 	
+	public Account getAccount(String username){
+		return db_.getAccountFromUser(username);
+	}
+	
 	public void parseInput(String input){
 		if(input.startsWith("Check Password")){
 			System.out.println("check pass");
@@ -103,6 +109,16 @@ public class Server {
 			}
 			else{
 				_out.println("False");
+			}
+		}
+		else if(input.startsWith("Get Account")){
+			System.out.println("GETTING ACCOUNT");
+			String[] inputArr = input.split(" ");
+			Account account = getAccount(inputArr[2]);
+			try {
+				_oos.writeObject(account);
+			} catch (IOException e) {
+				System.err.println("ERROR: couldn't write account to client");
 			}
 		}
 	}

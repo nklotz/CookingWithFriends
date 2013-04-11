@@ -3,13 +3,14 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  * @author hacheson
  * The class for a user, has address information about the user.
  */
-public class User {
+public class User implements Serializable{
 
 	private HashSet<Kitchen> _kitchens;
 	private String _address;

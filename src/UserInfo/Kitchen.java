@@ -3,13 +3,14 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  * @author hacheson
  * Represents a kitchen object. Kitchens have users, events, and a menu.
  */
-public class Kitchen {
+public class Kitchen implements Serializable{
 
 	private HashSet<User> _users;
 	private HashSet<Event> _events;

@@ -1,6 +1,6 @@
 package UserInfo;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashSet;
 
 
@@ -10,7 +10,7 @@ import java.util.HashSet;
  * This is the account class. It is what the home page will call to boot up. It has a user
  * but also has a list of recipes, ingredients, and shopping list.
  */
-public class Account {
+public class Account implements Serializable {
 	private User _user;
 	private HashSet<Recipe> _recipes;
 	private HashSet<String> _ingredients;

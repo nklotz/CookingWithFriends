@@ -5,6 +5,7 @@ import java.net.*;
 
 import GUI.LoginWindow;
 import Test.SerializableTest;
+import UserInfo.Account;
 
 public class Client {
 	
@@ -13,6 +14,7 @@ public class Client {
     private BufferedReader _in = null;
     private ObjectInputStream _objIn = null;
     private LoginWindow _login = null;
+    //private HomeWindow _gui = null;
 	
     public Client(int port) throws IOException {
 
@@ -30,11 +32,6 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to: localhost.");
             System.exit(1);
         }       
-        
-        while(_login.isActive()){
-        			
-        }
-        close();
 
     }
     
@@ -44,6 +41,22 @@ public class Client {
 		String result = _in.readLine();
 		if(result.equals("True")){
 			_login.dispose();
+			_out.println("Get Account " + username);
+			try {
+				Account account = (Account) _objIn.readObject();
+				System.out.println("account: " + account.getUser().getName());
+				close();
+				//_gui = new HomeWindow(Account);
+			} catch (ClassNotFoundException e) {
+				System.err.println("ERROR: CLASS (ACCOUNT) NOT FOUND!");
+			}
+			
+		
+			//while(_gui.not closed){
+				
+			//}
+			//close();
+			
 		}
 		else{
 			_login.displayLoginError();
