@@ -93,6 +93,8 @@ public class Server {
 		// 1. Query database.
 		// 2. Check if password = password form database.
 		System.out.println("checking user: " + username + " password: " + password);
+		if(db_.getPasswordFromUser(username) == null)
+			return false;
 		return db_.getPasswordFromUser(username).equals(password);
 	}
 	
