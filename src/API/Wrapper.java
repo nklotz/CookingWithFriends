@@ -28,13 +28,13 @@ public interface Wrapper {
 	/**
 	 * Given a list of recipes, we will return a list of needed ingredients.
 	 * @param recipes The recipes 
-	 * @return
+	 * @return ArrayList<Recipe> The ingredients the user needs.
 	 */
 	public ArrayList<String> neededIngredients(ArrayList<Recipe> recipes);
 
 	/**
 	 * Returns a list of recipes given a string of comma separated (maybe?) ingredients.
-	 * @return 
+	 * @return ArrayList<Recipe> The searched recipes.
 	 */
 	public ArrayList<Recipe> findRecipesWithIngredients(ArrayList<String> ingredients);
 	

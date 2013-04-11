@@ -1,5 +1,6 @@
 package UserInfo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 
@@ -44,6 +45,38 @@ public class Account {
 	 */
 	public void setUser(User u){
 		_user = u;
+	}
+	
+	/**
+	 * Sets the list of ingredients in the account.
+	 * @param ing
+	 */
+	public void setIngredients(HashSet<String> ing){
+		_ingredients = ing;
+	}
+	
+	/**
+	 * Returns the list of ingredients in this account.
+	 * @return HashSet<String> List of ingredients.
+	 */
+	public HashSet<String> getIngredients(){
+		return _ingredients;
+	}
+	
+	/**
+	 * Sets the list of recipes in the account.
+	 * @param r The list of recipes.
+	 */
+	public void setRecipes(HashSet<Recipe> r){
+		_recipes = r;
+	}
+	
+	/**
+	 * Returns the list of recipes in this account.
+	 * @return HashSet<String> List of recipes.
+	 */
+	public HashSet<Recipe> getRecipes(){
+		return _recipes;
 	}
 	
 }

@@ -25,6 +25,12 @@ public class User {
 		_preferences = pref;
 	}
 	
+	public User(String name, String password){
+		_name = name;
+		_password = password;
+		_kitchens = new HashSet<Kitchen>();
+	}
+	
 	/**
 	 * Returns the user's address.
 	 * @return String user's address.
