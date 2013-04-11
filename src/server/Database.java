@@ -58,7 +58,6 @@ public class Database {
 		return userToPassword_.get(user);
 	}
 	
-	
 	public void addUser(String user, String password){
 		userToPassword_.put(user, password);
 	}
