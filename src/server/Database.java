@@ -26,6 +26,7 @@ public class Database {
 	HashSet<Recipe> _recipes;
 	public Database(){
 		userToPassword_ = new HashMap<String, String>();
+		nameToAccount_ = new HashMap<String, Account>();
 		userToPassword_.put("Hannah", "Hannah");
 		userToPassword_.put("Natalie", "Natalie");
 		userToPassword_.put("Jon", "Jon");
