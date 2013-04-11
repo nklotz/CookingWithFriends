@@ -102,7 +102,7 @@ public class Server {
 	
 	public void parseInput(String input){
 		if(input.startsWith("Check Password")){
-			System.out.println("check pass");
+			//System.out.println("check pass");
 			String[] inputArr = input.split(" ");
 			if(checkPassword(inputArr[2], inputArr[3])){
 				_out.println("True");
@@ -112,7 +112,7 @@ public class Server {
 			}
 		}
 		else if(input.startsWith("Get Account")){
-			System.out.println("GETTING ACCOUNT");
+			//System.out.println("GETTING ACCOUNT");
 			String[] inputArr = input.split(" ");
 			Account account = getAccount(inputArr[2]);
 			try {

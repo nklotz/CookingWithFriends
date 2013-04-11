@@ -55,6 +55,10 @@ public class Account implements Serializable {
 		_ingredients = ing;
 	}
 	
+	public void setShoppingList(HashSet<String> SL){
+		_shoppingList = SL;
+	}
+	
 	/**
 	 * Returns the list of ingredients in this account.
 	 * @return HashSet<String> List of ingredients.

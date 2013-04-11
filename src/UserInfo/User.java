@@ -80,5 +80,9 @@ public class User implements Serializable{
 		_preferences = pref;
 	}
 	
+	public void setAddress(String add){
+		_address = add;
+	}
+	
 	
 }
