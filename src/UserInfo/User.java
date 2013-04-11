@@ -15,12 +15,14 @@ public class User {
 	private String _address;
 	private String _name;
 	private String _password;
+	private Preferences _preferences;
 	
-	public User(HashSet<Kitchen> kitchens, String address, String name, String password){
+	public User(HashSet<Kitchen> kitchens, String address, String name, String password, Preferences pref){
 		_kitchens = kitchens;
 		_address = address;
 		_name = name;
 		_password = password;
+		_preferences = pref;
 	}
 	
 	/**
@@ -62,5 +64,14 @@ public class User {
 	public void removeKitchen(Kitchen k){
 		_kitchens.remove(k);
 	}
+	
+	/**
+	 * Sets the user's preferences.
+	 * @param pref Preferences for the user to set.
+	 */
+	public void setPreferences(Preferences pref){
+		_preferences = pref;
+	}
+	
 	
 }
