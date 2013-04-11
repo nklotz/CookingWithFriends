@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
 	
-	private final static int DEFAULT_PORT = 9881;
+	private final static int DEFAULT_PORT = 9882;
 
 	public static void main(String[] args) {
 		try{
