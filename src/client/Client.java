@@ -3,6 +3,8 @@ package client;
 import java.io.*;
 import java.net.*;
 
+import Test.SerializableTest;
+
 public class Client {
 	
     public Client(int port) throws IOException {
@@ -26,10 +28,24 @@ public class Client {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         String fromServer, fromUser;
 
-        while ((fromServer = in.readLine()) != null) {
-            System.out.println("Server: " + fromServer);
-            if (fromServer.equals("Bye."))
-                break;
+        //System.out.println("Try: " + kkSocket.
+        //Recipe r = Converter.toRecipe(output.readLine());
+        //
+        
+        ObjectInputStream ois = new ObjectInputStream(kkSocket.getInputStream());
+        try {
+        	SerializableTest test;
+
+        while ((test = (SerializableTest) ois.readObject()) != null) {
+            //System.out.println("Server: " + fromServer);
+
+			System.out.println("test");
+			System.out.println(test.getA());
+			for(String b: test.getB()){
+				System.out.println(b);
+			}
+            //if (fromServer.equals("Bye."))
+              //  break;
 		    
             fromUser = stdIn.readLine();
 		    if (fromUser != null) {
@@ -37,10 +53,19 @@ public class Client {
                 out.println(fromUser);
 		    }
         }
+        
+        } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         out.close();
         in.close();
         stdIn.close();
         kkSocket.close();
+    }
+    
+    public void checkPassword(String username, String password){
+    	
     }
 }
