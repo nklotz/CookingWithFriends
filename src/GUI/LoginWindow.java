@@ -29,7 +29,7 @@ public class LoginWindow extends JFrame {
 	JLabel _errorLabel;
 	
 	public LoginWindow(Client client){
-		super("Login With Miranda");
+		super("HI MIRANDA!!!! :-)");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setSize(300,300);
@@ -86,6 +86,7 @@ public class LoginWindow extends JFrame {
         	}
         	else{
         		try {
+        			//If true, start home page.
 					_client.checkPassword(_usernameInput.getText(), _passwordInput.getText());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

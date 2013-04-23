@@ -195,7 +195,5 @@ public class HomeWindow extends JFrame {
 			_shoppingList.append("--" + item+ "\n");
 		}
 	}
-	
-	
 
 }
