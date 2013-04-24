@@ -45,7 +45,6 @@ public class DBHelper implements DBHelperInterface{
 			System.err.println("ERROR: Could not connect to mongodb.");
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
