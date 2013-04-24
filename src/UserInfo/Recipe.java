@@ -9,6 +9,10 @@ import java.util.ArrayList;
  */
 public class Recipe implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final String _name;
 	public final String _id;
 	public final String _instructions;

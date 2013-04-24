@@ -12,6 +12,10 @@ import java.util.HashMap;
  */
 public class Preferences implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Maps a list of preferences to whether the user user's preference (boolean).
 	public HashMap<String, Boolean> _preferences;
 	public Preferences(){

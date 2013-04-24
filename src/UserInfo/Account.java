@@ -12,11 +12,16 @@ import java.util.Set;
  * but also has a list of recipes, ingredients, and shopping list.
  */
 public class Account implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private User _user;
 	private HashSet<Recipe> _recipes;
 	private HashSet<String> _ingredients;
 	private HashSet<String> _shoppingList;
-	
+	//TODO: add list of kitchen ids
+	//private ArrayList<Integer> _kitchenIds;
 	public Account(User user, HashSet<Recipe> recipes, HashSet<String> ingredients, HashSet<String> list){
 		_user = user;
 		_recipes = recipes;
