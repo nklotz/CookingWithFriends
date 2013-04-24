@@ -1,11 +1,23 @@
 package server;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import UserInfo.Account;
+import UserInfo.Recipe;
+import UserInfo.User;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Server {
 
@@ -19,12 +31,12 @@ public class Server {
 			System.err.println("ERROR: Ports under 1024 are reserved!");
 			return;
 		}
-		System.out.println("creating server");
 
 		/* TODO: BOOT UP DATA BASE */
 	
         try {
             _socket = new ServerSocket(port);
+            
         } catch (IOException e) {
             System.err.println("Could not listen on port: " + port + ".");
             System.exit(1);
@@ -72,4 +84,11 @@ public class Server {
 		_socket.close();
 	}
 	
+    private static String toString( Serializable o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject( o );
+        oos.close();
+        return new String( Base64.encode( baos.toByteArray() ) );
+    }
 }

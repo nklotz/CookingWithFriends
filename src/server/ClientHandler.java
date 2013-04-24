@@ -1,12 +1,16 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import UserInfo.Account;
 
@@ -142,6 +146,14 @@ public class ClientHandler extends Thread {
 			_taskPool.execute(new KitchenRequest(this, line[2]));
 		}
 	}
+	
+    private static String toString( Serializable o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject( o );
+        oos.close();
+        return new String( Base64.encode( baos.toByteArray() ) );
+    }
 	
 	
 	/**else if(input.startsWith("Check user/password:")){
