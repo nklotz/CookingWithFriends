@@ -1,8 +1,13 @@
 package UserInfo;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 
 /**
