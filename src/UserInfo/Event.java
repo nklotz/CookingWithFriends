@@ -12,6 +12,10 @@ import java.util.HashSet;
  */
 public class Event implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _date;
 	private String _name;
 	private HashSet<User> _users;

@@ -12,6 +12,10 @@ import java.util.HashSet;
  */
 public class Kitchen implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashSet<User> _users;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;

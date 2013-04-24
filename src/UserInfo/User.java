@@ -12,6 +12,10 @@ import java.util.HashSet;
  */
 public class User implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashSet<Kitchen> _kitchens;
 	private String _address;
 	private String _name;
