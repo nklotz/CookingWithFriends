@@ -7,6 +7,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import Database.DBHelper;
+
 public class Server {
 
 	private ThreadPoolExecutor _taskPool;
@@ -23,6 +25,7 @@ public class Server {
 
 		/* TODO: BOOT UP DATA BASE */
 	
+		DBHelper helper = new DBHelper();
         try {
             _socket = new ServerSocket(port);
         } catch (IOException e) {
