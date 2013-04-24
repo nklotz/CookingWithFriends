@@ -19,6 +19,7 @@ public class Kitchen implements Serializable{
 	private HashSet<User> _users;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
+	private String _id;
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
@@ -34,6 +35,21 @@ public class Kitchen implements Serializable{
 		_recipes = new HashSet<Recipe>();
 	}
 	
+	/**
+	 * Sets the id of the kitchen object.
+	 * @param id
+	 */
+	public void setId(String id){
+		_id = id;
+	}
+	
+	/**
+	 * Returns the string id.
+	 * @return
+	 */
+	public String getId(){
+		return _id;
+	}
 	/**
 	 * Adds a user to the kitchen.
 	 * @param u User to add to the kitchen.
