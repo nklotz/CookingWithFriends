@@ -49,7 +49,7 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public Account getAccount(String username) {
-		System.out.println("Making object.");
+		System.out.println("Making object in db helper get account.");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userCollection_.find(searchQuery);
@@ -63,11 +63,18 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public void storeAccount(Account a) {
+		System.out.println("storing accoutn");
 		BasicDBObject document = new BasicDBObject();
 		document.put("username", "Hannah");
 		document.put("password", 1234);
 		document.put("account", "sample account");
-		userCollection_.insert(document);
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("username", a.getUser().getName());
+		//Adds it if it doesn't exist  currently.
+		if(userCollection_.find(searchQuery).length() == 0){
+			userCollection_.insert(document);
+		}
+		//userCollection_.remove(searchQuery);
 	}
 
 	@Override

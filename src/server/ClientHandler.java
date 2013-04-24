@@ -146,14 +146,14 @@ public class ClientHandler extends Thread {
 	public void getAccount(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new AccountRequest(this, line[2], _helper));
+			_taskPool.execute(new AccountRequest(this, line[1], _helper));
 		}
 	}
 	
 	public void getKitchen(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new KitchenRequest(this, line[2]));
+			_taskPool.execute(new KitchenRequest(this, line[1]));
 		}
 	}
 	

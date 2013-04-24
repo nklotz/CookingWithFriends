@@ -10,6 +10,7 @@ public class Main {
 		try{
 			System.out.println("server main");
 			Server s = new Server(DEFAULT_PORT);
+			s.run();
 		} catch(IOException e){
 			e.printStackTrace();
 		}
