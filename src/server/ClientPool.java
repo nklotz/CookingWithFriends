@@ -1,5 +1,6 @@
 package server;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -8,12 +9,14 @@ import java.util.LinkedList;
  */
 public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
+	private HashSet<String> _ids;
 	
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
 	public ClientPool() {
 		_clients = new LinkedList<ClientHandler>();
+		_ids = new HashSet<String>();
 	}
 	
 	/**
@@ -33,6 +36,7 @@ public class ClientPool {
 	 * @return true if the client was removed, false if they were not there.
 	 */
 	public synchronized boolean remove(ClientHandler client) {
+		_ids.remove(client.getID());
 		return _clients.remove(client);
 	}
 	
@@ -59,5 +63,9 @@ public class ClientPool {
 		}
 
 		_clients.clear();
+	}
+	
+	public void addID(String id){
+		_ids.add(id);
 	}
 }

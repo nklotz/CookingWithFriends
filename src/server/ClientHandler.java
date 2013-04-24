@@ -10,9 +10,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import Database.DBHelper;
 
-import UserInfo.Account;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * Encapsulate IO for the given client.
@@ -27,15 +27,17 @@ public class ClientHandler extends Thread {
 	private BufferedReader _input;
 	private ObjectOutputStream _objectOut;
 	private ExecutorService _taskPool;
+	private String _clientID;
+	private DBHelper _helper;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
 	 */
-	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, DBHelper helper) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
-		
+		_helper = helper;
 		_pool = pool;
 		_client = client;
 		_taskPool = taskPool;
@@ -63,6 +65,13 @@ public class ClientHandler extends Thread {
 						kill();
 						break;
 					}
+					else if(input.startsWith("My ID:")){
+						String[] line = input.split("\\t");
+						if(line.length == 2){
+							_clientID = line[1];
+							_pool.addID(line[1]);
+						}
+					}
 					
 					else if(input.startsWith("Check user/password:")){
 						//call to data base for userpassword
@@ -70,6 +79,7 @@ public class ClientHandler extends Thread {
 					
 					else if(input.startsWith("Get account:")){
 						//call to data base for account
+						getAccount(input);
 					}
 				
 					else if(input.startsWith("Get kitchen:")){
@@ -136,7 +146,7 @@ public class ClientHandler extends Thread {
 	public void getAccount(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new AccountRequest(this, line[2]));
+			_taskPool.execute(new AccountRequest(this, line[2], _helper));
 		}
 	}
 	
@@ -156,16 +166,8 @@ public class ClientHandler extends Thread {
     }
 	
 	
-	/**else if(input.startsWith("Check user/password:")){
-		//call to data base for userpassword
+	public String getID(){
+		return _clientID;
 	}
-	
-	else if(input.startsWith("Get account:")){
-		//call to data base for account
-	}
-
-	else if(input.startsWith("Get kitchen:")){
-		//call to database for kitchen
-	} **/
 	
 }

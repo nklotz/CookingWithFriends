@@ -27,6 +27,7 @@ public class Server {
 	private ClientPool _clients;
 	private Boolean _running; 
 	private ServerSocket _socket;
+	private DBHelper _helper;
 	
 	public Server(int port) throws IOException {
 		if (port <= 1024) {
@@ -36,7 +37,8 @@ public class Server {
 
 		/* TODO: BOOT UP DATA BASE */
 	
-		DBHelper helper = new DBHelper();
+		_helper = new DBHelper();
+		_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
         try {
             _socket = new ServerSocket(port);
             
@@ -59,7 +61,7 @@ public class Server {
 			Socket clientSocket = null;
 	        try {
 	            clientSocket =_socket.accept();
-	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool);
+	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _helper);
 	    		_clients.add(thread);
 	            thread.start();
 
