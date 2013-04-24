@@ -28,8 +28,6 @@ public class DBHelper implements DBHelperInterface{
 	public DBHelper(){
 		String s = "mongod --port 27017 -dbpath /home/hacheson/course/cs032/MongoData/";
 		String[] args = s.split(" ");
-		userDb_ = mongo_.getDB("users");
-		userCollection_ = userDb_.getCollection("userCollection");
 		Process p = null;
 		try{
 			p = Runtime.getRuntime().exec(s);
@@ -38,6 +36,8 @@ public class DBHelper implements DBHelperInterface{
 		}
 		try {
 			mongo_ = new Mongo("localhost", 27017);
+			userDb_ = mongo_.getDB("users");
+			userCollection_ = userDb_.getCollection("userCollection");
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: Could not connect to mongodb, unknown host.");
 			e.printStackTrace();
