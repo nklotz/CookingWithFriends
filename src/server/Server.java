@@ -7,15 +7,16 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
 import Database.DBHelper;
 import UserInfo.Account;
+import UserInfo.Event;
+import UserInfo.Kitchen;
 import UserInfo.Recipe;
 import UserInfo.User;
 
@@ -37,6 +38,20 @@ public class Server {
 
 		_helper = new DBHelper();
 		_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
+		
+		HashSet<User> u = new HashSet<User>();
+		u.add(new User("Hannah", "Natalie's feet smell"));
+		HashSet<Event> ev = new HashSet<Event>();
+		ev.add(new Event("BDay", new Date(223), u));
+		HashSet<Recipe> r = new HashSet<Recipe>();
+		ArrayList<String> ing = new ArrayList<String>();
+		ing.add("butter");
+		r.add(new Recipe("chicken", "/r/0", "Put in bowl.", ing));
+		_helper.storeKitchen(new Kitchen(u, ev, r));
+		System.out.println("bf get kitchen");
+		_helper.getKitchen("/k/0");
+		
+		
         try {
             _socket = new ServerSocket(port);
             

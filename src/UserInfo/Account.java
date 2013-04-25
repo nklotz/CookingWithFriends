@@ -95,5 +95,12 @@ public class Account implements Serializable {
 	public Set<Recipe> getRecipes(){
 		return _recipes;
 	}
+
+	@Override
+	public String toString() {
+		return "Account [_user=" + _user + ", _recipes=" + _recipes
+				+ ", _ingredients=" + _ingredients + ", _shoppingList="
+				+ _shoppingList + "]";
+	}
 	
 }

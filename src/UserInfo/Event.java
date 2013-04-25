@@ -4,6 +4,7 @@
 package UserInfo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -16,11 +17,11 @@ public class Event implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String _date;
+	private Date _date;
 	private String _name;
 	private HashSet<User> _users;
 	
-	public Event(String name, String date, HashSet<User> users){
+	public Event(String name, Date date, HashSet<User> users){
 		_name = name;
 		_date = date;
 		_users = users;
@@ -62,7 +63,7 @@ public class Event implements Serializable {
 	 * Sets this event's date.
 	 * @param date String date to set.
 	 */
-	public void setDate(String date){
+	public void setDate(Date date){
 		_date = date;
 	}
 	
@@ -70,8 +71,14 @@ public class Event implements Serializable {
 	 * Returns this event's date.
 	 * @return String date to return.
 	 */
-	public String getDate(){
+	public Date getDate(){
 		return _date;
+	}
+
+	@Override
+	public String toString() {
+		return "Event [_date=" + _date + ", _name=" + _name + ", _users="
+				+ _users + "]";
 	}
 	
 }

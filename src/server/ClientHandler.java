@@ -167,7 +167,7 @@ public class ClientHandler extends Thread {
 			_taskPool.execute(new KitchenRequest(this, line[1], _helper));
 		}
 	}
-	
+
 	private void storeAccount(Request request) {
 		_taskPool.execute(new StoreAccountRequest(this, request.getAccount(), _helper));
 	}
@@ -183,7 +183,6 @@ public class ClientHandler extends Thread {
         oos.close();
         return new String( Base64.encode( baos.toByteArray() ) );
     }
-	
 	
 	public String getID(){
 		return _clientID;

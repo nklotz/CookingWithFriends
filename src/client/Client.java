@@ -45,7 +45,7 @@ public class Client {
 			_out.println("Get Account " + username);
 			try {
 				Account account = (Account) _objIn.readObject();
-				System.out.println("account: " + account.getUser().getName());
+				System.out.println("account: " + account.getUser().getID());
 				_gui = new HomeWindow(account);
 				System.out.println("GUI NEW ACCOUTN!!!!");
 			} catch (ClassNotFoundException e) {

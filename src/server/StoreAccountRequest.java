@@ -9,7 +9,7 @@ public class StoreAccountRequest implements Runnable {
 	Account _account;
 	DBHelper _helper;
 	
-	public StoreAccountRequest(ClientHandler ch, Account acount, DBHelper helper){
+	public StoreAccountRequest(ClientHandler ch, Account account, DBHelper helper){
 		_ch = ch;
 		_account = account;
 		_helper = helper;

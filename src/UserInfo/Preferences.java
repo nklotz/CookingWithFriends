@@ -25,4 +25,9 @@ public class Preferences implements Serializable {
 	public void addPreference(String p, boolean b){
 		_preferences.put(p, b);
 	}
+
+	@Override
+	public String toString() {
+		return "Preferences [_preferences=" + _preferences + "]";
+	}
 }
