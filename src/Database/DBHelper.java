@@ -2,9 +2,10 @@
  * 
  */
 package Database;
-
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.UnknownHostException;
@@ -17,6 +18,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+
+import sun.misc.BASE64Decoder;
 
 import UserInfo.Account;
 import UserInfo.Kitchen;
@@ -81,8 +84,10 @@ public class DBHelper implements DBHelperInterface{
 		DBCursor cursor = userCollection_.find(searchQuery);
 		
 		while (cursor.hasNext()) {
-			//System.out.println(cursor.next().get("account"));
-			System.out.println(cursor.next());
+			String s  = cursor.next().get("account").toString();
+			System.out.println("account: " + (Account)getObjectFromString(s));
+			return (Account)getObjectFromString(s);
+			//System.out.println(cursor.next());
 		}
 		return null;
 	}
@@ -116,6 +121,8 @@ public class DBHelper implements DBHelperInterface{
 		
 		while (cursor.hasNext()) {
 			System.out.println(cursor.next());
+			String s = cursor.next().get("kitchen").toString();
+			return (Kitchen)getObjectFromString(s);
 		}
 		return null;
 	}
@@ -125,7 +132,7 @@ public class DBHelper implements DBHelperInterface{
 		System.out.println("storing kitchen: " + k);
 		BasicDBObject document = new BasicDBObject();
 		document.put("id", "/k/0");
-		document.put("kitchen", "sample kitchen");
+		document.put("kitchen", getObjectString(k));
 		BasicDBObject searchQuery = new BasicDBObject();
 		String id = createKitchenId();
 		k.setId(id);
@@ -156,9 +163,9 @@ public class DBHelper implements DBHelperInterface{
 			searchQuery.put("username", username.trim());
 			DBCursor cursor = userPassCollection_.find(searchQuery);
 			//Username doesn't exist in database.
-			if(cursor.hasNext()){
-				System.out.println(cursor.next());
-			}
+//			if(cursor.hasNext()){
+//				System.out.println(cursor.next());
+//			}
 			
 		}
 	}
@@ -173,12 +180,13 @@ public class DBHelper implements DBHelperInterface{
 			return false;
 		}
 		else{
-			System.out.println(cursor.next());
+			//System.out.println(cursor.next());
 			String storedPassword = cursor.next().get("password").toString();
 			return check(password, storedPassword);
 		}
 		//encode the password that you're given and check if it matches.
 	}
+	
 	
 	/** Checks whether given plaintext password corresponds 
     to a stored salted hash of the password. */
@@ -245,7 +253,6 @@ public class DBHelper implements DBHelperInterface{
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
 		
 		if(cursor.hasNext()) {
-			System.out.println("FALSE valid username: " + cursor.next());
 			return false;
 		}
 		return true;
@@ -272,6 +279,41 @@ public class DBHelper implements DBHelperInterface{
 		}
 	}
 	
+//	public static Object getObjectFromString(String s){
+//		//FileInputStream fileIn =
+//       //         new FileInputStream("employee.ser");
+////		ObjectInputStream in = new ObjectInputStream(fileIn);
+//		try{
+//			byte[] arr = new byte[10000];
+//			ByteArrayInputStream bais = new ByteArrayInputStream(arr);
+//			ObjectInputStream in = new ObjectInputStream(bais);
+//			
+//			return in.readObject();
+//		} catch(IOException | ClassNotFoundException e){
+//			System.out.println("ERROR: Could not read from object input stream: " + e.getMessage());
+//		}
+//		
+//		
+//		return null;
+//	}
+	
+	  /** Read the object from Base64 string. */
+    private static Object getObjectFromString( String s ) {
+    	try{
+    		BASE64Decoder decoder = new BASE64Decoder();
+        	byte [] data = decoder.decodeBuffer( s );
+            ObjectInputStream ois = new ObjectInputStream( 
+                                            new ByteArrayInputStream(  data ) );
+            Object o  = ois.readObject();
+            ois.close();
+            return o;
+    	} catch(IOException | ClassNotFoundException e){
+    		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
+    		return null;
+    	}
+    }
+    
+	
 	/**
 	 * Returns the serialized object in string form.
 	 * @param o Serializable object o.
@@ -290,19 +332,4 @@ public class DBHelper implements DBHelperInterface{
 		//Imports all of this so it doesn't conflict with the other Base64 import above.
         return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
     }
-
-	
-	
-//	public String getEncryptedKey(String password){
-//	int saltLen = 32;
-//	try {
-//		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
-//		return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
-//	} catch (Exception e) {
-//		System.out.println("ERROR: In get encrypted key.");
-//		e.printStackTrace();
-//	}
-//	return null;
-//}
-	
 }
