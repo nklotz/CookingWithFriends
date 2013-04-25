@@ -87,6 +87,13 @@ public class User implements Serializable{
 	public void setAddress(String add){
 		_address = add;
 	}
+
+	@Override
+	public String toString() {
+		return "User [_kitchens=" + _kitchens + ", _address=" + _address
+				+ ", _name=" + _name + ", _password=" + _password
+				+ ", _preferences=" + _preferences + "]";
+	}
 	
 	
 }

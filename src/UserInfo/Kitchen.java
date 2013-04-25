@@ -104,5 +104,11 @@ public class Kitchen implements Serializable{
 	public void removeAllRecipes(){
 		_recipes = new HashSet<Recipe>();
 	}
+
+	@Override
+	public String toString() {
+		return "Kitchen [_users=" + _users + ", _events=" + _events
+				+ ", _recipes=" + _recipes + ", _id=" + _id + "]";
+	}
 	
 }

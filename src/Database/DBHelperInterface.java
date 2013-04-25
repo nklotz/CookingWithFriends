@@ -30,5 +30,20 @@ public interface DBHelperInterface {
 	 * @param k
 	 */
 	public void storeKitchen(Kitchen k);
+	
+	/**
+	 * Check the username and password given the username database.
+	 * @param username String username to check.
+	 * @param password String password to check.
+	 * @return Whether the password matches the username.
+	 */
+	public boolean checkUsernamePassword(String username, String password);
+	
+	/**
+	 * Returns whether the username is already in the database.
+	 * @param username
+	 * @return
+	 */
+	public boolean validUsername(String username);
 
 }

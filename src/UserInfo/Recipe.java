@@ -25,5 +25,12 @@ public class Recipe implements Serializable {
 		_instructions = instructions;
 		_ingredients = ingredients;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Recipe [_name=" + _name + ", _id=" + _id + ", _instructions="
+				+ _instructions + ", _ingredients=" + _ingredients + "]";
+	}
 	
 }
