@@ -7,13 +7,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.KeySpec;
+import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
 
 import UserInfo.Account;
 import UserInfo.Kitchen;
@@ -24,7 +27,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 //import sun.security.provider.SecureRandom;
 //import org.apache.commons.codec.binary.Base6;
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -58,8 +62,8 @@ public class DBHelper implements DBHelperInterface{
 			userCollection_ = userDB_.getCollection("userCollection");
 			kitchenDB_ = mongo_.getDB("kitchens");
 			kitchenCollection_ = kitchenDB_.getCollection("kitchenCollection");
-			userPassDB_ = mongo_.getDB("username/passwords");
-			userPassCollection_ = userPassDB_.getCollection("username/passwordsCollection");
+			userPassDB_ = mongo_.getDB("usernamePasswords");
+			userPassCollection_ = userPassDB_.getCollection("usernamePasswordsCollection");
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: Could not connect to mongodb, unknown host.");
 			e.printStackTrace();
@@ -139,14 +143,23 @@ public class DBHelper implements DBHelperInterface{
 	}
 	
 	public void storeUsernamePassword(String username, String password){
-		System.out.println("storing username");
+		String encryptedPassword = getEncrypted(password);
 		BasicDBObject document = new BasicDBObject();
-		document.put("username", username);
-		document.put("password", getEncrypted(password));
-		document.put("encryptKey", getEncryptedKey(password));
+		document.put("username", username.trim());
+		document.put("password", encryptedPassword);
+		//document.put("encryptKey", getEncryptedKey(password));
 		//Adds it if it doesn't exist  currently.
 		if(validUsername(username)){
-			userCollection_.insert(document);
+			userPassCollection_.insert(document);
+			
+			BasicDBObject searchQuery = new BasicDBObject();
+			searchQuery.put("username", username.trim());
+			DBCursor cursor = userPassCollection_.find(searchQuery);
+			//Username doesn't exist in database.
+			if(cursor.hasNext()){
+				System.out.println(cursor.next());
+			}
+			
 		}
 	}
 	
@@ -154,53 +167,77 @@ public class DBHelper implements DBHelperInterface{
 	public boolean checkUsernamePassword(String username, String password) {
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = kitchenCollection_.find(searchQuery);
+		DBCursor cursor = userPassCollection_.find(searchQuery);
 		//Username doesn't exist in database.
 		if(!cursor.hasNext()){
 			return false;
 		}
 		else{
 			System.out.println(cursor.next());
-			if(cursor.next().get("password").equals(getEncrypted(password))){
-				return true;
-			}
+			String storedPassword = cursor.next().get("password").toString();
+			return check(password, storedPassword);
 		}
-		
-
-		
 		//encode the password that you're given and check if it matches.
-		
-		
 	}
 	
-	public String getEncryptedKey(String password){
-		int saltLen = 32;
-	    byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
-	    // store the salt with the password
-	    return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
+	/** Checks whether given plaintext password corresponds 
+    to a stored salted hash of the password. */
+	public static boolean check(String password, String stored){
+	    String[] saltAndPass = stored.split("\\$");
+	    if (saltAndPass.length != 2)
+	        return false;
+	    String hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[0]));
+	    return hashOfInput.equals(saltAndPass[1]);
 	}
 	
 	/** Computes a salted PBKDF2 hash of given plaintext password
     suitable for storing in a database. 
     Empty passwords are not supported. */
-	public static String getSaltedHash(String password) throws Exception {
-		int saltLen = 32;
-	    byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
-	    // store the salt with the password
-	    return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
+	/**
+	 * Returns the encrypted password using the salt and 
+	 * @param password String password of encryption.
+	 * @return String encyrpted password.
+	 */
+	//source: http://stackoverflow.com/questions/2860943/suggestions-for-library-to-hash-passwords-in-java
+	public static String getEncrypted(String password) {
+		try{
+			int saltLen = 32;
+		    byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
+		    // store the salt with the password
+		    return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
+		} catch(Exception e){
+			System.out.println("ERROR: In getEncyrpted in DBHelper." + e.getMessage());
+		}
+		//TODO: Change back to empty string.
+		return null;
+		
 	}
 	
-	public String getEncrypted(String password){
-		byte[] salt = new byte[16];
-		//Random.nextBytes(salt);
-		random.nextBytes(salt);
-		KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 128);
-		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		byte[] hash = f.generateSecret(spec).getEncoded();
-		System.out.println("salt: " + new BigInteger(1, salt).toString(16));
-		System.out.println("hash: " + new BigInteger(1, hash).toString(16));
-	}
+    // using PBKDF2 from Sun, an alternative is https://github.com/wg/scrypt
+    // cf. http://www.unlimitednovelty.com/2012/03/dont-use-bcrypt.html
+	//source: http://stackoverflow.com/questions/2860943/suggestions-for-library-to-hash-passwords-in-java
+    private static String hash(String password, byte[] salt){
+    	try{
+    		int iterations = 10*1024;
+        	int desiredKeyLen = 256;
+            if (password == null || password.length() == 0)
+                throw new IllegalArgumentException("Empty passwords are not supported.");
+            SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKey key = f.generateSecret(new PBEKeySpec(
+                password.toCharArray(), salt, iterations, desiredKeyLen)
+            );
+            return Base64.encodeBase64String(key.getEncoded());
+    	} catch(NoSuchAlgorithmException | InvalidKeySpecException e){
+    		System.out.println("ERROR: Unable to hash password." + e.getMessage());
+    		return null; //TODO: Make empty string later.
+    	}
+    	
+    	
+    }
 	
+    /**
+     * Returns true if it is a valid username, ie if nobody already has that username.
+     */
 	@Override
 	public boolean validUsername(String username){
 		BasicDBObject searchQuery = new BasicDBObject();
@@ -208,6 +245,7 @@ public class DBHelper implements DBHelperInterface{
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
 		
 		if(cursor.hasNext()) {
+			System.out.println("FALSE valid username: " + cursor.next());
 			return false;
 		}
 		return true;
@@ -249,9 +287,22 @@ public class DBHelper implements DBHelperInterface{
 		} catch (IOException e) {
 			System.out.println("ERROR: Could not make serializable object." + e.getMessage());
 		}
-        return new String(Base64.encode(baos.toByteArray()));
+		//Imports all of this so it doesn't conflict with the other Base64 import above.
+        return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
     }
 
 	
+	
+//	public String getEncryptedKey(String password){
+//	int saltLen = 32;
+//	try {
+//		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
+//		return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
+//	} catch (Exception e) {
+//		System.out.println("ERROR: In get encrypted key.");
+//		e.printStackTrace();
+//	}
+//	return null;
+//}
 	
 }
