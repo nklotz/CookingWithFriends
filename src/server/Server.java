@@ -38,7 +38,9 @@ public class Server {
 		}
 
 		_helper = new DBHelper();
-//		_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
+		//_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
+		//System.out.println("GET ACCOUTN FROM SERVER: " + _helper.getAccount("Hannah"));
+		
 //		
 //		HashSet<User> u = new HashSet<User>();
 //		u.add(new User("Hannah", "Natalie's feet smell"));
@@ -55,8 +57,6 @@ public class Server {
 		if(_helper.validUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");
 		}
-		System.out.println("in server before check username");
-		System.out.println(_helper.checkUsernamePassword("Hannah", "abcde"));
 		
         try {
             _socket = new ServerSocket(port);
