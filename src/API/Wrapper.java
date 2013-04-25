@@ -1,22 +1,20 @@
 package API;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import UserInfo.Recipe;
 
 /**
- * An interface for the Big Oven wrapper.
- * @author hacheson
- *
+ * An interface for interacting with a recipe database API.
  */
 public interface Wrapper {
 
 	/**
 	 * Returns a list of recipes given the search term.
 	 * @param toFind
-	 * @return ArrayList<Recipe> The list of recipes to return.
+	 * @return List<Recipe> The list of recipes to return.
 	 */
-	public ArrayList<Recipe> recipes(String toFind);
+	public List<Recipe> recipes(String toFind);
 	
 	/**
 	 * Given the format of the Big Oven API, will return a recipe.
@@ -30,12 +28,22 @@ public interface Wrapper {
 	 * @param recipes The recipes 
 	 * @return ArrayList<Recipe> The ingredients the user needs.
 	 */
-	public ArrayList<String> neededIngredients(ArrayList<Recipe> recipes);
+	public List<String> neededIngredients(List<Recipe> recipes);
 
 	/**
 	 * Returns a list of recipes given a string of comma separated (maybe?) ingredients.
 	 * @return ArrayList<Recipe> The searched recipes.
 	 */
-	public ArrayList<Recipe> findRecipesWithIngredients(ArrayList<String> ingredients);
+	public List<Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes,
+			List<String> dietRestrictions, List<String> allergies);
+
+	/**
+	 * Gets a recipe based on the recipe's ID.
+	 * @param recipeID
+	 * @return
+	 */
+	public Recipe getRecipe(String recipeID);
+
+	
 	
 }
