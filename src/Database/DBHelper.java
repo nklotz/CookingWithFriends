@@ -9,26 +9,24 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.UnknownHostException;
+import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import java.util.Random;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import server.ClientHandler;
-//import sun.security.provider.SecureRandom;
 import UserInfo.Account;
 import UserInfo.Kitchen;
-import javax.crypto.SecretKey;
-import java.security.*;
-//import org.apache.commons.codec.binary.Base6;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-import org.apache.commons.codec.binary.Base64;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+//import sun.security.provider.SecureRandom;
+//import org.apache.commons.codec.binary.Base6;
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
