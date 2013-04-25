@@ -25,8 +25,6 @@ public class Account implements Serializable {
 	private HashSet<Recipe> _recipes;
 	private HashSet<String> _ingredients;
 	private HashSet<String> _shoppingList;
-	//TODO: add list of kitchen ids
-	//private ArrayList<Integer> _kitchenIds;
 	public Account(User user, HashSet<Recipe> recipes, HashSet<String> ingredients, HashSet<String> list){
 		_user = user;
 		_recipes = recipes;

@@ -35,8 +35,6 @@ public class Server {
 			return;
 		}
 
-		/* TODO: BOOT UP DATA BASE */
-	
 		_helper = new DBHelper();
 		_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
         try {

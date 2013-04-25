@@ -17,8 +17,7 @@ public class AccountRequest implements Runnable {
 	@Override
 	public void run() {
 		RequestReturn toReturn = new RequestReturn(2);
-		//toReturn.setAccount(Request Account from data base);
-		_helper.getAccount(_ID);
+		toReturn.setAccount(_helper.getAccount(_ID));
 		_ch.send(toReturn);
 	}
 

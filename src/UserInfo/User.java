@@ -16,24 +16,24 @@ public class User implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashSet<Kitchen> _kitchens;
+	private HashSet<String> _kitchens;
 	private String _address;
-	private String _name;
+	private String _id;
 	private String _password;
 	private Preferences _preferences;
 	
-	public User(HashSet<Kitchen> kitchens, String address, String name, String password, Preferences pref){
+	public User(HashSet<String> kitchens, String address, String name, String password, Preferences pref){
 		_kitchens = kitchens;
 		_address = address;
-		_name = name;
+		_id = name;
 		_password = password;
 		_preferences = pref;
 	}
 	
 	public User(String name, String password){
-		_name = name;
+		_id = name;
 		_password = password;
-		_kitchens = new HashSet<Kitchen>();
+		_kitchens = new HashSet<String>();
 	}
 	
 	/**
@@ -48,8 +48,8 @@ public class User implements Serializable{
 	 * Returns the user name.
 	 * @return String the user's name.
 	 */
-	public String getName(){
-		return _name;
+	public String getID(){
+		return _id;
 	}
 	
 	/**
@@ -64,16 +64,23 @@ public class User implements Serializable{
 	 * Adds a kitchen to the user.
 	 * @param k Kitchen the user's kitchen.
 	 */
-	public void addKitchen(Kitchen k){
-		_kitchens.add(k);
+	public void addKitchen(String kID){
+		_kitchens.add(kID);
 	}
 	
 	/**
 	 * Removes a kitchen from the user.
 	 * @param k Kitchen kitchen to remove.
 	 */
-	public void removeKitchen(Kitchen k){
-		_kitchens.remove(k);
+	public void removeKitchen(String kID){
+		_kitchens.remove(kID);
+	}
+	
+	/**
+	 * Returns a list of kitchens to which the user belongs.
+	 */
+	public HashSet<String> getKitchens(){
+		return _kitchens;
 	}
 	
 	/**

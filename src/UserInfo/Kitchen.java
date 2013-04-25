@@ -105,4 +105,8 @@ public class Kitchen implements Serializable{
 		_recipes = new HashSet<Recipe>();
 	}
 	
+	public HashSet<User> getUsers(){
+		return _users;
+	}
+	
 }

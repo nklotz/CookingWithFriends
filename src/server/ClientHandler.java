@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
@@ -24,7 +25,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 public class ClientHandler extends Thread {
 	private ClientPool _pool;
 	private Socket _client;
-	private BufferedReader _input;
+	private ObjectInputStream _objectIn;
 	private ObjectOutputStream _objectOut;
 	private ExecutorService _taskPool;
 	private String _clientID;
@@ -41,7 +42,7 @@ public class ClientHandler extends Thread {
 		_pool = pool;
 		_client = client;
 		_taskPool = taskPool;
-		_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+		_objectIn = new ObjectInputStream(client.getInputStream());
 		_objectOut = new ObjectOutputStream(client.getOutputStream()) {
 			@Override
 			public void close() {
@@ -59,8 +60,10 @@ public class ClientHandler extends Thread {
 	 */
 	public void run(){
 		try {
+				Request request;
 				String input;
-				while(_client.isConnected() && (input = _input.readLine()) != null){
+				while(_client.isConnected() && (request = (Request) _objectIn.readObject()) != null){
+					input = request.getRequest();
 					if(input.equals("Close me")){
 						kill();
 						break;
@@ -78,19 +81,26 @@ public class ClientHandler extends Thread {
 					}
 					
 					else if(input.startsWith("Get account:")){
-						//call to data base for account
 						getAccount(input);
 					}
 				
 					else if(input.startsWith("Get kitchen:")){
-						//call to database for kitchen
+						getKitchen(input);
+					}
+					
+					else if(input.startsWith("Store account:")){
+						storeAccount(request);
+					}
+					
+					else if(input.startsWith("Store kitchen:")){
+						storeKitchen(request);
 					}
 					
 					else{
 						continue;			
 					}
 			}
-		} catch (IOException  e) {
+		} catch (IOException | ClassNotFoundException  e) {
 				try {
 					kill();
 				} catch (IOException e1) {
@@ -104,6 +114,7 @@ public class ClientHandler extends Thread {
 		} 
 	}
 	
+
 	/**
 	 * Send a RequestReturn to the client via the socket
 	 */
@@ -127,7 +138,7 @@ public class ClientHandler extends Thread {
 	 * Close this socket and its related streams.
 	 */
 	public void kill() throws IOException {
-		_input.close();
+		_objectIn.close();
 		try{
 			_objectOut.close();
 		} catch(SocketException e){
@@ -153,8 +164,16 @@ public class ClientHandler extends Thread {
 	public void getKitchen(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new KitchenRequest(this, line[1]));
+			_taskPool.execute(new KitchenRequest(this, line[1], _helper));
 		}
+	}
+	
+	private void storeAccount(Request request) {
+		_taskPool.execute(new StoreAccountRequest(this, request.getAccount(), _helper));
+	}
+	
+	private void storeKitchen(Request request) {
+		_taskPool.execute(new StoreKitchenRequest(this, request.getKitchen(), _helper));
 	}
 	
     private static String toString( Serializable o ) throws IOException {
