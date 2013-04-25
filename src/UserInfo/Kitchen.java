@@ -16,21 +16,21 @@ public class Kitchen implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashSet<User> _users;
+	private HashSet<String> _userIDs;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
 	private String _id;
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
-	public Kitchen(HashSet<User> users, HashSet<Event> events, HashSet<Recipe> recipes){
-		_users = users;
+	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes){
+		_userIDs = users;
 		_events = events;
 		_recipes = recipes;
 	}
 	
 	public Kitchen(){
-		_users = new HashSet<User>();
+		_userIDs = new HashSet<String>();
 		_events = new HashSet<Event>();
 		_recipes = new HashSet<Recipe>();
 	}
@@ -54,23 +54,23 @@ public class Kitchen implements Serializable{
 	 * Adds a user to the kitchen.
 	 * @param u User to add to the kitchen.
 	 */
-	public void addUser(User u){
-		_users.add(u);
+	public void addUser(String u){
+		_userIDs.add(u);
 	}
 	
 	/**
 	 * Removes a user from the kitchen.
 	 * @param u User to remove from kitchen.
 	 */
-	public void removeUser(User u){
-		_users.remove(u);
+	public void removeUser(String u){
+		_userIDs.remove(u);
 	}
 	
 	/**
 	 * Adds an event to the kitchen.
 	 * @param e Event e to add to kitchen.
 	 */
-	public void addKitchen(Event e){
+	public void addEvent(Event e){
 		_events.add(e);
 	}
 	
@@ -78,7 +78,7 @@ public class Kitchen implements Serializable{
 	 * Removes an event from the kitchen.
 	 * @param e Event to remove from kitchen.
 	 */
-	public void removeKitchen(Event e){
+	public void removeEvent(Event e){
 		_events.remove(e);
 	}
 	
@@ -107,12 +107,12 @@ public class Kitchen implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Kitchen [_users=" + _users + ", _events=" + _events
+		return "Kitchen [_users=" + _userIDs + ", _events=" + _events
 				+ ", _recipes=" + _recipes + ", _id=" + _id + "]";
 	}
 	
-	public HashSet<User> getUsers(){
-		return _users;
+	public HashSet<String> getUsers(){
+		return _userIDs;
 	}
 	
 }

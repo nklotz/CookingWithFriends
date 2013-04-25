@@ -165,6 +165,7 @@ public class DBHelper implements DBHelperInterface{
 				return true;
 			}
 		}
+		return false;
 		
 
 		

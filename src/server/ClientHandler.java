@@ -30,11 +30,12 @@ public class ClientHandler extends Thread {
 	private ExecutorService _taskPool;
 	private String _clientID;
 	private DBHelper _helper;
+	private KitchenPool _activeKitchens;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
 	 */
-	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, DBHelper helper) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
@@ -42,6 +43,7 @@ public class ClientHandler extends Thread {
 		_pool = pool;
 		_client = client;
 		_taskPool = taskPool;
+		_activeKitchens = kitchens;
 		_objectIn = new ObjectInputStream(client.getInputStream());
 		_objectOut = new ObjectOutputStream(client.getOutputStream()) {
 			@Override
@@ -144,8 +146,9 @@ public class ClientHandler extends Thread {
 		} catch(SocketException e){
 			
 		}
-		_client.close();
+		_activeKitchens.removeUser(_clientID);
 		_pool.remove(this);
+		_client.close();
 	}	
 	
 	
@@ -157,14 +160,14 @@ public class ClientHandler extends Thread {
 	public void getAccount(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new AccountRequest(this, line[1], _helper));
+			_taskPool.execute(new AccountRequest(this, line[1], _helper, _activeKitchens));
 		}
 	}
 	
 	public void getKitchen(String input){
 		String[] line = input.split("\\t");
 		if(line.length==2){
-			_taskPool.execute(new KitchenRequest(this, line[1], _helper));
+			_taskPool.execute(new KitchenRequest(this, line[1], _activeKitchens));
 		}
 	}
 
