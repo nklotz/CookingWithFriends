@@ -37,7 +37,26 @@ public class Server {
 			return;
 		}
 
-		_helper = new DBHelper();		
+		_helper = new DBHelper();
+//		_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
+//		
+//		HashSet<User> u = new HashSet<User>();
+//		u.add(new User("Hannah", "Natalie's feet smell"));
+//		HashSet<Event> ev = new HashSet<Event>();
+//		ev.add(new Event("BDay", new Date(223), u));
+//		HashSet<Recipe> r = new HashSet<Recipe>();
+//		ArrayList<String> ing = new ArrayList<String>();
+//		ing.add("butter");
+//		r.add(new Recipe("chicken", "/r/0", "Put in bowl.", ing));
+//		_helper.storeKitchen(new Kitchen(u, ev, r));
+//		System.out.println("bf get kitchen");
+//		_helper.getKitchen("/k/0");
+		
+		if(_helper.validUsername("Hannah")){
+			_helper.storeUsernamePassword("Hannah", "abcd");
+		}
+		System.out.println("in server before check username");
+		System.out.println(_helper.checkUsernamePassword("Hannah", "abcde"));
 		
         try {
             _socket = new ServerSocket(port);
