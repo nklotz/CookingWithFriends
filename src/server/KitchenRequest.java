@@ -6,19 +6,21 @@ public class KitchenRequest implements Runnable {
 
 	ClientHandler _ch;
 	String _ID;
-	DBHelper _helper;
+	KitchenPool _activeKitchens;
 	
-	public KitchenRequest(ClientHandler ch, String kitchenID, DBHelper helper){
+	public KitchenRequest(ClientHandler ch, String kitchenID, KitchenPool kitchens){
 		_ch = ch;
 		_ID = kitchenID;
-		_helper = helper;
+		_activeKitchens = kitchens;
 	}
 	
 	@Override
 	public void run() {
 		RequestReturn toReturn = new RequestReturn(3);
-		toReturn.setKitchen(_helper.getKitchen(_ID));
-		_ch.send(toReturn);
+		toReturn.setKitchen(_activeKitchens.getKitchen(_ID));
+		if(toReturn.getKitchen()!=null){
+			_ch.send(toReturn);
+		}
 	}
 
 }

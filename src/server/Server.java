@@ -29,6 +29,7 @@ public class Server {
 	private Boolean _running; 
 	private ServerSocket _socket;
 	private DBHelper _helper;
+	private KitchenPool _activeKitchens;
 	
 	public Server(int port) throws IOException {
 		if (port <= 1024) {
@@ -56,9 +57,6 @@ public class Server {
 		if(_helper.validUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");
 		}
-		System.out.println("in server before check username");
-		System.out.println(_helper.checkUsernamePassword("Hannah", "abcd"));
-			
 		
         try {
             _socket = new ServerSocket(port);
@@ -70,6 +68,7 @@ public class Server {
            
 		_taskPool = new ThreadPoolExecutor(64, 64, 1, TimeUnit.MINUTES,new ArrayBlockingQueue<Runnable>(64, true),new ThreadPoolExecutor.CallerRunsPolicy());
 		_clients = new ClientPool();
+		_activeKitchens = new KitchenPool(_helper);
     }
 	
 	/**
@@ -82,7 +81,7 @@ public class Server {
 			Socket clientSocket = null;
 	        try {
 	            clientSocket =_socket.accept();
-	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _helper);
+	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _activeKitchens, _helper);
 	    		_clients.add(thread);
 	            thread.start();
 

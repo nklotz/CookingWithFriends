@@ -33,7 +33,6 @@ public class KitchenPool {
 		_helper = helper;
 	}
 	
-	
 	/**
 	 * Returns an active kitchen
 	 */
@@ -51,8 +50,8 @@ public class KitchenPool {
 	public void addKitchen(Kitchen kitchen){
 		_idToKitchen.put(kitchen.getId(), kitchen);
 		HashSet<String> users = new HashSet<String>();
-		for(User u: kitchen.getUsers()){
-			users.add(u.getID());
+		for(String u: kitchen.getUsers()){
+			users.add(u);
 		}
 		_kIDtoUsers.put(kitchen.getId(), users);
 	}
@@ -64,11 +63,11 @@ public class KitchenPool {
 	public void addNewKitchen(Kitchen kitchen){
 		_idToKitchen.put(kitchen.getId(), kitchen);
 		HashSet<String> users = new HashSet<String>();
-		for(User u: kitchen.getUsers()){
-			if(_userToKitchens.containsKey(u.getID())){
-				_userToKitchens.get(u.getID()).add(kitchen.getId());
+		for(String u: kitchen.getUsers()){
+			if(_userToKitchens.containsKey(u)){
+				_userToKitchens.get(u).add(kitchen.getId());
 			}
-			users.add(u.getID());
+			users.add(u);
 		}
 		_kIDtoUsers.put(kitchen.getId(), users);
 	}
