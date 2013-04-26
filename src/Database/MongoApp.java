@@ -69,8 +69,8 @@ public class MongoApp {
 		sl.add("2 pears");
 		sl.add("2 articokes");
 
-		Recipe rec = new Recipe("Chicken Kiev", "111", "Place stuff in a bowl and mix it.", ingredients);
-		Recipe rec2 = new Recipe("Chicken Kiev2", "2111", "2Place stuff in a bowl and mix it.", ingredients);
+//		Recipe rec = new Recipe("Chicken Kiev", "111", "Place stuff in a bowl and mix it.", ingredients); HANNAH: I made a recipe interface and implemented it for the yummly recipe. There's no constructor like this anymore, but you could create a new class for testing if you want. 
+//		Recipe rec2 = new Recipe("Chicken Kiev2", "2111", "2Place stuff in a bowl and mix it.", ingredients);
 		HashSet<Recipe> recipes = new HashSet<Recipe>();
 		recipes.add(rec);
 		recipes.add(rec2);

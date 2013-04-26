@@ -1,36 +1,28 @@
 package UserInfo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Recipe stored by the user.
- * @author hacheson
+ * Interface for Recipes stored by the user.
+ * @author hacheson & jschear
  *
  */
-public class Recipe implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public final String _name;
-	public final String _id;
-	public final String _instructions;
-	public final ArrayList<String> _ingredients;
+public interface Recipe extends Serializable {
 	
+	public String getName();
 	
-	public Recipe(String name, String id, String instructions, ArrayList<String> ingredients){
-		_name = name;
-		_id = id;
-		_instructions = instructions;
-		_ingredients = ingredients;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Recipe [_name=" + _name + ", _id=" + _id + ", _instructions="
-				+ _instructions + ", _ingredients=" + _ingredients + "]";
-	}
+	public List<String> getIngredients();
 	
+	public String getYield();
+	
+	public String getInstructions();
+	
+	public String getNumberOfServings();
+	
+	public String getID();
+	
+	public String getTime();
+	
+	public String getImageUrl();
 }
