@@ -2,9 +2,11 @@ package client;
 
 import java.io.IOException;
 
+import server.MockServer;
+
 public class Main {
 	
-	private final static int DEFAULT_PORT = 9882;
+	private final static int DEFAULT_PORT = 8888;
 
 	public static void main(String[] args) {
 		try{
