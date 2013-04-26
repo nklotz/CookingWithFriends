@@ -51,7 +51,7 @@ public class DBHelper implements DBHelperInterface{
 	private DBCollection userPassCollection_;
 	
 	public DBHelper(){
-		String s = "mongod --port 27017 -dbpath /home/hacheson/MongoData/";
+		String s = "mongod --port 27017 -dbpath /home/hacheson/DBData/";
 		String[] args = s.split(" ");
 		Process p = null;
 		try{
