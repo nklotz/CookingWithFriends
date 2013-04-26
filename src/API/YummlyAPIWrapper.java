@@ -35,7 +35,7 @@ public class YummlyAPIWrapper implements Wrapper {
 	
 	// Base URL strings for search and recipe requests
 	private final static String HOST = "api.yummly.com";
-	private final static String SEARCH_PATH = "/v1/api/recipes?";
+	private final static String SEARCH_PATH = "/v1/api/recipes";
 	private final static String RECIPE_PATH = "/v1/api/recipe/";
 	
 	private Gson _gson;
@@ -47,7 +47,7 @@ public class YummlyAPIWrapper implements Wrapper {
 		_searchCache = new HashMap<String, List<Recipe>>();
 		_recipeCache = new HashMap<String, Recipe>();
 	}
-	
+		
 	@Override
 	public List<Recipe> recipes(String toFind) {
 		// TODO Auto-generated method stub
@@ -83,14 +83,15 @@ public class YummlyAPIWrapper implements Wrapper {
 	}
 
 	@Override
-	public List<Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes, 
+	public List<? extends Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes, 
 			List<String> dietRestrictions, 	List<String> allergies) {
-		List<Recipe> recipes = null;
+		List<? extends Recipe> recipes = null;
 		String jsonResponse = null;
 		try {
 			jsonResponse = httpGet(buildSearchURI(query, ingredients, dislikes, dietRestrictions, allergies));
 		} catch (IOException | URISyntaxException e) {
 			// TODO Auto-generated catch block
+			// TODO: DIE Gracefully!
 			e.printStackTrace();
 		}
 		if (jsonResponse != null) {
@@ -151,7 +152,7 @@ public class YummlyAPIWrapper implements Wrapper {
 	//Private classes for reading objects from JSON
 	private class Response {
 		public int totalMatchCount;
-		public List<Recipe> matches;
+		public List<YummlyRecipe> matches;
 	}
 	
 }
