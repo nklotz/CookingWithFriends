@@ -184,7 +184,6 @@ public class DBHelper implements DBHelperInterface{
 			String storedPassword = cursor.next().get("password").toString();
 			return check(password, storedPassword);
 		}
-		return false;
 		//encode the password that you're given and check if it matches.
 	}
 	
