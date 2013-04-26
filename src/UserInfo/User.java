@@ -98,7 +98,6 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [_kitchens=" + _kitchens + ", _address=" + _address
-				+ ", _password=" + _password
 				+ ", _preferences=" + _preferences + "]";
 	}
 	
