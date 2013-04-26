@@ -51,14 +51,17 @@ public class DBHelper implements DBHelperInterface{
 	private DBCollection userPassCollection_;
 	
 	public DBHelper(){
-		String s = "mongod --port 27017 -dbpath /home/hacheson/DBData/";
+		String s = "mongod --port 27017 -dbpath /home/hacheson/MongoData/";
 		String[] args = s.split(" ");
+		//String rm = "rm mongod.lock";
+		//String[] rmArgs = rm.split(" ");
+		
 		Process p = null;
-		try{
+		/*try{
 			p = Runtime.getRuntime().exec(s);
 		} catch(IOException e){
 			e.printStackTrace();
-		}
+		} */
 		try {
 			mongo_ = new Mongo("localhost", 27017);
 			userDB_ = mongo_.getDB("users");
@@ -67,6 +70,9 @@ public class DBHelper implements DBHelperInterface{
 			kitchenCollection_ = kitchenDB_.getCollection("kitchenCollection");
 			userPassDB_ = mongo_.getDB("usernamePasswords");
 			userPassCollection_ = userPassDB_.getCollection("usernamePasswordsCollection");
+			
+			System.out.println("hereeee");
+			System.out.println(kitchenDB_);
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: Could not connect to mongodb, unknown host.");
 			e.printStackTrace();

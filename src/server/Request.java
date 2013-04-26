@@ -6,18 +6,33 @@ import UserInfo.Kitchen;
 
 public class Request {
 
-	String _request, _kUserID;
+	String _kUserID, _username, _password;
+	int _requestType;
 	Account _account;
 	Kitchen _kitchen;
 	Event _kEvent;
 	int _kUpdateType;
 	
-	public Request(String request){
-		_request = request;
+	
+	/*
+	 * 1 = verify account 
+	 * 2 = get kitchen
+	 * 3 =  add kitchen user
+	 * 4 = remove kitchen user
+	 * 5 = add event
+	 * 6 = remove event
+	 * 7 =add recipe
+	 * 8 = remove recipe
+	 */
+	
+	
+	
+	public Request(int request){
+		_requestType = request;
 	}
 	
-	public String getRequest(){
-		return _request;
+	public int getType(){
+		return _requestType;
 	}
 	
 	public void setAccount(Account account){
@@ -59,5 +74,22 @@ public class Request {
 	public int getKitchenUpdateType(){
 		return _kUpdateType;
 	}
+	
+	public void setUsername(String uID){
+		_username = uID;
+	}
+	
+	public String getUsername(){
+		return _username;
+	}
+	
+	public void setPasword(String p){
+		_password = p;
+	}
+	
+	public String getPassword(){
+		return _password;
+	}
+	
 	
 }
