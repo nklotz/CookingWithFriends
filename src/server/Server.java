@@ -14,11 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import Database.DBHelper;
-import UserInfo.Account;
-import UserInfo.Event;
-import UserInfo.Kitchen;
-import UserInfo.Recipe;
-import UserInfo.User;
+import UserInfo.*;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
@@ -41,18 +37,18 @@ public class Server {
 		//_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
 		//System.out.println("GET ACCOUTN FROM SERVER: " + _helper.getAccount("Hannah"));
 		
-//		
-//		HashSet<User> u = new HashSet<User>();
-//		u.add(new User("Hannah", "Natalie's feet smell"));
-//		HashSet<Event> ev = new HashSet<Event>();
-//		ev.add(new Event("BDay", new Date(223), u));
-//		HashSet<Recipe> r = new HashSet<Recipe>();
-//		ArrayList<String> ing = new ArrayList<String>();
-//		ing.add("butter");
-//		r.add(new Recipe("chicken", "/r/0", "Put in bowl.", ing));
-//		_helper.storeKitchen(new Kitchen(u, ev, r));
-//		System.out.println("bf get kitchen");
-//		_helper.getKitchen("/k/0");
+		
+		HashSet<String> u = new HashSet<String>();
+		u.add("Hannah");
+		HashSet<Event> ev = new HashSet<Event>();
+		ev.add(new Event("BDay", new Date(223), u));
+		HashSet<Recipe> r = new HashSet<Recipe>();
+		ArrayList<String> ing = new ArrayList<String>();
+		ing.add("butter");
+		r.add(new Recipe("chicken", "/r/0", "Put in bowl.", ing));
+		_helper.storeKitchen(new Kitchen(u, ev, r));
+		System.out.println("bf get kitchen");
+		_helper.getKitchen("/k/0");
 		
 		if(_helper.validUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");

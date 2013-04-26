@@ -120,7 +120,7 @@ public class DBHelper implements DBHelperInterface{
 		searchQuery.remove("/k/0");
 		
 		while (cursor.hasNext()) {
-			System.out.println(cursor.next());
+			//System.out.println(cursor.next());
 			String s = cursor.next().get("kitchen").toString();
 			return (Kitchen)getObjectFromString(s);
 		}

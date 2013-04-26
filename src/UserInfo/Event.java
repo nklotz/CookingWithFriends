@@ -19,19 +19,19 @@ public class Event implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date _date;
 	private String _name;
-	private HashSet<User> _users;
+	private HashSet<String> _users;
 	
-	public Event(String name, Date date, HashSet<User> users){
+	public Event(String name, Date date, HashSet<String> u){
 		_name = name;
 		_date = date;
-		_users = users;
+		_users = u;
 	}
 	
 	/**
 	 * Adds a user to the event.
 	 * @param u
 	 */
-	public void addUser(User u){
+	public void addUser(String u){
 		_users.add(u);
 	}
 	
@@ -39,7 +39,7 @@ public class Event implements Serializable {
 	 * Removes a user from the event.
 	 * @param u User The user to remove.
 	 */
-	public void removeUser(User u){
+	public void removeUser(String u){
 		_users.remove(u);
 	}
 	
