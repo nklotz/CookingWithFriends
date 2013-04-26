@@ -12,6 +12,10 @@ public class MockServer {
 	private ObjectInputStream _objectIn;
 	private ObjectOutputStream _objectOut;
 	
+	public static void main(String[] args){
+		new MockServer();
+	}
+	
 	public MockServer(){
 		try {
 			_socket = new ServerSocket(8888);
@@ -24,6 +28,7 @@ public class MockServer {
 				System.out.println("recieved request type: " + request.getType());
 				RequestReturn toReturn = new RequestReturn(1);
 				toReturn.setCorrect(false);
+				_objectOut.writeObject(toReturn);
 			}
 			
 		} catch (IOException | ClassNotFoundException e) {

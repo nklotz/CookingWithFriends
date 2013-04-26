@@ -1,10 +1,12 @@
 package server;
 
+import java.io.Serializable;
+
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
 
-public class Request {
+public class Request implements Serializable {
 
 	String _kUserID, _username, _password;
 	int _requestType;
