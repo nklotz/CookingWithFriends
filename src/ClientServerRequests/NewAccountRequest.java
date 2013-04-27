@@ -1,5 +1,6 @@
-package server;
+package ClientServerRequests;
 
+import server.ClientHandler;
 import Database.DBHelper;
 import UserInfo.Account;
 

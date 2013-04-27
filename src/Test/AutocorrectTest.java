@@ -1,4 +1,4 @@
-package server;
+package Test;
 
 /**
  * Tests for the autocorrect class in server. Tests to make sure that autocorrect will work the 

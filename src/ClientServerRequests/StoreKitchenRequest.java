@@ -1,4 +1,4 @@
-package server;
+package ClientServerRequests;
 
 import Database.DBHelper;
 import UserInfo.Kitchen;

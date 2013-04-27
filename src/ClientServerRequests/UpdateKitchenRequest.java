@@ -1,5 +1,7 @@
-package server;
+package ClientServerRequests;
 
+import server.ClientHandler;
+import server.KitchenPool;
 import Database.DBHelper;
 import UserInfo.Kitchen;
 

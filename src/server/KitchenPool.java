@@ -3,6 +3,8 @@ package server;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import ClientServerRequests.Request;
+import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
 import UserInfo.Kitchen;
