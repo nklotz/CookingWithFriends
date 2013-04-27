@@ -52,9 +52,6 @@ public class DBHelper implements DBHelperInterface{
 	private DBCollection userPassCollection_;
 	
 	public DBHelper(){
-		//String s = "mongod --port 27017 -dbpath /home/hacheson/course/cs032/CookingWithFriends/Data";
-		//String[] args = s.split(" ");
-
 		Process p = null;
 		try{
 			p = Runtime.getRuntime().exec("whoami");
@@ -67,7 +64,7 @@ public class DBHelper implements DBHelperInterface{
 		        result += inputLine;
 		    }
 		    in.close();
-			String s = "mongod --port 27017 -dbpath /home/" + result + "/course/cs032/CookingWithFriends/Data/";
+			String s = "mongod --port 27017 -dbpath /course/cs032/asgn/lab2_git/CWF/" + result + "/Data/";
 			System.out.println(s);
 			String[] args = s.split(" ");
 			p = Runtime.getRuntime().exec(s);
