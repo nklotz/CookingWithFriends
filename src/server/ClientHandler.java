@@ -11,6 +11,15 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
+import ClientServerRequests.AccountRequest;
+import ClientServerRequests.KitchenRequest;
+import ClientServerRequests.NewAccountRequest;
+import ClientServerRequests.NewKitchenRequest;
+import ClientServerRequests.Request;
+import ClientServerRequests.RequestReturn;
+import ClientServerRequests.StoreAccountRequest;
+import ClientServerRequests.StoreKitchenRequest;
+import ClientServerRequests.UpdateKitchenRequest;
 import Database.DBHelper;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -81,10 +90,12 @@ public class ClientHandler extends Thread {
 							case 11: //store Account
 								storeAccount(request);
 								break;
-							case 12:
+							case 12: //close client
 								kill();
 							case 13: //create new account	
 								createNewUser(request);
+							case 14: //create new Kitchen
+								createNewKitchen(request);	
 							default:
 								updateKitchen(request);
 								break;
@@ -105,7 +116,6 @@ public class ClientHandler extends Thread {
 				}
 		} 
 	}
-	
 
 	/**
 	 * Send a RequestReturn to the client via the socket
@@ -162,7 +172,11 @@ public class ClientHandler extends Thread {
 	
 	public void createNewUser(Request request){
 		_taskPool.execute(new NewAccountRequest(this, request, _helper));
-	}	
+	}
+	
+	private void createNewKitchen(Request request) {
+		_taskPool.execute(new NewKitchenRequest(this, request, _helper, _activeKitchens));
+	}
 
 	private void storeAccount(Request request) {
 		_taskPool.execute(new StoreAccountRequest(request.getAccount(), _helper));

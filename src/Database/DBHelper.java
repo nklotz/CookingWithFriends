@@ -52,9 +52,6 @@ public class DBHelper implements DBHelperInterface{
 	private DBCollection userPassCollection_;
 	
 	public DBHelper(){
-		//String s = "mongod --port 27017 -dbpath /home/hacheson/course/cs032/CookingWithFriends/Data";
-		//String[] args = s.split(" ");
-
 		Process p = null;
 		try{
 			p = Runtime.getRuntime().exec("whoami");
@@ -67,7 +64,7 @@ public class DBHelper implements DBHelperInterface{
 		        result += inputLine;
 		    }
 		    in.close();
-			String s = "mongod --port 27017 -dbpath /home/" + result + "/course/cs032/CookingWithFriends/Data/";
+			String s = "mongod --port 27017 -dbpath /course/cs032/asgn/lab2_git/CWF/" + result + "/Data/";
 			System.out.println(s);
 			String[] args = s.split(" ");
 			p = Runtime.getRuntime().exec(s);
@@ -268,7 +265,6 @@ public class DBHelper implements DBHelperInterface{
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userCollection_.find(searchQuery);
-		System.out.println(cursor.size());
 		if(cursor.size() !=0) {
 			return false;
 		}
@@ -305,33 +301,14 @@ public class DBHelper implements DBHelperInterface{
 			BasicDBObject searchQuery = new BasicDBObject();
 			String id = "/k/" + num;
 			searchQuery.put("id", id);
-			System.out.println("sq: " + searchQuery);
 			DBCursor cursor = kitchenCollection_.find(searchQuery);
 			if(!cursor.hasNext()){
-				return "/k/0";
-			//	return id;
+				//return "/k/0";
+				return id;
 			}	
 		
 		}
 	}
-	
-//	public static Object getObjectFromString(String s){
-//		//FileInputStream fileIn =
-//       //         new FileInputStream("employee.ser");
-////		ObjectInputStream in = new ObjectInputStream(fileIn);
-//		try{
-//			byte[] arr = new byte[10000];
-//			ByteArrayInputStream bais = new ByteArrayInputStream(arr);
-//			ObjectInputStream in = new ObjectInputStream(bais);
-//			
-//			return in.readObject();
-//		} catch(IOException | ClassNotFoundException e){
-//			System.out.println("ERROR: Could not read from object input stream: " + e.getMessage());
-//		}
-//		
-//		
-//		return null;
-//	}
 	
 	  /** Read the object from Base64 string. */
     private static Object getObjectFromString( String s ) {

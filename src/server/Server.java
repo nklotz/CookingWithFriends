@@ -96,7 +96,7 @@ public class Server {
 	            try {
 					kill();
 				} catch (IOException e1) {
-					System.out.println("ERROR: IO Exception in server.kill()");
+					System.out.println("ERROR: IO Exception in server.kill().");
 				}
 	            System.exit(1);
 	        }

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import ClientServerRequests.RequestReturn;
+
 /**
  * A group ofClientHandlers representing all active windows.
  * Modified version of clientPool from lab.
