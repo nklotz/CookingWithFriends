@@ -66,7 +66,7 @@ public class ClientHandler extends Thread {
 				_running = true;
 				Request request;
 				int type;
-				while(_running && _client.isConnected() {
+				while(_running && _client.isConnected()) {
 					if((request = (Request) _objectIn.readObject()) != null){
 						type = request.getType();
 						
