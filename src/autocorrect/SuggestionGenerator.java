@@ -89,7 +89,7 @@ public class SuggestionGenerator implements Generator {
 	 * @param allSuggestions The 2D list to combine.
 	 * @return A 1D array list of combined elements.
 	 */
-	public static List<String>combineLists(ArrayList<List<String>> allSuggestions){
+	public static List<String>combineLists(List<List<String>> allSuggestions){
 		ArrayList<String> combinedSuggestions = new ArrayList<String>();
 		for(int i = 0; i < allSuggestions.size();i++){
 			if(allSuggestions.get(i)!=null){

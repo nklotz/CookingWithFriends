@@ -73,8 +73,8 @@ public class SuggestionGeneratorTest {
 	 */
 	@Test
 	public void testCombineList(){
-		ArrayList<String> list1 = new ArrayList<String>();
-		ArrayList<String> list2 = new ArrayList<String>();
+		List<String> list1 = new ArrayList<String>();
+		List<String> list2 = new ArrayList<String>();
 		list1.add("ab");
 		list1.add("ab");
 		list2.add("bc");
@@ -92,11 +92,11 @@ public class SuggestionGeneratorTest {
 	 */
 	@Test
 	public void testCombineListNull(){
-		ArrayList<String> list1 = new ArrayList<String>();
-		ArrayList<String> list2 = null;
+		List<String> list1 = new ArrayList<String>();
+		List<String> list2 = null;
 		list1.add("ab");
 		list1.add("bc");
-		ArrayList<ArrayList<String>> lists = new ArrayList<ArrayList<String>>();
+		List<List<String>> lists = new ArrayList<List<String>> ();
 		lists.add(list1);
 		lists.add(list2);
 		assertTrue(SuggestionGenerator.combineLists(lists).get(0).equals("ab"));
@@ -234,7 +234,7 @@ public class SuggestionGeneratorTest {
 	 */
 	@Test
 	public void testLEDWithNaive(){
-		ArrayList<String> words = null;
+		List<String> words = null;
 		try{
 			words = Main.readFile("/course/cs032/data/autocorrect/dictionary.txt");
 		}
