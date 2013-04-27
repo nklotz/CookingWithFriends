@@ -1,10 +1,12 @@
 package server;
 
+import java.io.Serializable;
+
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
 
-public class Request {
+public class Request implements Serializable {
 
 	String _kUserID, _username, _password;
 	int _requestType;
@@ -17,12 +19,15 @@ public class Request {
 	/*
 	 * 1 = verify account 
 	 * 2 = get kitchen
-	 * 3 =  add kitchen user
+	 * 3 = add kitchen user
 	 * 4 = remove kitchen user
 	 * 5 = add event
 	 * 6 = remove event
-	 * 7 =add recipe
+	 * 7 = add recipe
 	 * 8 = remove recipe
+	 * 9 = store add ingredient to fridge
+	 * 10 = remove ingredient from fridge
+	 * 11 = close client
 	 */
 	
 	

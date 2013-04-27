@@ -29,6 +29,7 @@ import javafx.stage.Window;
 public class LoginWindow extends JFrame{
 	
 	private Client _client;
+	private Text _actiontarget;
     
     public LoginWindow(Client client){
     	super("Cooking with Friends -- Login");
@@ -63,8 +64,8 @@ public class LoginWindow extends JFrame{
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
          
-        final Text actiontarget = new Text();
-        grid.add(actiontarget, 1, 6);
+        _actiontarget = new Text();
+        grid.add(_actiontarget, 1, 6);
         
         Scene scene = new Scene(grid, 300, 275);
         
@@ -94,10 +95,10 @@ public class LoginWindow extends JFrame{
         	 
             @Override
             public void handle(ActionEvent e) {
-                actiontarget.setFill(Color.FIREBRICK);
+                _actiontarget.setFill(Color.FIREBRICK);
                 
                 if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
-            		actiontarget.setText("You must input a username and password");
+            		_actiontarget.setText("You must input a username and password");
             	}
             	else{
             		try {
@@ -114,5 +115,9 @@ public class LoginWindow extends JFrame{
             }
         });
         return scene;
+    }
+    
+    public void displayIncorrect(){
+    	_actiontarget.setText("Incorrect username or password");
     }
 }
