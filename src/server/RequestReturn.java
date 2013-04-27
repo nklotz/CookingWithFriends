@@ -20,7 +20,7 @@ public class RequestReturn implements Serializable {
 	/*
 	 * Types:
 	 *   1 -- Password Check (extract getCorrect())
-	 *   2 -- Singular Kitchen Request (extract getKitchen)
+	 *   2 -- Singular Kitchen (extract getKitchen)
 	 */
 	
 	public RequestReturn(int type){

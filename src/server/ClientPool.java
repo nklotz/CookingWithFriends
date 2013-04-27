@@ -1,7 +1,9 @@
 package server;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A group ofClientHandlers representing all active windows.
@@ -9,14 +11,14 @@ import java.util.LinkedList;
  */
 public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
-	private HashSet<String> _ids;
+	private HashMap<String, ClientHandler> _ids;
 	
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
 	public ClientPool() {
 		_clients = new LinkedList<ClientHandler>();
-		_ids = new HashSet<String>();
+		_ids = new HashMap<String, ClientHandler>();
 	}
 	
 	/**
@@ -41,11 +43,20 @@ public class ClientPool {
 	}
 	
 	/**
-	 * Send a RequestReturn to clients in the pool.
+	 * Send a RequestReturn to all clients in the pool.
 	 */
-	public synchronized void broadcast(RequestReturn toReturn) {
+	public synchronized void broadcastAll(RequestReturn toReturn) {
 		for (ClientHandler client : _clients) {
 			client.send(toReturn);
+		}
+	}
+	
+	/**
+	 * Send a RequestReturn to a list clients in the pool.
+	 */
+	public synchronized void broadcastList(HashSet<String> clients, RequestReturn toReturn) {
+		for (String c : clients) {
+			_ids.get(c).send(toReturn);
 		}
 	}
 	
@@ -65,7 +76,7 @@ public class ClientPool {
 		_clients.clear();
 	}
 	
-	public void addID(String id){
-		_ids.add(id);
+	public void addID(String id, ClientHandler ch){
+		_ids.put(id, ch);
 	}
 }

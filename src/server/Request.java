@@ -5,6 +5,7 @@ import java.io.Serializable;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
+import UserInfo.Recipe;
 
 public class Request implements Serializable {
 
@@ -14,6 +15,7 @@ public class Request implements Serializable {
 	Kitchen _kitchen;
 	Event _kEvent;
 	int _kUpdateType;
+	Recipe _recipe;
 	
 	
 	/*
@@ -25,9 +27,11 @@ public class Request implements Serializable {
 	 * 6 = remove event
 	 * 7 = add recipe
 	 * 8 = remove recipe
-	 * 9 = store add ingredient to fridge
-	 * 10 = remove ingredient from fridge
-	 * 11 = close client
+	 * 9 = store add ingredient to kitchen fridge
+	 * 10 = remove ingredient from kitchen fridge
+	 * 11 = store account
+	 * 12 = close client
+	 * 13 = make account
 	 */
 	
 	
@@ -97,11 +101,17 @@ public class Request implements Serializable {
 		return _username;
 	}
 	
+	public void setRecipe(Recipe recipe){
+		_recipe = recipe;
+	}
+	
+	public Recipe getRecipe(){
+		return _recipe;
+	}
+	
 	public void setPasword(String p){
 		_password = p;
 	}
-	
-	
 	
 	public String getPassword(){
 		return _password;
