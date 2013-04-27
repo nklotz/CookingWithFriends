@@ -68,10 +68,10 @@ public class ClientHandler extends Thread {
 					type = request.getType();
 					
 					switch (type){
-						case 1:  
-							//verify account
-						case 2:
-							//get kitchen
+						case 1:  //verify account
+							checkPassword(request);
+						case 2:  //getKitchen
+							getKitchen(request);
 						case 3:
 							//add user to kitchen
 						case 4:
@@ -146,22 +146,18 @@ public class ClientHandler extends Thread {
 	
 	
 	public void checkPassword(Request request){
-		// 1. Query database.
-		// 2. Check if password = password form database.
-	}
-	
-	public void getAccount(Request request){
-		String[] line = input.split("\\t");
-		if(line.length==2){
-			_taskPool.execute(new AccountRequest(this, line[1], _helper, _activeKitchens));
+		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
+			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens));
+		}
+		else{
+			RequestReturn toReturn = new RequestReturn(1);
+			toReturn.setCorrect(false);
 		}
 	}
 	
+
 	public void getKitchen(Request request){
-		String[] line = input.split("\\t");
-		if(line.length==2){
-			_taskPool.execute(new KitchenRequest(this, line[1], _activeKitchens));
-		}
+		_taskPool.execute(new KitchenRequest(this, request.getKitchenID(), _activeKitchens));
 	}
 
 	private void storeAccount(Request request) {
