@@ -4,6 +4,8 @@
 package UserInfo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -19,7 +21,9 @@ public class Kitchen implements Serializable{
 	private HashSet<String> _userIDs;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
-	private String _id;
+	private HashMap<String, ArrayList<String>> _ingToUsers;
+	
+	private String _id, _name;
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
@@ -27,12 +31,19 @@ public class Kitchen implements Serializable{
 		_userIDs = users;
 		_events = events;
 		_recipes = recipes;
+		_ingToUsers = new HashMap<String, ArrayList<String>>();
 	}
 	
-	public Kitchen(){
+	public Kitchen(String name){
 		_userIDs = new HashSet<String>();
 		_events = new HashSet<Event>();
 		_recipes = new HashSet<Recipe>();
+		_ingToUsers = new HashMap<String, ArrayList<String>>();
+		_name = name;
+	}
+	
+	public String getName(){
+		return _name;
 	}
 	
 	/**
