@@ -9,13 +9,12 @@ import UserInfo.Recipe;
 
 public class Request implements Serializable {
 
-	String _kUserID, _username, _password, _kID, _kName;
-	int _requestType;
-	Account _account;
-	Kitchen _kitchen;
-	Event _kEvent;
-	int _kUpdateType;
-	Recipe _recipe;
+	private String _kUserID, _username, _password, _kID, _kName, _ingredient;
+	private int _requestType;
+	private Account _account;
+	private Kitchen _kitchen;
+	private Event _kEvent;
+	private Recipe _recipe;
 	
 	
 	/*
@@ -43,6 +42,10 @@ public class Request implements Serializable {
 	
 	public int getType(){
 		return _requestType;
+	}
+	
+	public String getIngredient(){
+		return _ingredient;
 	}
 	
 	public void setAccount(Account account){
@@ -77,6 +80,9 @@ public class Request implements Serializable {
 		return _kName;
 	}
 	
+	public void setIngredient(String ing){
+		_ingredient = ing;
+	}
 	
 	public void setKitchenUserID(String kuID){
 		_kUserID = kuID;
@@ -86,21 +92,14 @@ public class Request implements Serializable {
 		return _kUserID;
 	}
 	
-	public void setKitchenEvent(Event e){
+	public void setEvent(Event e){
 		_kEvent = e;
 	}
 	
-	public Event getKitchenEvent(){
+	public Event getEvent(){
 		return _kEvent;
 	}
 	
-	public void setKitchenUpdateType(int updateType){
-		_kUpdateType = updateType;
-	}
-	
-	public int getKitchenUpdateType(){
-		return _kUpdateType;
-	}
 	
 	public void setUsername(String uID){
 		_username = uID;
