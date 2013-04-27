@@ -9,7 +9,7 @@ import UserInfo.Recipe;
 
 public class Request implements Serializable {
 
-	String _kUserID, _username, _password, _kID;
+	String _kUserID, _username, _password, _kID, _kName;
 	int _requestType;
 	Account _account;
 	Kitchen _kitchen;
@@ -32,6 +32,7 @@ public class Request implements Serializable {
 	 * 11 = store account
 	 * 12 = close client
 	 * 13 = make account
+	 * 14 = make kitchen
 	 */
 	
 	
@@ -66,6 +67,14 @@ public class Request implements Serializable {
 	
 	public String getKitchenID(){
 		return _kID;
+	}
+	
+	public void setKitchenName(String name){
+		_kName = name;
+	}
+	
+	public String getKitchenName(){
+		return _kName;
 	}
 	
 	

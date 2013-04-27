@@ -15,7 +15,7 @@ public class NewAccountRequest implements Runnable {
 		_helper = helper;
 	}
 	@Override
-	public void run() {
+	public void run() {	
 		RequestReturn toReturn = new RequestReturn(1);
 		if(_helper.uniqueUsername(_request.getUsername())){
 			Account account = new Account(_request.getUsername());

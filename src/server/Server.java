@@ -35,8 +35,8 @@ public class Server {
 		_apiWrapper = new YummlyAPIWrapper();
 		
 		//Has all autocorrect suggestion engines.
-		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), 
-				 _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		//_info = new APIInfo(_apiWrapper.getPossibleIngredients(), 
+				 //_apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
 		
 		
 		//TODO: package trie and lists to client handler
