@@ -2,6 +2,7 @@ package API;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,7 @@ public class YummlyAPIWrapperTest {
 	}
 
 	@Test
-	public void searchTest() {
+	public void searchTest() throws IOException {
 		List<String> ingredients = new ArrayList<>();
 		ingredients.add("cheese");
 		ingredients.add("potatoes");
@@ -50,10 +51,11 @@ public class YummlyAPIWrapperTest {
 	}
 	
 	@Test
-	public void recipeTest() {
-		String recipeID = ""; //todo fill in id
+	public void recipeTest() throws IOException {
+		String recipeID = "Creamy-Artichoke-Soup-Food-Network";
 		Recipe recipe = _yummly.getRecipe(recipeID);
-		System.out.println(recipe);
+		System.out.println("Got recipe: " + recipe);
+		System.out.println("Instructions:\n" + recipe.getInstructions());
 	}
 
 }

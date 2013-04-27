@@ -39,13 +39,13 @@ public class YummlyAPIWrapper implements Wrapper {
 	private final static String RECIPE_PATH = "/v1/api/recipe/";
 	
 	private Gson _gson;
-	private Map<String, List<Recipe>> _searchCache;
-	private Map<String, Recipe> _recipeCache;
+	private Map<String, List<YummlyRecipe>> _searchCache;
+	private Map<String, YummlyRecipe> _recipeCache;
 	
 	public YummlyAPIWrapper() {
 		_gson = new Gson();
-		_searchCache = new HashMap<String, List<Recipe>>();
-		_recipeCache = new HashMap<String, Recipe>();
+		_searchCache = new HashMap<>();
+		_recipeCache = new HashMap<>();
 	}
 		
 	@Override
@@ -67,36 +67,40 @@ public class YummlyAPIWrapper implements Wrapper {
 	}
 	
 	@Override
-	public Recipe getRecipe(String recipeID) {
+	public Recipe getRecipe(String recipeID) throws IOException {
 		Recipe recipe = null;
 		String jsonResponse = null;
 		try {
 			jsonResponse = httpGet(buildRecipeURI(recipeID));
 		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IOException("Failed to perform recipe GET request.");
 		}
 		if (jsonResponse != null) {
-			recipe = _gson.fromJson(jsonResponse, Recipe.class);
+			recipe = _gson.fromJson(jsonResponse, YummlyRecipe.class);
 		}
 		return recipe;
 	}
 
 	@Override
 	public List<? extends Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes, 
-			List<String> dietRestrictions, 	List<String> allergies) {
-		List<? extends Recipe> recipes = null;
+			List<String> dietRestrictions, 	List<String> allergies) throws IOException {
+		
+		URI searchKey = null;
+		List<YummlyRecipe> recipes = null;
 		String jsonResponse = null;
 		try {
-			jsonResponse = httpGet(buildSearchURI(query, ingredients, dislikes, dietRestrictions, allergies));
+			searchKey = buildSearchURI(query, ingredients, dislikes, dietRestrictions, allergies);
+			//Check if we've already made this query
+			if (_searchCache.containsKey(searchKey))
+				return _searchCache.get(searchKey.toString());
+			jsonResponse = httpGet(searchKey);
 		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			// TODO: DIE Gracefully!
-			e.printStackTrace();
+			throw new IOException("Failed to perform GET request.");
 		}
 		if (jsonResponse != null) {
 			Response response = _gson.fromJson(jsonResponse, Response.class);
 			recipes = response.matches;
+			_searchCache.put(searchKey.toString(), recipes);
 		}
 		return recipes;
 	}
