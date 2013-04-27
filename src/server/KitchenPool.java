@@ -25,12 +25,14 @@ public class KitchenPool {
 	HashMap<String, HashSet<String>> _kIDtoUsers, _userToKitchens ;
 	HashMap<String, Kitchen> _idToKitchen;
 	DBHelper _helper;
+	ClientPool _clients;
 	
-	public KitchenPool(DBHelper helper){
+	public KitchenPool(DBHelper helper, ClientPool clients){
 		_kIDtoUsers = new HashMap<String, HashSet<String>>();
 		_userToKitchens = new HashMap<String, HashSet<String>>();
 		_idToKitchen = new HashMap<String, Kitchen>();
 		_helper = helper;
+		_clients = clients;
 	}
 	
 	/**
@@ -76,8 +78,8 @@ public class KitchenPool {
 	 * Adds a user and opens up all non-opened kitchens
 	 */
 	public void addAccount(Account account){
-		String userName = account.getUser().getID();
-		HashSet<String> kitchenIDs = account.getUser().getKitchens();
+		String userName = account.getUserId();
+		HashSet<String> kitchenIDs = account.getKitchens();
 		_userToKitchens.put(userName, kitchenIDs);
 		for(String k: kitchenIDs){
 			if(!_idToKitchen.containsKey(k)){
@@ -125,5 +127,57 @@ public class KitchenPool {
 		}
 		//if got here without finding an active user, than user to delete is only active user.
 		return false;
+	}
+	
+	
+	public HashMap<String, Kitchen> getAllUserKitchens(String userID){
+		HashMap<String, Kitchen> kitchens = new HashMap<String, Kitchen>();
+		HashSet<String> kIDS = _userToKitchens.get(userID);
+		for(String k: kIDS){
+			kitchens.put(k, _idToKitchen.get(k));
+		}
+		return kitchens;	
+	}
+	
+	public void updateKitchen(Request request){
+		if(request.getKitchenID()==null){
+			return;
+		}
+		Kitchen k = getKitchen(request.getKitchenID());
+		if(k==null){
+			return;
+		}
+		
+		switch (request.getType()){
+			case 3: //add user to kitchen
+				k.addUser(request.getKitchenUserID());
+				break;
+			case 4: //remove user from kitchen
+				k.removeUser(request.getKitchenUserID());
+				break;
+		  	case 5: //add event to kitchen
+		  		k.addEvent(request.getKitchenEvent());
+		  		break;
+		  	case 6: //remove event from kitchen
+		  		k.removeEvent(request.getKitchenEvent());
+		  		break;
+		  	case 7: //add recipe to kitchen
+		  		k.addRecipe(request.getRecipe());
+		  		break;
+		  	case 8: //remove recipe from kitchen
+		  		k.removeRecipe(request.getRecipe());
+		  		break;
+	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		  		break;	
+	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		  		break;
+  			default: 
+  				return;
+		}
+		
+		RequestReturn toReturn = new RequestReturn(2);
+		toReturn.setKitchen(k);
+		_clients.broadcastList(_kIDtoUsers.get(request.getKitchenID()), toReturn);
+		
 	}
 }

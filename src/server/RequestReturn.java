@@ -1,6 +1,8 @@
 package server;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
 
 import UserInfo.Account;
 import UserInfo.Kitchen;
@@ -13,13 +15,12 @@ public class RequestReturn implements Serializable {
 	Account _account;
 	Kitchen _kitchen;
 	boolean _checkPass;
+	HashMap<String, Kitchen> _kitchenMap;
 	
 	/*
 	 * Types:
 	 *   1 -- Password Check (extract getCorrect())
-	 *   2 -- Account Request (extract getAccount)
-	 *   3 -- Kitchen Request (extract getKitchen)
-	 * 
+	 *   2 -- Singular Kitchen (extract getKitchen)
 	 */
 	
 	public RequestReturn(int type){
@@ -52,5 +53,13 @@ public class RequestReturn implements Serializable {
 	
 	public Kitchen getKitchen(){
 		return _kitchen;
+	}
+	
+	public void setKitchenMap(HashMap<String, Kitchen> kits){
+		_kitchenMap = kits;
+	}
+	
+	public HashMap<String, Kitchen> getKitchenMap(){
+		return _kitchenMap;
 	}
 }

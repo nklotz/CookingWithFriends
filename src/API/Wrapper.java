@@ -1,6 +1,7 @@
 package API;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import UserInfo.Recipe;
@@ -47,10 +48,28 @@ public interface Wrapper {
 	 */
 	public Recipe getRecipe(String recipeID) throws IOException;
 
-	public List<String> getPossibleIngredients();
+	/**
+	 * Gets the API's list of search values for ingredients.
+	 * @return
+	 * @throws URISyntaxException 
+	 * @throws IOException 
+	 */
+	public List<String> getPossibleIngredients() throws IOException, URISyntaxException;
 	
-	public List<String> getPossibleDietaryRestrictions();
+	/**
+	 * Gets the API's list of search values for dietary restrictions.
+	 * @return
+	 * @throws URISyntaxException 
+	 * @throws IOException 
+	 */
+	public List<String> getPossibleDietaryRestrictions() throws IOException, URISyntaxException;
 	
-	public List<String> getPossibleAllergies();
+	/**
+	 * Gets the API's list of search values for allergies.
+	 * @return
+	 * @throws URISyntaxException 
+	 * @throws IOException 
+	 */
+	public List<String> getPossibleAllergies() throws IOException, URISyntaxException;
 	
 }
