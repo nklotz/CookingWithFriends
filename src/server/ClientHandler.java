@@ -35,7 +35,7 @@ public class ClientHandler extends Thread {
 	/**
 	 * Thread for the client. Handles input and launches requests.
 	 */
-	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper, APIInfo info) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
