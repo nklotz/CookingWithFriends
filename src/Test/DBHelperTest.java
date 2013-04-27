@@ -1,5 +1,6 @@
 package Test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -17,7 +18,11 @@ public class DBHelperTest {
 		try{
 			Integer.parseInt(s.substring(3, s.length()));
 		} catch(NumberFormatException e){
-			assertTrue(false);
+			fail();
 		}
 	}
+	
+	
+	
+	
 }

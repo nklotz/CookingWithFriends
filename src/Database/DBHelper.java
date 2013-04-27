@@ -310,24 +310,6 @@ public class DBHelper implements DBHelperInterface{
 		}
 	}
 	
-//	public static Object getObjectFromString(String s){
-//		//FileInputStream fileIn =
-//       //         new FileInputStream("employee.ser");
-////		ObjectInputStream in = new ObjectInputStream(fileIn);
-//		try{
-//			byte[] arr = new byte[10000];
-//			ByteArrayInputStream bais = new ByteArrayInputStream(arr);
-//			ObjectInputStream in = new ObjectInputStream(bais);
-//			
-//			return in.readObject();
-//		} catch(IOException | ClassNotFoundException e){
-//			System.out.println("ERROR: Could not read from object input stream: " + e.getMessage());
-//		}
-//		
-//		
-//		return null;
-//	}
-	
 	  /** Read the object from Base64 string. */
     private static Object getObjectFromString( String s ) {
     	try{

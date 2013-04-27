@@ -1,17 +1,21 @@
 package client;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
-import javax.xml.bind.ParseConversionEvent;
+
+import server.Request;
+import server.RequestReturn;
 
 
-import ClientServerRequests.Request;
-import ClientServerRequests.RequestReturn;
+
 import GUI.HomeWindow;
 import GUI.LoginWindow;
-import Test.SerializableTest;
-import UserInfo.Account;
+import UserInfo.Kitchen;
 
 /**
  * Client class opens login window and then home window. Contains socket for communication with server.
@@ -23,9 +27,10 @@ public class Client extends Thread {
     private Socket _kkSocket = null;
     private ObjectOutputStream _out = null;
     private ObjectInputStream _in = null;
-    private ObjectInputStream _objIn = null;
     private LoginWindow _login = null;
     private HomeWindow _gui = null;
+    private HashMap<String, Kitchen> _kitchens;
+    private boolean _running;
 	
     public Client(int port) throws IOException {
 
@@ -36,6 +41,7 @@ public class Client extends Thread {
             //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
             _in = new ObjectInputStream(_kkSocket.getInputStream());
             _login = new LoginWindow(this);
+            _running = true;
             this.run();
 
         } catch (UnknownHostException e) {
@@ -87,6 +93,7 @@ public class Client extends Thread {
 			boolean verified = false;
 			//Wait to receive account verification
 			while (!verified){
+				//Response will have 
 				response = (RequestReturn) _in.readObject();
 				System.out.println("received response");
 				if (response != null){
@@ -98,18 +105,31 @@ public class Client extends Thread {
 							_login.dispose();
 							_login = new LoginWindow(this);
 						} else {
-							verified = true;
+							verified = true;	//successful login
 							System.out.println("read as login");
 							_login.dispose();
 							_gui = new HomeWindow(response.getAccount(), this);
+							_kitchens = response.getKitchenMap();
 						}
 					} else {
 						_login.displayIncorrect();
 					}
+					
 				} else {
 					//TODO: Server disconnected. What do we do?
 				}
 			}
+			while(_running){
+				response = (RequestReturn) _in.readObject();
+				if (response != null){
+					int type = response.getType();
+					assert(type == 2);
+					Kitchen k = response.getKitchen();
+					String id = k.getId();
+					_kitchens.put(id, k);
+				}	
+			}
+			
 			//Now receive general messages.
 			response = (RequestReturn) _in.readObject();
 			while(response != null){
@@ -150,4 +170,18 @@ public class Client extends Thread {
 			System.exit(1);
 		}
     }
+    
+    private class KitchenThread extends Thread{
+    	private boolean _updates; 
+    	public KitchenThread(){
+    		boolean _updates = true;
+    	}
+    	
+    	public void run(){
+    		while(_updates){
+    			
+    		}
+    	}
+    }
 }
+
