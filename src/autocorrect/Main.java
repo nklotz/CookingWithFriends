@@ -113,14 +113,8 @@ public class Main {
 		
 		//Now create the engine which will suggest for us.
 		Engine engine = new SuggestionEngine(words, isLED, isPrefix, isWhitespace, isSmart, edits);
-		if(isGUI){
-			new WritingInterface(engine);
-		}
-		
-		//Execute the command line.
-		else{
-			run(engine);
-		}
+		run(engine);
+
 	}
 	
 	/**

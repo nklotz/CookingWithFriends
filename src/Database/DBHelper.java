@@ -60,12 +60,10 @@ public class DBHelper implements DBHelperInterface{
 		    String inputLine;
 		    String result = "";
 		    while ((inputLine = in.readLine()) != null) {
-		        System.out.println(inputLine);
 		        result += inputLine;
 		    }
 		    in.close();
 			String s = "mongod --port 27017 -dbpath /course/cs032/asgn/lab2_git/CWF/" + result + "/Data/";
-			System.out.println(s);
 			String[] args = s.split(" ");
 			p = Runtime.getRuntime().exec(s);
 		} catch(IOException e){
@@ -79,9 +77,6 @@ public class DBHelper implements DBHelperInterface{
 			kitchenCollection_ = kitchenDB_.getCollection("kitchenCollection");
 			userPassDB_ = mongo_.getDB("usernamePasswords");
 			userPassCollection_ = userPassDB_.getCollection("usernamePasswordsCollection");
-			
-			System.out.println("hereeee");
-			System.out.println(kitchenDB_);
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: Could not connect to mongodb, unknown host.");
 			e.printStackTrace();
@@ -109,7 +104,6 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public void storeAccount(Account a) {
-		System.out.println("storing accoutn");
 		BasicDBObject document = new BasicDBObject();
 		document.put("username", a.getUserId());
 		document.put("account", getObjectString(a));
@@ -172,15 +166,15 @@ public class DBHelper implements DBHelperInterface{
 		//Adds it if it doesn't exist  currently.
 		if(uniqueUsername(username)){
 			userPassCollection_.insert(document);
-			
+		}
+		
+		//Changes the password of the username if it already exists in the method.
+		else{
 			BasicDBObject searchQuery = new BasicDBObject();
 			searchQuery.put("username", username.trim());
 			DBCursor cursor = userPassCollection_.find(searchQuery);
-			//Username doesn't exist in database.
-//			if(cursor.hasNext()){
-//				System.out.println(cursor.next());
-//			}
-			
+			userPassCollection_.remove(searchQuery);
+			userPassCollection_.insert(document);
 		}
 	}
 	
@@ -194,7 +188,7 @@ public class DBHelper implements DBHelperInterface{
 			return false;
 		}
 		else{
-			//System.out.println(cursor.next());
+			//System.out.println("next: " + cursor.next());
 			String storedPassword = cursor.next().get("password").toString();
 			return check(password, storedPassword);
 		}
@@ -264,11 +258,11 @@ public class DBHelper implements DBHelperInterface{
 	public boolean uniqueUsername(String username){
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = userCollection_.find(searchQuery);
+		DBCursor cursor = userPassCollection_.find(searchQuery);
 		if(cursor.size() !=0) {
+			
 			return false;
 		}
-
 		return true;
 	}
 	

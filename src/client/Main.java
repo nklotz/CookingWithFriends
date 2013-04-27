@@ -2,8 +2,6 @@ package client;
 
 import java.io.IOException;
 
-import server.MockServer;
-
 public class Main {
 	
 	private final static int DEFAULT_PORT = 9882;
