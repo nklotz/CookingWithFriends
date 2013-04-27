@@ -70,28 +70,21 @@ public class ClientHandler extends Thread {
 					switch (type){
 						case 1:  //verify account
 							checkPassword(request);
+							break;
 						case 2:  //getKitchen
 							getKitchen(request);
-						case 3:
-							//add user to kitchen
-						case 4:
-							//remove user from kitchen
-						case 5: 
-							//add event to kitchen
-						case 6: 
-							//remove event from kitchen
-						case 7:
-							//add recipe to kitchen
-						case 8: 
-							//remove recipe from kitchen
-						case 9:
-							//added ingredient to fridge
-						case 10:
-							//remove ingredient from fridge
-						case 11:
+							break;
+						//case 3 -- 10 are update kitchens (handled by default
+						case 11: //store Account
+							storeAccount(request);
+							break;
+						case 12:
 							//close client
+						case 13: //create new account	
+							
 						default:
-							continue;
+							updateKitchen(request);
+							break;
 					}
 
 			}
@@ -154,18 +147,25 @@ public class ClientHandler extends Thread {
 			toReturn.setCorrect(false);
 		}
 	}
-	
 
 	public void getKitchen(Request request){
 		_taskPool.execute(new KitchenRequest(this, request.getKitchenID(), _activeKitchens));
 	}
+	
+	public void updateKitchen(Request request){
+		_taskPool.execute(new UpdateKitchenRequest(_activeKitchens, request));
+	}
+	
+	public void createNewUser(Request request){
+		_taskPool.execute(new NewAccountRequest(this, request, _helper));
+	}	
 
 	private void storeAccount(Request request) {
-		_taskPool.execute(new StoreAccountRequest(this, request.getAccount(), _helper));
+		_taskPool.execute(new StoreAccountRequest(request.getAccount(), _helper));
 	}
 	
 	private void storeKitchen(Request request) {
-		_taskPool.execute(new StoreKitchenRequest(this, request.getKitchen(), _helper));
+		_taskPool.execute(new StoreKitchenRequest(request.getKitchen(), _helper));
 	}
 	
     private static String toString( Serializable o ) throws IOException {

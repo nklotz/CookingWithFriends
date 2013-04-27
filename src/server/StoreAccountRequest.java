@@ -5,12 +5,10 @@ import UserInfo.Account;
 
 public class StoreAccountRequest implements Runnable {
 
-	ClientHandler _ch;
 	Account _account;
 	DBHelper _helper;
 	
-	public StoreAccountRequest(ClientHandler ch, Account account, DBHelper helper){
-		_ch = ch;
+	public StoreAccountRequest(Account account, DBHelper helper){
 		_account = account;
 		_helper = helper;
 	}
