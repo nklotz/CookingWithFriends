@@ -114,11 +114,10 @@ public class DBHelper implements DBHelperInterface{
 	public void storeAccount(Account a) {
 		System.out.println("storing accoutn");
 		BasicDBObject document = new BasicDBObject();
-		document.put("username", a.getUser().getID());
-		document.put("password", a.getUser().getPassword());
+		document.put("username", a.getUserId());
 		document.put("account", getObjectString(a));
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("username", a.getUser().getID());
+		searchQuery.put("username", a.getUserId());
 		//Adds it if it doesn't exist  currently.
 		if(userCollection_.find(searchQuery).length() == 0){
 			userCollection_.insert(document);
@@ -164,8 +163,8 @@ public class DBHelper implements DBHelperInterface{
 			kitchenCollection_.remove(searchQuery);
 			kitchenCollection_.insert(document);
 		}
-		
 	}
+	
 	
 	public void storeUsernamePassword(String username, String password){
 		String encryptedPassword = getEncrypted(password);
@@ -174,7 +173,7 @@ public class DBHelper implements DBHelperInterface{
 		document.put("password", encryptedPassword);
 		//document.put("encryptKey", getEncryptedKey(password));
 		//Adds it if it doesn't exist  currently.
-		if(validUsername(username)){
+		if(uniqueUsername(username)){
 			userPassCollection_.insert(document);
 			
 			BasicDBObject searchQuery = new BasicDBObject();
@@ -265,7 +264,7 @@ public class DBHelper implements DBHelperInterface{
      * Returns true if it is a valid username, ie if nobody already has that username.
      */
 	@Override
-	public boolean validUsername(String username){
+	public boolean uniqueUsername(String username){
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
@@ -275,6 +274,24 @@ public class DBHelper implements DBHelperInterface{
 		}
 		return true;
 	}
+	
+    /**
+     * Returns true if it is a valid username, ie if nobody already has that username.
+     * An active user that is already in the database. Does the opposite of 
+     * uniqueUsername.
+     */
+	public boolean validUser(String username){
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("username", username);
+		DBCursor cursor = kitchenCollection_.find(searchQuery);
+		
+		if(cursor.hasNext()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	
 	/**
 	 * Creates a new, unique kitchen id by finding if an id is in the db already.

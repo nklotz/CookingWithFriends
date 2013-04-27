@@ -20,13 +20,15 @@ public class Kitchen implements Serializable{
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
 	private String _id;
+	private HashSet<String> _activeUsers;
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
-	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes){
+	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes, HashSet<String> activeUsers){
 		_userIDs = users;
 		_events = events;
 		_recipes = recipes;
+		_activeUsers = activeUsers;
 	}
 	
 	public Kitchen(){

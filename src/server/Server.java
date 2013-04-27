@@ -58,7 +58,7 @@ public class Server {
 		_helper.getKitchen("/k/0");*/
 
 		
-		if(_helper.validUsername("Hannah")){
+		if(_helper.uniqueUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");
 		}
 		
