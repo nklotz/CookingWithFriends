@@ -164,10 +164,10 @@ public class KitchenPool {
 				k.removeUser(request.getKitchenUserID());
 				break;
 		  	case 5: //add event to kitchen
-		  		k.addEvent(request.getKitchenEvent());
+		  		k.addEvent(request.getEvent());
 		  		break;
 		  	case 6: //remove event from kitchen
-		  		k.removeEvent(request.getKitchenEvent());
+		  		k.removeEvent(request.getEvent());
 		  		break;
 		  	case 7: //add recipe to kitchen
 		  		k.addRecipe(request.getRecipe());
