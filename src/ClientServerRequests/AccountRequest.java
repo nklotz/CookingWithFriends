@@ -1,5 +1,7 @@
-package server;
+package ClientServerRequests;
 
+import server.ClientHandler;
+import server.KitchenPool;
 import Database.DBHelper;
 
 public class AccountRequest implements Runnable {

@@ -5,9 +5,9 @@ import java.net.*;
 
 import javax.xml.bind.ParseConversionEvent;
 
-import server.Request;
-import server.RequestReturn;
 
+import ClientServerRequests.Request;
+import ClientServerRequests.RequestReturn;
 import GUI.HomeWindow;
 import GUI.LoginWindow;
 import Test.SerializableTest;
