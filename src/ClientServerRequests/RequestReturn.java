@@ -2,9 +2,9 @@ package ClientServerRequests;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 
 import UserInfo.Account;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 
 public class RequestReturn implements Serializable {
@@ -16,11 +16,13 @@ public class RequestReturn implements Serializable {
 	Kitchen _kitchen;
 	boolean _checkPass;
 	HashMap<String, Kitchen> _kitchenMap;
+	Invitation _invite;
 	
 	/*
 	 * Types:
 	 *   1 -- Password Check (extract getCorrect())
 	 *   2 -- Singular Kitchen (extract getKitchen)
+	 *   3 -- Invitation
 	 */
 	
 	public RequestReturn(int type){
@@ -61,5 +63,13 @@ public class RequestReturn implements Serializable {
 	
 	public HashMap<String, Kitchen> getKitchenMap(){
 		return _kitchenMap;
+	}
+	
+	public void setInvitation(Invitation invite){
+		_invite = invite;
+	}
+	
+	public Invitation getInvitation(){
+		return _invite;
 	}
 }

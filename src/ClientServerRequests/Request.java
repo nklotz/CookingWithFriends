@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import UserInfo.Account;
 import UserInfo.Event;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.Recipe;
 
@@ -16,6 +17,7 @@ public class Request implements Serializable {
 	Event _kEvent;
 	int _kUpdateType;
 	Recipe _recipe;
+	private Invitation _invite;
 	
 	
 	/*
@@ -33,6 +35,7 @@ public class Request implements Serializable {
 	 * 12 = close client
 	 * 13 = make account
 	 * 14 = make kitchen
+	 * 15 = invite User ToKitchen
 	 */
 	
 	
@@ -124,6 +127,14 @@ public class Request implements Serializable {
 	
 	public String getPassword(){
 		return _password;
+	}
+	
+	public void setInvitation(Invitation invite){
+		_invite = invite;
+	}
+	
+	public Invitation getInvitation(){
+		return _invite;
 	}
 	
 	

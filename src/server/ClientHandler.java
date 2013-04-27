@@ -96,6 +96,8 @@ public class ClientHandler extends Thread {
 								createNewUser(request);
 							case 14: //create new Kitchen
 								createNewKitchen(request);	
+							case 15: //invite to kitchen
+								invite(request);
 							default:
 								updateKitchen(request);
 								break;
@@ -184,6 +186,11 @@ public class ClientHandler extends Thread {
 	
 	private void storeKitchen(Request request) {
 		_taskPool.execute(new StoreKitchenRequest(request.getKitchen(), _helper));
+	}
+	
+	private void invite(Request request) {
+		// TODO Auto-generated method stub
+		
 	}
 	
     private static String toString( Serializable o ) throws IOException {

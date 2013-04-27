@@ -81,4 +81,8 @@ public class ClientPool {
 	public void addID(String id, ClientHandler ch){
 		_ids.put(id, ch);
 	}
+	
+	public boolean isActiveClient(String id){
+		return _ids.containsKey(id);
+	}
 }
