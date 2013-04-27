@@ -81,12 +81,14 @@ public class KitchenPool {
 		String userName = account.getUserId();
 		HashSet<String> kitchenIDs = account.getKitchens();
 		_userToKitchens.put(userName, kitchenIDs);
-		for(String k: kitchenIDs){
-			if(!_idToKitchen.containsKey(k)){
-				Kitchen kit = _helper.getKitchen(k);
-				addKitchen(kit);
-			}
-		}	
+		if (kitchenIDs != null){
+			for(String k: kitchenIDs){
+				if(!_idToKitchen.containsKey(k)){
+					Kitchen kit = _helper.getKitchen(k);
+					addKitchen(kit);
+				}
+			}	
+		}
 	}
 	
 	/**
@@ -95,13 +97,15 @@ public class KitchenPool {
 	 */
 	public void removeUser(String userID){
 		HashSet<String> kitchens = _userToKitchens.get(userID);
-		for(String k: kitchens){
-			HashSet<String> users = _kIDtoUsers.get(k);
-			if(!hasActiveUser(users, userID)){
-				removeKitchen(k);
+		if (kitchens != null){
+			for(String k: kitchens){
+				HashSet<String> users = _kIDtoUsers.get(k);
+				if(!hasActiveUser(users, userID)){
+					removeKitchen(k);
+				}
 			}
+			_userToKitchens.remove(userID);
 		}
-		_userToKitchens.remove(userID);
 	}
 	
 	/**
@@ -133,8 +137,10 @@ public class KitchenPool {
 	public HashMap<String, Kitchen> getAllUserKitchens(String userID){
 		HashMap<String, Kitchen> kitchens = new HashMap<String, Kitchen>();
 		HashSet<String> kIDS = _userToKitchens.get(userID);
-		for(String k: kIDS){
-			kitchens.put(k, _idToKitchen.get(k));
+		if (kIDS != null){
+			for(String k: kIDS){
+				kitchens.put(k, _idToKitchen.get(k));
+			}
 		}
 		return kitchens;	
 	}

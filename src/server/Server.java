@@ -72,7 +72,7 @@ public class Server {
            
 		_taskPool = new ThreadPoolExecutor(64, 64, 1, TimeUnit.MINUTES,new ArrayBlockingQueue<Runnable>(64, true),new ThreadPoolExecutor.CallerRunsPolicy());
 		_clients = new ClientPool();
-		_activeKitchens = new KitchenPool(_helper);
+		_activeKitchens = new KitchenPool(_helper, _clients);
     }
 	
 	/**

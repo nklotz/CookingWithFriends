@@ -267,11 +267,12 @@ public class DBHelper implements DBHelperInterface{
 	public boolean uniqueUsername(String username){
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		
-		if(cursor.hasNext()) {
+		DBCursor cursor = userCollection_.find(searchQuery);
+		System.out.println(cursor.size());
+		if(cursor.size() !=0) {
 			return false;
 		}
+
 		return true;
 	}
 	
