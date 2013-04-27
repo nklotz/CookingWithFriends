@@ -15,7 +15,13 @@ import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,11 +69,44 @@ public class HomeWindow extends JFrame {
     
 	private Scene makeScene() {
 		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER);
+		grid.setStyle(Style.BACKGROUND);
+		grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-		
+        
+        Scene scene = new Scene(grid, 900, 500);
+        
+        Text scenetitle = new Text("Cooking with Friends: Home");
+        scenetitle.setStyle(Style.PAGE_HEADER);
+        grid.add(scenetitle, 0, 0, 2, 1);
+        
+        //USERINFO
+        //header
+        Text Me = new Text("Me");
+        Me.setStyle(Style.SECTION_HEADER);
+        grid.add(Me, 0, 1);
+        //pane
+        GridPane userGrid = new GridPane();
+        grid.add(userGrid, 0, 2);
+        userGrid.setStyle(Style.SECTIONS);
+        userGrid.setHgap(5);
+        //my info
+        Text myInfo = new Text("My Info");
+        myInfo.setStyle(Style.INFO_HEADER);
+        userGrid.add(myInfo, 0, 0);
+        VBox info = new VBox(2);
+        
+        Text name = new Text("Name: " + _account.getUserId());
+        Text area = new Text("Area: " + _account.getAddress());
+        info.getChildren().add(name);
+        info.getChildren().add(area);
+        userGrid.add(info, 0, 1);
+        
+        
+        
+        
+		/*
 		JPanel master = new JPanel(new FlowLayout());
 		master.setPreferredSize(new Dimension(950,550));
 		master.setBackground(new Color(255,102,102));
@@ -89,7 +128,7 @@ public class HomeWindow extends JFrame {
         c.gridx = 0;
         c.gridy = 0;
         me.add(myInfoLabel,c);
-		JTextArea myInfo = new JTextArea("Name: " + _account.getUser().getID() + " \n Area: " + _account.getUser().getAddress());
+		JTextArea myInfo = new JTextArea("Name: " + _account.getID() + " \n Area: " + _account.getAddress());
 		myInfo.setBackground(Color.white);
 		myInfo.setPreferredSize(new Dimension(150,80));
 		c.gridx = 0;
@@ -205,7 +244,8 @@ public class HomeWindow extends JFrame {
 		
 		master.add(panel);
 		master.add(rightPanel);
-		this.pack();
+		this.pack();*/
+		return scene;
 		
 	}
 	

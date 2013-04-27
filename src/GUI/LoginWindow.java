@@ -212,7 +212,7 @@ public class LoginWindow extends JFrame{
     
     public void displayIncorrect(){
     	if (_newAcct){
-    		_actiontarget.setText("Sorry, that Username is not available. Try another.");
+    		_actiontarget.setText("User Name unavailable; try another!");
     	} else {
     		_actiontarget.setText("Incorrect username or password");
     	}

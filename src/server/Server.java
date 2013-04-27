@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,7 @@ public class Server {
 	private Wrapper _apiWrapper;
 	private APIInfo _info;
 	
-	public Server(int port) throws IOException {
+	public Server(int port) throws IOException, URISyntaxException {
 		if (port <= 1024) {
 			System.err.println("ERROR: Ports under 1024 are reserved!");
 			return;
@@ -35,8 +36,9 @@ public class Server {
 		_apiWrapper = new YummlyAPIWrapper();
 		
 		//Has all autocorrect suggestion engines.
-		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), 
-				 _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		//TODO: put back in later once jonathan's thing is dones
+		//_info = new APIInfo(_apiWrapper.getPossibleIngredients(),
+			//	 _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
 		
 		
 		//TODO: package trie and lists to client handler
