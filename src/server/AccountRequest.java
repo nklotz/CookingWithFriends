@@ -15,14 +15,15 @@ public class AccountRequest implements Runnable {
 		_helper = helper;
 		_activeKitchens = kitchens;
 	}
-	
 	@Override
 	public void run() {
-		RequestReturn toReturn = new RequestReturn(2);
+		RequestReturn toReturn = new RequestReturn(1);
+		toReturn.setCorrect(true);
 		toReturn.setAccount(_helper.getAccount(_ID));
 		if(toReturn.getAccount()!= null){
-			_ch.send(toReturn);
 			_activeKitchens.addAccount(toReturn.getAccount());
+			toReturn.setKitchenMap(_activeKitchens.getAllUserKitchens(_ID));
+			_ch.send(toReturn);
 		}
 	}
 

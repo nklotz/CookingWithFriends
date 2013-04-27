@@ -8,7 +8,7 @@ import UserInfo.Kitchen;
 
 public class Request implements Serializable {
 
-	String _kUserID, _username, _password;
+	String _kUserID, _username, _password, _kID;
 	int _requestType;
 	Account _account;
 	Kitchen _kitchen;
@@ -56,6 +56,15 @@ public class Request implements Serializable {
 		return _kitchen;
 	}
 	
+	public void setKitchenID(String kID){
+		_kID = kID;
+	}
+	
+	public String getKitchenID(){
+		return _kID;
+	}
+	
+	
 	public void setKitchenUserID(String kuID){
 		_kUserID = kuID;
 	}
@@ -91,6 +100,8 @@ public class Request implements Serializable {
 	public void setPasword(String p){
 		_password = p;
 	}
+	
+	
 	
 	public String getPassword(){
 		return _password;

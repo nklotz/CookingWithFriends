@@ -126,4 +126,14 @@ public class KitchenPool {
 		//if got here without finding an active user, than user to delete is only active user.
 		return false;
 	}
+	
+	
+	public HashMap<String, Kitchen> getAllUserKitchens(String userID){
+		HashMap<String, Kitchen> kitchens = new HashMap<String, Kitchen>();
+		HashSet<String> kIDS = _userToKitchens.get(userID);
+		for(String k: kIDS){
+			kitchens.put(k, _idToKitchen.get(k));
+		}
+		return kitchens;	
+	}
 }
