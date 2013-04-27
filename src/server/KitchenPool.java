@@ -93,13 +93,15 @@ public class KitchenPool {
 	 */
 	public void removeUser(String userID){
 		HashSet<String> kitchens = _userToKitchens.get(userID);
-		for(String k: kitchens){
-			HashSet<String> users = _kIDtoUsers.get(k);
-			if(!hasActiveUser(users, userID)){
-				removeKitchen(k);
+		if (kitchens != null){
+			for(String k: kitchens){
+				HashSet<String> users = _kIDtoUsers.get(k);
+				if(!hasActiveUser(users, userID)){
+					removeKitchen(k);
+				}
 			}
+			_userToKitchens.remove(userID);
 		}
-		_userToKitchens.remove(userID);
 	}
 	
 	/**
