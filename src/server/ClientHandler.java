@@ -31,6 +31,7 @@ public class ClientHandler extends Thread {
 	private String _clientID;
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
+	private boolean _running;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
@@ -62,29 +63,32 @@ public class ClientHandler extends Thread {
 	 */
 	public void run(){
 		try {
+				_running = true;
 				Request request;
 				int type;
-				while(_client.isConnected() && (request = (Request) _objectIn.readObject()) != null){
-					type = request.getType();
-					
-					switch (type){
-						case 1:  //verify account
-							checkPassword(request);
-							break;
-						case 2:  //getKitchen
-							getKitchen(request);
-							break;
-						//case 3 -- 10 are update kitchens (handled by default
-						case 11: //store Account
-							storeAccount(request);
-							break;
-						case 12:
-							//close client
-						case 13: //create new account	
-							
-						default:
-							updateKitchen(request);
-							break;
+				while(_running && _client.isConnected() {
+					if((request = (Request) _objectIn.readObject()) != null){
+						type = request.getType();
+						
+						switch (type){
+							case 1:  //verify account
+								checkPassword(request);
+								break;
+							case 2:  //getKitchen
+								getKitchen(request);
+								break;
+							//case 3 -- 10 are update kitchens (handled by default
+							case 11: //store Account
+								storeAccount(request);
+								break;
+							case 12:
+								kill();
+							case 13: //create new account	
+								createNewUser(request);
+							default:
+								updateKitchen(request);
+								break;
+						}
 					}
 
 			}
