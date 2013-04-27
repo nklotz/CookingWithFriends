@@ -24,14 +24,20 @@ public class Kitchen implements Serializable{
 	private HashMap<String, ArrayList<String>> _ingToUsers;
 	
 	private String _id, _name;
+	private HashSet<String> _activeUsers;
+	private HashSet<String> _requestedUsers;
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
-	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes){
+	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes, HashSet<String> activeUsers,
+			HashSet<String> requestedUsers){
 		_userIDs = users;
 		_events = events;
 		_recipes = recipes;
+
 		_ingToUsers = new HashMap<String, ArrayList<String>>();
+		_activeUsers = activeUsers;
+		_requestedUsers = requestedUsers;
 	}
 	
 	public Kitchen(String name){
@@ -39,12 +45,40 @@ public class Kitchen implements Serializable{
 		_events = new HashSet<Event>();
 		_recipes = new HashSet<Recipe>();
 		_ingToUsers = new HashMap<String, ArrayList<String>>();
+		_activeUsers = new HashSet<String>();
+		_requestedUsers = new HashSet<String>();
 		_name = name;
 	}
 	
 	public String getName(){
 		return _name;
 	}
+	
+	
+	public void addActiveUser(String user){
+		_activeUsers.add(user);
+	}
+	
+	public void addRequestedUser(String user){
+		_requestedUsers.add(user);
+	}
+	
+	public void removeActiveUser(String user){
+		_activeUsers.remove(user);
+	}
+	
+	public void removeRequestedUser(String user){
+		_requestedUsers.remove(user);
+	}
+	
+	public HashSet<String> getActiveUsers(){
+		return _activeUsers;
+	}
+	
+	public HashSet<String> getRequestedUsers(){
+		return _requestedUsers;
+	}
+	
 	
 	/**
 	 * Sets the id of the kitchen object.

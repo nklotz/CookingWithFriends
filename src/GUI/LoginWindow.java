@@ -30,34 +30,44 @@ public class LoginWindow extends JFrame{
 	
 	private Client _client;
 	private Text _actiontarget;
+	private final JFXPanel _panel;
+	private boolean _newAcct;
     
     public LoginWindow(Client client){
     	super("Cooking with Friends -- Login");
+    	Platform.setImplicitExit(false);
     	_client = client;
+    	_newAcct = false;
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	
-    	final JFXPanel fxPanel = new JFXPanel();
-    	this.add(fxPanel);
+    	_panel = new JFXPanel();
+    	this.add(_panel);
     	this.setSize(550,400);
     	this.setVisible(true);
-    	fxPanel.setPreferredSize(new java.awt.Dimension(550,400));
+    	_panel.setPreferredSize(new java.awt.Dimension(550,400));
     	
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    		initFX(fxPanel);
+    		loadLogin();
     		}
     	});
     }
-    
-    private void initFX(JFXPanel fxPanel) {
-    	fxPanel.setScene(makeScene());
+
+    public void loadLogin() {
+    	_panel.setScene(login());
     }
     
+    public void loadAccount(){
+    	_panel.setScene(newAccount());
+    }
     
-    
-    public Scene makeScene() {
-        
+    /**
+     * Generates a login page scene.
+     * @return
+     */
+    private Scene login() {
+    	_newAcct = false;
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -85,9 +95,12 @@ public class LoginWindow extends JFrame{
         final PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
         
+        
         Button btn = new Button("Sign in");
+        Button newAcct = new Button("Create Account");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(newAcct);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 4);
         
@@ -102,7 +115,8 @@ public class LoginWindow extends JFrame{
             	}
             	else{
             		try {
-            			//If true, start home page.
+            			//If valid input, send to server to get account.
+            			_actiontarget.setText("");
     					_client.checkPassword(userTextField.getText(), pwBox.getText());
     				} catch (IOException e1) {
     					// TODO Auto-generated catch block
@@ -114,10 +128,97 @@ public class LoginWindow extends JFrame{
             	}
             }
         });
+        
+        newAcct.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent e){
+        		loadAccount();
+        	}
+        });
+        return scene;
+    }
+    
+    private Scene newAccount(){
+    	_newAcct = true;
+    	GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+         
+        _actiontarget = new Text();
+        grid.add(_actiontarget, 0, 6, 2, 1);
+        
+        Scene scene = new Scene(grid, 300, 275);
+        
+        Text scenetitle = new Text("Create your Account!");
+        scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
+        grid.add(scenetitle, 0, 0, 2, 1);
+
+        Label userName = new Label("User Name:");
+        grid.add(userName, 0, 1);
+
+        final TextField userTextField = new TextField();
+        grid.add(userTextField, 1, 1);
+
+        Label pw = new Label("Password:");
+        grid.add(pw, 0, 2);
+
+        final PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
+        
+        Label pw2 = new Label("Confirm Password:");
+        grid.add(pw2, 0, 3);
+        
+        final PasswordField pwBox2 = new PasswordField();
+        grid.add(pwBox2, 1, 3);
+        
+        Button newAcct = new Button("Create Account");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(newAcct);
+        grid.add(hbBtn, 1, 4);
+        
+        newAcct.setOnAction(new EventHandler<ActionEvent>() {
+        	 
+            @Override
+            public void handle(ActionEvent e) {
+                _actiontarget.setFill(Color.FIREBRICK);
+                
+                if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
+            		_actiontarget.setText("You must input a username and password");
+            	} 
+                else if(!pwBox.getText().equals(pwBox2.getText())){
+            		_actiontarget.setText("Passwords don't match!");
+            	}
+            	else{
+            		try {
+            			_actiontarget.setText("");
+    					_client.checkPassword(userTextField.getText(), pwBox.getText());
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            	}
+            }
+        });
+        
         return scene;
     }
     
     public void displayIncorrect(){
-    	_actiontarget.setText("Incorrect username or password");
+    	if (_newAcct){
+    		_actiontarget.setText("Sorry, that Username is not available. Try another.");
+    	} else {
+    		_actiontarget.setText("Incorrect username or password");
+    	}
+    }
+    
+    public boolean isNewAccount(){
+    	return _newAcct;
     }
 }

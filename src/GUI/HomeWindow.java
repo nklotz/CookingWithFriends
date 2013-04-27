@@ -10,6 +10,13 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.util.Set;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,16 +30,43 @@ import client.Client;
 public class HomeWindow extends JFrame {
 
 	private Account _account;
+	private Client _client;
 	private JTextArea _ingredients;
 	private JTextArea _shoppingList;
 	private JTextArea _recipes;
 	
-	public HomeWindow(Account account) throws HeadlessException {
-		super("Cooking with Miranda!");
-		_account = account;
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setSize(1000,550);
+	
+	public HomeWindow(Account account, Client client){
+    	super("Cooking with Friends!");
+    	_account = account;
+    	_client = client;
+    	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    	final JFXPanel fxPanel = new JFXPanel();
+    	this.add(fxPanel);
+    	this.setSize(1000, 550);
+    	this.setVisible(true);
+    	fxPanel.setPreferredSize(new java.awt.Dimension(950,550));
+    	
+    	Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    		initFX(fxPanel);
+    		}
+    	});
+    }
+    
+    private void initFX(JFXPanel fxPanel) {
+    	fxPanel.setScene(makeScene());
+    }
+    
+    
+	private Scene makeScene() {
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
 		
 		JPanel master = new JPanel(new FlowLayout());
 		master.setPreferredSize(new Dimension(950,550));
@@ -185,7 +219,7 @@ public class HomeWindow extends JFrame {
 	public void updateRecipes(Set<Recipe> recipes){
 		_recipes.setText("");
 		for (Recipe recipe : recipes){
-			_recipes.append("--" + recipe._id+ "\n");
+			_recipes.append("--" + recipe.getID()+ "\n");
 		}
 	}
 	

@@ -44,6 +44,6 @@ public interface DBHelperInterface {
 	 * @param username
 	 * @return
 	 */
-	public boolean validUsername(String username);
+	public boolean uniqueUsername(String username);
 
 }
