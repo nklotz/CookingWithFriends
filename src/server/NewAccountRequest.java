@@ -17,9 +17,7 @@ public class NewAccountRequest implements Runnable {
 	@Override
 	public void run() {
 		RequestReturn toReturn = new RequestReturn(1);
-		System.out.println(_request.getUsername());
-		if(_helper.validUsername(_request.getUsername())){
-
+		if(_helper.uniqueUsername(_request.getUsername())){
 			Account account = new Account(_request.getUsername());
 			_helper.storeUsernamePassword(_request.getUsername(), _request.getPassword());
 			_helper.storeAccount(account);

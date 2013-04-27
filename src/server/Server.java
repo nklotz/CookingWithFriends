@@ -6,15 +6,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
+import API.*;
 import Database.DBHelper;
-import UserInfo.*;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
@@ -26,6 +22,8 @@ public class Server {
 	private ServerSocket _socket;
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
+	private Wrapper _apiWrapper;
+	private APIInfo _info;
 	
 	public Server(int port) throws IOException {
 		if (port <= 1024) {
@@ -34,7 +32,15 @@ public class Server {
 		}
 
 		_helper = new DBHelper();
-
+		_apiWrapper = new YummlyAPIWrapper();
+		
+		//Has all autocorrect suggestion engines.
+		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), 
+				 _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		
+		
+		//TODO: package trie and lists to client handler
+		
 		//_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
 		//System.out.println("GET ACCOUTN FROM SERVER: " + _helper.getAccount("Hannah"));
 		
@@ -52,7 +58,7 @@ public class Server {
 		_helper.getKitchen("/k/0");*/
 
 		
-		if(_helper.validUsername("Hannah")){
+		if(_helper.uniqueUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");
 		}
 		
@@ -79,7 +85,7 @@ public class Server {
 			Socket clientSocket = null;
 	        try {
 	            clientSocket =_socket.accept();
-	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _activeKitchens, _helper);
+	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _activeKitchens, _helper, _info);
 	    		_clients.add(thread);
 	            thread.start();
 
