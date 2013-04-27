@@ -268,7 +268,6 @@ public class DBHelper implements DBHelperInterface{
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userCollection_.find(searchQuery);
-		System.out.println(cursor.size());
 		if(cursor.size() !=0) {
 			return false;
 		}
@@ -305,11 +304,10 @@ public class DBHelper implements DBHelperInterface{
 			BasicDBObject searchQuery = new BasicDBObject();
 			String id = "/k/" + num;
 			searchQuery.put("id", id);
-			System.out.println("sq: " + searchQuery);
 			DBCursor cursor = kitchenCollection_.find(searchQuery);
 			if(!cursor.hasNext()){
-				return "/k/0";
-			//	return id;
+				//return "/k/0";
+				return id;
 			}	
 		
 		}

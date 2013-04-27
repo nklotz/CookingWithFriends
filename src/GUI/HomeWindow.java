@@ -89,7 +89,7 @@ public class HomeWindow extends JFrame {
         c.gridx = 0;
         c.gridy = 0;
         me.add(myInfoLabel,c);
-		JTextArea myInfo = new JTextArea("Name: " + _account.getUser().getID() + " \n Area: " + _account.getUser().getAddress());
+		JTextArea myInfo = new JTextArea("Name: " + _account.getUserId() + " \n Area: " + _account.getAddress());
 		myInfo.setBackground(Color.white);
 		myInfo.setPreferredSize(new Dimension(150,80));
 		c.gridx = 0;
