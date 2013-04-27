@@ -34,11 +34,12 @@ public class Server {
 		}
 
 		_helper = new DBHelper();
+
 		//_helper.storeAccount(new Account(new User("Hannah", "MYfeetSMELL")));
 		//System.out.println("GET ACCOUTN FROM SERVER: " + _helper.getAccount("Hannah"));
 		
 		
-		HashSet<String> u = new HashSet<String>();
+		/*HashSet<String> u = new HashSet<String>();
 		u.add("Hannah");
 		HashSet<Event> ev = new HashSet<Event>();
 		ev.add(new Event("BDay", new Date(223), u));
@@ -48,7 +49,8 @@ public class Server {
 		r.add(new Recipe("chicken", "/r/0", "Pt in bowl.", ing));
 		_helper.storeKitchen(new Kitchen(u, ev, r));
 		System.out.println("bf get kitchen");
-		_helper.getKitchen("/k/0");
+		_helper.getKitchen("/k/0");*/
+
 		
 		if(_helper.validUsername("Hannah")){
 			_helper.storeUsernamePassword("Hannah", "abcd");

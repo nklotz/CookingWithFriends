@@ -34,7 +34,7 @@ public interface Wrapper {
 	 * Returns a list of recipes given a string of comma separated (maybe?) ingredients.
 	 * @return ArrayList<Recipe> The searched recipes.
 	 */
-	public List<Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes,
+	public List<? extends Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes,
 			List<String> dietRestrictions, List<String> allergies);
 
 	/**

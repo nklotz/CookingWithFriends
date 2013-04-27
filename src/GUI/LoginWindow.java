@@ -1,103 +1,123 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 import client.Client;
 
-public class LoginWindow extends JFrame {
-
-	Client _client;
-	JTextField _usernameInput;
-	JPasswordField _passwordInput;
-	JPanel _panel;
-	JLabel _errorLabel;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+ 
+public class LoginWindow extends JFrame{
 	
-	public LoginWindow(Client client){
-		super("HI MIRANDA!!!! :-)");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setSize(300,300);
-		
-		_panel = new JPanel(new GridBagLayout());
-		_panel.setPreferredSize(new Dimension(500, 200));
-		this.getContentPane().add(_panel, BorderLayout.NORTH);
-		GridBagConstraints c = new GridBagConstraints();
-		
-		_client = client;
-		
-		_usernameInput = new JTextField(20);
-        c.gridx = 1;
-        c.gridy = 1;
-        _panel.add(_usernameInput,c);
-        
-        _passwordInput = new JPasswordField(20);
-        c.gridx = 1;
-        c.gridy = 2;
-        _panel.add(_passwordInput,c);
-		
-        JLabel userLabel = new JLabel("Username: ");
-        c.gridx = 0;
-        c.gridy = 1;
-        _panel.add(userLabel,c);
-        
-        JLabel passLabel = new JLabel("Password: ");
-        c.gridx = 0;
-        c.gridy = 2;
-        _panel.add(passLabel,c);
-        
-		JButton submit = new JButton("Submit");
-		c.gridx = 1;
-		c.gridy = 4;
-        _panel.add(submit,c);
-        submit.addActionListener(new LoginButton());
-        
-		_errorLabel = new JLabel("Username/Password doesn't match");
-        c.gridx = 1;
-        c.gridy = 5;
-        _errorLabel.setVisible(false);
-        _panel.add(_errorLabel,c);
-        
-		this.pack();
-		
-	}
-	
-	class LoginButton implements ActionListener{
-
-        public void actionPerformed(ActionEvent e){
-            //JTextField usernameInput = (JTextField)e.getSource();
-        	if(_usernameInput.getText().length()==0 || _passwordInput.getText().length()==0){
-        		JOptionPane.showMessageDialog(null,"You must input a username and password");
-        	}
-        	else{
-        		try {
-        			//If true, start home page.
-					_client.checkPassword(_usernameInput.getText(), _passwordInput.getText());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-        	}
-            
-        }
+	private Client _client;
+	private Text _actiontarget;
+    
+    public LoginWindow(Client client){
+    	super("Cooking with Friends -- Login");
+    	_client = client;
+    	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    	final JFXPanel fxPanel = new JFXPanel();
+    	this.add(fxPanel);
+    	this.setSize(550,400);
+    	this.setVisible(true);
+    	fxPanel.setPreferredSize(new java.awt.Dimension(550,400));
+    	
+    	Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    		initFX(fxPanel);
+    		}
+    	});
     }
+    
+    private void initFX(JFXPanel fxPanel) {
+    	fxPanel.setScene(makeScene());
+    }
+    
+    
+    
+    public Scene makeScene() {
+        
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+         
+        _actiontarget = new Text();
+        grid.add(_actiontarget, 1, 6);
+        
+        Scene scene = new Scene(grid, 300, 275);
+        
+        Text scenetitle = new Text("Welcome to Cooking with Friends");
+        scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
+        grid.add(scenetitle, 0, 0, 2, 1);
 
-	public void displayLoginError() {
-		_errorLabel.setVisible(true);		
-	}
+        Label userName = new Label("User Name:");
+        grid.add(userName, 0, 1);
+
+        final TextField userTextField = new TextField();
+        grid.add(userTextField, 1, 1);
+
+        Label pw = new Label("Password:");
+        grid.add(pw, 0, 2);
+
+        final PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
+        
+        Button btn = new Button("Sign in");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 1, 4);
+        
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+        	 
+            @Override
+            public void handle(ActionEvent e) {
+                _actiontarget.setFill(Color.FIREBRICK);
+                
+                if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
+            		_actiontarget.setText("You must input a username and password");
+            	}
+            	else{
+            		try {
+            			//If true, start home page.
+    					_client.checkPassword(userTextField.getText(), pwBox.getText());
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            	}
+            }
+        });
+        return scene;
+    }
+    
+    public void displayIncorrect(){
+    	_actiontarget.setText("Incorrect username or password");
+    }
 }

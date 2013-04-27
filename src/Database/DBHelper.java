@@ -2,9 +2,11 @@
  * 
  */
 package Database;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -20,7 +22,6 @@ import javax.crypto.spec.PBEKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import sun.misc.BASE64Decoder;
-
 import UserInfo.Account;
 import UserInfo.Kitchen;
 
@@ -51,14 +52,28 @@ public class DBHelper implements DBHelperInterface{
 	private DBCollection userPassCollection_;
 	
 	public DBHelper(){
-		String s = "mongod --port 27017 -dbpath /home/hacheson/course/cs032/CookingWithFriends/Data";
-		String[] args = s.split(" ");
+		//String s = "mongod --port 27017 -dbpath /home/hacheson/course/cs032/CookingWithFriends/Data";
+		//String[] args = s.split(" ");
+
 		Process p = null;
 		try{
+			p = Runtime.getRuntime().exec("whoami");
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		    String inputLine;
+		    String result = "";
+		    while ((inputLine = in.readLine()) != null) {
+		        System.out.println(inputLine);
+		        result += inputLine;
+		    }
+		    in.close();
+			String s = "mongod --port 27017 -dbpath /home/" + result + "/course/cs032/CookingWithFriends/Data/";
+			System.out.println(s);
+			String[] args = s.split(" ");
 			p = Runtime.getRuntime().exec(s);
 		} catch(IOException e){
 			e.printStackTrace();
-		}
+		} 
 		try {
 			mongo_ = new Mongo("localhost", 27017);
 			userDB_ = mongo_.getDB("users");
@@ -67,6 +82,9 @@ public class DBHelper implements DBHelperInterface{
 			kitchenCollection_ = kitchenDB_.getCollection("kitchenCollection");
 			userPassDB_ = mongo_.getDB("usernamePasswords");
 			userPassCollection_ = userPassDB_.getCollection("usernamePasswordsCollection");
+			
+			System.out.println("hereeee");
+			System.out.println(kitchenDB_);
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: Could not connect to mongodb, unknown host.");
 			e.printStackTrace();

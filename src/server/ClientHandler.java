@@ -63,44 +63,37 @@ public class ClientHandler extends Thread {
 	public void run(){
 		try {
 				Request request;
-				String input;
+				int type;
 				while(_client.isConnected() && (request = (Request) _objectIn.readObject()) != null){
-					input = request.getRequest();
-					if(input.equals("Close me")){
-						kill();
-						break;
-					}
-					else if(input.startsWith("My ID:")){
-						String[] line = input.split("\\t");
-						if(line.length == 2){
-							_clientID = line[1];
-							_pool.addID(line[1]);
-						}
-					}
+					type = request.getType();
 					
-					else if(input.startsWith("Check user/password:")){
-						//call to data base for userpassword
+					switch (type){
+						case 1:  
+							//verify account
+						case 2:
+							//get kitchen
+						case 3:
+							//add user to kitchen
+						case 4:
+							//remove user from kitchen
+						case 5: 
+							//add event to kitchen
+						case 6: 
+							//remove event from kitchen
+						case 7:
+							//add recipe to kitchen
+						case 8: 
+							//remove recipe from kitchen
+						case 9:
+							//added ingredient to fridge
+						case 10:
+							//remove ingredient from fridge
+						case 11:
+							//close client
+						default:
+							continue;
 					}
-					
-					else if(input.startsWith("Get account:")){
-						getAccount(input);
-					}
-				
-					else if(input.startsWith("Get kitchen:")){
-						getKitchen(input);
-					}
-					
-					else if(input.startsWith("Store account:")){
-						storeAccount(request);
-					}
-					
-					else if(input.startsWith("Store kitchen:")){
-						storeKitchen(request);
-					}
-					
-					else{
-						continue;			
-					}
+
 			}
 		} catch (IOException | ClassNotFoundException  e) {
 				try {
@@ -152,19 +145,19 @@ public class ClientHandler extends Thread {
 	}	
 	
 	
-	public void checkPassword(String input){
+	public void checkPassword(Request request){
 		// 1. Query database.
 		// 2. Check if password = password form database.
 	}
 	
-	public void getAccount(String input){
+	public void getAccount(Request request){
 		String[] line = input.split("\\t");
 		if(line.length==2){
 			_taskPool.execute(new AccountRequest(this, line[1], _helper, _activeKitchens));
 		}
 	}
 	
-	public void getKitchen(String input){
+	public void getKitchen(Request request){
 		String[] line = input.split("\\t");
 		if(line.length==2){
 			_taskPool.execute(new KitchenRequest(this, line[1], _activeKitchens));
