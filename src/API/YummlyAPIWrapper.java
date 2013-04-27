@@ -37,15 +37,16 @@ public class YummlyAPIWrapper implements Wrapper {
 	private final static String HOST = "api.yummly.com";
 	private final static String SEARCH_PATH = "/v1/api/recipes";
 	private final static String RECIPE_PATH = "/v1/api/recipe/";
+	private final static String METADATA_PATH = "/v1/api/metadata/";
 	
 	private Gson _gson;
-	private Map<String, List<Recipe>> _searchCache;
-	private Map<String, Recipe> _recipeCache;
+	private Map<String, List<YummlyRecipe>> _searchCache;
+	private Map<String, YummlyRecipe> _recipeCache;
 	
 	public YummlyAPIWrapper() {
 		_gson = new Gson();
-		_searchCache = new HashMap<String, List<Recipe>>();
-		_recipeCache = new HashMap<String, Recipe>();
+		_searchCache = new HashMap<>();
+		_recipeCache = new HashMap<>();
 	}
 		
 	@Override
@@ -67,40 +68,86 @@ public class YummlyAPIWrapper implements Wrapper {
 	}
 	
 	@Override
-	public Recipe getRecipe(String recipeID) {
-		Recipe recipe = null;
+	public List<String> getPossibleIngredients() throws IOException, URISyntaxException {
+		URIBuilder builder = new URIBuilder();
+		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "ingredient");
+		httpGet(builder.build());
+		
+		return null;
+	}	
+	
+	@Override
+	public List<String> getPossibleDietaryRestrictions() throws IOException, URISyntaxException {
+		URIBuilder builder = new URIBuilder();
+		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "diet");
+		httpGet(builder.build());
+		
+		return null;
+	}
+
+	@Override
+	public List<String> getPossibleAllergies() throws IOException, URISyntaxException {
+		URIBuilder builder = new URIBuilder();
+		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "allergy");
+		httpGet(builder.build());
+		
+		return null;
+	}
+	
+	@Override
+	public Recipe getRecipe(String recipeID) throws IOException {
+		if (_recipeCache.containsKey(recipeID)) {
+			return _recipeCache.get(recipeID);
+		}
+		
+		YummlyRecipe recipe = null;
 		String jsonResponse = null;
 		try {
 			jsonResponse = httpGet(buildRecipeURI(recipeID));
 		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IOException("Failed to perform recipe GET request.");
 		}
 		if (jsonResponse != null) {
-			recipe = _gson.fromJson(jsonResponse, Recipe.class);
+			recipe = _gson.fromJson(jsonResponse, YummlyRecipe.class);
+			_recipeCache.put(recipeID, recipe);
 		}
 		return recipe;
 	}
 
 	@Override
 	public List<? extends Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes, 
-			List<String> dietRestrictions, 	List<String> allergies) {
-		List<? extends Recipe> recipes = null;
+			List<String> dietRestrictions, 	List<String> allergies) throws IOException {
+		
+		URI searchKey = null;
+		List<YummlyRecipe> recipes = null;
 		String jsonResponse = null;
 		try {
-			jsonResponse = httpGet(buildSearchURI(query, ingredients, dislikes, dietRestrictions, allergies));
+			searchKey = buildSearchURI(query, ingredients, dislikes, dietRestrictions, allergies);
+			//Check if we've already made this query
+			if (_searchCache.containsKey(searchKey.toString()))
+				return _searchCache.get(searchKey.toString());
+			jsonResponse = httpGet(searchKey);
 		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			// TODO: DIE Gracefully!
-			e.printStackTrace();
+			throw new IOException("Failed to perform GET request.");
 		}
 		if (jsonResponse != null) {
 			Response response = _gson.fromJson(jsonResponse, Response.class);
 			recipes = response.matches;
+			_searchCache.put(searchKey.toString(), recipes);
 		}
 		return recipes;
 	}
 	
+	/**
+	 * Builds a URI to query the Yummly API for a recipe search.
+	 * @param query
+	 * @param ingredients
+	 * @param dislikes
+	 * @param dietRestrictions
+	 * @param allergies
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	private static URI buildSearchURI(String query, List<String> ingredients, List<String> dislikes, 
 			List<String> dietRestrictions, 	List<String> allergies) throws URISyntaxException {
 		
@@ -119,12 +166,25 @@ public class YummlyAPIWrapper implements Wrapper {
 		return builder.build();
 	}
 	
+	/**
+	 * Builds a URI for a recipe query to the Yummly API.
+	 * @param id
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	private static URI buildRecipeURI(String id) throws URISyntaxException {
 		URIBuilder builder = new URIBuilder();
 		builder.setScheme("http").setHost(HOST).setPath(RECIPE_PATH + id);
 		return builder.build();
 	}
 	
+	/**
+	 * Performs an HTTP GET request for the URI passed in.
+	 * Returns a string respresentation of the returned JSON object.
+	 * @param uri
+	 * @return
+	 * @throws IOException
+	 */
 	private static String httpGet(URI uri) throws IOException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpGet httpget = new HttpGet(uri);
@@ -149,10 +209,9 @@ public class YummlyAPIWrapper implements Wrapper {
 	}
 	
 	
-	//Private classes for reading objects from JSON
+	//Private inner class for reading objects from JSON
 	private class Response {
 		public int totalMatchCount;
 		public List<YummlyRecipe> matches;
 	}
-	
 }

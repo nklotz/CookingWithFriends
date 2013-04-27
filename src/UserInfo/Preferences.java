@@ -5,6 +5,7 @@ package UserInfo;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author hacheson
@@ -17,17 +18,39 @@ public class Preferences implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	//Maps a list of preferences to whether the user user's preference (boolean).
-	public HashMap<String, Boolean> _preferences;
+	private HashSet<String> restrictions_;
+	private HashSet<String> allergies_;
+	private HashSet<String> dislikes_;
+	
 	public Preferences(){
-		_preferences = new HashMap<String, Boolean>();
+		restrictions_ = new HashSet<String>();
+		allergies_ = new HashSet<String>();
+		dislikes_ = new HashSet<String>();
 	}
 	
-	public void addPreference(String p, boolean b){
-		_preferences.put(p, b);
+	public Preferences(HashSet<String> r, HashSet<String> a, HashSet<String> d){
+		restrictions_ = r;
+		allergies_ = a;
+		dislikes_ = d;
+	}
+	
+	public void addRestriction(String r){
+		restrictions_.add(r);
+	}
+	
+	public void addDislike(String d){
+		dislikes_.add(d);
+	}
+	
+	public void addAllergy(String a){
+		allergies_.add(a);
 	}
 
 	@Override
 	public String toString() {
-		return "Preferences [_preferences=" + _preferences + "]";
+		return "Preferences [restrictions_=" + restrictions_ + ", allergies_="
+				+ allergies_ + ", dislikes_=" + dislikes_ + "]";
 	}
+
+	
 }
