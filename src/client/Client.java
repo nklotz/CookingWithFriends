@@ -94,9 +94,13 @@ public class Client extends Thread {
 					assert(type == 1);
 					if (response.getCorrect()){
 						if (_login.isNewAccount()){
-							_login.loadLogin();
+							System.out.println("read as new account");
+							_login.dispose();
+							_login = new LoginWindow(this);
 						} else {
 							verified = true;
+							System.out.println("read as login");
+							_login.dispose();
 							_gui = new HomeWindow(response.getAccount(), this);
 						}
 					} else {

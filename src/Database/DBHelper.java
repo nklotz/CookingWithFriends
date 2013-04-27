@@ -114,11 +114,10 @@ public class DBHelper implements DBHelperInterface{
 	public void storeAccount(Account a) {
 		System.out.println("storing accoutn");
 		BasicDBObject document = new BasicDBObject();
-		document.put("username", a.getUser().getID());
-		document.put("password", a.getUser().getPassword());
+		document.put("username", a.getUserId());
 		document.put("account", getObjectString(a));
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("username", a.getUser().getID());
+		searchQuery.put("username", a.getUserId());
 		//Adds it if it doesn't exist  currently.
 		if(userCollection_.find(searchQuery).length() == 0){
 			userCollection_.insert(document);
@@ -268,11 +267,12 @@ public class DBHelper implements DBHelperInterface{
 	public boolean validUsername(String username){
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		
-		if(cursor.hasNext()) {
+		DBCursor cursor = userCollection_.find(searchQuery);
+		System.out.println(cursor.size());
+		if(cursor.size() !=0) {
 			return false;
 		}
+
 		return true;
 	}
 	

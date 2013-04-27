@@ -35,6 +35,7 @@ public class LoginWindow extends JFrame{
     
     public LoginWindow(Client client){
     	super("Cooking with Friends -- Login");
+    	Platform.setImplicitExit(false);
     	_client = client;
     	_newAcct = false;
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,7 +97,7 @@ public class LoginWindow extends JFrame{
         
         
         Button btn = new Button("Sign in");
-        Button newAcct = new Button("Create Account");_panel.setScene(newAccount());
+        Button newAcct = new Button("Create Account");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(newAcct);
@@ -147,7 +148,7 @@ public class LoginWindow extends JFrame{
         grid.setPadding(new Insets(25, 25, 25, 25));
          
         _actiontarget = new Text();
-        grid.add(_actiontarget, 0, 6);
+        grid.add(_actiontarget, 0, 6, 2, 1);
         
         Scene scene = new Scene(grid, 300, 275);
         
