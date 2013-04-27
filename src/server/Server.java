@@ -45,7 +45,7 @@ public class Server {
 		HashSet<Recipe> r = new HashSet<Recipe>();
 		ArrayList<String> ing = new ArrayList<String>();
 		ing.add("butter");
-		r.add(new Recipe("chicken", "/r/0", "Put in bowl.", ing));
+		r.add(new Recipe("chicken", "/r/0", "Pt in bowl.", ing));
 		_helper.storeKitchen(new Kitchen(u, ev, r));
 		System.out.println("bf get kitchen");
 		_helper.getKitchen("/k/0");
