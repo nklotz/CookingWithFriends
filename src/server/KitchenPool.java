@@ -9,6 +9,7 @@ import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 import UserInfo.User;
 
 /**
@@ -25,14 +26,15 @@ import UserInfo.User;
 
 public class KitchenPool {
 
-	HashMap<String, HashSet<String>> _kIDtoUsers, _userToKitchens ;
+	HashMap<KitchenName, HashSet<String>> _kIDtoUsers;
+	HashMap<String, HashSet<KitchenName>>_userToKitchens ;
 	HashMap<String, Kitchen> _idToKitchen;
 	DBHelper _helper;
 	ClientPool _clients;
 	
 	public KitchenPool(DBHelper helper, ClientPool clients){
-		_kIDtoUsers = new HashMap<String, HashSet<String>>();
-		_userToKitchens = new HashMap<String, HashSet<String>>();
+		_kIDtoUsers = new HashMap<KitchenName, HashSet<String>>();
+		_userToKitchens = new HashMap<String, HashSet<KitchenName>>();
 		_idToKitchen = new HashMap<String, Kitchen>();
 		_helper = helper;
 		_clients = clients;
@@ -58,7 +60,7 @@ public class KitchenPool {
 		for(String u: kitchen.getUsers()){
 			users.add(u);
 		}
-		_kIDtoUsers.put(kitchen.getId(), users);
+		_kIDtoUsers.put(kitchen.getKitchenName(), users);
 	}
 	
 	/**
@@ -70,24 +72,24 @@ public class KitchenPool {
 		HashSet<String> users = new HashSet<String>();
 		for(String u: kitchen.getUsers()){
 			if(_userToKitchens.containsKey(u)){
-				_userToKitchens.get(u).add(kitchen.getId());
+				_userToKitchens.get(u).add(kitchen.getKitchenName());
 			}
 			users.add(u);
 		}
-		_kIDtoUsers.put(kitchen.getId(), users);
+		_kIDtoUsers.put(kitchen.getKitchenName(), users);
 	}
 	
 	/**
 	 * Adds a user and opens up all non-opened kitchens
 	 */
 	public void addAccount(Account account){
-		String userName = account.getUserId();
-		HashSet<String> kitchenIDs = account.getKitchens();
+		String userName = account.getID();
+		HashSet<KitchenName> kitchenIDs = account.getKitchens();
 		_userToKitchens.put(userName, kitchenIDs);
 		if (kitchenIDs != null){
-			for(String k: kitchenIDs){
+			for(KitchenName k: kitchenIDs){
 				if(!_idToKitchen.containsKey(k)){
-					Kitchen kit = _helper.getKitchen(k);
+					Kitchen kit = _helper.getKitchen(k.getId());
 					addKitchen(kit);
 				}
 			}	
@@ -99,12 +101,12 @@ public class KitchenPool {
 	 * that kitchen is removed from memory.
 	 */
 	public void removeUser(String userID){
-		HashSet<String> kitchens = _userToKitchens.get(userID);
+		HashSet<KitchenName> kitchens = _userToKitchens.get(userID);
 		if (kitchens != null){
-			for(String k: kitchens){
+			for(KitchenName k: kitchens){
 				HashSet<String> users = _kIDtoUsers.get(k);
 				if(!hasActiveUser(users, userID)){
-					removeKitchen(k);
+					removeKitchen(k.getId());
 				}
 			}
 			_userToKitchens.remove(userID);
@@ -139,10 +141,10 @@ public class KitchenPool {
 	
 	public HashMap<String, Kitchen> getAllUserKitchens(String userID){
 		HashMap<String, Kitchen> kitchens = new HashMap<String, Kitchen>();
-		HashSet<String> kIDS = _userToKitchens.get(userID);
+		HashSet<KitchenName> kIDS = _userToKitchens.get(userID);
 		if (kIDS != null){
-			for(String k: kIDS){
-				kitchens.put(k, _idToKitchen.get(k));
+			for(KitchenName k: kIDS){
+				kitchens.put(k.getId(), _idToKitchen.get(k.getId()));
 			}
 		}
 		return kitchens;	
@@ -177,7 +179,8 @@ public class KitchenPool {
 		  		k.removeRecipe(request.getRecipe());
 		  		break;
 	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		  		break;	
+		  		
+	  			break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		  		break;
   			default: 

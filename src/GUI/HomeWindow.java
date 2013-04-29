@@ -44,6 +44,7 @@ import javax.swing.JTextArea;
 import Test.MockRecipe;
 import UserInfo.Account;
 import UserInfo.Ingredient;
+import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import UserInfo.Nameable;
 
@@ -73,8 +74,10 @@ public class HomeWindow extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    		initFX(fxPanel);
+    			initFX(fxPanel);
     		}
+    		
+    		
     	});
     }
     
@@ -495,20 +498,20 @@ public class HomeWindow extends JFrame {
 		rList.setPrefSize(300, 200);
 		rList.setVgap(2);
 		sScroll.setContent(rList);
-		Set<String> kitchenListSet = _account.getKitchens();//TODO: we should probably have ingredient object with a quantity, etc.
+		Set<KitchenName> kitchenListSet = _account.getKitchens();//TODO: we should probably have ingredient object with a quantity, etc.
 		//TODO: get rid of the fake recipes
 		if (kitchenListSet == null){
 			kitchenListSet = new HashSet<>();
 		}
-		kitchenListSet.add("West House");
-		kitchenListSet.add("Home");
-		kitchenListSet.add("38 Transit");
-		kitchenListSet.add("Playboy Mansion");
-		kitchenListSet.add("Natalie Surprise Party");
-		kitchenListSet.add("Date Party");
+		kitchenListSet.add(new KitchenName("West House", "1"));
+		kitchenListSet.add(new KitchenName("Home", "2"));
+		kitchenListSet.add(new KitchenName("38 Transit", "3"));
+		kitchenListSet.add(new KitchenName("Playboy Mansion", "4"));
+		kitchenListSet.add(new KitchenName("Natalie Surprise Party", "5"));
+		kitchenListSet.add(new KitchenName("Date Party", "6"));
 		int i = 0;
-		for (String s : kitchenListSet){
-			rList.add(kitchenButton(s),0,i);
+		for (KitchenName s : kitchenListSet){
+			rList.add(kitchenButton(s.getName()),0,i);
 			i++;
 		}
 		kitchenList.add(sScroll, 0, 0);

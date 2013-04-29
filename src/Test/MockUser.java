@@ -72,7 +72,7 @@ public class MockUser {
 		ingredients.add(ji);
 		
 		
-		_account = new Account("/u/1", name, address, recipes,ingredients);
+		_account = new Account("CWF", name, address, recipes,ingredients);
 		return _account;
 	}
 

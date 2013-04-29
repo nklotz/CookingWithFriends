@@ -3,11 +3,15 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
+
 /**
  * @author hacheson
  * Ingredient class about 
  */
-public class Ingredient implements Nameable{
+public class Ingredient implements Nameable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String _name;
 	private String _unit;
 	private double _quantity;

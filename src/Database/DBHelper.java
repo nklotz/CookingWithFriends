@@ -22,6 +22,7 @@ import javax.crypto.spec.PBEKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import sun.misc.BASE64Decoder;
+import Test.MockUser;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 
@@ -84,6 +85,10 @@ public class DBHelper implements DBHelperInterface{
 			System.err.println("ERROR: Could not connect to mongodb.");
 			e.printStackTrace();
 		}
+		
+		storeUsernamePassword("CWF", "cook");
+		MockUser mu = new MockUser();
+		storeAccount(mu.getAccount());
 	}
 
 	@Override
@@ -105,10 +110,10 @@ public class DBHelper implements DBHelperInterface{
 	@Override
 	public void storeAccount(Account a) {
 		BasicDBObject document = new BasicDBObject();
-		document.put("username", a.getUserId());
+		document.put("username", a.getID());
 		document.put("account", getObjectString(a));
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("username", a.getUserId());
+		searchQuery.put("username", a.getID());
 		//Adds it if it doesn't exist  currently.
 		if(userCollection_.find(searchQuery).length() == 0){
 			userCollection_.insert(document);

@@ -54,6 +54,10 @@ public class Kitchen implements Serializable, Nameable{
 		return _name;
 	}
 	
+	public KitchenName getKitchenName(){
+		return new KitchenName(_name, _id);
+	}
+	
 	
 	public void addActiveUser(String user){
 		_activeUsers.add(user);

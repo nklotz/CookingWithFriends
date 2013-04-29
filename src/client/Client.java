@@ -11,6 +11,7 @@ import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.HomeWindow;
 import GUI.LoginWindow;
+import GUI.SearchWindow;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
