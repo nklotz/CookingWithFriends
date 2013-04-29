@@ -55,7 +55,7 @@ public class KitchenPool {
 	 * Adds a kitchen and extracts users.
 	 */
 	public void addKitchen(Kitchen kitchen){
-		_idToKitchen.put(kitchen.getId(), kitchen);
+		_idToKitchen.put(kitchen.getID(), kitchen);
 		HashSet<String> users = new HashSet<String>();
 		for(String u: kitchen.getUsers()){
 			users.add(u);
@@ -68,7 +68,7 @@ public class KitchenPool {
 	 * active users
 	 */
 	public void addNewKitchen(Kitchen kitchen){
-		_idToKitchen.put(kitchen.getId(), kitchen);
+		_idToKitchen.put(kitchen.getID(), kitchen);
 		HashSet<String> users = new HashSet<String>();
 		for(String u: kitchen.getUsers()){
 			if(_userToKitchens.containsKey(u)){
@@ -89,7 +89,7 @@ public class KitchenPool {
 		if (kitchenIDs != null){
 			for(KitchenName k: kitchenIDs){
 				if(!_idToKitchen.containsKey(k)){
-					Kitchen kit = _helper.getKitchen(k.getId());
+					Kitchen kit = _helper.getKitchen(k.getID());
 					addKitchen(kit);
 				}
 			}	
@@ -106,7 +106,7 @@ public class KitchenPool {
 			for(KitchenName k: kitchens){
 				HashSet<String> users = _kIDtoUsers.get(k);
 				if(!hasActiveUser(users, userID)){
-					removeKitchen(k.getId());
+					removeKitchen(k.getID());
 				}
 			}
 			_userToKitchens.remove(userID);
@@ -144,7 +144,7 @@ public class KitchenPool {
 		HashSet<KitchenName> kIDS = _userToKitchens.get(userID);
 		if (kIDS != null){
 			for(KitchenName k: kIDS){
-				kitchens.put(k.getId(), _idToKitchen.get(k.getId()));
+				kitchens.put(k.getID(), _idToKitchen.get(k.getID()));
 			}
 		}
 		return kitchens;	
@@ -179,8 +179,7 @@ public class KitchenPool {
 		  		k.removeRecipe(request.getRecipe());
 		  		break;
 	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		  		
-	  			break;	
+		  		break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		  		break;
   			default: 

@@ -30,7 +30,8 @@ public class KitchenName implements Nameable{
 		return _name;
 	}
 	
-	public String getId(){
+	@Override
+	public String getID(){
 		return _id;
 	}
 }

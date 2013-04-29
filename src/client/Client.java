@@ -130,7 +130,7 @@ public class Client extends Thread {
 					int type = response.getType();
 					assert(type == 2);
 					Kitchen k = response.getKitchen();
-					String id = k.getId();
+					String id = k.getID();
 					_kitchens.put(id, k);
 				}	
 			}

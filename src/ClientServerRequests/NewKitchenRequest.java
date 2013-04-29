@@ -24,7 +24,7 @@ public class NewKitchenRequest implements Runnable {
 		RequestReturn toReturn = new RequestReturn(2);
 		
 		Kitchen k = new Kitchen(_request.getKitchenName());
-		k.setId(_helper.createKitchenId());
+		k.setID(_helper.createKitchenId());
 		k.addUser(_ch.getID());
 		
 		toReturn.setKitchen(k);

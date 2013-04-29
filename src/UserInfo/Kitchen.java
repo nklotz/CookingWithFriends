@@ -88,7 +88,7 @@ public class Kitchen implements Serializable, Nameable{
 	 * Sets the id of the kitchen object.
 	 * @param id
 	 */
-	public void setId(String id){
+	public void setID(String id){
 		_id = id;
 	}
 	
@@ -96,7 +96,7 @@ public class Kitchen implements Serializable, Nameable{
 	 * Returns the string id.
 	 * @return
 	 */
-	public String getId(){
+	public String getID(){
 		return _id;
 	}
 	/**

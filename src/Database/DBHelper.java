@@ -148,7 +148,7 @@ public class DBHelper implements DBHelperInterface{
 		document.put("kitchen", getObjectString(k));
 		BasicDBObject searchQuery = new BasicDBObject();
 		String id = createKitchenId();
-		k.setId(id);
+		k.setID(id);
 		searchQuery.put("id", id);
 		//Adds it if it doesn't exist  currently.
 		if(kitchenCollection_.find(searchQuery).length() == 0){

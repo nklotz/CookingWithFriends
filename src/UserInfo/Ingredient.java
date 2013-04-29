@@ -53,7 +53,7 @@ public class Ingredient implements Nameable, Serializable {
 	}
 
 	@Override
-	public String getId() {
+	public String getID() {
 		// TODO Auto-generated method stub
 		return null;
 	}

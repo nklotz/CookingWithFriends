@@ -111,7 +111,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 	}
 
 
-	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
 		return null;
