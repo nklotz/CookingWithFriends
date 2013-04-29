@@ -26,9 +26,7 @@ public class APIInfo {
 		rList.add(restrictions);
 		List<List<String>> aList = new ArrayList<List<String>>();
 		aList.add(allergies);
-		System.out.println("R LIST: " + rList);
-		if(restrictions == null)
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
 		//Creates the suggestion engines for autocorrect.
 		iEng_ = new SuggestionEngine(iList);
 		rEng_ = new SuggestionEngine(rList);

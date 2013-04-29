@@ -12,7 +12,7 @@ public interface Recipe extends Serializable {
 	
 	public String getName();
 	
-	public List<String> getIngredients();
+	public List<Ingredient> getIngredients();
 	
 	public String getYield();
 	

@@ -5,14 +5,14 @@ package UserInfo;
 
 /**
  * @author hacheson
- *
+ * Ingredient class about 
  */
 public class Ingredient implements Nameable{
 	private String _name;
 	private String _unit;
 	private double _quantity;
 	
-	private Ingredient(String name, String unit, double quantity){
+	public Ingredient(String name, String unit, double quantity){
 		_name = name;
 		_unit = unit;
 		_quantity = quantity;

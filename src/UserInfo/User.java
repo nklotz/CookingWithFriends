@@ -16,24 +16,26 @@ public class User implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashSet<String> _kitchens;
+	private HashSet<String[]> _kitchens;
 	private String _address;
 	private String _id;
-	private String _password;
-	private Preferences _preferences;
+	//private String _password;
+	//private Preferences _preferences;
+	private HashSet<String> _restrictions;
 	
-	public User(HashSet<String> kitchens, String address, String name, String password, Preferences pref){
-		_kitchens = kitchens;
+	public User(HashSet<String[]> kitchensPairs, String address, String id, HashSet<String> restrictions){
+		_kitchens = kitchensPairs;
 		_address = address;
-		_id = name;
-		_password = password;
-		_preferences = pref;
+		_id = id;
+		_restrictions = restrictions;
+		//_password = password;
 	}
 	
-	public User(String name, String password){
-		_id = name;
-		_password = password;
-		_kitchens = new HashSet<String>();
+	public User(String id){
+		_id = id;
+		//_password = password;
+		_kitchens = new HashSet<String[]>();
+		_restrictions = new HashSet<String>();
 	}
 	
 	/**
@@ -55,16 +57,16 @@ public class User implements Serializable{
 	/**
 	 * Returns the password.
 	 * @return String password.
-	 */
-	public String getPassword(){
-		return _password;
-	}
+//	 */
+//	public String getPassword(){
+//		return _password;
+//	}
 	
 	/**
 	 * Adds a kitchen to the user.
 	 * @param k Kitchen the user's kitchen.
 	 */
-	public void addKitchen(String kID){
+	public void addKitchen(String[] kID){
 		_kitchens.add(kID);
 	}
 	
@@ -79,17 +81,29 @@ public class User implements Serializable{
 	/**
 	 * Returns a list of kitchens to which the user belongs.
 	 */
-	public HashSet<String> getKitchens(){
+	public HashSet<String[]> getKitchens(){
 		return _kitchens;
+	}
+	
+	public HashSet<String> getRestrictions(){
+		return _restrictions;
+	}
+	
+	public void addRestrictions(String restriction){
+		_restrictions.add(restriction);
+	}
+	
+	public void setRestrictions(HashSet<String> restrictions){
+		_restrictions = restrictions;
 	}
 	
 	/**
 	 * Sets the user's preferences.
 	 * @param pref Preferences for the user to set.
 	 */
-	public void setPreferences(Preferences pref){
-		_preferences = pref;
-	}
+//	public void setPreferences(Preferences pref){
+//		_preferences = pref;
+//	}
 	
 	public void setAddress(String add){
 		_address = add;
@@ -98,7 +112,7 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [_kitchens=" + _kitchens + ", _address=" + _address
-				+ ", _preferences=" + _preferences + "]";
+				+  "]";
 	}
 	
 	
