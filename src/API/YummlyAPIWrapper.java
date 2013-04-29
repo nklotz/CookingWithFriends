@@ -1,10 +1,15 @@
 package API;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +24,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import UserInfo.Recipe;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * This is a wrapper class for the Yummly API.
@@ -37,61 +45,45 @@ public class YummlyAPIWrapper implements Wrapper {
 	private final static String HOST = "api.yummly.com";
 	private final static String SEARCH_PATH = "/v1/api/recipes";
 	private final static String RECIPE_PATH = "/v1/api/recipe/";
-	private final static String METADATA_PATH = "/v1/api/metadata/";
 	
 	private Gson _gson;
 	private Map<String, List<YummlyRecipe>> _searchCache;
 	private Map<String, YummlyRecipe> _recipeCache;
+	private List<String> _possibleIngredients, _possibleRestrictions, _possibleAllergies;
 	
 	public YummlyAPIWrapper() {
 		_gson = new Gson();
 		_searchCache = new HashMap<>();
 		_recipeCache = new HashMap<>();
+		
+		_possibleIngredients = new ArrayList<>();
+		_possibleRestrictions = new ArrayList<>();
+		_possibleAllergies = new ArrayList<>();
+	
+		Type collectionType = new TypeToken<Collection<String>>(){}.getType();
+		//Read ingredient metada
+		try {
+			_possibleIngredients = _gson.fromJson(new FileReader("ingredients"), collectionType);
+			_possibleRestrictions = _gson.fromJson(new FileReader("dietary_restrictions"), collectionType);
+			_possibleAllergies = _gson.fromJson(new FileReader("allergies"), collectionType);
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			System.out.println("ERROR: Couldn't parse list of search values.");
+		}
 	}
 		
-	@Override
-	public List<Recipe> recipes(String toFind) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Recipe convertToRecipe(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<String> neededIngredients(List<Recipe> recipes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	@Override
 	public List<String> getPossibleIngredients() throws IOException, URISyntaxException {
-		URIBuilder builder = new URIBuilder();
-		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "ingredient");
-		httpGet(builder.build());
-		
-		return null;
+		return _possibleIngredients;
 	}	
 	
 	@Override
 	public List<String> getPossibleDietaryRestrictions() throws IOException, URISyntaxException {
-		URIBuilder builder = new URIBuilder();
-		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "diet");
-		httpGet(builder.build());
-		
-		return null;
+		return _possibleRestrictions;
 	}
 
 	@Override
 	public List<String> getPossibleAllergies() throws IOException, URISyntaxException {
-		URIBuilder builder = new URIBuilder();
-		builder.setScheme("http").setHost(HOST).setPath(METADATA_PATH + "allergy");
-		httpGet(builder.build());
-		
-		return null;
+		return _possibleAllergies;
 	}
 	
 	@Override
@@ -115,7 +107,7 @@ public class YummlyAPIWrapper implements Wrapper {
 	}
 
 	@Override
-	public List<? extends Recipe> findRecipesWithIngredients(String query, List<String> ingredients, List<String> dislikes, 
+	public List<? extends Recipe> searchRecipes(String query, List<String> ingredients, List<String> dislikes, 
 			List<String> dietRestrictions, 	List<String> allergies) throws IOException {
 		
 		URI searchKey = null;
