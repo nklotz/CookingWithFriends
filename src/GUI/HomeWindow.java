@@ -41,7 +41,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Test.MockRecipe;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Recipe;
@@ -636,5 +635,11 @@ public class HomeWindow extends JFrame {
 			_shoppingList.append("--" + item+ "\n");
 		}
 	}
+	
+	//TODO: Fix scrollbar formatting
+	// make preference editable
+	// get rid of dislikes
+	// add adding/deleting ingredients
+	// add deleting kitchens.
 
 }
