@@ -3,6 +3,7 @@ package GUI;
 import java.io.Serializable;
 import java.util.List;
 
+import UserInfo.Ingredient;
 import UserInfo.Recipe;
 
 public class MockRecipe implements Recipe, Serializable {
@@ -19,7 +20,7 @@ public class MockRecipe implements Recipe, Serializable {
 	}
 
 	@Override
-	public List<String> getIngredients() {
+	public List<Ingredient> getIngredients() {
 		// TODO Auto-generated method stub
 		return null;
 	}

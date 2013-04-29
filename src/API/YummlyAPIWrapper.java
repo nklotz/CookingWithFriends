@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import UserInfo.Ingredient;
 import UserInfo.Recipe;
 
 import com.google.gson.Gson;
@@ -52,33 +54,37 @@ public class YummlyAPIWrapper implements Wrapper {
 	private Gson _gson;
 	private Map<String, List<YummlyRecipe>> _searchCache;
 	private Map<String, YummlyRecipe> _recipeCache;
-	private List<String> _possibleIngredients;
+	private List<Ingredient> _possibleIngredients;
 	
 	public YummlyAPIWrapper() {
 		_gson = new Gson();
 		_searchCache = new HashMap<>();
 		_recipeCache = new HashMap<>();
 		
+		_possibleIngredients = new ArrayList<>();
+		
 		//Read ingredient metadata
 		try {
-			_possibleIngredients = Arrays.asList(_gson.fromJson(new FileReader("ingredients"), String[].class));
+			for (String ingredientName : _gson.fromJson(new FileReader("ingredients"), String[].class)) {
+				_possibleIngredients.add(new Ingredient(ingredientName));
+			}
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
 			System.out.println("ERROR: Couldn't read files of search values.");
 		}
 	}
 		
 	@Override
-	public List<String> getPossibleIngredients() throws IOException, URISyntaxException {
+	public List<Ingredient> getPossibleIngredients() {
 		return _possibleIngredients;
 	}	
 	
 	@Override
-	public List<String> getPossibleDietaryRestrictions() throws IOException, URISyntaxException {
+	public List<String> getPossibleDietaryRestrictions() {
 		return Arrays.asList(DIETARY_RESTRICTIONS);
 	}
 
 	@Override
-	public List<String> getPossibleAllergies() throws IOException, URISyntaxException {
+	public List<String> getPossibleAllergies() {
 		return Arrays.asList(ALLERGIES);
 	}
 	

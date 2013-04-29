@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import UserInfo.Ingredient;
 import UserInfo.Recipe;
 
 public class YummlyAPIWrapperTest {
@@ -61,8 +62,8 @@ public class YummlyAPIWrapperTest {
 	@Test
 	public void parsingTest() throws IOException, URISyntaxException {
 		System.out.println("---INGREDIENTS---");
-		for (String ingredient : _yummly.getPossibleIngredients()) {
-			System.out.println(ingredient);
+		for (Ingredient ingredient : _yummly.getPossibleIngredients()) {
+			System.out.println(ingredient.getName());
 		}
 		System.out.println("---DIETARY RESTRICTIONS---");
 		for (String restriction : _yummly.getPossibleDietaryRestrictions()) {

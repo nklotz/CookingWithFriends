@@ -1,9 +1,11 @@
 package API;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import UserInfo.Ingredient;
 import UserInfo.Nameable;
 import UserInfo.Recipe;
 /**
@@ -38,9 +40,14 @@ public class YummlyRecipe implements Recipe, Nameable {
 	private String numberOfServings;
 	private Map<String, String> source;
 	
+	private List<Ingredient> _ingredients;
+	
 	
 	public YummlyRecipe() {
-		
+		_ingredients = new ArrayList<>();
+		for (String ingredient : ingredients) {
+			_ingredients.add(new Ingredient(ingredient));
+		}
 	}
 
 
@@ -58,8 +65,8 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 
 	@Override
-	public List<String> getIngredients() {
-		return Arrays.asList(ingredients);
+	public List<Ingredient> getIngredients() {
+		return _ingredients;
 	}
 
 

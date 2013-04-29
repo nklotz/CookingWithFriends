@@ -45,7 +45,7 @@ public class YummlyAPIWrapperTest {
 		List<String> allergies = new ArrayList<>();
 		allergies.add("peanut");
 		
-		List<? extends Recipe> recipes = _yummly.findRecipesWithIngredients("soup", ingredients, dislikes, dietRestrictions, allergies);
+		List<? extends Recipe> recipes = _yummly.searchRecipes("soup", ingredients, dislikes, dietRestrictions, allergies);
 		
 		for (Recipe recipe : recipes) {
 			System.out.println(recipe);
