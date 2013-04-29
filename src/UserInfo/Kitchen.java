@@ -12,7 +12,7 @@ import java.util.HashSet;
  * @author hacheson
  * Represents a kitchen object. Kitchens have users, events, and a menu.
  */
-public class Kitchen implements Serializable{
+public class Kitchen implements Serializable, Nameable{
 
 	/**
 	 * 

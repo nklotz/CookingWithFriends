@@ -1,10 +1,11 @@
 package GUI;
 
+import java.io.Serializable;
 import java.util.List;
 
 import UserInfo.Recipe;
 
-public class MockRecipe implements Recipe {
+public class MockRecipe implements Recipe, Serializable {
 	
 	private String _name;
 
@@ -55,6 +56,12 @@ public class MockRecipe implements Recipe {
 
 	@Override
 	public String getImageUrl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getId() {
 		// TODO Auto-generated method stub
 		return null;
 	}

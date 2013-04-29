@@ -10,4 +10,6 @@ package UserInfo;
 public interface Nameable {
 
 	public String getName();
+	
+	public String getId();
 }

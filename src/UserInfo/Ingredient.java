@@ -42,4 +42,10 @@ public class Ingredient implements Nameable{
 	public String getUnit(){
 		return _unit;
 	}
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

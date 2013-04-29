@@ -25,7 +25,7 @@ public class Account implements Serializable {
 	private Preferences _preferences;
 	
 	//Specific to account.
-	private HashSet<Recipe> _recipes;
+	private HashSet<? extends Nameable> _recipes;
 	private HashSet<Ingredient> _ingredients;
 	private HashSet<Ingredient> _shoppingList;
 	private HashMap<String, Invitation> _invitations;
@@ -58,14 +58,6 @@ public class Account implements Serializable {
 		_ingredients = new HashSet<Ingredient>();
 		_shoppingList = new HashSet<Ingredient>();
 		_invitations = new HashMap<String, Invitation>();
-	}
-	
-	/**
-	 * Returns the user of this account.
-	 * @return String The user id that this account returns.
-	 */
-	public String getUserId(){
-		return _userId;
 	}
 	
 	/**
@@ -126,7 +118,7 @@ public class Account implements Serializable {
 	 * Returns the list of recipes in this account.
 	 * @return HashSet<String> List of recipes.
 	 */
-	public Set<Recipe> getRecipes(){
+	public Set<? extends Nameable> getRecipes(){
 		return _recipes;
 	}
 	

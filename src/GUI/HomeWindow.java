@@ -8,6 +8,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +43,9 @@ import javax.swing.JTextArea;
 
 import Test.MockRecipe;
 import UserInfo.Account;
+import UserInfo.Ingredient;
 import UserInfo.Recipe;
+import UserInfo.Nameable;
 
 import client.Client;
 
@@ -130,7 +133,7 @@ public class HomeWindow extends JFrame {
         recipeGrid.setStyle(Style.SECTIONS);
         grid.add(recipeGrid, 0, 4);
         //recipe list
-        recipeGrid.add(displayRecipes(), 0, 0);
+        recipeGrid.add(displayList(350, 176, false, _account.getRecipes()), 0, 0);
         
         //MY FRIDGE
         Text MyFridge = new Text("My Fridge");
@@ -142,7 +145,7 @@ public class HomeWindow extends JFrame {
         fridgeGrid.setStyle(Style.SECTIONS);
         grid.add(fridgeGrid, 1, 2);
         //fridge list
-        fridgeGrid.add(displayIngredients(), 0, 0);
+        fridgeGrid.add(displayList(350, 176, true, _account.getIngredients()), 0, 0);
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
@@ -154,7 +157,7 @@ public class HomeWindow extends JFrame {
         shoppingGrid.setStyle(Style.SECTIONS);
         grid.add(shoppingGrid, 1, 4);
         //shopping list
-        shoppingGrid.add(displayShoppingList(),0,0);
+        shoppingGrid.add(displayList(350, 176, true, _account.getShoppingList()),0,0);
         
         //KITCHENS
         Text Kitchens = new Text("Kitchens");
@@ -179,13 +182,17 @@ public class HomeWindow extends JFrame {
         info.setStyle(Style.TEXT);
         info.setPrefSize(130, 160);
         Text name = new Text("Name: ");
-        Text userName = new Text(_account.getUserId());
+        Text userName = new Text(_account.getName());
         Text area = new Text("Area: ");
         Text userArea = new Text(_account.getAddress());
+        Text id = new Text("Email Id: ");
+        Text userId = new Text(_account.getID());
         info.add(name,0,0);
         info.add(userName, 1, 0);
         info.add(area,0,1);
         info.add(userArea, 1, 1);
+        info.add(id, 0, 2);
+        info.add(userId, 1, 2);
         //edit Info Button
         Button editInfo = new Button("Edit Info");
         editInfo.setStyle(Style.BUTTON);
@@ -193,7 +200,7 @@ public class HomeWindow extends JFrame {
         hbBtn.setPrefHeight(80);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(editInfo);
-        info.add(hbBtn, 1, 2);
+        info.add(hbBtn, 1, 4);
         
         editInfo.setOnAction(new EventHandler<ActionEvent>() {
        	 
@@ -218,6 +225,10 @@ public class HomeWindow extends JFrame {
         info.add(userName, 1, 0);
         info.add(area,0,1);
         info.add(userArea, 1, 1);
+        Text id = new Text("Email Id: ");
+        Text userId = new Text(_account.getID());
+        info.add(id, 0, 2);
+        info.add(userId, 1, 2);
         //edit Info Button
         Button save = new Button("Save");
         save.setStyle(Style.BUTTON);
@@ -225,13 +236,13 @@ public class HomeWindow extends JFrame {
         hbBtn.setPrefHeight(80);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(save);
-        info.add(hbBtn, 1, 2);
+        info.add(hbBtn, 1, 4);
         save.setOnAction(new EventHandler<ActionEvent>() {
           	 
             @Override
             public void handle(ActionEvent e) {
-            	String newID = userName.getText();
-            	_account.setUserId(newID);
+            	String name = userName.getText();
+            	_account.setName(name);
             	_account.setAddress(userArea.getText());
             	updateAccount(); 
             	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
@@ -270,7 +281,7 @@ public class HomeWindow extends JFrame {
         dislikes.add(hbBtn, 1, 2);
         return dislikes;
 	}
-	
+	/*
 	public GridPane displayRecipes(){
 		GridPane recipes = new GridPane();
 		recipes.setHgap(3);
@@ -419,7 +430,7 @@ public class HomeWindow extends JFrame {
 		rList.setPrefSize(300, 200);
 		rList.setVgap(2);
 		sScroll.setContent(rList);
-		Set<String> shoppingListSet = _account.getShoppingList();//TODO: we should probably have ingredient object with a quantity, etc.
+		Set<Ingredient> shoppingListSet = _account.getShoppingList();//TODO: we should probably have ingredient object with a quantity, etc.
 		//TODO: get rid of the fake recipes
 		shoppingListSet.add("Lettuce");
 		shoppingListSet.add("Spinach");
@@ -466,7 +477,7 @@ public class HomeWindow extends JFrame {
             }
         });
 		return b;
-	}
+	}*/
 	
 	private GridPane displayKitchens(){
 		GridPane kitchenList = new GridPane();
@@ -532,11 +543,77 @@ public class HomeWindow extends JFrame {
 		return b;
 	}
 	
+	private GridPane displayList(int width, int height, boolean isIngredients, Set<? extends Nameable> items/*,
+			EventHandler<ActionEvent> itemDest*/){
+		GridPane listPane = new GridPane();
+		listPane.setHgap(3);
+		listPane.setPrefSize(width, height);
+		listPane.setStyle(Style.TEXT);
+		ScrollPane scroll = new ScrollPane();//Scrolling Panel
+		scroll.setStyle(Style.TEXT);
+		scroll.setPrefSize(listPane.getWidth()-30, height);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane itemList = new GridPane();
+		itemList.setPrefSize(300, 200);
+		itemList.setVgap(2);
+		scroll.setContent(itemList);
+		int i = 0;
+		for (Nameable item : items){
+			itemList.add(itemButton(item/*, itemDest*/),0,i);
+			i++;
+		}
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		if (isIngredients){
+			Text qty = new Text("Qty.  |");
+			Text Ingredient = new Text("	Ingredient");
+			listPane.add(qty, 0, 0);
+			listPane.add(Ingredient, 1, 0);
+			listPane.add(scroll, 0, 1, 2, 1);
+			listPane.add(hbBtn, 2, 0);
+		} else {
+			listPane.add(scroll, 0, 0);
+			listPane.add(hbBtn, 1, 0);
+		}
+		return listPane;
+	}
+	
+	private Button itemButton(Nameable item/*, EventHandler<ActionEvent> destination*/){ //TODO: turn this into a generic list button
+		Button b = new Button(item.getName());
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(350);
+		b.setOnAction(nameHandler(b));
+		return b;
+	}
+	
+	private EventHandler<ActionEvent> nameHandler(final Button b){
+		EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				System.out.println("You selected: " + b.getText());
+			}
+		};
+		return handler;
+	}
+	
 	/**
 	 * Tells client to send account updates to server.
 	 */
 	public void updateAccount(){
-		_client.storeAccount(_account.getUserId(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
+		_client.storeAccount(_account.getID(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
 	
 	public void updateFridge(Set<String> ingredients){
