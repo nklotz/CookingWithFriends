@@ -18,6 +18,11 @@ public class Ingredient implements Nameable{
 		_quantity = quantity;
 	}
 	
+	public Ingredient(String name){
+		_name = name;
+		_unit = "";
+		_quantity = 0;
+	}
 	public void setName(String name){
 		_name = name;
 	}
