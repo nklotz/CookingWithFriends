@@ -1,15 +1,9 @@
 package UserInfo;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 
 /**
@@ -32,11 +26,11 @@ public class Account implements Serializable {
 	
 	//Specific to account.
 	private HashSet<Recipe> _recipes;
-	private HashSet<String> _ingredients;
-	private HashSet<String> _shoppingList;
+	private HashSet<Ingredient> _ingredients;
+	private HashSet<Ingredient> _shoppingList;
 	private HashMap<String, Invitation> _invitations;
 	
-	public Account(String userId, HashSet<Recipe> recipes, HashSet<String> ingredients, HashSet<String> list){
+	public Account(String userId, HashSet<Recipe> recipes, HashSet<Ingredient> ingredients, HashSet<Ingredient> list){
 		_userId = userId;
 		_recipes = recipes;
 		_ingredients = ingredients;
@@ -48,8 +42,8 @@ public class Account implements Serializable {
 	public Account(String userId){
 		_userId = userId;
 		_recipes = new HashSet<Recipe>();
-		_ingredients = new HashSet<String>();
-		_shoppingList = new HashSet<String>();
+		_ingredients = new HashSet<Ingredient>();
+		_shoppingList = new HashSet<Ingredient>();
 		_invitations = new HashMap<String, Invitation>();
 	}
 	
@@ -87,15 +81,15 @@ public class Account implements Serializable {
 	 * Sets the list of ingredients in the account.
 	 * @param ing
 	 */
-	public void setIngredients(HashSet<String> ing){
+	public void setIngredients(HashSet<Ingredient> ing){
 		_ingredients = ing;
 	}
 	
-	public void setShoppingList(HashSet<String> SL){
+	public void setShoppingList(HashSet<Ingredient> SL){
 		_shoppingList = SL;
 	}
 	
-	public Set<String> getShoppingList(){
+	public Set<Ingredient> getShoppingList(){
 		return _shoppingList;
 	}
 	
@@ -103,7 +97,7 @@ public class Account implements Serializable {
 	 * Returns the list of ingredients in this account.
 	 * @return HashSet<String> List of ingredients.
 	 */
-	public Set<String> getIngredients(){
+	public Set<Ingredient> getIngredients(){
 		return _ingredients;
 	}
 	
