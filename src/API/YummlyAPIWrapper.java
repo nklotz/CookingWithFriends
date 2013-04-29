@@ -5,11 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,6 @@ import UserInfo.Recipe;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * This is a wrapper class for the Yummly API.
@@ -56,18 +53,13 @@ public class YummlyAPIWrapper implements Wrapper {
 		_searchCache = new HashMap<>();
 		_recipeCache = new HashMap<>();
 		
-		_possibleIngredients = new ArrayList<>();
-		_possibleRestrictions = new ArrayList<>();
-		_possibleAllergies = new ArrayList<>();
-	
-		Type collectionType = new TypeToken<Collection<String>>(){}.getType();
-		//Read ingredient metada
+		//Read ingredient metadata
 		try {
-			_possibleIngredients = _gson.fromJson(new FileReader("ingredients"), collectionType);
-			_possibleRestrictions = _gson.fromJson(new FileReader("dietary_restrictions"), collectionType);
-			_possibleAllergies = _gson.fromJson(new FileReader("allergies"), collectionType);
+			_possibleIngredients = Arrays.asList(_gson.fromJson(new FileReader("ingredients"), String[].class));
+			_possibleRestrictions = Arrays.asList(_gson.fromJson(new FileReader("dietary_restrictions"), String[].class));
+			_possibleAllergies = Arrays.asList(_gson.fromJson(new FileReader("allergies"), String[].class));
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			System.out.println("ERROR: Couldn't parse list of search values.");
+			System.out.println("ERROR: Couldn't read files of search values.");
 		}
 	}
 		
@@ -203,7 +195,6 @@ public class YummlyAPIWrapper implements Wrapper {
 	
 	//Private inner class for reading objects from JSON
 	private class Response {
-		public int totalMatchCount;
 		public List<YummlyRecipe> matches;
 	}
 }

@@ -60,12 +60,15 @@ public class YummlyAPIWrapperTest {
 
 	@Test
 	public void parsingTest() throws IOException, URISyntaxException {
+		System.out.println("---INGREDIENTS---");
 		for (String ingredient : _yummly.getPossibleIngredients()) {
 			System.out.println(ingredient);
 		}
+		System.out.println("---DIETARY RESTRICTIONS---");
 		for (String restriction : _yummly.getPossibleDietaryRestrictions()) {
 			System.out.println(restriction);
 		}
+		System.out.println("---ALLERGIES---");
 		for (String allergy : _yummly.getPossibleAllergies()) {
 			System.out.println(allergy);
 		}
