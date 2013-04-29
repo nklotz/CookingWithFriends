@@ -8,16 +8,28 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.util.HashSet;
 import java.util.Set;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -68,185 +80,462 @@ public class HomeWindow extends JFrame {
     
     
 	private Scene makeScene() {
-		GridPane grid = new GridPane();
+		final GridPane grid = new GridPane();
 		grid.setStyle(Style.BACKGROUND);
 		grid.setAlignment(Pos.TOP_LEFT);
-        grid.setHgap(10);
+        grid.setHgap(20);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Scene scene = new Scene(grid, 900, 500);
+        Scene scene = new Scene(grid, 1000, 500);
         
         Text scenetitle = new Text("Cooking with Friends: Home");
         scenetitle.setStyle(Style.PAGE_HEADER);
         grid.add(scenetitle, 0, 0, 2, 1);
         
-        //USERINFO
-        //header
+        //ME
         Text Me = new Text("Me");
         Me.setStyle(Style.SECTION_HEADER);
         grid.add(Me, 0, 1);
         //pane
         GridPane userGrid = new GridPane();
-        grid.add(userGrid, 0, 2);
+        userGrid.setPrefSize(250, 200);
         userGrid.setStyle(Style.SECTIONS);
         userGrid.setHgap(5);
+        grid.add(userGrid, 0, 2);
         //my info
         Text myInfo = new Text("My Info");
         myInfo.setStyle(Style.INFO_HEADER);
         userGrid.add(myInfo, 0, 0);
-        VBox info = new VBox(2);
+        userGrid.add(displayUserInfo(userGrid), 0, 1, 1, 3);
+        //diet
+        Text diet = new Text("Dietary Preferences");
+        diet.setStyle(Style.INFO_HEADER);
+        userGrid.add(diet, 1, 0);
+        userGrid.add(displayPreferences(), 1, 1);
+        //dislikes
+        Text dislike = new Text("Dislikes");
+        diet.setStyle(Style.INFO_HEADER);
+        userGrid.add(dislike, 1, 2);
+        userGrid.add(displayDislikes(), 1, 3);
         
-        Text name = new Text("Name: " + _account.getUserId());
-        Text area = new Text("Area: " + _account.getAddress());
-        info.getChildren().add(name);
-        info.getChildren().add(area);
-        userGrid.add(info, 0, 1);
+        //MY RECIPES
+        Text MyRecipes = new Text("My Recipes");
+        MyRecipes.setStyle(Style.SECTION_HEADER);
+        grid.add(MyRecipes, 0, 3);
+        //pane
+        GridPane recipeGrid = new GridPane();
+        recipeGrid.setPrefSize(300, 200);
+        recipeGrid.setStyle(Style.SECTIONS);
+        grid.add(recipeGrid, 0, 4);
+        //recipe list
+        recipeGrid.add(displayRecipes(), 0, 0);
         
+        //MY FRIDGE
+        Text MyFridge = new Text("My Fridge");
+        MyFridge.setStyle(Style.SECTION_HEADER);
+        grid.add(MyFridge, 1, 1);
+        //pane 
+        GridPane fridgeGrid = new GridPane();
+        fridgeGrid.setPrefSize(300, 200);
+        fridgeGrid.setStyle(Style.SECTIONS);
+        grid.add(fridgeGrid, 1, 2);
+        //fridge list
+        fridgeGrid.add(displayIngredients(), 0, 0);
         
+        //MY SHOPPING LIST
+        Text ShoppingList = new Text("My Shopping List");
+        ShoppingList.setStyle(Style.SECTION_HEADER);
+        grid.add(ShoppingList, 1, 3);
+        //pane
+        GridPane shoppingGrid = new GridPane();
+        shoppingGrid.setPrefSize(300, 200);
+        shoppingGrid.setStyle(Style.SECTIONS);
+        grid.add(shoppingGrid, 1, 4);
+        //shopping list
+        shoppingGrid.add(displayShoppingList(),0,0);
         
+        //KITCHENS
+        Text Kitchens = new Text("Kitchens");
+        Kitchens.setStyle(Style.SECTION_HEADER);
+        grid.add(Kitchens, 2, 1);
+        //pane
+        GridPane kitchenGrid = new GridPane();
+        kitchenGrid.setPrefSize(300,430);
+        kitchenGrid.setStyle(Style.SECTIONS);
+        grid.add(kitchenGrid, 2, 2, 1, 3);
+        //kitchen list
+        kitchenGrid.add(displayKitchens(), 0, 0);
         
-		/*
-		JPanel master = new JPanel(new FlowLayout());
-		master.setPreferredSize(new Dimension(950,550));
-		master.setBackground(new Color(255,102,102));
-		this.add(master);
-		
-		JPanel panel = new JPanel(new GridBagLayout());
-		panel.setPreferredSize(new Dimension(600, 500));
-		panel.setBackground(new Color(255,102,102));
-		GridBagConstraints c = new GridBagConstraints();
-		
-		// USER INFO
-		JLabel meLabel = new JLabel("Me");
-		JPanel me = new JPanel(new GridBagLayout());
-		me.setPreferredSize(new Dimension(250, 180));
-		me.setVisible(true);
-		me.setBackground(Color.gray);
-		//my Info
-		JLabel myInfoLabel = new JLabel("My Info ");
-        c.gridx = 0;
-        c.gridy = 0;
-        me.add(myInfoLabel,c);
-		JTextArea myInfo = new JTextArea("Name: " + _account.getUserId() + " \n Area: " + _account.getAddress());
-		myInfo.setBackground(Color.white);
-		myInfo.setPreferredSize(new Dimension(150,80));
-		c.gridx = 0;
-		c.gridy = 1;
-		me.add(myInfo, c);
-		//Dietary Restrictions
-		JLabel dietLabel = new JLabel("Dietary Restrictions");
-        c.gridx = 1;
-        c.gridy = 0;
-        me.add(dietLabel,c);
-        JTextArea diet = new JTextArea("-Vegan \n-Gluten Free");
-        diet.setBackground(Color.white);
-        diet.setPreferredSize(new Dimension(90,30));
-        c.gridx = 1;
-        c.gridy = 1;
-        me.add(diet,c);
-        //Dislikes
-        JLabel dislikesLabel = new JLabel("Dislikes");
-        c.gridx = 1;
-        c.gridy = 2;
-        me.add(dislikesLabel,c);
-        JTextArea dislikes = new JTextArea("Squash");
-        dislikes.setBackground(Color.white);
-        dislikes.setPreferredSize(new Dimension(90,30));
-        c.gridx = 1;
-        c.gridy = 3;
-        me.add(dislikes,c);
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(meLabel,c);
-        c.gridx = 0;
-        c.gridy = 1;
-        panel.add(me,c);
-        
-        //MyFRIDGE
-        JLabel fridgeLabel = new JLabel("In the 'Fridge!");
-		JPanel fridge = new JPanel();
-		fridge.setPreferredSize(new Dimension(250, 180));
-		fridge.setVisible(true);
-		fridge.setBackground(Color.gray);
-		//In My Fridge
-		_ingredients = new JTextArea("- \n- \n- \n- \n- \n- \n- \n- \n- \n");
-		_ingredients.setBackground(Color.white);
-		_ingredients.setPreferredSize(new Dimension(240,170));
-		fridge.add(_ingredients);
-		c.gridx = 1;
-		c.gridy = 0;
-		panel.add(fridgeLabel,c);
-		c.gridx = 1;
-		c.gridy = 1;
-		panel.add(fridge,c);
-        
-		//MY_RECIPES
-		JLabel myRecipesLabel = new JLabel("My Recipes");
-		JPanel myRecipes = new JPanel();
-		myRecipes.setPreferredSize(new Dimension(250, 180));
-		myRecipes.setVisible(true);
-		myRecipes.setBackground(Color.gray);
-		//recipes
-		_recipes = new JTextArea("- \n- \n- \n- \n- \n- \n- \n- \n- \n");
-		_recipes.setBackground(Color.white);
-		_recipes.setPreferredSize(new Dimension(240,170));
-		myRecipes.add(_recipes);
-		c.gridx = 0;
-		c.gridy = 2;
-		panel.add(myRecipesLabel,c);
-		c.gridx = 0;
-		c.gridy = 3;
-		panel.add(myRecipes,c);
-		
-		//ShoppingList
-		JLabel shoppingLabel = new JLabel("My Shopping List");
-		JPanel shopping = new JPanel();
-		shopping.setPreferredSize(new Dimension(250, 180));
-		shopping.setVisible(true);
-		shopping.setBackground(Color.gray);
-		//shopping list
-		_shoppingList = new JTextArea("- \n- \n- \n- \n- \n- \n- \n- \n- \n");
-		_shoppingList.setBackground(Color.white);
-		_shoppingList.setPreferredSize(new Dimension(240,170));
-		shopping.add(_shoppingList);
-		c.gridx = 1;
-		c.gridy = 2;
-		panel.add(shoppingLabel,c);
-		c.gridx = 1;
-		c.gridy = 3;
-		panel.add(shopping,c);
-		
-		//Group Kitchens
-		JLabel groupLabel = new JLabel("Group Kitchens");
-		JPanel group = new JPanel();
-		group.setPreferredSize(new Dimension(250,370));
-		group.setVisible(true);
-		group.setBackground(Color.gray);
-		//kitchen list
-		JTextArea kitchenList = new JTextArea("-West House \n-The Hall \n-Breakfast Club \n-cs032 term project team");
-		kitchenList.setBackground(Color.white);
-		kitchenList.setPreferredSize(new Dimension(240,360));
-		group.add(kitchenList);
-		//panel.add(groupLabel);
-		//panel.add(group);
-		
-		JPanel rightPanel = new JPanel();
-		rightPanel.setPreferredSize(new Dimension(300, 400));
-		rightPanel.setBackground(new Color(255,102,102));
-		rightPanel.add(groupLabel);
-		rightPanel.add(group);
-		
-		//Initially Populate Fields
-		this.updateFridge(_account.getIngredients());
-		this.updateRecipes(_account.getRecipes());
-		this.updateShoppingList(_account.getShoppingList());
-		
-		master.add(panel);
-		master.add(rightPanel);
-		this.pack();*/
 		return scene;
 		
+	}
+	
+	private Pane displayUserInfo(final GridPane grid){
+        //my info
+        GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 160);
+        Text name = new Text("Name: ");
+        Text userName = new Text(_account.getUserId());
+        Text area = new Text("Area: ");
+        Text userArea = new Text(_account.getAddress());
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+        info.add(area,0,1);
+        info.add(userArea, 1, 1);
+        //edit Info Button
+        Button editInfo = new Button("Edit Info");
+        editInfo.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(editInfo);
+        info.add(hbBtn, 1, 2);
+        
+        editInfo.setOnAction(new EventHandler<ActionEvent>() {
+       	 
+            @Override
+            public void handle(ActionEvent e) {
+            	grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
+            }
+        });
+        return info;
+	}
+	
+	private Pane editPersonalInfo(final GridPane grid){
+        GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 160);
+        Text name = new Text("Name: ");
+        final TextField userName = new TextField();
+        Text area = new Text("Area: ");
+        final TextField userArea = new TextField();
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+        info.add(area,0,1);
+        info.add(userArea, 1, 1);
+        //edit Info Button
+        Button save = new Button("Save");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 2);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String newID = userName.getText();
+            	_account.setUserId(newID);
+            	_account.setAddress(userArea.getText());
+            	updateAccount(); 
+            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            }
+        });
+        return info;
+	}
+	
+	public GridPane displayPreferences(){
+		GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 80);
+        //TODO: ACCOUNT.getPreferences
+        Button edit = new Button("+/-");
+        edit.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(edit);
+        info.add(hbBtn, 1, 2);
+        return info;
+	}
+	
+	public GridPane displayDislikes(){
+		GridPane dislikes = new GridPane();
+		dislikes.setStyle(Style.TEXT);
+		dislikes.setPrefSize(130, 80);
+		//TODO: ACCOUNT.getDislikes (do we really need this?)
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(edit);
+        dislikes.add(hbBtn, 1, 2);
+        return dislikes;
+	}
+	
+	public GridPane displayRecipes(){
+		GridPane recipes = new GridPane();
+		recipes.setHgap(3);
+		recipes.setPrefSize(350, 176);
+		recipes.setStyle(Style.TEXT);
+		ScrollPane rScroll = new ScrollPane();//Scrolling Panel
+		rScroll.setStyle(Style.TEXT);
+		rScroll.setPrefSize(222, 176);
+		rScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		rScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		rScroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		rScroll.setContent(rList);
+		Set<Recipe> recipeSet = _account.getRecipes();//TODO: can we alphabetical order these?
+		//TODO: get rid of the fake recipes
+		recipeSet.add(new MockRecipe("Beef Stew"));
+		recipeSet.add(new MockRecipe("Eye of Newt"));
+		recipeSet.add(new MockRecipe("Tongue of Cat"));
+		recipeSet.add(new MockRecipe("Fritatta"));
+		recipeSet.add(new MockRecipe("Modest Mice"));
+		recipeSet.add(new MockRecipe("Burger"));
+		recipeSet.add(new MockRecipe("Duck Confit"));
+		recipeSet.add(new MockRecipe("Toad in a Hole"));
+		recipeSet.add(new MockRecipe("Toad in a Blanket"));
+		recipeSet.add(new MockRecipe("Special Lassi"));
+		int i = 0;
+		for (Recipe r : recipeSet){
+			rList.add(recipeButton(r),0,i);
+			i++;
+		}
+		recipes.add(rScroll, 0, 0);
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+        	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		recipes.add(hbBtn, 1, 0);
+		return recipes;
+	}
+	
+	private Button recipeButton(final Recipe r){ //TODO: turn this into a generic list button
+		Button b = new Button(r.getName());
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(350);
+		b.setOnAction(new EventHandler<ActionEvent>() {
+         	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Go to recipe page
+            	System.out.println(r.getName() + "!!!!");
+            }
+        });
+		return b;
+	}
+	
+	private GridPane displayIngredients(){
+		GridPane ingredients = new GridPane();
+		ingredients.setHgap(3);
+		ingredients.setPrefSize(350, 176);
+		ingredients.setStyle(Style.TEXT);
+		ScrollPane iScroll = new ScrollPane();//Scrolling Panel
+		iScroll.setStyle(Style.TEXT);
+		iScroll.setPrefSize(222, 176);
+		iScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		iScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		iScroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		iScroll.setContent(rList);
+		Set<String> ingredientSet = _account.getIngredients();//TODO: we should probably have ingredient object with a quantity, etc.
+		//TODO: get rid of the fake recipes
+		ingredientSet.add("Apple");
+		ingredientSet.add("Orange");
+		ingredientSet.add("Banana");
+		ingredientSet.add("Quinoa");
+		ingredientSet.add("Milk");
+		ingredientSet.add("Ground Beef");
+		ingredientSet.add("Duck Breast");
+		ingredientSet.add("Eggs");
+		ingredientSet.add("Duck Eggs");
+		ingredientSet.add("Coconut Water");
+		int i = 0;
+		for (String s : ingredientSet){
+			rList.add(ingredientButton(s),0,i);
+			i++;
+		}
+		ingredients.add(iScroll, 0, 0);
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+        	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		ingredients.add(hbBtn, 1, 0);
+		return ingredients;
+	}
+	
+	private Button ingredientButton(final String s){ //TODO: turn this into a generic list button
+		Button b = new Button(s);
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(350);
+		b.setOnAction(new EventHandler<ActionEvent>() {
+         	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Go to recipe page
+            	System.out.println(s + "!!!!");
+            }
+        });
+		return b;
+	}
+	
+	private GridPane displayShoppingList(){
+		GridPane shoppingList = new GridPane();
+		shoppingList.setHgap(3);
+		shoppingList.setPrefSize(350, 176);
+		shoppingList.setStyle(Style.TEXT);
+		ScrollPane sScroll = new ScrollPane();//Scrolling Panel
+		sScroll.setStyle(Style.TEXT);
+		sScroll.setPrefSize(222, 176);
+		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		sScroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		sScroll.setContent(rList);
+		Set<String> shoppingListSet = _account.getShoppingList();//TODO: we should probably have ingredient object with a quantity, etc.
+		//TODO: get rid of the fake recipes
+		shoppingListSet.add("Lettuce");
+		shoppingListSet.add("Spinach");
+		shoppingListSet.add("Brocoli");
+		shoppingListSet.add("Caviar");
+		shoppingListSet.add("Truffle Oil");
+		shoppingListSet.add("Yams");
+		shoppingListSet.add("Game Hen");
+		shoppingListSet.add("Quail Eggs");
+		shoppingListSet.add("Goat Cheese");
+		shoppingListSet.add("Coconut");
+		int i = 0;
+		for (String s : shoppingListSet){
+			rList.add(shoppingButton(s),0,i);
+			i++;
+		}
+		shoppingList.add(sScroll, 0, 0);
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		shoppingList.add(hbBtn, 1, 0);
+		return shoppingList;
+	}
+	
+	private Button shoppingButton(final String s){ //TODO: turn this into a generic list button
+		Button b = new Button(s);
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(350);
+		b.setOnAction(new EventHandler<ActionEvent>() {
+         	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Go to recipe page
+            	System.out.println(s + "!!!!");
+            }
+        });
+		return b;
+	}
+	
+	private GridPane displayKitchens(){
+		GridPane kitchenList = new GridPane();
+		kitchenList.setHgap(3);
+		kitchenList.setPrefSize(350, 400);
+		kitchenList.setStyle(Style.TEXT);
+		ScrollPane sScroll = new ScrollPane();//Scrolling Panel
+		sScroll.setStyle(Style.TEXT);
+		sScroll.setPrefSize(222, 400);
+		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		sScroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		sScroll.setContent(rList);
+		Set<String> kitchenListSet = _account.getKitchens();//TODO: we should probably have ingredient object with a quantity, etc.
+		//TODO: get rid of the fake recipes
+		if (kitchenListSet == null){
+			kitchenListSet = new HashSet<>();
+		}
+		kitchenListSet.add("West House");
+		kitchenListSet.add("Home");
+		kitchenListSet.add("38 Transit");
+		kitchenListSet.add("Playboy Mansion");
+		kitchenListSet.add("Natalie Surprise Party");
+		kitchenListSet.add("Date Party");
+		int i = 0;
+		for (String s : kitchenListSet){
+			rList.add(kitchenButton(s),0,i);
+			i++;
+		}
+		kitchenList.add(sScroll, 0, 0);
+		Button edit = new Button("+/-");
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		kitchenList.add(hbBtn, 1, 0);
+		return kitchenList;
+	}
+	
+	private Button kitchenButton(final String s){ //TODO: turn this into a generic list button
+		Button b = new Button(s);
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(350);
+		b.setOnAction(new EventHandler<ActionEvent>() {
+         	 
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Go to kitchen
+            	System.out.println(s + "!!!!");
+            }
+        });
+		return b;
+	}
+	
+	/**
+	 * Tells client to send account updates to server.
+	 */
+	public void updateAccount(){
+		_client.storeAccount(_account.getUserId(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
 	
 	public void updateFridge(Set<String> ingredients){
