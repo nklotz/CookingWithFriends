@@ -21,7 +21,7 @@ public class Kitchen implements Serializable{
 	private HashSet<String> _userIDs;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
-	private HashMap<String, ArrayList<String>> _ingToUsers;
+	private HashMap<Ingredient, ArrayList<String>> _ingToUsers;
 	
 	private String _id, _name;
 	private HashSet<String> _activeUsers;
@@ -35,7 +35,7 @@ public class Kitchen implements Serializable{
 		_events = events;
 		_recipes = recipes;
 
-		_ingToUsers = new HashMap<String, ArrayList<String>>();
+		_ingToUsers = new HashMap<Ingredient, ArrayList<String>>();
 		_activeUsers = activeUsers;
 		_requestedUsers = requestedUsers;
 	}
@@ -44,7 +44,7 @@ public class Kitchen implements Serializable{
 		_userIDs = new HashSet<String>();
 		_events = new HashSet<Event>();
 		_recipes = new HashSet<Recipe>();
-		_ingToUsers = new HashMap<String, ArrayList<String>>();
+		_ingToUsers = new HashMap<Ingredient, ArrayList<String>>();
 		_activeUsers = new HashSet<String>();
 		_requestedUsers = new HashSet<String>();
 		_name = name;

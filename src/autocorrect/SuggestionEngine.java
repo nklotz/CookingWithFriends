@@ -30,6 +30,8 @@ public class SuggestionEngine implements Engine{
 	}
 	
 	public SuggestionEngine(List<List<String>> words){
+		System.out.println("WORDS SIZE: " + words.size());
+		System.out.println("WORDS: " + words);
 		trie_ = new Trie(words);
 		g_ = new SuggestionGenerator(true, true, false, 2, trie_);
 		r_ = new SuggestionRanker(words);

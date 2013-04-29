@@ -23,10 +23,10 @@ public class APIInfo {
 		List<List<String>> iList = new ArrayList<List<String>>();
 		iList.add(ingredients);
 		List<List<String>> rList = new ArrayList<List<String>>();
-		iList.add(restrictions);
+		rList.add(restrictions);
 		List<List<String>> aList = new ArrayList<List<String>>();
-		iList.add(allergies);
-		System.out.println(iList);
+		aList.add(allergies);
+		
 		//Creates the suggestion engines for autocorrect.
 		iEng_ = new SuggestionEngine(iList);
 		rEng_ = new SuggestionEngine(rList);

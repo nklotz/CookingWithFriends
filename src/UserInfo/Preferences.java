@@ -45,6 +45,31 @@ public class Preferences implements Serializable {
 	public void addAllergy(String a){
 		allergies_.add(a);
 	}
+	
+	public HashSet<String> getRestrictions(){
+		return restrictions_;
+	}
+	
+	public HashSet<String> getAllergies(){
+		return allergies_;
+	}
+	
+	public HashSet<String> getDislikes(){
+		return dislikes_;
+	}
+	
+	public void setRestrictions(HashSet<String> set){
+		restrictions_ = set;
+	}
+	
+	public void setAllergies(HashSet<String> set){
+		allergies_ = set;
+	}
+	
+	public void setDislikes(HashSet<String> set){
+		dislikes_ = set;
+	}
+	
 
 	@Override
 	public String toString() {

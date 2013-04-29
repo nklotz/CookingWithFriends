@@ -39,6 +39,7 @@ public class Trie implements WordStructure{
 	 */
 	public void addLists(List<List<String>> lists){
 		for(List<String> words: lists){
+			System.out.println("add lists WORDS: " + words);
 			for(String word: words){
 				addNode(word, root_, 0);
 			}
