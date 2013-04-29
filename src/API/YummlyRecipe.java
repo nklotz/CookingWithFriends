@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import UserInfo.Nameable;
 import UserInfo.Recipe;
 /**
  * Recipe stored by the user.
  * @author jschear
  *
  */
-public class YummlyRecipe implements Recipe {
+public class YummlyRecipe implements Recipe, Nameable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -99,6 +100,13 @@ public class YummlyRecipe implements Recipe {
 	@Override
 	public String getImageUrl() {
 		// TODO IMPLEMENT THIS
+		return null;
+	}
+
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
