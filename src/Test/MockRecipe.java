@@ -49,12 +49,6 @@ public class MockRecipe implements Recipe {
 	}
 
 	@Override
-	public String getID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getTime() {
 		// TODO Auto-generated method stub
 		return null;
@@ -62,6 +56,12 @@ public class MockRecipe implements Recipe {
 
 	@Override
 	public String getImageUrl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getID() {
 		// TODO Auto-generated method stub
 		return null;
 	}

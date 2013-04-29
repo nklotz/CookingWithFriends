@@ -11,5 +11,5 @@ public interface Nameable {
 
 	public String getName();
 	
-	public String getId();
+	public String getID();
 }
