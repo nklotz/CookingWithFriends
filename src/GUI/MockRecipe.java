@@ -8,6 +8,10 @@ import UserInfo.Recipe;
 
 public class MockRecipe implements Recipe, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _name;
 
 	public MockRecipe(String name) {
