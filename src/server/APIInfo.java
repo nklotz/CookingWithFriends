@@ -1,5 +1,6 @@
 package server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,11 @@ import autocorrect.SuggestionEngine;
  * @author hacheson
  *
  */
-public class APIInfo {
+public class APIInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Engine iEng_;
 	private Engine rEng_;
 	private Engine aEng_;
