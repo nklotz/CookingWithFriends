@@ -31,6 +31,7 @@ public class HomeScene implements GUIScene {
 	private Account _account;
 	private GUIFrame _frame;
 	private APIInfo _autocorrect;
+	private Client _client;
 	
 	public HomeScene(Account account, GUIFrame frame, APIInfo info, Client client){
 		_account = account;
