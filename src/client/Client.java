@@ -114,6 +114,11 @@ public class Client extends Thread {
 							System.out.println("read as login");
 							_login.dispose();
 							_gui = new GUIFrame(this, response.getAccount());
+							System.out.println("sleep");
+							Thread.sleep(5000);
+							System.out.println("awake");
+							_gui.loadCopyScene();
+							
 							_kitchens = response.getKitchenMap();
 						}
 					} else {
