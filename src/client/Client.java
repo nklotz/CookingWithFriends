@@ -117,7 +117,7 @@ public class Client extends Thread {
 							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
-							_gui = new GUIFrame(this, response.getAccount());
+							_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 							System.out.println("sleep");
 							Thread.sleep(5000);
 							System.out.println("awake");

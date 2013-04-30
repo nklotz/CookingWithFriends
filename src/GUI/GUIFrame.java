@@ -5,6 +5,7 @@ import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JFrame;
 
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import client.Client;
@@ -17,8 +18,9 @@ public class GUIFrame extends JFrame {
 	private Kitchen _kitchen;
 	private GUIFrame _frame;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
+	private APIInfo _engines;
 	
-	public GUIFrame(Client client, Account account){
+	public GUIFrame(Client client, Account account, APIInfo info){
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 550);
@@ -33,7 +35,7 @@ public class GUIFrame extends JFrame {
     	
     	_account = account;
     	_frame = this;
-    	
+    	_engines = info;
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
@@ -72,7 +74,6 @@ public class GUIFrame extends JFrame {
     			_panel.setScene(kitchenScene.makeScene());
     		}
 		});
-		
 	}
 
 }

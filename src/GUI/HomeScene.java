@@ -15,19 +15,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
-import UserInfo.Recipe;
 
 public class HomeScene implements GUIScene {
 
-	Account _account;
-	GUIFrame _frame;
+	private Account _account;
+	private GUIFrame _frame;
+	private APIInfo _autocorrect;
 	
-	public HomeScene(Account account, GUIFrame frame){
+	public HomeScene(Account account, GUIFrame frame, APIInfo info){
 		_account = account;
 		_frame = frame;
+		_autocorrect = info;
 	}
 	
 	@Override
@@ -154,9 +156,8 @@ public class HomeScene implements GUIScene {
        	 
             @Override
             public void handle(ActionEvent e) {
-            	System.out.println("HEREEEE");
-            	_frame.loadCopyScene();
-            	//grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
+            	//_frame.loadCopyScene();
+            	grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
             }
         });
         return info;
