@@ -450,12 +450,6 @@ public class HomeScene implements GUIScene {
 		if (kitchenListSet == null){
 			kitchenListSet = new HashSet<>();
 		}
-		kitchenListSet.add(new KitchenName("West House", "1"));
-		kitchenListSet.add(new KitchenName("Home", "2"));
-		kitchenListSet.add(new KitchenName("38 Transit", "3"));
-		kitchenListSet.add(new KitchenName("Playboy Mansion", "4"));
-		kitchenListSet.add(new KitchenName("Natalie Surprise Party", "5"));
-		kitchenListSet.add(new KitchenName("Date Party", "6"));
 		int i = 0;
 		for (KitchenName s : kitchenListSet){
 			rList.add(kitchenButton(s.getName()),0,i);
