@@ -13,8 +13,6 @@ import autocorrect.SuggestionEngine;
  *
  */
 public class APIInfo {
-
-	
 	private Engine iEng_;
 	private Engine rEng_;
 	private Engine aEng_;
@@ -48,5 +46,35 @@ public class APIInfo {
 	
 	public Engine getAllergyEngine(){
 		return aEng_;
+	}
+	
+	/**
+	 * Wrapper for the suggestion engine to suggest restrictions.
+	 * @param restriction
+	 * @return
+	 */
+	public List<String> getRestrictionSuggestions(String restriction){
+		rEng_.setText(restriction);
+		return rEng_.suggest();
+	}
+	
+	/**
+	 * Wrapper for the suggestion engine to suggest ingredients.
+	 * @param ingredient
+	 * @return
+	 */
+	public List<String> getIngredientSuggestions(String ingredient){
+		iEng_.setText(ingredient);
+		return iEng_.suggest();
+	}
+	
+	/**
+	 * Wrapper for the suggestion engine to suggest allergies.
+	 * @param allergy
+	 * @return
+	 */
+	public List<String> getAllergySuggestions(String allergy){
+		aEng_.setText(allergy);
+		return aEng_.suggest();
 	}
 }

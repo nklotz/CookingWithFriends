@@ -158,7 +158,7 @@ public class ClientHandler extends Thread {
 	
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
-			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens));
+			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _info));
 		}
 		else{
 			RequestReturn toReturn = new RequestReturn(1);

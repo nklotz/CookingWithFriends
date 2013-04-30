@@ -6,6 +6,7 @@ import javafx.embed.swing.JFXPanel;
 import javax.swing.JFrame;
 
 import UserInfo.Account;
+import UserInfo.Kitchen;
 import client.Client;
 
 public class GUIFrame extends JFrame {
@@ -13,6 +14,7 @@ public class GUIFrame extends JFrame {
 	private Client _client;
 	private JFXPanel _panel;
 	private Account _account;
+	private Kitchen _kitchen;
 	private GUIFrame _frame;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	
@@ -57,7 +59,6 @@ public class GUIFrame extends JFrame {
     		}
 		});
     		
-    		
 	}
 	
 	public void loadHomeScene(){
@@ -65,8 +66,17 @@ public class GUIFrame extends JFrame {
 		_panel.setScene(homeCopy.makeScene());
 	}
 	
-	public void loadKitchenScene(String kitchenID){
-		//_client.
+	public void loadKitchenScene(Kitchen kitchen){
+		_kitchen = kitchen;
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			//CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
+    			KitchenScene kitchenScene = new KitchenScene(_kitchen, _frame);
+    			_panel.setScene(kitchenScene.makeScene());
+    		}
+		});
 		
 	}
+
 }
