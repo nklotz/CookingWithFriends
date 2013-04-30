@@ -23,6 +23,7 @@ public class GUIFrame extends JFrame{
 	private Account _account;;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	private APIInfo _engines;
+	private Map<KitchenName,Kitchen> _kitchens;
 	
 	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, APIInfo engines) {
 		super("Cooking with Friends!");
@@ -49,11 +50,12 @@ public class GUIFrame extends JFrame{
     	_client = client;
     	_account = account;   	
     	_engines = engines;
+    	_kitchens = kitchens;
     	loadHomeScene();
 	}
 	
-	public void loadSearchScene(Map<KitchenName, Kitchen> kitchens){
-		_searchScene = new SearchScene(_account, this, kitchens);
+	public void loadSearchScene(){
+		_searchScene = new SearchScene(_account, this, _kitchens);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {

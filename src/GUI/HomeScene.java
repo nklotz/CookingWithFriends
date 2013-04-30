@@ -353,7 +353,7 @@ public class HomeScene implements GUIScene {
             		b.setOnAction(new EventHandler<ActionEvent>(){
             			@Override
             			public void handle(ActionEvent e){
-            				_frame.loadSearchScene(null);
+            				_frame.loadSearchScene();
             			}
             		});
             		listPane.add(b, 0, 1, 2, 1);

@@ -36,4 +36,9 @@ public class KitchenName implements Nameable, Serializable{
 	public String getID(){
 		return _id;
 	}
+	
+	@Override
+    public int hashCode() {
+		return (_name.hashCode() + _id.hashCode());
+    }
 }

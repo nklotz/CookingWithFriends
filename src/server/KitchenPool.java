@@ -55,13 +55,17 @@ public class KitchenPool {
 	 * Adds a kitchen and extracts users.
 	 */
 	public void addKitchen(Kitchen kitchen){
-		System.out.println("kitchen: " + kitchen);
+		System.out.println("adding kitchen: " + kitchen);
+		System.out.println("active users: " + kitchen.getActiveUsers());
+		
 		_idToKitchen.put(kitchen.getID(), kitchen);
-		HashSet<String> users = new HashSet<String>();
-		for(String u: kitchen.getActiveUsers()){
-			users.add(u);
-		}
-		_kIDtoUsers.put(kitchen.getKitchenName(), users);
+		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
+		
+		System.out.println(_kIDtoUsers.containsKey(kitchen.getKitchenName()));
+		System.out.println(kitchen.getKitchenName().hashCode());
+		System.out.println(new KitchenName(kitchen.getName(), kitchen.getID()).hashCode());
+		System.out.println("check that kidtousers has kitchenName " + _kIDtoUsers.get(kitchen.getKitchenName()));
+		System.out.println("check 2: " + _kIDtoUsers.get(new KitchenName(kitchen.getName(), kitchen.getID())));
 	}
 	
 	/**
@@ -70,14 +74,12 @@ public class KitchenPool {
 	 */
 	public void addNewKitchen(Kitchen kitchen){
 		_idToKitchen.put(kitchen.getID(), kitchen);
-		HashSet<String> users = new HashSet<String>();
 		for(String u: kitchen.getActiveUsers()){
 			if(_userToKitchens.containsKey(u)){
 				_userToKitchens.get(u).add(kitchen.getKitchenName());
 			}
-			users.add(u);
 		}
-		_kIDtoUsers.put(kitchen.getKitchenName(), users);
+		_kIDtoUsers.put(kitchen.getKitchenName(),  kitchen.getActiveUsers());
 	}
 	
 	/**
@@ -87,6 +89,7 @@ public class KitchenPool {
 		System.out.println("oepning account " + account.getID());
 		String userName = account.getID();
 		HashSet<KitchenName> kitchenIDs = account.getKitchens();
+		System.out.println("HERE ARE THE account's kitchens " + kitchenIDs);
 		_userToKitchens.put(userName, kitchenIDs);
 		if (kitchenIDs != null){
 			for(KitchenName k: kitchenIDs){
@@ -107,10 +110,12 @@ public class KitchenPool {
 		System.out.println("removing user " + userID + " from Kitchen pool");
 	
 		HashSet<KitchenName> kitchens = _userToKitchens.get(userID);
+		System.out.println("kitchens: " + kitchens);
 		if (kitchens != null){
 			for(KitchenName k: kitchens){
 				HashSet<String> users = _kIDtoUsers.get(k);
 				System.out.println("checking if kitchen " + k.getName() + " has active users");
+				System.out.println("users: " + users);
 				if(!hasActiveUser(users, userID)){
 					System.out.println("it doesn't! remove!");				
 					removeKitchen(k.getID());
