@@ -43,6 +43,10 @@ public class Kitchen implements Serializable, Nameable{
 		return _name;
 	}
 	
+	public Set<Recipe> getRecipes(){
+		return _recipes;
+	}
+	
 	public KitchenName getKitchenName(){
 		return new KitchenName(_name, _id);
 	}

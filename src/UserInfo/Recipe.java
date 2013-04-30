@@ -8,7 +8,7 @@ import java.util.List;
  * @author hacheson & jschear
  *
  */
-public interface Recipe extends Serializable, Nameable {
+public interface Recipe extends Nameable, Serializable {
 	
 	public String getName();
 	
