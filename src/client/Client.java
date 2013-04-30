@@ -108,6 +108,7 @@ public class Client extends Thread {
 				System.out.println("received response");
 				if (response != null){
 					int type = response.getType();
+					System.out.println("got response");
 					assert(type == 1);
 					if (response.getCorrect()){
 						if (_login.isNewAccount()){
@@ -121,7 +122,7 @@ public class Client extends Thread {
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens);
+							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
 							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 						}
 					} else {

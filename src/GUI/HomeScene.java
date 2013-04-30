@@ -10,6 +10,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -50,7 +51,7 @@ public class HomeScene implements GUIScene {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Scene scene = new Scene(grid, 1000, 500);
+        Scene scene = new Scene(grid, 1200, 500);
         
         Text scenetitle = new Text("Cooking with Friends: Home");
         scenetitle.setStyle(Style.PAGE_HEADER);
@@ -62,7 +63,7 @@ public class HomeScene implements GUIScene {
         grid.add(Me, 0, 1);
         //pane
         GridPane userGrid = new GridPane();
-        userGrid.setPrefSize(250, 200);
+        userGrid.setPrefSize(300, 200);
         userGrid.setStyle(Style.SECTIONS);
         userGrid.setHgap(5);
         grid.add(userGrid, 0, 2);
@@ -92,7 +93,7 @@ public class HomeScene implements GUIScene {
         recipeGrid.setStyle(Style.SECTIONS);
         grid.add(recipeGrid, 0, 4);
         //recipe list
-        recipeGrid.add(displayList(350, 176, false, _account.getRecipes(), new RecipeHandler<ActionEvent>()), 0, 0);
+        recipeGrid.add(displayList(350, 176, false, false, _account.getRecipes(), new RecipeHandler<ActionEvent>()), 0, 0);
         
         //MY FRIDGE
         Text MyFridge = new Text("My Fridge");
@@ -104,7 +105,7 @@ public class HomeScene implements GUIScene {
         fridgeGrid.setStyle(Style.SECTIONS);
         grid.add(fridgeGrid, 1, 2);
         //fridge list
-        fridgeGrid.add(displayList(350, 176, true, _account.getIngredients(), new EventHandler<ActionEvent>(){
+        fridgeGrid.add(displayList(350, 176, true, true, _account.getIngredients(), new EventHandler<ActionEvent>(){
         	@Override
     		public void handle(ActionEvent e) {
     			System.out.println("This doesn't do anything.");
@@ -121,7 +122,7 @@ public class HomeScene implements GUIScene {
         shoppingGrid.setStyle(Style.SECTIONS);
         grid.add(shoppingGrid, 1, 4);
         //shopping list
-        shoppingGrid.add(displayList(350, 176, true, _account.getShoppingList(), new EventHandler<ActionEvent>(){
+        shoppingGrid.add(displayList(350, 176, true, false, _account.getShoppingList(), new EventHandler<ActionEvent>(){
         	@Override
     		public void handle(ActionEvent e) {
     			System.out.println("This doesn't do anything.");
@@ -267,7 +268,10 @@ public class HomeScene implements GUIScene {
 		rList.setPrefSize(300, 200);
 		rList.setVgap(2);
 		sScroll.setContent(rList);
-		Set<KitchenName> kitchenListSet = _account.getKitchens();//TODO: we should probably have ingredient object with a quantity, etc.
+		Set<KitchenName> kitchenListSet = _account.getKitchens();
+		if (kitchenListSet == null){
+			kitchenListSet = new HashSet<>();
+		}
 		System.out.println("kitchens: " + kitchenListSet);
 		int i = 0;
 		for (KitchenName s : kitchenListSet){
@@ -277,6 +281,7 @@ public class HomeScene implements GUIScene {
 		}
 		kitchenList.add(sScroll, 0, 0);
 		Button edit = new Button("+/-");
+		edit.setMinWidth(20);
 		edit.setStyle(Style.BUTTON);
 		HBox hbBtn = new HBox(10);
         hbBtn.setPrefHeight(80);
@@ -303,20 +308,21 @@ public class HomeScene implements GUIScene {
 		return b;
 	}
 	
-	private GridPane displayList(int width, int height, boolean isIngredients, Set<? extends Nameable> items,
+	private GridPane displayList(int width, int height, final boolean isIngredients, final boolean isFridge, final Set<? extends Nameable> items,
 			EventHandler<ActionEvent> itemDest){
-		GridPane listPane = new GridPane();
+		final GridPane listPane = new GridPane();
 		listPane.setHgap(3);
 		listPane.setPrefSize(width, height);
 		listPane.setStyle(Style.TEXT);
 		ScrollPane scroll = new ScrollPane();//Scrolling Panel
 		scroll.setStyle(Style.TEXT);
 		scroll.setPrefSize(width, height);
+		scroll.setMinWidth(width);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setFitToWidth(true);
 		//grid panel for buttons
-		GridPane itemList = new GridPane();
+		final GridPane itemList = new GridPane();
 		itemList.setPrefSize(width,height);
 		itemList.setVgap(2);
 		scroll.setContent(itemList);
@@ -335,11 +341,55 @@ public class HomeScene implements GUIScene {
 		edit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-            	//TODO: Edit recipes
+            	int j = 0;
+            	for (Nameable item : items){
+            		System.out.println("calling");
+            		itemList.add(removeButton(item, isIngredients, isFridge), 2,j);
+            		j++;
+            	}
+            	if (!isIngredients){
+            		Button b = new Button("Search Recipes");
+            		b.setStyle(Style.BUTTON);
+            		b.setOnAction(new EventHandler<ActionEvent>(){
+            			@Override
+            			public void handle(ActionEvent e){
+            				_frame.loadSearchScene(null);
+            			}
+            		});
+            		listPane.add(b, 0, 1, 2, 1);
+            	}
             }
+
+			private Button removeButton(final Nameable item, final boolean isIngredient, final boolean isFridge) {
+				Button b = new Button("X");
+				System.out.println(b.getText());
+				b.setStyle(Style.RECIPE);
+				//b.setMinWidth(40);
+				b.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent e){
+						//TODO: Have these also change the edit button to a save button, add a search bar on the bottom.
+						if (isIngredient){
+							Set<Ingredient> list = null;
+							if(isFridge){
+								list = _account.getIngredients();
+								list.remove(item);
+								_account.setIngredients(list);
+							} else {
+								list = _account.getShoppingList();
+								list.remove(item);
+								_account.setShoppingList(list);
+							}
+						} else {
+							
+						}
+					}
+				});
+				return b;
+			}
         });
 		if (isIngredients){
-			Text qty = new Text("Qty.  |");
+			Text qty = new Text("   Qty.   |");
 			Text Ingredient = new Text("	Ingredient");
 			//Display Quantities
 			int j = 0;
@@ -348,21 +398,42 @@ public class HomeScene implements GUIScene {
 				itemList.add(quantButton(thing.getQuantity() + thing.getUnit()), 0, j);
 				j++;
 			}
-			listPane.add(qty, 0, 0);
-			listPane.add(Ingredient, 1, 0);
-			listPane.add(scroll, 0, 1, 2, 1);
-			listPane.add(hbBtn, 2, 0);
+			listPane.add(qty, 1, 0);
+			listPane.add(Ingredient, 2, 0);
+			listPane.add(scroll, 1, 1, 2, 1);
+			listPane.add(hbBtn, 0, 0);
 		} else {
-			listPane.add(scroll, 0, 0);
-			listPane.add(hbBtn, 1, 0);
+			listPane.add(scroll, 1, 0);
+			listPane.add(hbBtn, 0, 0);
 		}
 		return listPane;
 	}
+	/*
+	private ScrollPane buttonList(int width, int height, Set<Nameable> items, EventHandler<ActionEvent> itemDest){
+		ScrollPane scroll = new ScrollPane();//Scrolling Panel
+		scroll.setStyle(Style.TEXT);
+		scroll.setPrefSize(width, height);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setFitToWidth(true);
+		//grid panel for buttons
+		final GridPane itemList = new GridPane();
+		itemList.setPrefSize(width,height);
+		itemList.setVgap(2);
+		scroll.setContent(itemList);
+		int i = 0;
+		for (Nameable item : items){
+			itemList.add(itemButton(item, itemDest),1,i);
+			i++;
+		}
+		return scroll;
+	}*/
 	
 	private Button quantButton(String called){
+		System.out.println(called);
 		Button b = new Button(called);
 		b.setStyle(Style.RECIPE);
-		b.setPrefWidth(15);
+		//b.setMinWidth(45);
 		b.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
@@ -414,6 +485,8 @@ public class HomeScene implements GUIScene {
 		public void setRecipe(String recipeID){
 			_recipeID = recipeID;
 		}
+		
+		
 		
 		@Override
 		public void handle(Event arg0) {

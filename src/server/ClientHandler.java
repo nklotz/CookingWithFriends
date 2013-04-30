@@ -164,6 +164,7 @@ public class ClientHandler extends Thread {
 	
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
+			System.out.println("executing task");
 			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _info));
 		}
 		else{
