@@ -39,7 +39,7 @@ public class GUIFrame extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			HomeScene home = new HomeScene(_account, _frame);
+    			HomeScene home = new HomeScene(_account, _frame, _engines);
     			_panel.setScene(home.makeScene());
     		}
     		
@@ -60,7 +60,7 @@ public class GUIFrame extends JFrame {
 	}
 	
 	public void loadHomeScene(){
-		HomeScene homeCopy = new HomeScene(_account, this);
+		HomeScene homeCopy = new HomeScene(_account, this, _engines);
 		_panel.setScene(homeCopy.makeScene());
 	}
 	
