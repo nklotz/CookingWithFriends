@@ -104,6 +104,7 @@ public class Client extends Thread {
 			//Wait to receive account verification
 			while (!verified){
 				//Response will have 
+				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
 				System.out.println("received response");
 				if (response != null){

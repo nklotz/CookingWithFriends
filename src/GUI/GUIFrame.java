@@ -37,15 +37,15 @@ public class GUIFrame extends JFrame{
 		    }
 		});
 		
-		this.setSize(1000, 550);
-    	this.setSize(1000, 550);
+		this.setSize(1400, 1000);
+
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1000, 550);
+    	this.setSize(1400, 1000);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(950,550));
+    	_panel.setPreferredSize(new java.awt.Dimension(1400,1000));
     	
     	_client = client;
     	_account = account;   	
