@@ -40,7 +40,7 @@ public class Client extends Thread {
     public Client(int port) throws IOException {
 
         try {
-            _kkSocket = new Socket("localhost", port);
+            _kkSocket = new Socket("raj", port);
             //_out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
             //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
