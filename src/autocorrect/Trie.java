@@ -39,7 +39,6 @@ public class Trie implements WordStructure{
 	 */
 	public void addLists(List<List<String>> lists){
 		for(List<String> words: lists){
-			System.out.println("add lists WORDS: " + words);
 			for(String word: words){
 				addNode(word, root_, 0);
 			}
@@ -57,7 +56,7 @@ public class Trie implements WordStructure{
 	/**
 	 * Adds a node into the trie.
 	 * @param word The word to be added
-	 * @param curr The current node transversing.
+	 * @param curr The current node tranversing.
 	 * @param index The index into the word that is being traversed.
 	 */
 	public void addNode(String word, TrieNode curr, int index){

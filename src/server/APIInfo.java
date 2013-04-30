@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.List;
 
+import UserInfo.Ingredient;
 import autocorrect.Engine;
 import autocorrect.SuggestionEngine;
 
@@ -18,10 +19,14 @@ public class APIInfo {
 	private Engine rEng_;
 	private Engine aEng_;
 	
-	public APIInfo(List<String> ingredients, List<String> restrictions, List<String> allergies){
+	public APIInfo(List<Ingredient> ingredients, List<String> restrictions, List<String> allergies){
 		//Creates double arraylists to pass to suggestion engines.
 		List<List<String>> iList = new ArrayList<List<String>>();
-		iList.add(ingredients);
+		List<String> ingredientsStrings = new ArrayList<String>();
+		for(Ingredient i: ingredients){
+			ingredientsStrings.add(i.getName());
+		}
+		iList.add(ingredientsStrings);
 		List<List<String>> rList = new ArrayList<List<String>>();
 		rList.add(restrictions);
 		List<List<String>> aList = new ArrayList<List<String>>();

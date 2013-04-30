@@ -3,6 +3,7 @@ package ClientServerRequests;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -11,12 +12,13 @@ public class RequestReturn implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	int _type;
-	Account _account;
-	Kitchen _kitchen;
-	boolean _checkPass;
-	HashMap<String, Kitchen> _kitchenMap;
-	Invitation _invite;
+	private int _type;
+	private Account _account;
+	private Kitchen _kitchen;
+	private boolean _checkPass;
+	private HashMap<String, Kitchen> _kitchenMap;
+	private Invitation _invite;
+	private APIInfo _info;
 	
 	/*
 	 * Types:
@@ -71,5 +73,13 @@ public class RequestReturn implements Serializable {
 	
 	public Invitation getInvitation(){
 		return _invite;
+	}
+	
+	public APIInfo getAPIInfo(){
+		return _info;
+	}
+	
+	public void setAPIInfo(APIInfo info){
+		_info = info;
 	}
 }

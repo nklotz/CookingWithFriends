@@ -44,12 +44,24 @@ public class GUIFrame extends JFrame {
 	}
 	
 	public void loadCopyScene(){
-		CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, this);
-		_panel.setScene(homeCopy.makeScene());
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
+    			_panel.setScene(homeCopy.makeScene());
+    		}
+		});
+    		
+    		
 	}
 	
 	public void loadHomeScene(){
 		HomeScene homeCopy = new HomeScene(_account, this);
 		_panel.setScene(homeCopy.makeScene());
+	}
+	
+	public void loadKitchenScene(String kitchenID){
+		//_client.
+		
 	}
 }

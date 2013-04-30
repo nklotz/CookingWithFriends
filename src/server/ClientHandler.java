@@ -41,6 +41,7 @@ public class ClientHandler extends Thread {
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
 	private boolean _running;
+	private APIInfo _info;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
@@ -49,6 +50,7 @@ public class ClientHandler extends Thread {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
+		_info = info;
 		_helper = helper;
 		_pool = pool;
 		_client = client;
