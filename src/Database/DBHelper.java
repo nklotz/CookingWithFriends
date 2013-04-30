@@ -25,6 +25,7 @@ import sun.misc.BASE64Decoder;
 import Test.MockUser;
 import UserInfo.Account;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -89,6 +90,12 @@ public class DBHelper implements DBHelperInterface{
 		storeUsernamePassword("CWF", "cook");
 		MockUser mu = new MockUser();
 		storeAccount(mu.getAccount());
+		for(KitchenName kn: mu.getAccount().getKitchens()){
+			Kitchen k = new Kitchen(kn.getName(), kn.getID());
+			k.addActiveUser(mu.getAccount().getID());
+			storeKitchen(k);
+		}
+		
 	}
 
 	@Override
@@ -126,12 +133,13 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public Kitchen getKitchen(String id) {
+		System.out.println("looking for kitchen: " + id);
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("id", id);
+		System.out.println("sq: " + searchQuery);
 		
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		searchQuery.remove("/k/0");
-		
+		System.out.println("cursor size: " + cursor.size());
 		while (cursor.hasNext()) {
 			//System.out.println(cursor.next());
 			String s = cursor.next().get("kitchen").toString();
@@ -143,19 +151,23 @@ public class DBHelper implements DBHelperInterface{
 	@Override
 	public void storeKitchen(Kitchen k) {
 		System.out.println("storing kitchen: " + k);
+		
 		BasicDBObject document = new BasicDBObject();
-		document.put("id", "/k/0");
+		document.put("id", k.getID());
 		document.put("kitchen", getObjectString(k));
+		
 		BasicDBObject searchQuery = new BasicDBObject();
-		String id = createKitchenId();
-		k.setID(id);
-		searchQuery.put("id", id);
+		searchQuery.put("id", k.getID());
+		
+		System.out.println("want to store: " + document);
 		//Adds it if it doesn't exist  currently.
 		if(kitchenCollection_.find(searchQuery).length() == 0){
+			System.out.println("kitchen wasn't in DB");
 			kitchenCollection_.insert(document);
 		}
 		//Otherwise remove the current object, and add the new kitchen.
 		else{
+			System.out.println("replace kitchen");
 			kitchenCollection_.remove(searchQuery);
 			kitchenCollection_.insert(document);
 		}

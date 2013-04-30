@@ -55,9 +55,10 @@ public class KitchenPool {
 	 * Adds a kitchen and extracts users.
 	 */
 	public void addKitchen(Kitchen kitchen){
+		System.out.println("kitchen: " + kitchen);
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		HashSet<String> users = new HashSet<String>();
-		for(String u: kitchen.getUsers()){
+		for(String u: kitchen.getActiveUsers()){
 			users.add(u);
 		}
 		_kIDtoUsers.put(kitchen.getKitchenName(), users);
@@ -70,7 +71,7 @@ public class KitchenPool {
 	public void addNewKitchen(Kitchen kitchen){
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		HashSet<String> users = new HashSet<String>();
-		for(String u: kitchen.getUsers()){
+		for(String u: kitchen.getActiveUsers()){
 			if(_userToKitchens.containsKey(u)){
 				_userToKitchens.get(u).add(kitchen.getKitchenName());
 			}
@@ -83,12 +84,14 @@ public class KitchenPool {
 	 * Adds a user and opens up all non-opened kitchens
 	 */
 	public void addAccount(Account account){
+		System.out.println("oepning account " + account.getID());
 		String userName = account.getID();
 		HashSet<KitchenName> kitchenIDs = account.getKitchens();
 		_userToKitchens.put(userName, kitchenIDs);
 		if (kitchenIDs != null){
 			for(KitchenName k: kitchenIDs){
 				if(!_idToKitchen.containsKey(k)){
+					System.out.println("find kitchen: " + k.getName());
 					Kitchen kit = _helper.getKitchen(k.getID());
 					addKitchen(kit);
 				}
@@ -101,11 +104,15 @@ public class KitchenPool {
 	 * that kitchen is removed from memory.
 	 */
 	public void removeUser(String userID){
+		System.out.println("removing user " + userID + " from Kitchen pool");
+	
 		HashSet<KitchenName> kitchens = _userToKitchens.get(userID);
 		if (kitchens != null){
 			for(KitchenName k: kitchens){
 				HashSet<String> users = _kIDtoUsers.get(k);
+				System.out.println("checking if kitchen " + k.getName() + " has active users");
 				if(!hasActiveUser(users, userID)){
+					System.out.println("it doesn't! remove!");				
 					removeKitchen(k.getID());
 				}
 			}
@@ -161,10 +168,10 @@ public class KitchenPool {
 		
 		switch (request.getType()){
 			case 3: //add user to kitchen
-				k.addUser(request.getKitchenUserID());
+				k.addActiveUser(request.getKitchenUserID());
 				break;
 			case 4: //remove user from kitchen
-				k.removeUser(request.getKitchenUserID());
+				k.removeActiveUser(request.getKitchenUserID());
 				break;
 		  	case 5: //add event to kitchen
 		  		k.addEvent(request.getEvent());

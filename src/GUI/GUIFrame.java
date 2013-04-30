@@ -1,7 +1,10 @@
 package GUI;
 
-import java.util.HashMap;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
@@ -13,7 +16,7 @@ import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import client.Client;
 
-public class GUIFrame extends JFrame {
+public class GUIFrame extends JFrame{
 
 	private Client _client;
 	private JFXPanel _panel;
@@ -24,6 +27,15 @@ public class GUIFrame extends JFrame {
 	public GUIFrame(Client client, Account account, final Map<KitchenName, Kitchen> kitchens) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	System.out.println("CLOSEEEINGING WINDOWNNNNNNNNNN");
+				_client.close();
+		    }
+		});
+		
 		this.setSize(1000, 550);
     	this.setSize(1000, 550);
     	this.setVisible(true);
@@ -34,10 +46,11 @@ public class GUIFrame extends JFrame {
     	this.setVisible(true);
     	_panel.setPreferredSize(new java.awt.Dimension(950,550));
     	
+    	_client = client;
     	_account = account;   	
     	loadSearchScene(kitchens);
+    	
 	}
-	
 	
 	public void loadSearchScene(Map<KitchenName, Kitchen> kitchens){
 		_searchScene = new SearchScene(_account, this, kitchens);

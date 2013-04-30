@@ -29,6 +29,7 @@ public class AccountRequest implements Runnable {
 		if(toReturn.getAccount()!= null){
 			_activeKitchens.addAccount(toReturn.getAccount());
 			toReturn.setKitchenMap(_activeKitchens.getAllUserKitchens(_ID));
+			_ch.setID(_ID);
 			_ch.send(toReturn);
 		}
 	}

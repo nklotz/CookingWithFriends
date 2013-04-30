@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
@@ -39,7 +40,7 @@ public class Client extends Thread {
     public Client(int port) throws IOException {
 
         try {
-            _kkSocket = new Socket("raj", port);
+            _kkSocket = new Socket("localhost", port);
             //_out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
             //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
@@ -128,43 +129,27 @@ public class Client extends Thread {
 					}
 					
 				} else {
+					System.out.println("is server disconnected??");
 					//TODO: Server disconnected. What do we do?
 				}
 			}
 			while(_running){
-				response = (RequestReturn) _in.readObject();
-				if (response != null){
-					int type = response.getType();
-					if(type == 2){
-						Kitchen k = response.getKitchen();
-						_kitchens.put(k.getKitchenName(), k);
+				try{
+					response = (RequestReturn) _in.readObject();
+					if (response != null){
+						int type = response.getType();
+						if(type == 2){
+							Kitchen k = response.getKitchen();
+							_kitchens.put(k.getKitchenName(), k);
+						}
 					}
-					else if(type == 4){
-						_kitchens = response.getKitchenMap();
-						_gui.loadSearchScene(_kitchens);
-					}
-				}	
+				}
+				catch(SocketException se){
+					//Socket closed, probably due to close being called!
+					//If on error, server will handle clean up
+				}
 			}
 			
-			//Now receive general messages.
-			response = (RequestReturn) _in.readObject();
-			while(response != null){
-				int type = response.getType();
-			}
-			/*_out.println("Get Account " + username);
-			try {
-				Account account = (Account) _objIn.readObject();
-				System.out.println("account: " + account.getUser().getID());
-				_gui = new HomeWindow(account);
-				System.out.println("GUI NEW ACCOUTN!!!!");
-			} catch (ClassNotFoundException e) {
-				System.err.println("ERROR: CLASS (ACCOUNT) NOT FOUND!");
-			}*/
-			
-		
-			while(_gui.isActive()){
-			}
-			close();	
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -260,7 +245,7 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void closeAccount(String id){
+    public void closeAccount(){
     	Request r = new Request(12);
     	send(r);
     }
@@ -280,22 +265,19 @@ public class Client extends Thread {
     	
     }
     
-    public void getAllKitchens(){
-    	Request r = new Request(16);
-    	send(r);
-    }
-    
     /**
      * Method to shut down streams and socket.
      */
     public void close(){
+    	System.out.println("CLOSING CLINET");
+    	_running = false;
         try {
-        	//_out.println("exit");//TODO: how does request object askt to exit?
-            _out.close();
+        	closeAccount();
+        	_out.close();
             _in.close();
 			_kkSocket.close();
 		} catch (IOException e) {
-			System.err.println("ERROR trying to close client resources");
+			//System.err.println("ERROR trying to close client resources");
 			System.exit(1);
 		}
     }
