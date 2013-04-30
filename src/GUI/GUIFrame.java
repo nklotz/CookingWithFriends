@@ -35,15 +35,13 @@ public class GUIFrame extends JFrame {
     	
     	_account = account;
     	_frame = this;
+	    _client = client;
     	_engines = info;
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			HomeScene home = new HomeScene(_account, _frame, _engines);
-    			_panel.setScene(home.makeScene());
+    			loadHomeScene();
     		}
-    		
-    		
     	});
 		
 	}
@@ -60,7 +58,7 @@ public class GUIFrame extends JFrame {
 	}
 	
 	public void loadHomeScene(){
-		HomeScene homeCopy = new HomeScene(_account, this, _engines);
+		HomeScene homeCopy = new HomeScene(_account, this, _engines, _client);
 		_panel.setScene(homeCopy.makeScene());
 	}
 	
@@ -70,8 +68,8 @@ public class GUIFrame extends JFrame {
     		@Override
     		public void run() {
     			//CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
-    			KitchenScene kitchenScene = new KitchenScene(_kitchen, _frame);
-    			_panel.setScene(kitchenScene.makeScene());
+    			//KitchenScene kitchenScene = new KitchenScene(_kitchen, _frame);
+    			//_panel.setScene(kitchenScene.makeScene());
     		}
 		});
 	}

@@ -33,6 +33,7 @@ public class Client extends Thread {
     private HashMap<String, Kitchen> _kitchens;
     private boolean _running;
     private APIInfo _autocorrect;
+    private String _currentKitchen;
 	
     public Client(int port) throws IOException {
 
@@ -118,11 +119,6 @@ public class Client extends Thread {
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
-							System.out.println("sleep");
-							Thread.sleep(5000);
-							System.out.println("awake");
-							_gui.loadCopyScene();
-							
 							_kitchens = response.getKitchenMap();
 							
 						}
@@ -268,6 +264,14 @@ public class Client extends Thread {
     	Request r = new Request(14);
     	r.setKitchenID(id);
     	send(r);
+    }
+    
+    public void setCurrentKitchen(String kitchen){
+    	_currentKitchen = kitchen;
+    }
+    
+    public String getCurrentKitchen(){
+    	return _currentKitchen;
     }
     
     /**
