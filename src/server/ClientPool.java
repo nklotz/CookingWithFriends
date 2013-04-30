@@ -40,6 +40,7 @@ public class ClientPool {
 	 * @return true if the client was removed, false if they were not there.
 	 */
 	public synchronized boolean remove(ClientHandler client) {
+		System.out.println("removing handler of client " +client.getID() + " from client pool");
 		_ids.remove(client.getID());
 		return _clients.remove(client);
 	}

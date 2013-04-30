@@ -349,7 +349,7 @@ public class HomeScene implements GUIScene {
             		b.setOnAction(new EventHandler<ActionEvent>(){
             			@Override
             			public void handle(ActionEvent e){
-            				_frame.loadSearchScene(null);
+            				_frame.loadSearchScene();
             			}
             		});
             		HBox saveBox = new HBox();

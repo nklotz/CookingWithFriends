@@ -20,35 +20,22 @@ public class Kitchen implements Serializable, Nameable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashSet<String> _userIDs;
-	private HashSet<Event> _events;
-	private HashSet<Recipe> _recipes;
-	private HashMap<Ingredient, List<String>> _ingToUsers;
+	private HashSet<Event> _events = new HashSet<Event>();
+	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
+	private HashMap<Ingredient, List<String>> _ingToUsers = new HashMap<Ingredient, List<String>>();
 	
-	private String _id, _name;
-	private HashSet<String> _activeUsers;
-	private HashSet<String> _requestedUsers;
+	private String _id = "", _name = "";
+	private HashSet<String> _activeUsers = new HashSet<String>();
+	private HashSet<String> _requestedUsers = new HashSet<String>();
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
-	public Kitchen(HashSet<String> users, HashSet<Event> events, HashSet<Recipe> recipes, HashSet<String> activeUsers,
-			HashSet<String> requestedUsers){
-		_userIDs = users;
-		_events = events;
-		_recipes = recipes;
-
-		_ingToUsers = new HashMap<>();
-		_activeUsers = activeUsers;
-		_requestedUsers = requestedUsers;
+	public Kitchen(String name){
+		_name = name;
 	}
 	
-	public Kitchen(String name){
-		_userIDs = new HashSet<>();
-		_events = new HashSet<>();
-		_recipes = new HashSet<>();
-		_ingToUsers = new HashMap<>();
-		_activeUsers = new HashSet<>();
-		_requestedUsers = new HashSet<>();
+	public Kitchen(String name, String id){
+		_id = id;
 		_name = name;
 	}
 	
@@ -62,6 +49,7 @@ public class Kitchen implements Serializable, Nameable{
 	
 	
 	public void addActiveUser(String user){
+		removeRequestedUser(user);
 		_activeUsers.add(user);
 	}
 	
@@ -105,21 +93,6 @@ public class Kitchen implements Serializable, Nameable{
 	public String getID(){
 		return _id;
 	}
-	/**
-	 * Adds a user to the kitchen.
-	 * @param u User to add to the kitchen.
-	 */
-	public void addUser(String u){
-		_userIDs.add(u);
-	}
-	
-	/**
-	 * Removes a user from the kitchen.
-	 * @param u User to remove from kitchen.
-	 */
-	public void removeUser(String u){
-		_userIDs.remove(u);
-	}
 	
 	/**
 	 * Adds an event to the kitchen.
@@ -162,12 +135,8 @@ public class Kitchen implements Serializable, Nameable{
 
 	@Override
 	public String toString() {
-		return "Kitchen [_users=" + _userIDs + ", _events=" + _events
+		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
 				+ ", _recipes=" + _recipes + ", _id=" + _id + "]";
-	}
-	
-	public HashSet<String> getUsers(){
-		return _userIDs;
 	}
 	
 }

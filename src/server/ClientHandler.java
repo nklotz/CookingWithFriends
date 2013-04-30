@@ -12,7 +12,6 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
 import ClientServerRequests.AccountRequest;
-import ClientServerRequests.AllKitchensRequest;
 import ClientServerRequests.KitchenRequest;
 import ClientServerRequests.NewAccountRequest;
 import ClientServerRequests.NewKitchenRequest;
@@ -95,14 +94,16 @@ public class ClientHandler extends Thread {
 								break;
 							case 12: //close client
 								kill();
+								break;
 							case 13: //create new account	
 								createNewUser(request);
+								break;
 							case 14: //create new Kitchen
 								createNewKitchen(request);	
+								break;
 							case 15: //invite to kitchen
 								invite(request);
-							case 16:
-								getAllKitchens(request);
+								break;
 							default:
 								updateKitchen(request);
 								break;
@@ -148,6 +149,7 @@ public class ClientHandler extends Thread {
 	 * Close this socket and its related streams.
 	 */
 	public void kill() throws IOException {
+		System.out.println("killing myself (client handler of clinet " + _clientID + ")" );
 		_objectIn.close();
 		try{
 			_objectOut.close();
@@ -173,10 +175,6 @@ public class ClientHandler extends Thread {
 
 	public void getKitchen(Request request){
 		_taskPool.execute(new KitchenRequest(this, request.getKitchenID(), _activeKitchens));
-	}
-	
-	private void getAllKitchens(Request request) {
-		_taskPool.execute(new AllKitchensRequest(this, _activeKitchens));
 	}
 	
 	public void updateKitchen(Request request){
@@ -214,6 +212,10 @@ public class ClientHandler extends Thread {
 	
 	public String getID(){
 		return _clientID;
+	}
+	
+	public void setID(String id){
+		_clientID = id;
 	}
 	
 }

@@ -73,7 +73,7 @@ public class MockUser {
 		
 		
 		_account = new Account("CWF", name, address, recipes, ingredients);
-		//_account.setKitchens(kitchens);
+		_account.setKitchens(kitchens);
 		return _account;
 	}
 

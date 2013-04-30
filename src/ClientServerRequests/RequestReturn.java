@@ -26,7 +26,6 @@ public class RequestReturn implements Serializable {
 	 *   1 -- Password Check (extract getCorrect())
 	 *   2 -- Singular Kitchen (extract getKitchen)
 	 *   3 -- Invitation
-	 *   4 -- List of Kitchens
 	 */
 	
 	public RequestReturn(int type){
