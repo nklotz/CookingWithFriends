@@ -55,17 +55,10 @@ public class KitchenPool {
 	 * Adds a kitchen and extracts users.
 	 */
 	public void addKitchen(Kitchen kitchen){
-		System.out.println("adding kitchen: " + kitchen);
-		System.out.println("active users: " + kitchen.getActiveUsers());
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
-		
-		System.out.println(_kIDtoUsers.containsKey(kitchen.getKitchenName()));
-		System.out.println(kitchen.getKitchenName().hashCode());
-		System.out.println(new KitchenName(kitchen.getName(), kitchen.getID()).hashCode());
-		System.out.println("check that kidtousers has kitchenName " + _kIDtoUsers.get(kitchen.getKitchenName()));
-		System.out.println("check 2: " + _kIDtoUsers.get(new KitchenName(kitchen.getName(), kitchen.getID())));
+
 	}
 	
 	/**

@@ -3,14 +3,11 @@ package GUI;
 import java.util.HashSet;
 import java.util.Set;
 
-import client.Client;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import server.APIInfo;
 import UserInfo.Account;
@@ -79,7 +79,7 @@ public class HomeScene implements GUIScene {
         userGrid.add(displayPreferences(), 1, 1);
         //dislikes
         Text dislike = new Text("Dislikes");
-        diet.setStyle(Style.INFO_HEADER);
+        dislike.setStyle(Style.INFO_HEADER);
         userGrid.add(dislike, 1, 2);
         userGrid.add(displayDislikes(), 1, 3);
         
@@ -182,6 +182,14 @@ public class HomeScene implements GUIScene {
         return info;
 	}
 	
+	
+	private Text defaultFill(String message){
+		Text t = new Text(message);
+		t.setFont(Font.font ("Verdana", FontPosture.ITALIC, 10));
+		t.setFill(Color.GRAY);
+		return t;
+	}
+	
 	private Pane editPersonalInfo(final GridPane grid){
         GridPane info = new GridPane();
         info.setVgap(8);
@@ -195,7 +203,7 @@ public class HomeScene implements GUIScene {
         info.add(userName, 1, 0);
         info.add(area,0,1);
         info.add(userArea, 1, 1);
-        Text id = new Text("Email Id: ");
+        Text id = new Text("Email: ");
         Text userId = new Text(_account.getID());
         info.add(id, 0, 2);
         info.add(userId, 1, 2);
@@ -222,13 +230,52 @@ public class HomeScene implements GUIScene {
 	}
 	
 	public GridPane displayPreferences(){
+		//main grid
 		GridPane info = new GridPane();
         info.setVgap(8);
         info.setStyle(Style.TEXT);
         info.setPrefSize(130, 80);
-        //TODO: ACCOUNT.getPreferences
+        
+        //scroll bar
+        ScrollPane sScroll = new ScrollPane();//Scrolling Panel
+		sScroll.setStyle(Style.TEXT);
+		sScroll.setPrefSize(222, 400);
+		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		sScroll.setFitToWidth(true);
+        
+		//preferences grid
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		sScroll.setContent(rList);
+		
+		
+		Set<String> preferences = _account.getDietaryRestrictions();
+		
+		if(preferences.size()==0){
+			rList.add(defaultFill("No dietary restrictions."), 0, 0);
+		}
+		else{
+			int i = 0;
+			for(String s: preferences){
+				rList.add(new Text(s),0,i);
+				i++;
+			}
+		}
+		
+		info.add(sScroll, 0, 0);
+		
         Button edit = new Button("+/-");
         edit.setStyle(Style.BUTTON);
+        
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	System.out.println("I WANT TO ADD A PREFERENCE!!");
+            }
+        });
+        
         HBox hbBtn = new HBox(10);
         hbBtn.setPrefHeight(80);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -236,6 +283,57 @@ public class HomeScene implements GUIScene {
         info.add(hbBtn, 1, 2);
         return info;
 	}
+	
+	/*
+	 *  GridPane kitchenList = new GridPane();
+		kitchenList.setHgap(3);
+		kitchenList.setPrefSize(350, 400);
+		kitchenList.setStyle(Style.TEXT);
+		ScrollPane sScroll = new ScrollPane();//Scrolling Panel
+		sScroll.setStyle(Style.TEXT);
+		sScroll.setPrefSize(222, 400);
+		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		sScroll.setFitToWidth(true);
+		//grid panel for buttons
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		sScroll.setContent(rList);
+		Set<KitchenName> kitchenListSet = _account.getKitchens();
+		if (kitchenListSet == null){
+			kitchenListSet = new HashSet<>();
+		}
+		System.out.println("kitchens: " + kitchenListSet);
+		int i = 0;
+		
+		if(kitchenListSet.size()==0){
+			rList.add(defaultFill("You don't currently belong to any kitchens. To add a kitchen click the +/- in the left hand corner :)"), 0, 0);
+		
+		}
+		
+		for (KitchenName s : kitchenListSet){
+			System.out.println("calling kitchen button");
+			rList.add(kitchenButton(s),0,i);
+			i++;
+		}
+		kitchenList.add(sScroll, 0, 0);
+		Button edit = new Button("+/-");
+		edit.setMinWidth(20);
+		edit.setStyle(Style.BUTTON);
+		HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.TOP_LEFT);
+        hbBtn.getChildren().add(edit);
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	//TODO: Edit recipes
+            }
+        });
+		kitchenList.add(hbBtn, 1, 0);
+		return kitchenList;
+	 */
 	
 	public GridPane displayDislikes(){
 		GridPane dislikes = new GridPane();
@@ -274,6 +372,12 @@ public class HomeScene implements GUIScene {
 		}
 		System.out.println("kitchens: " + kitchenListSet);
 		int i = 0;
+		
+		if(kitchenListSet.size()==0){
+			rList.add(defaultFill("You don't currently belong to any kitchens. To add a kitchen click the +/- in the left hand corner :)"), 0, 0);
+		
+		}
+		
 		for (KitchenName s : kitchenListSet){
 			System.out.println("calling kitchen button");
 			rList.add(kitchenButton(s),0,i);
@@ -285,7 +389,7 @@ public class HomeScene implements GUIScene {
 		edit.setStyle(Style.BUTTON);
 		HBox hbBtn = new HBox(10);
         hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.TOP_RIGHT);
+        hbBtn.setAlignment(Pos.TOP_LEFT);
         hbBtn.getChildren().add(edit);
 		edit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -305,6 +409,7 @@ public class HomeScene implements GUIScene {
 		b.setStyle(Style.RECIPE);
 		b.setPrefWidth(350);
 		b.setOnAction(kHandle);
+		b.setWrapText(true);
 		return b;
 	}
 	

@@ -83,7 +83,7 @@ public class LoginWindow extends JFrame{
         scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label("E-mail:");
         grid.add(userName, 0, 1);
 
         final TextField userTextField = new TextField();
@@ -156,7 +156,7 @@ public class LoginWindow extends JFrame{
         scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label("Email:");
         grid.add(userName, 0, 1);
 
         final TextField userTextField = new TextField();

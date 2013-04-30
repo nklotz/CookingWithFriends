@@ -41,4 +41,21 @@ public class KitchenName implements Nameable, Serializable{
     public int hashCode() {
 		return (_name.hashCode() + _id.hashCode());
     }
+	
+	@Override
+	public boolean equals(Object obj){
+		if (obj == null) {
+	        return false;
+	    }
+	    if (getClass() != obj.getClass()) {
+	        return false;
+	    }
+		
+	    final KitchenName other = (KitchenName) obj;
+	    
+	    if(other.getID().equals(_id) && other.getName().equals(_name)){
+	    	return true;
+	    }
+	    return false;
+	}
 }
