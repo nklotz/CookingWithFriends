@@ -15,6 +15,7 @@ import GUI.LoginWindow;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 import UserInfo.Recipe;
 
 /**
@@ -30,7 +31,7 @@ public class Client extends Thread {
     private LoginWindow _login = null;
     //private HomeWindow _gui = null;
     private GUIFrame _gui = null;
-    private HashMap<String, Kitchen> _kitchens;
+    private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private APIInfo _autocorrect;
     private String _currentKitchen;
@@ -118,8 +119,8 @@ public class Client extends Thread {
 							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
-							_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 							_kitchens = response.getKitchenMap();
+							_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 							
 						}
 					} else {
@@ -134,10 +135,14 @@ public class Client extends Thread {
 				response = (RequestReturn) _in.readObject();
 				if (response != null){
 					int type = response.getType();
-					assert(type == 2);
-					Kitchen k = response.getKitchen();
-					String id = k.getID();
-					_kitchens.put(id, k);
+					if(type == 2){
+						Kitchen k = response.getKitchen();
+						_kitchens.put(k.getKitchenName(), k);
+					}
+					else if(type == 4){
+						_kitchens = response.getKitchenMap();
+						_gui.loadSearchScene(_kitchens);
+					}
 				}	
 			}
 			
@@ -272,6 +277,12 @@ public class Client extends Thread {
     
     public String getCurrentKitchen(){
     	return _currentKitchen;
+    	
+    }
+    
+    public void getAllKitchens(){
+    	Request r = new Request(16);
+    	send(r);
     }
     
     /**

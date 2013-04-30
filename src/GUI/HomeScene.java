@@ -22,6 +22,8 @@ import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
+import client.Client;
+
 
 public class HomeScene implements GUIScene {
 

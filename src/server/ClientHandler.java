@@ -12,6 +12,7 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
 import ClientServerRequests.AccountRequest;
+import ClientServerRequests.AllKitchensRequest;
 import ClientServerRequests.KitchenRequest;
 import ClientServerRequests.NewAccountRequest;
 import ClientServerRequests.NewKitchenRequest;
@@ -100,6 +101,8 @@ public class ClientHandler extends Thread {
 								createNewKitchen(request);	
 							case 15: //invite to kitchen
 								invite(request);
+							case 16:
+								getAllKitchens(request);
 							default:
 								updateKitchen(request);
 								break;
@@ -120,6 +123,7 @@ public class ClientHandler extends Thread {
 				}
 		} 
 	}
+
 
 	/**
 	 * Send a RequestReturn to the client via the socket
@@ -168,6 +172,10 @@ public class ClientHandler extends Thread {
 
 	public void getKitchen(Request request){
 		_taskPool.execute(new KitchenRequest(this, request.getKitchenID(), _activeKitchens));
+	}
+	
+	private void getAllKitchens(Request request) {
+		_taskPool.execute(new AllKitchensRequest(this, _activeKitchens));
 	}
 	
 	public void updateKitchen(Request request){
