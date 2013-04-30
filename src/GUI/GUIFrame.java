@@ -36,6 +36,7 @@ public class GUIFrame extends JFrame {
     	
     	_account = account;   	
     	_engines = engines;
+    	_client = client;
     	loadHomeScene();
 	}
 	
