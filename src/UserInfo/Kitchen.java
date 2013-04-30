@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author hacheson
@@ -21,7 +23,7 @@ public class Kitchen implements Serializable, Nameable{
 	private HashSet<String> _userIDs;
 	private HashSet<Event> _events;
 	private HashSet<Recipe> _recipes;
-	private HashMap<Ingredient, ArrayList<String>> _ingToUsers;
+	private HashMap<Ingredient, List<String>> _ingToUsers;
 	
 	private String _id, _name;
 	private HashSet<String> _activeUsers;
@@ -35,18 +37,18 @@ public class Kitchen implements Serializable, Nameable{
 		_events = events;
 		_recipes = recipes;
 
-		_ingToUsers = new HashMap<Ingredient, ArrayList<String>>();
+		_ingToUsers = new HashMap<>();
 		_activeUsers = activeUsers;
 		_requestedUsers = requestedUsers;
 	}
 	
 	public Kitchen(String name){
-		_userIDs = new HashSet<String>();
-		_events = new HashSet<Event>();
-		_recipes = new HashSet<Recipe>();
-		_ingToUsers = new HashMap<Ingredient, ArrayList<String>>();
-		_activeUsers = new HashSet<String>();
-		_requestedUsers = new HashSet<String>();
+		_userIDs = new HashSet<>();
+		_events = new HashSet<>();
+		_recipes = new HashSet<>();
+		_ingToUsers = new HashMap<>();
+		_activeUsers = new HashSet<>();
+		_requestedUsers = new HashSet<>();
 		_name = name;
 	}
 	
@@ -81,6 +83,10 @@ public class Kitchen implements Serializable, Nameable{
 	
 	public HashSet<String> getRequestedUsers(){
 		return _requestedUsers;
+	}
+	
+	public Set<Ingredient> getIngredients() {
+		return _ingToUsers.keySet();
 	}
 	
 	

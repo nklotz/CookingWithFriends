@@ -1,20 +1,36 @@
 package GUI;
 
-import UserInfo.Account;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import UserInfo.Account;
+import UserInfo.Ingredient;
+import UserInfo.Kitchen;
 
 public class SearchScene implements GUIScene {
 
-	Account _account;
-	GUIFrame _frame;
+	private Account _account;
+	private GUIFrame _frame;
+	private Map<String, Kitchen> _kitchens;
 	
-	public SearchScene(Account account, GUIFrame frame){
+	public SearchScene(Account account, GUIFrame frame, Map<String, Kitchen> kitchens){
 		_account = account;
 		_frame = frame;
+		_kitchens = kitchens;
 	}
 	
 	@Override
@@ -28,85 +44,98 @@ public class SearchScene implements GUIScene {
         
         Scene scene = new Scene(grid, 1000, 500);
         
-        Text scenetitle = new Text("Cooking with Friends: Home");
+        Text scenetitle = new Text("Cooking with Friends: Recipe Search");
         scenetitle.setStyle(Style.PAGE_HEADER);
         grid.add(scenetitle, 0, 0, 2, 1);
         
-        //ME
-        Text Me = new Text("Me");
-        Me.setStyle(Style.SECTION_HEADER);
-        grid.add(Me, 0, 1);
-        //pane
-        GridPane userGrid = new GridPane();
-        userGrid.setPrefSize(250, 200);
-        userGrid.setStyle(Style.SECTIONS);
-        userGrid.setHgap(5);
-        grid.add(userGrid, 0, 2);
-        //my info
-        Text myInfo = new Text("My Info");
-        myInfo.setStyle(Style.INFO_HEADER);
-        userGrid.add(myInfo, 0, 0);
-        userGrid.add(displayUserInfo(userGrid), 0, 1, 1, 3);
-        //diet
-        Text diet = new Text("Dietary Preferences");
-        diet.setStyle(Style.INFO_HEADER);
-        userGrid.add(diet, 1, 0);
-        userGrid.add(displayPreferences(), 1, 1);
-        //dislikes
-        Text dislike = new Text("Dislikes");
-        diet.setStyle(Style.INFO_HEADER);
-        userGrid.add(dislike, 1, 2);
-        userGrid.add(displayDislikes(), 1, 3);
+        //Ingredients section
+        Text ingredientsHeader = new Text("Ingredients");
+        ingredientsHeader.setStyle(Style.SECTION_HEADER);
+        grid.add(ingredientsHeader, 0, 1);
         
-        //MY RECIPES
-        Text MyRecipes = new Text("My Recipes");
-        MyRecipes.setStyle(Style.SECTION_HEADER);
-        grid.add(MyRecipes, 0, 3);
-        //pane
-        GridPane recipeGrid = new GridPane();
-        recipeGrid.setPrefSize(300, 200);
-        recipeGrid.setStyle(Style.SECTIONS);
-        grid.add(recipeGrid, 0, 4);
-        //recipe list
-        recipeGrid.add(displayList(350, 176, false, _account.getRecipes()), 0, 0);
+        GridPane ingredientsGrid = new GridPane();
+        ingredientsGrid.setPrefSize(250, 200);
+        ingredientsGrid.setStyle(Style.SECTIONS);
+        ingredientsGrid.setHgap(5);
+        grid.add(ingredientsGrid, 0, 2);
         
-        //MY FRIDGE
-        Text MyFridge = new Text("My Fridge");
-        MyFridge.setStyle(Style.SECTION_HEADER);
-        grid.add(MyFridge, 1, 1);
-        //pane 
-        GridPane fridgeGrid = new GridPane();
-        fridgeGrid.setPrefSize(300, 200);
-        fridgeGrid.setStyle(Style.SECTIONS);
-        grid.add(fridgeGrid, 1, 2);
-        //fridge list
-        fridgeGrid.add(displayList(350, 176, true, _account.getIngredients()), 0, 0);
+        List<TitledPane> kitchenPanes = new ArrayList<>();
+        TitledPane personalPane =  new TitledPane();
+        personalPane.setText("My Fridge");
+        personalPane.setContent(makeIngredientList(_account.getIngredients()));
+        kitchenPanes.add(personalPane);
+        for (Kitchen kitchen : _kitchens.values()) {
+        	TitledPane kitchenPane =  new TitledPane();
+        	kitchenPane.setText(kitchen.getName());
+        	kitchenPane.setContent(makeIngredientList(kitchen.getIngredients()));
+        	kitchenPanes.add(kitchenPane);
+        }        
+        Accordion ingredientsAccordion = new Accordion();
+        ingredientsAccordion.getPanes().addAll(kitchenPanes);
+        ingredientsGrid.add(ingredientsAccordion, 0, 0);
         
-        //MY SHOPPING LIST
-        Text ShoppingList = new Text("My Shopping List");
-        ShoppingList.setStyle(Style.SECTION_HEADER);
-        grid.add(ShoppingList, 1, 3);
+        //Search section
+        Text searchHeader = new Text("Search");
+        searchHeader.setStyle(Style.SECTION_HEADER);
+        grid.add(searchHeader, 0, 3);
         //pane
-        GridPane shoppingGrid = new GridPane();
-        shoppingGrid.setPrefSize(300, 200);
-        shoppingGrid.setStyle(Style.SECTIONS);
-        grid.add(shoppingGrid, 1, 4);
-        //shopping list
-        shoppingGrid.add(displayList(350, 176, true, _account.getShoppingList()),0,0);
+        GridPane searchGrid = new GridPane();
+        searchGrid.setPrefSize(300, 200);
+        searchGrid.setStyle(Style.SECTIONS);
+        grid.add(searchGrid, 0, 4);
         
-        //KITCHENS
-        Text Kitchens = new Text("Kitchens");
-        Kitchens.setStyle(Style.SECTION_HEADER);
-        grid.add(Kitchens, 2, 1);
+        //Results section
+        Text resultsHeader = new Text("Results");
+        resultsHeader.setStyle(Style.SECTION_HEADER);
+        grid.add(resultsHeader, 1, 1);
         //pane
-        GridPane kitchenGrid = new GridPane();
-        kitchenGrid.setPrefSize(300,430);
-        kitchenGrid.setStyle(Style.SECTIONS);
-        grid.add(kitchenGrid, 2, 2, 1, 3);
-        //kitchen list
-        kitchenGrid.add(displayKitchens(), 0, 0);
+        GridPane resultsGrid = new GridPane();
+        resultsGrid.setPrefSize(300, 200);
+        resultsGrid.setStyle(Style.SECTIONS);
+        grid.add(resultsGrid, 1, 2);
+        
+        //Left to buy
+        Text leftToBuyHeader = new Text("Left to buy");
+        leftToBuyHeader.setStyle(Style.SECTION_HEADER);
+        grid.add(leftToBuyHeader, 1, 3);
+        //pane
+        GridPane leftToBuyGrid = new GridPane();
+        leftToBuyGrid.setPrefSize(300, 200);
+        leftToBuyGrid.setStyle(Style.SECTIONS);
+        grid.add(leftToBuyGrid, 1, 4);
         
 		return scene;
 	}
-
+	
+	private Pane makeIngredientList(Set<Ingredient> ingredients) {
+		Pane listPane = new Pane();
+		listPane.setPrefSize(350, 176);
+		listPane.setStyle(Style.TEXT);
+		
+		ScrollPane scroll = new ScrollPane(); //Scrolling Panel
+		scroll.setStyle(Style.TEXT);
+		scroll.setPrefSize(listPane.getWidth()-30, listPane.getHeight());
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setFitToWidth(true);
+		
+		VBox itemList = new VBox();
+		itemList.setPrefSize(300, 200);
+		for (Ingredient ing : ingredients){
+			itemList.getChildren().add(new IngredientCheckBox(ing));
+		}
+		
+		scroll.setContent(itemList);
+		listPane.getChildren().add(scroll);
+		return listPane;
+	}
+	
+	private class IngredientCheckBox extends HBox {
+		public IngredientCheckBox(Ingredient ingredient) {
+			super();
+			Text ingredientName = new Text(ingredient.getName());
+			CheckBox cb = new CheckBox();
+			this.getChildren().addAll(ingredientName, cb);	
+		}
+	}
 }

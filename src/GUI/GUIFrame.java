@@ -1,11 +1,14 @@
 package GUI;
 
+import java.util.HashMap;
+
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JFrame;
 
 import UserInfo.Account;
+import UserInfo.Kitchen;
 import client.Client;
 
 public class GUIFrame extends JFrame {
@@ -15,7 +18,7 @@ public class GUIFrame extends JFrame {
 	private Account _account;
 	private GUIFrame _frame;
 	
-	public GUIFrame(Client client, Account account){
+	public GUIFrame(Client client, Account account, final HashMap<String, Kitchen> kitchens) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 550);
@@ -34,7 +37,7 @@ public class GUIFrame extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			HomeScene home = new HomeScene(_account, _frame);
+    			SearchScene home = new SearchScene(_account, _frame, kitchens);
     			_panel.setScene(home.makeScene());
     		}
     		
