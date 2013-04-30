@@ -14,6 +14,7 @@ public class GUIFrame extends JFrame {
 	private JFXPanel _panel;
 	private Account _account;
 	private GUIFrame _frame;
+	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	
 	public GUIFrame(Client client, Account account){
 		super("Cooking with Friends!");
@@ -41,6 +42,10 @@ public class GUIFrame extends JFrame {
     		
     	});
 		
+	}
+	
+	public void requestKitchen(String kitchenID){
+		_client.getKitchen(kitchenID);
 	}
 	
 	public void loadCopyScene(){
