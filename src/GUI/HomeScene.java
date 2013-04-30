@@ -1,90 +1,36 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GraphicsConfiguration;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-
 import UserInfo.Account;
-import UserInfo.Ingredient;
 import UserInfo.KitchenName;
-import UserInfo.Recipe;
 import UserInfo.Nameable;
+import UserInfo.Recipe;
 
-import client.Client;
+public class HomeScene implements GUIScene {
 
-public class HomeWindow extends JFrame {
-
-	private Account _account;
-	private Client _client;
-	private JTextArea _ingredients;
-	private JTextArea _shoppingList;
-	private JTextArea _recipes;
+	Account _account;
+	GUIFrame _frame;
 	
+	public HomeScene(Account account, GUIFrame frame){
+		_account = account;
+		_frame = frame;
+	}
 	
-	public HomeWindow(Account account, Client client){
-    	super("Cooking with Friends!");
-    	_account = account;
-    	_client = client;
-    	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	
-    	final JFXPanel fxPanel = new JFXPanel();
-    	this.add(fxPanel);
-    	this.setSize(1000, 550);
-    	this.setVisible(true);
-    	fxPanel.setPreferredSize(new java.awt.Dimension(950,550));
-    	
-    	Platform.runLater(new Runnable() {
-    		@Override
-    		public void run() {
-    			initFX(fxPanel);
-    		}
-    		
-    		
-    	});
-    }
-    
-    private void initFX(JFXPanel fxPanel) {
-    	fxPanel.setScene(makeScene());
-    }
-    
-    
+	@Override
 	public Scene makeScene() {
 		final GridPane grid = new GridPane();
 		grid.setStyle(Style.BACKGROUND);
@@ -208,7 +154,9 @@ public class HomeWindow extends JFrame {
        	 
             @Override
             public void handle(ActionEvent e) {
-            	grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
+            	System.out.println("HEREEEE");
+            	_frame.loadCopyScene();
+            	//grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
             }
         });
         return info;
@@ -246,7 +194,7 @@ public class HomeWindow extends JFrame {
             	String name = userName.getText();
             	_account.setName(name);
             	_account.setAddress(userArea.getText());
-            	updateAccount(); 
+            	//updateAccount(); 
             	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
             }
         });
@@ -613,7 +561,7 @@ public class HomeWindow extends JFrame {
 	
 	/**
 	 * Tells client to send account updates to server.
-	 */
+	 
 	public void updateAccount(){
 		_client.storeAccount(_account.getID(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
@@ -638,11 +586,5 @@ public class HomeWindow extends JFrame {
 			_shoppingList.append("--" + item+ "\n");
 		}
 	}
-	
-	//TODO: Fix scrollbar formatting
-	// make preference editable
-	// get rid of dislikes
-	// add adding/deleting ingredients
-	// add deleting kitchens.
-
+	*/
 }

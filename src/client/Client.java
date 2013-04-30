@@ -9,9 +9,8 @@ import java.util.HashMap;
 
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
-import GUI.HomeWindow;
+import GUI.GUIFrame;
 import GUI.LoginWindow;
-import GUI.SearchWindow;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Kitchen;
@@ -28,7 +27,8 @@ public class Client extends Thread {
     private ObjectOutputStream _out = null;
     private ObjectInputStream _in = null;
     private LoginWindow _login = null;
-    private HomeWindow _gui = null;
+    //private HomeWindow _gui = null;
+    private GUIFrame _gui = null;
     private HashMap<String, Kitchen> _kitchens;
     private boolean _running;
 	
@@ -113,7 +113,7 @@ public class Client extends Thread {
 							verified = true;	//successful login
 							System.out.println("read as login");
 							_login.dispose();
-							_gui = new HomeWindow(response.getAccount(), this);
+							_gui = new GUIFrame(this, response.getAccount());
 							_kitchens = response.getKitchenMap();
 						}
 					} else {
