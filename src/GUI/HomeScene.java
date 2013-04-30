@@ -15,20 +15,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
 import client.Client;
 
+
 public class HomeScene implements GUIScene {
 
-	Account _account;
-	GUIFrame _frame;
-	Client _client;
+	private Account _account;
+	private GUIFrame _frame;
+	private APIInfo _autocorrect;
 	
-	public HomeScene(Account account, GUIFrame frame, Client client){
+	public HomeScene(Account account, GUIFrame frame, APIInfo info){
 		_account = account;
 		_frame = frame;
+		_autocorrect = info;
 	}
 	
 	@Override
