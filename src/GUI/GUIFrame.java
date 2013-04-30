@@ -52,4 +52,9 @@ public class GUIFrame extends JFrame {
 		HomeScene homeCopy = new HomeScene(_account, this);
 		_panel.setScene(homeCopy.makeScene());
 	}
+	
+	public void loadKitchenScene(String kitchenID){
+		//_client.
+		
+	}
 }

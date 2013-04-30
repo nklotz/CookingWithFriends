@@ -115,6 +115,7 @@ public class Client extends Thread {
 							_login.dispose();
 							_gui = new GUIFrame(this, response.getAccount());
 							_kitchens = response.getKitchenMap();
+							
 						}
 					} else {
 						_login.displayIncorrect();
