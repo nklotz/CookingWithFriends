@@ -39,7 +39,7 @@ public class Client extends Thread {
     public Client(int port) throws IOException {
 
         try {
-            _kkSocket = new Socket("raj", port);
+            _kkSocket = new Socket("localhost", port);
             //_out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
             //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
@@ -107,6 +107,7 @@ public class Client extends Thread {
 				System.out.println("received response");
 				if (response != null){
 					int type = response.getType();
+					System.out.println("got response");
 					assert(type == 1);
 					if (response.getCorrect()){
 						if (_login.isNewAccount()){
@@ -120,7 +121,7 @@ public class Client extends Thread {
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens);
+							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
 							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 						}
 					} else {

@@ -21,7 +21,7 @@ public class GUIFrame extends JFrame {
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	private APIInfo _engines;
 	
-	public GUIFrame(Client client, Account account, final Map<KitchenName, Kitchen> kitchens) {
+	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, APIInfo engines) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 550);
@@ -35,7 +35,8 @@ public class GUIFrame extends JFrame {
     	_panel.setPreferredSize(new java.awt.Dimension(950,550));
     	
     	_account = account;   	
-    	loadSearchScene(kitchens);
+    	_engines = engines;
+    	loadHomeScene();
 	}
 	
 	

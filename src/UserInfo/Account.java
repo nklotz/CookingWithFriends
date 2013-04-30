@@ -26,8 +26,8 @@ public class Account implements Serializable {
 	
 	//Specific to account.
 	private HashSet<? extends Nameable> _recipes = new HashSet<Recipe>();
-	private HashSet<Ingredient> _ingredients = new HashSet<Ingredient>();
-	private HashSet<Ingredient> _shoppingList = new HashSet<Ingredient>();
+	private Set<Ingredient> _ingredients = new HashSet<Ingredient>();
+	private Set<Ingredient> _shoppingList = new HashSet<Ingredient>();
 	private HashMap<String, Invitation> _invitations = new HashMap<String, Invitation>() ;
 	
 	public Account(String userId, String name, String address, HashSet<Recipe> recipes, HashSet<Ingredient> ingredients, HashSet<Ingredient> shoppingList){
@@ -81,11 +81,11 @@ public class Account implements Serializable {
 	 * Sets the list of ingredients in the account.
 	 * @param ing
 	 */
-	public void setIngredients(HashSet<Ingredient> ing){
+	public void setIngredients(Set<Ingredient> ing){
 		_ingredients = ing;
 	}
 	
-	public void setShoppingList(HashSet<Ingredient> SL){
+	public void setShoppingList(Set<Ingredient> SL){
 		_shoppingList = SL;
 	}
 	
