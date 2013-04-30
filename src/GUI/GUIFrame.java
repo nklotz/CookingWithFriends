@@ -1,24 +1,27 @@
 package GUI;
 
 import java.util.HashMap;
-
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JFrame;
 
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 import client.Client;
 
 public class GUIFrame extends JFrame {
 
 	private Client _client;
 	private JFXPanel _panel;
-	private Account _account;
-	private GUIFrame _frame;
+	private Account _account;;
+	private GUIScene _kitchenScene, _homeScene, _searchScene;
+	private APIInfo _engines;
 	
-	public GUIFrame(Client client, Account account, final HashMap<String, Kitchen> kitchens) {
+	public GUIFrame(Client client, Account account, final Map<KitchenName, Kitchen> kitchens) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 550);
@@ -31,40 +34,41 @@ public class GUIFrame extends JFrame {
     	this.setVisible(true);
     	_panel.setPreferredSize(new java.awt.Dimension(950,550));
     	
-    	_account = account;
-    	_frame = this;
-    	
-    	Platform.runLater(new Runnable() {
-    		@Override
-    		public void run() {
-    			SearchScene home = new SearchScene(_account, _frame, kitchens);
-    			_panel.setScene(home.makeScene());
-    		}
-    		
-    		
-    	});
-		
+    	_account = account;   	
+    	loadSearchScene(kitchens);
 	}
 	
-	public void loadCopyScene(){
+	
+	public void loadSearchScene(Map<KitchenName, Kitchen> kitchens){
+		_searchScene = new SearchScene(_account, this, kitchens);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
-    			_panel.setScene(homeCopy.makeScene());
+    			_panel.setScene(_searchScene.makeScene());
     		}
 		});
     		
-    		
 	}
+	
 	
 	public void loadHomeScene(){
-		HomeScene homeCopy = new HomeScene(_account, this);
-		_panel.setScene(homeCopy.makeScene());
+		_homeScene = new HomeScene(_account, this,_engines, _client);
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_panel.setScene(_homeScene.makeScene());
+    		}
+		});
 	}
 	
-	public void loadKitchenScene(String kitchenID){
-		//_client.
-		
+	public void loadKitchenScene(Kitchen kitchen){
+		_kitchenScene = new KitchenScene(kitchen, this, _client);
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_panel.setScene(_kitchenScene.makeScene());
+    		}
+		});
 	}
+
 }

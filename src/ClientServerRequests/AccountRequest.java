@@ -1,27 +1,31 @@
 package ClientServerRequests;
 
+import server.APIInfo;
 import server.ClientHandler;
 import server.KitchenPool;
 import Database.DBHelper;
 
 public class AccountRequest implements Runnable {
 
-	ClientHandler _ch;
-	String _ID;
-	DBHelper _helper;
-	KitchenPool _activeKitchens;
+	private ClientHandler _ch;
+	private String _ID;
+	private DBHelper _helper;
+	private KitchenPool _activeKitchens;
+	private APIInfo _info;
 	
-	public AccountRequest(ClientHandler ch, String accountID, DBHelper helper, KitchenPool kitchens){
+	public AccountRequest(ClientHandler ch, String accountID, DBHelper helper, KitchenPool kitchens, APIInfo info){
 		_ch = ch;
 		_ID = accountID;
 		_helper = helper;
 		_activeKitchens = kitchens;
+		_info = info;
 	}
 	@Override
 	public void run() {
 		RequestReturn toReturn = new RequestReturn(1);
 		toReturn.setCorrect(true);
 		toReturn.setAccount(_helper.getAccount(_ID));
+		toReturn.setAPIInfo(_info);
 		if(toReturn.getAccount()!= null){
 			_activeKitchens.addAccount(toReturn.getAccount());
 			toReturn.setKitchenMap(_activeKitchens.getAllUserKitchens(_ID));

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import client.Client;
+import UserInfo.Account;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,21 +19,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 
 public class SearchScene implements GUIScene {
 
 	private Account _account;
 	private GUIFrame _frame;
-	private Map<String, Kitchen> _kitchens;
+	private Map<KitchenName, Kitchen> _kitchens;
 	
-	public SearchScene(Account account, GUIFrame frame, Map<String, Kitchen> kitchens){
+	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens){
 		_account = account;
 		_frame = frame;
 		_kitchens = kitchens;
-	}
+	}	
 	
 	@Override
 	public Scene makeScene() {

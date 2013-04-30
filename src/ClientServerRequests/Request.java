@@ -36,6 +36,7 @@ public class Request implements Serializable {
 	 * 13 = make account
 	 * 14 = make kitchen
 	 * 15 = invite User ToKitchen
+	 * 16 = getAllKitchens
 	 */
 	
 	

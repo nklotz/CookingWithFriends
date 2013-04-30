@@ -3,7 +3,10 @@ package GUI;
 import java.util.HashSet;
 import java.util.Set;
 
+import client.Client;
+
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,19 +18,26 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
-import UserInfo.Recipe;
+import client.Client;
+
 
 public class HomeScene implements GUIScene {
 
-	Account _account;
-	GUIFrame _frame;
+
+	private Account _account;
+	private GUIFrame _frame;
+	private APIInfo _autocorrect;
+	private Client _client;
 	
-	public HomeScene(Account account, GUIFrame frame){
+	public HomeScene(Account account, GUIFrame frame, APIInfo info, Client client){
 		_account = account;
 		_frame = frame;
+		_autocorrect = info;
+		_client = client;
 	}
 	
 	@Override
@@ -81,7 +91,7 @@ public class HomeScene implements GUIScene {
         recipeGrid.setStyle(Style.SECTIONS);
         grid.add(recipeGrid, 0, 4);
         //recipe list
-        recipeGrid.add(displayList(350, 176, false, _account.getRecipes()), 0, 0);
+        recipeGrid.add(displayList(350, 176, false, _account.getRecipes(), new RecipeHandler<ActionEvent>()), 0, 0);
         
         //MY FRIDGE
         Text MyFridge = new Text("My Fridge");
@@ -93,7 +103,12 @@ public class HomeScene implements GUIScene {
         fridgeGrid.setStyle(Style.SECTIONS);
         grid.add(fridgeGrid, 1, 2);
         //fridge list
-        fridgeGrid.add(displayList(350, 176, true, _account.getIngredients()), 0, 0);
+        fridgeGrid.add(displayList(350, 176, true, _account.getIngredients(), new EventHandler<ActionEvent>(){
+        	@Override
+    		public void handle(ActionEvent e) {
+    			System.out.println("This doesn't do anything.");
+        	}
+        }), 0, 0);
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
@@ -105,7 +120,12 @@ public class HomeScene implements GUIScene {
         shoppingGrid.setStyle(Style.SECTIONS);
         grid.add(shoppingGrid, 1, 4);
         //shopping list
-        shoppingGrid.add(displayList(350, 176, true, _account.getShoppingList()),0,0);
+        shoppingGrid.add(displayList(350, 176, true, _account.getShoppingList(), new EventHandler<ActionEvent>(){
+        	@Override
+    		public void handle(ActionEvent e) {
+    			System.out.println("This doesn't do anything.");
+        	}
+        }),0,0);
         
         //KITCHENS
         Text Kitchens = new Text("Kitchens");
@@ -154,9 +174,7 @@ public class HomeScene implements GUIScene {
        	 
             @Override
             public void handle(ActionEvent e) {
-            	System.out.println("HEREEEE");
-            	_frame.loadCopyScene();
-            	//grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
+            	grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
             }
         });
         return info;
@@ -194,7 +212,7 @@ public class HomeScene implements GUIScene {
             	String name = userName.getText();
             	_account.setName(name);
             	_account.setAddress(userArea.getText());
-            	//updateAccount(); 
+            	updateAccount(); 
             	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
             }
         });
@@ -231,203 +249,6 @@ public class HomeScene implements GUIScene {
         dislikes.add(hbBtn, 1, 2);
         return dislikes;
 	}
-	/*
-	public GridPane displayRecipes(){
-		GridPane recipes = new GridPane();
-		recipes.setHgap(3);
-		recipes.setPrefSize(350, 176);
-		recipes.setStyle(Style.TEXT);
-		ScrollPane rScroll = new ScrollPane();//Scrolling Panel
-		rScroll.setStyle(Style.TEXT);
-		rScroll.setPrefSize(222, 176);
-		rScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		rScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		rScroll.setFitToWidth(true);
-		//grid panel for buttons
-		GridPane rList = new GridPane();
-		rList.setPrefSize(300, 200);
-		rList.setVgap(2);
-		rScroll.setContent(rList);
-		Set<Recipe> recipeSet = _account.getRecipes();//TODO: can we alphabetical order these?
-		//TODO: get rid of the fake recipes
-		recipeSet.add(new MockRecipe("Beef Stew"));
-		recipeSet.add(new MockRecipe("Eye of Newt"));
-		recipeSet.add(new MockRecipe("Tongue of Cat"));
-		recipeSet.add(new MockRecipe("Fritatta"));
-		recipeSet.add(new MockRecipe("Modest Mice"));
-		recipeSet.add(new MockRecipe("Burger"));
-		recipeSet.add(new MockRecipe("Duck Confit"));
-		recipeSet.add(new MockRecipe("Toad in a Hole"));
-		recipeSet.add(new MockRecipe("Toad in a Blanket"));
-		recipeSet.add(new MockRecipe("Special Lassi"));
-		int i = 0;
-		for (Recipe r : recipeSet){
-			rList.add(recipeButton(r),0,i);
-			i++;
-		}
-		recipes.add(rScroll, 0, 0);
-		Button edit = new Button("+/-");
-		edit.setStyle(Style.BUTTON);
-		HBox hbBtn = new HBox(10);
-        hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.TOP_RIGHT);
-        hbBtn.getChildren().add(edit);
-		edit.setOnAction(new EventHandler<ActionEvent>() {
-        	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Edit recipes
-            }
-        });
-		recipes.add(hbBtn, 1, 0);
-		return recipes;
-	}
-	
-	private Button recipeButton(final Recipe r){ //TODO: turn this into a generic list button
-		Button b = new Button(r.getName());
-		b.setStyle(Style.RECIPE);
-		b.setPrefWidth(350);
-		b.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Go to recipe page
-            	System.out.println(r.getName() + "!!!!");
-            }
-        });
-		return b;
-	}
-	
-	private GridPane displayIngredients(){
-		GridPane ingredients = new GridPane();
-		ingredients.setHgap(3);
-		ingredients.setPrefSize(350, 176);
-		ingredients.setStyle(Style.TEXT);
-		ScrollPane iScroll = new ScrollPane();//Scrolling Panel
-		iScroll.setStyle(Style.TEXT);
-		iScroll.setPrefSize(222, 176);
-		iScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		iScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		iScroll.setFitToWidth(true);
-		//grid panel for buttons
-		GridPane rList = new GridPane();
-		rList.setPrefSize(300, 200);
-		rList.setVgap(2);
-		iScroll.setContent(rList);
-		Set<String> ingredientSet = _account.getIngredients();//TODO: we should probably have ingredient object with a quantity, etc.
-		//TODO: get rid of the fake recipes
-		ingredientSet.add("Apple");
-		ingredientSet.add("Orange");
-		ingredientSet.add("Banana");
-		ingredientSet.add("Quinoa");
-		ingredientSet.add("Milk");
-		ingredientSet.add("Ground Beef");
-		ingredientSet.add("Duck Breast");
-		ingredientSet.add("Eggs");
-		ingredientSet.add("Duck Eggs");
-		ingredientSet.add("Coconut Water");
-		int i = 0;
-		for (String s : ingredientSet){
-			rList.add(ingredientButton(s),0,i);
-			i++;
-		}
-		ingredients.add(iScroll, 0, 0);
-		Button edit = new Button("+/-");
-		edit.setStyle(Style.BUTTON);
-		HBox hbBtn = new HBox(10);
-        hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.TOP_RIGHT);
-        hbBtn.getChildren().add(edit);
-		edit.setOnAction(new EventHandler<ActionEvent>() {
-        	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Edit recipes
-            }
-        });
-		ingredients.add(hbBtn, 1, 0);
-		return ingredients;
-	}
-	
-	private Button ingredientButton(final String s){ //TODO: turn this into a generic list button
-		Button b = new Button(s);
-		b.setStyle(Style.RECIPE);
-		b.setPrefWidth(350);
-		b.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Go to recipe page
-            	System.out.println(s + "!!!!");
-            }
-        });
-		return b;
-	}
-	
-	private GridPane displayShoppingList(){
-		GridPane shoppingList = new GridPane();
-		shoppingList.setHgap(3);
-		shoppingList.setPrefSize(350, 176);
-		shoppingList.setStyle(Style.TEXT);
-		ScrollPane sScroll = new ScrollPane();//Scrolling Panel
-		sScroll.setStyle(Style.TEXT);
-		sScroll.setPrefSize(222, 176);
-		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		sScroll.setFitToWidth(true);
-		//grid panel for buttons
-		GridPane rList = new GridPane();
-		rList.setPrefSize(300, 200);
-		rList.setVgap(2);
-		sScroll.setContent(rList);
-		Set<Ingredient> shoppingListSet = _account.getShoppingList();//TODO: we should probably have ingredient object with a quantity, etc.
-		//TODO: get rid of the fake recipes
-		shoppingListSet.add("Lettuce");
-		shoppingListSet.add("Spinach");
-		shoppingListSet.add("Brocoli");
-		shoppingListSet.add("Caviar");
-		shoppingListSet.add("Truffle Oil");
-		shoppingListSet.add("Yams");
-		shoppingListSet.add("Game Hen");
-		shoppingListSet.add("Quail Eggs");
-		shoppingListSet.add("Goat Cheese");
-		shoppingListSet.add("Coconut");
-		int i = 0;
-		for (String s : shoppingListSet){
-			rList.add(shoppingButton(s),0,i);
-			i++;
-		}
-		shoppingList.add(sScroll, 0, 0);
-		Button edit = new Button("+/-");
-		edit.setStyle(Style.BUTTON);
-		HBox hbBtn = new HBox(10);
-        hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.TOP_RIGHT);
-        hbBtn.getChildren().add(edit);
-		edit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Edit recipes
-            }
-        });
-		shoppingList.add(hbBtn, 1, 0);
-		return shoppingList;
-	}
-	
-	private Button shoppingButton(final String s){ //TODO: turn this into a generic list button
-		Button b = new Button(s);
-		b.setStyle(Style.RECIPE);
-		b.setPrefWidth(350);
-		b.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Go to recipe page
-            	System.out.println(s + "!!!!");
-            }
-        });
-		return b;
-	}*/
 	
 	private GridPane displayKitchens(){
 		GridPane kitchenList = new GridPane();
@@ -452,7 +273,7 @@ public class HomeScene implements GUIScene {
 		}
 		int i = 0;
 		for (KitchenName s : kitchenListSet){
-			rList.add(kitchenButton(s.getName()),0,i);
+			rList.add(kitchenButton(s),0,i);
 			i++;
 		}
 		kitchenList.add(sScroll, 0, 0);
@@ -472,30 +293,25 @@ public class HomeScene implements GUIScene {
 		return kitchenList;
 	}
 	
-	private Button kitchenButton(final String s){ //TODO: turn this into a generic list button
-		Button b = new Button(s);
+	private Button kitchenButton(final KitchenName k){ //TODO: turn this into a generic list button
+		Button b = new Button(k.getName());
+		KitchenHandler kHandle = new KitchenHandler();
+		kHandle.setKitchen(k.getID());
 		b.setStyle(Style.RECIPE);
 		b.setPrefWidth(350);
-		b.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	//TODO: Go to kitchen
-            	System.out.println(s + "!!!!");
-            }
-        });
+		b.setOnAction(kHandle);
 		return b;
 	}
 	
-	private GridPane displayList(int width, int height, boolean isIngredients, Set<? extends Nameable> items/*,
-			EventHandler<ActionEvent> itemDest*/){
+	private GridPane displayList(int width, int height, boolean isIngredients, Set<? extends Nameable> items,
+			EventHandler<ActionEvent> itemDest){
 		GridPane listPane = new GridPane();
 		listPane.setHgap(3);
 		listPane.setPrefSize(width, height);
 		listPane.setStyle(Style.TEXT);
 		ScrollPane scroll = new ScrollPane();//Scrolling Panel
 		scroll.setStyle(Style.TEXT);
-		scroll.setPrefSize(listPane.getWidth()-30, height);
+		scroll.setPrefSize(listPane.getWidth()-8, height);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setFitToWidth(true);
@@ -506,7 +322,7 @@ public class HomeScene implements GUIScene {
 		scroll.setContent(itemList);
 		int i = 0;
 		for (Nameable item : items){
-			itemList.add(itemButton(item/*, itemDest*/),0,i);
+			itemList.add(itemButton(item, itemDest),0,i);
 			i++;
 		}
 		Button edit = new Button("+/-");
@@ -535,7 +351,7 @@ public class HomeScene implements GUIScene {
 		return listPane;
 	}
 	
-	private Button itemButton(Nameable item/*, EventHandler<ActionEvent> destination*/){ //TODO: turn this into a generic list button
+	private Button itemButton(Nameable item, EventHandler<ActionEvent> destination){ 
 		Button b = new Button(item.getName());
 		b.setStyle(Style.RECIPE);
 		b.setPrefWidth(350);
@@ -553,13 +369,51 @@ public class HomeScene implements GUIScene {
 		return handler;
 	}
 	
+	private class KitchenHandler<ActionEvent> implements EventHandler{
+		
+		private String _kitchenID;
+		
+		public void setKitchen(String kitchenID){
+			_kitchenID = kitchenID;
+		}
+		
+		@Override
+		public void handle(Event arg0) {
+			System.out.println(" requesting kitchen: " + _kitchenID);
+			_client.setCurrentKitchen(_kitchenID);
+			requestKitchen(_kitchenID);
+			
+		}
+	}
+	
+	private class RecipeHandler<ActionEvent> implements EventHandler{
+		
+		private String _recipeID;
+		
+		public void setKitchen(String recipeID){
+			_recipeID = recipeID;
+		}
+		
+		@Override
+		public void handle(Event arg0) {
+			System.out.println(" requesting recipe: " + _recipeID);
+			//TODO: pop up recipe
+		}
+	}
+	
 	/**
 	 * Tells client to send account updates to server.
-	 
+	 */
 	public void updateAccount(){
+		System.out.println("account: " + _account);
+		System.out.println("client: " + _client);
 		_client.storeAccount(_account.getID(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
 	
+	public void requestKitchen(String kitchenID){
+		_client.getKitchen(kitchenID);
+	}
+	/*
 	public void updateFridge(Set<String> ingredients){
 		_ingredients.setText("");
 		for (String ingredient : ingredients){
@@ -579,6 +433,5 @@ public class HomeScene implements GUIScene {
 		for (String item : list){
 			_shoppingList.append("--" + item+ "\n");
 		}
-	}
-	*/
+	}*/
 }
