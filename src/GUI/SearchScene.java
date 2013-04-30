@@ -7,10 +7,13 @@ import java.util.Set;
 
 import client.Client;
 import UserInfo.Account;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
@@ -105,6 +108,17 @@ public class SearchScene implements GUIScene {
         leftToBuyGrid.setPrefSize(300, 200);
         leftToBuyGrid.setStyle(Style.SECTIONS);
         grid.add(leftToBuyGrid, 1, 4);
+        
+        //Go back to the home page.
+        Button b = new Button("Back to home.");
+		b.setStyle(Style.BUTTON);
+		grid.add(b, 1, 1);
+		b.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				_frame.loadHomeScene();
+			}
+		});
         
 		return scene;
 	}
