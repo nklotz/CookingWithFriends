@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
+import server.APIInfo;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
@@ -31,6 +32,7 @@ public class Client extends Thread {
     private GUIFrame _gui = null;
     private HashMap<String, Kitchen> _kitchens;
     private boolean _running;
+    private APIInfo _autocorrect;
 	
     public Client(int port) throws IOException {
 
@@ -111,7 +113,9 @@ public class Client extends Thread {
 							_login = new LoginWindow(this);
 						} else {
 							verified = true;	//successful login
+							
 							System.out.println("read as login");
+							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_gui = new GUIFrame(this, response.getAccount());
 							System.out.println("sleep");

@@ -49,4 +49,24 @@ public class APIInfo {
 	public Engine getAllergyEngine(){
 		return aEng_;
 	}
+	
+	/**
+	 * Wrapper for the suggestion engine to suggest restictions.
+	 * @param restriction
+	 * @return
+	 */
+	public List<String> getRestrictionSuggestions(String restriction){
+		rEng_.setText(restriction);
+		return rEng_.suggest();
+	}
+	
+	public List<String> getIngredientSuggestions(String ingredient){
+		iEng_.setText(ingredient);
+		return iEng_.suggest();
+	}
+	
+	public List<String> getAllergySuggestions(String allergy){
+		aEng_.setText(allergy);
+		return aEng_.suggest();
+	}
 }
