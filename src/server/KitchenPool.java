@@ -139,12 +139,12 @@ public class KitchenPool {
 	}
 	
 	
-	public HashMap<String, Kitchen> getAllUserKitchens(String userID){
-		HashMap<String, Kitchen> kitchens = new HashMap<String, Kitchen>();
+	public HashMap<KitchenName, Kitchen> getAllUserKitchens(String userID){
+		HashMap<KitchenName, Kitchen> kitchens = new HashMap<KitchenName, Kitchen>();
 		HashSet<KitchenName> kIDS = _userToKitchens.get(userID);
 		if (kIDS != null){
 			for(KitchenName k: kIDS){
-				kitchens.put(k.getID(), _idToKitchen.get(k.getID()));
+				kitchens.put(k, _idToKitchen.get(k.getID()));
 			}
 		}
 		return kitchens;	

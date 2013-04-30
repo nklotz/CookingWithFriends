@@ -1,5 +1,7 @@
 package GUI;
 
+import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
@@ -7,15 +9,14 @@ import javax.swing.JFrame;
 
 import UserInfo.Account;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 import client.Client;
 
 public class GUIFrame extends JFrame {
 
 	private Client _client;
 	private JFXPanel _panel;
-	private Account _account;
-	private Kitchen _kitchen;
-	private GUIFrame _frame;
+	private Account _account;;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	
 	public GUIFrame(Client client, Account account){
@@ -32,48 +33,41 @@ public class GUIFrame extends JFrame {
     	_panel.setPreferredSize(new java.awt.Dimension(950,550));
     	
     	_account = account;
-    	_frame = this;
+    	_client = client;
     	
-    	Platform.runLater(new Runnable() {
-    		@Override
-    		public void run() {
-    			HomeScene home = new HomeScene(_account, _frame);
-    			_panel.setScene(home.makeScene());
-    		}
-    		
-    		
-    	});
+    	loadHomeScene();
 		
 	}
 	
-	public void requestKitchen(String kitchenID){
-		_client.getKitchen(kitchenID);
-	}
 	
-	public void loadCopyScene(){
+	public void loadSearchScene(Map<KitchenName, Kitchen> kitchens){
+		_searchScene = new SearchScene(kitchens);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
-    			_panel.setScene(homeCopy.makeScene());
+    			_panel.setScene(_searchScene.makeScene());
     		}
 		});
     		
 	}
 	
-	public void loadHomeScene(){
-		HomeScene homeCopy = new HomeScene(_account, this);
-		_panel.setScene(homeCopy.makeScene());
-	}
 	
-	public void loadKitchenScene(Kitchen kitchen){
-		_kitchen = kitchen;
+	public void loadHomeScene(){
+		_homeScene = new HomeScene(_account, this, _client);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			//CopyOfHomeScene homeCopy = new CopyOfHomeScene(_account, _frame);
-    			KitchenScene kitchenScene = new KitchenScene(_kitchen, _frame);
-    			_panel.setScene(kitchenScene.makeScene());
+    			_panel.setScene(_homeScene.makeScene());
+    		}
+		});
+	}
+	
+	public void loadKitchenScene(Kitchen kitchen){
+		_kitchenScene = new KitchenScene(kitchen, this, _client);
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_panel.setScene(_kitchenScene.makeScene());
     		}
 		});
 		

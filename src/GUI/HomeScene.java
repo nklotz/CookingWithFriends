@@ -18,14 +18,15 @@ import javafx.scene.text.Text;
 import UserInfo.Account;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
-import UserInfo.Recipe;
+import client.Client;
 
 public class HomeScene implements GUIScene {
 
 	Account _account;
 	GUIFrame _frame;
+	Client _client;
 	
-	public HomeScene(Account account, GUIFrame frame){
+	public HomeScene(Account account, GUIFrame frame, Client client){
 		_account = account;
 		_frame = frame;
 	}
@@ -154,9 +155,7 @@ public class HomeScene implements GUIScene {
        	 
             @Override
             public void handle(ActionEvent e) {
-            	System.out.println("HEREEEE");
-            	_frame.loadCopyScene();
-            	//grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
+            	grid.add(editPersonalInfo(grid), 0, 1, 1, 3);
             }
         });
         return info;

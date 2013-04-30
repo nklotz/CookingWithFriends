@@ -7,6 +7,7 @@ import server.APIInfo;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 
 public class RequestReturn implements Serializable {
 	
@@ -16,7 +17,7 @@ public class RequestReturn implements Serializable {
 	private Account _account;
 	private Kitchen _kitchen;
 	private boolean _checkPass;
-	private HashMap<String, Kitchen> _kitchenMap;
+	private HashMap<KitchenName, Kitchen> _kitchenMap;
 	private Invitation _invite;
 	private APIInfo _info;
 	
@@ -25,6 +26,7 @@ public class RequestReturn implements Serializable {
 	 *   1 -- Password Check (extract getCorrect())
 	 *   2 -- Singular Kitchen (extract getKitchen)
 	 *   3 -- Invitation
+	 *   4 -- List of Kitchens
 	 */
 	
 	public RequestReturn(int type){
@@ -59,11 +61,11 @@ public class RequestReturn implements Serializable {
 		return _kitchen;
 	}
 	
-	public void setKitchenMap(HashMap<String, Kitchen> kits){
-		_kitchenMap = kits;
+	public void setKitchenMap(HashMap<KitchenName, Kitchen> hashMap){
+		_kitchenMap = hashMap;
 	}
 	
-	public HashMap<String, Kitchen> getKitchenMap(){
+	public HashMap<KitchenName, Kitchen> getKitchenMap(){
 		return _kitchenMap;
 	}
 	
