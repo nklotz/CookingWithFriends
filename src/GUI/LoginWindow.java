@@ -174,11 +174,21 @@ public class LoginWindow extends JFrame{
         final PasswordField pwBox2 = new PasswordField();
         grid.add(pwBox2, 1, 3);
         
+        Button cancel = new Button("Cancel");
         Button newAcct = new Button("Create Account");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(cancel);
         hbBtn.getChildren().add(newAcct);
         grid.add(hbBtn, 1, 4);
+        
+        cancel.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent e){
+        		loadLogin();
+        	}
+        });
         
         newAcct.setOnAction(new EventHandler<ActionEvent>() {
         	 

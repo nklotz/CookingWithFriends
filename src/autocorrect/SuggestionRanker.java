@@ -5,12 +5,13 @@
 package autocorrect;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class SuggestionRanker implements Ranker{
+public class SuggestionRanker implements Ranker, Serializable{
 	private HashMap<String, Integer> unigrams_;
 	private HashMap<String, HashMap<String, Integer>> bigrams_;
 	private String text_;

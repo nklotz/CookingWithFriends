@@ -3,11 +3,13 @@
  */
 package UserInfo;
 
+import java.io.Serializable;
+
 /**
  * @author hacheson
  *
  */
-public class KitchenName implements Nameable{
+public class KitchenName implements Nameable, Serializable{
 
 	private String _id;
 	private String _name;

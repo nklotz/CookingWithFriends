@@ -1,9 +1,10 @@
 package autocorrect;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trie implements WordStructure{
+public class Trie implements WordStructure, Serializable{
 	private TrieNode root_;
 	
 	/**

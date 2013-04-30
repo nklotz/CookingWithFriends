@@ -6,9 +6,10 @@
 
 package autocorrect;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class TrieNode{
+public class TrieNode implements Serializable{
 	private boolean isTerminal_;
 	private String word_;
 	private HashMap<Character, TrieNode> children_;

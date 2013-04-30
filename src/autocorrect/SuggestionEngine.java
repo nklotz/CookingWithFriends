@@ -5,8 +5,9 @@
 package autocorrect;
 
 import java.util.List;
+import java.io.Serializable;
 
-public class SuggestionEngine implements Engine{
+public class SuggestionEngine implements Engine, Serializable{
 	private Generator g_;
 	private Ranker r_;
 	private WordStructure trie_;

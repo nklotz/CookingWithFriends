@@ -58,11 +58,11 @@ public class MockUser {
 		recipes.add(r2);
 		recipes.add(r3);
 		
-		Ingredient fi = new Ingredient("chicken", "cups", 3);
-		Ingredient gi = new Ingredient("strawberries", "cups", 4);
-		Ingredient hi = new Ingredient("gouda", "pounds", 1);
-		Ingredient ii = new Ingredient("brie", "pounds", 2.3);
-		Ingredient ji = new Ingredient("sugar", "cups", 2);
+		Ingredient fi = new Ingredient("chicken", "c.", 3);
+		Ingredient gi = new Ingredient("strawberries", "c.", 4);
+		Ingredient hi = new Ingredient("gouda", "lbs.", 1);
+		Ingredient ii = new Ingredient("brie", "lbs.", 2.3);
+		Ingredient ji = new Ingredient("sugar", "c.", 2);
 		
 		HashSet<Ingredient> ingredients = new HashSet<Ingredient>();
 		ingredients.add(fi);
@@ -72,7 +72,8 @@ public class MockUser {
 		ingredients.add(ji);
 		
 		
-		_account = new Account("CWF", name, address, recipes,ingredients);
+		_account = new Account("CWF", name, address, recipes, ingredients);
+		_account.setKitchens(kitchens);
 		return _account;
 	}
 

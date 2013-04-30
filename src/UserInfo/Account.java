@@ -157,6 +157,10 @@ public class Account implements Serializable {
 		return _kitchens;
 	}
 	
+	public void setKitchens(HashSet<KitchenName> kitchens){
+		_kitchens = kitchens;
+	}
+	
 	/**
 	 * Sets the user's preferences.
 	 * @param pref Preferences for the user to set.

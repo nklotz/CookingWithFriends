@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import server.APIInfo;
 import UserInfo.Account;
+import UserInfo.Ingredient;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
 import client.Client;
@@ -267,12 +268,10 @@ public class HomeScene implements GUIScene {
 		rList.setVgap(2);
 		sScroll.setContent(rList);
 		Set<KitchenName> kitchenListSet = _account.getKitchens();//TODO: we should probably have ingredient object with a quantity, etc.
-		//TODO: get rid of the fake recipes
-		if (kitchenListSet == null){
-			kitchenListSet = new HashSet<>();
-		}
+		System.out.println("kitchens: " + kitchenListSet);
 		int i = 0;
 		for (KitchenName s : kitchenListSet){
+			System.out.println("calling kitchen button");
 			rList.add(kitchenButton(s),0,i);
 			i++;
 		}
@@ -294,6 +293,7 @@ public class HomeScene implements GUIScene {
 	}
 	
 	private Button kitchenButton(final KitchenName k){ //TODO: turn this into a generic list button
+		System.out.println("getting  called");
 		Button b = new Button(k.getName());
 		KitchenHandler kHandle = new KitchenHandler();
 		kHandle.setKitchen(k.getID());
@@ -311,21 +311,22 @@ public class HomeScene implements GUIScene {
 		listPane.setStyle(Style.TEXT);
 		ScrollPane scroll = new ScrollPane();//Scrolling Panel
 		scroll.setStyle(Style.TEXT);
-		scroll.setPrefSize(listPane.getWidth()-8, height);
+		scroll.setPrefSize(width, height);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setFitToWidth(true);
 		//grid panel for buttons
 		GridPane itemList = new GridPane();
-		itemList.setPrefSize(300, 200);
+		itemList.setPrefSize(width,height);
 		itemList.setVgap(2);
 		scroll.setContent(itemList);
 		int i = 0;
 		for (Nameable item : items){
-			itemList.add(itemButton(item, itemDest),0,i);
+			itemList.add(itemButton(item, itemDest),1,i);
 			i++;
 		}
 		Button edit = new Button("+/-");
+		edit.setMinWidth(20);
 		edit.setStyle(Style.BUTTON);
 		HBox hbBtn = new HBox(10);
         hbBtn.setPrefHeight(80);
@@ -340,6 +341,13 @@ public class HomeScene implements GUIScene {
 		if (isIngredients){
 			Text qty = new Text("Qty.  |");
 			Text Ingredient = new Text("	Ingredient");
+			//Display Quantities
+			int j = 0;
+			for (Nameable item : items){
+				Ingredient thing = (Ingredient) item;
+				itemList.add(quantButton(thing.getQuantity() + thing.getUnit()), 0, j);
+				j++;
+			}
 			listPane.add(qty, 0, 0);
 			listPane.add(Ingredient, 1, 0);
 			listPane.add(scroll, 0, 1, 2, 1);
@@ -351,11 +359,24 @@ public class HomeScene implements GUIScene {
 		return listPane;
 	}
 	
+	private Button quantButton(String called){
+		Button b = new Button(called);
+		b.setStyle(Style.RECIPE);
+		b.setPrefWidth(15);
+		b.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				System.out.println("nothing");
+			}
+		});
+		return b;
+	}
+	
 	private Button itemButton(Nameable item, EventHandler<ActionEvent> destination){ 
 		Button b = new Button(item.getName());
 		b.setStyle(Style.RECIPE);
 		b.setPrefWidth(350);
-		b.setOnAction(nameHandler(b));
+		b.setOnAction(destination);
 		return b;
 	}
 	
@@ -390,7 +411,7 @@ public class HomeScene implements GUIScene {
 		
 		private String _recipeID;
 		
-		public void setKitchen(String recipeID){
+		public void setRecipe(String recipeID){
 			_recipeID = recipeID;
 		}
 		
@@ -413,25 +434,12 @@ public class HomeScene implements GUIScene {
 	public void requestKitchen(String kitchenID){
 		_client.getKitchen(kitchenID);
 	}
-	/*
-	public void updateFridge(Set<String> ingredients){
-		_ingredients.setText("");
-		for (String ingredient : ingredients){
-			_ingredients.append("--" + ingredient + "\n");
-		}
-	}
-	
-	public void updateRecipes(Set<Recipe> recipes){
-		_recipes.setText("");
-		for (Recipe recipe : recipes){
-			_recipes.append("--" + recipe.getID()+ "\n");
-		}
-	}
-	
-	public void updateShoppingList(Set<String> list){
-		_shoppingList.setText("");
-		for (String item : list){
-			_shoppingList.append("--" + item+ "\n");
-		}
-	}*/
+
+	//TODO: Fix scrollbar formatting
+	// make preference editable
+	// get rid of dislikes
+	// add adding/deleting ingredients
+	// add deleting kitchens.
+	// why aren't kitchens displaying?
+
 }

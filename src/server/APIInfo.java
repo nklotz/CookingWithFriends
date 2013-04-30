@@ -3,6 +3,8 @@ package server;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.Serializable;
+
 import UserInfo.Ingredient;
 import autocorrect.Engine;
 import autocorrect.SuggestionEngine;
@@ -12,7 +14,7 @@ import autocorrect.SuggestionEngine;
  * @author hacheson
  *
  */
-public class APIInfo {
+public class APIInfo implements Serializable {
 	private Engine iEng_;
 	private Engine rEng_;
 	private Engine aEng_;
