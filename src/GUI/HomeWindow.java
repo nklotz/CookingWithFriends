@@ -53,9 +53,6 @@ public class HomeWindow extends JFrame {
 
 	private Account _account;
 	private Client _client;
-	private JTextArea _ingredients;
-	private JTextArea _shoppingList;
-	private JTextArea _recipes;
 	
 	
 	public HomeWindow(Account account, Client client){
@@ -617,7 +614,7 @@ public class HomeWindow extends JFrame {
 	public void updateAccount(){
 		_client.storeAccount(_account.getID(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
-	
+	/*
 	public void updateFridge(Set<String> ingredients){
 		_ingredients.setText("");
 		for (String ingredient : ingredients){
@@ -637,7 +634,7 @@ public class HomeWindow extends JFrame {
 		for (String item : list){
 			_shoppingList.append("--" + item+ "\n");
 		}
-	}
+	}*/
 	
 	//TODO: Fix scrollbar formatting
 	// make preference editable

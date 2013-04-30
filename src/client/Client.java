@@ -34,6 +34,7 @@ public class Client extends Thread {
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private APIInfo _autocorrect;
+    private String _currentKitchen;
 	
     public Client(int port) throws IOException {
 
@@ -268,6 +269,15 @@ public class Client extends Thread {
     	Request r = new Request(14);
     	r.setKitchenID(id);
     	send(r);
+    }
+    
+    public void setCurrentKitchen(String kitchen){
+    	_currentKitchen = kitchen;
+    }
+    
+    public String getCurrentKitchen(){
+    	return _currentKitchen;
+    	
     }
     
     public void getAllKitchens(){

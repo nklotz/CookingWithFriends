@@ -36,10 +36,8 @@ public class GUIFrame extends JFrame {
     	
     	_account = account;
     	_client = client;
-    
     	_engines = info;
-
-	loadHomeScene();
+    	loadHomeScene();
 		
 	}
 	
@@ -57,14 +55,13 @@ public class GUIFrame extends JFrame {
 	
 	
 	public void loadHomeScene(){
-		_homeScene = new HomeScene(_account, this, _client);
+		_homeScene = new HomeScene(_account, this,_engines, _client);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
     			_panel.setScene(_homeScene.makeScene());
     		}
 		});
-
 	}
 	
 	public void loadKitchenScene(Kitchen kitchen){
