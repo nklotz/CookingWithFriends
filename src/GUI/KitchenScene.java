@@ -12,6 +12,7 @@ public class KitchenScene implements GUIScene {
 		_kitchen = k;
 		_frame = f;
 	}
+	
 	@Override
 	public Scene makeScene() {
 		// TODO Auto-generated method stub
