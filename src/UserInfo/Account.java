@@ -29,6 +29,7 @@ public class Account implements Serializable {
 	private Set<Ingredient> _ingredients = new HashSet<Ingredient>();
 	private Set<Ingredient> _shoppingList = new HashSet<Ingredient>();
 	private HashMap<String, Invitation> _invitations = new HashMap<String, Invitation>() ;
+	private Set<String> _dietRestrictions = new HashSet<String>();
 	
 	public Account(String userId, String name, String address, HashSet<Recipe> recipes, HashSet<Ingredient> ingredients, HashSet<Ingredient> shoppingList){
 		_userId = userId;
@@ -91,6 +92,23 @@ public class Account implements Serializable {
 	
 	public Set<Ingredient> getShoppingList(){
 		return _shoppingList;
+	}
+	
+	
+	/**
+	 * Sets the list of ingredients in the account.
+	 * @param ing
+	 */
+	public void addRestriction(String restric){
+		_dietRestrictions.add(restric);
+	}
+	
+	public void removeRestriction(String restric){
+		_dietRestrictions.remove(restric);
+	}
+	
+	public Set<String> getDietaryRestrictions(){
+		return _dietRestrictions;
 	}
 	
 	/**
