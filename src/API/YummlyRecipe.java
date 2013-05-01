@@ -45,9 +45,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 	
 	public YummlyRecipe() {
 		_ingredients = new ArrayList<>();
-		for (String ingredient : ingredients) {
-			_ingredients.add(new Ingredient(ingredient));
-		}
 	}
 
 
@@ -66,6 +63,11 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public List<Ingredient> getIngredients() {
+		if (_ingredients.isEmpty()) {
+			for (String ingredient : ingredients) {
+				_ingredients.add(new Ingredient(ingredient));
+			}
+		}
 		return _ingredients;
 	}
 
@@ -106,13 +108,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public String getImageUrl() {
-		// TODO IMPLEMENT THIS
-		return null;
-	}
-
-
-	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return smallImageUrls[0];
 	}
 }

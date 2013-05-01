@@ -4,7 +4,6 @@
 package UserInfo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +22,6 @@ public class Kitchen implements Serializable, Nameable{
 	private HashSet<Event> _events = new HashSet<Event>();
 	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
 	private HashMap<Ingredient, HashSet<String>> _ingToUsers = new HashMap<Ingredient, HashSet<String>>();
-	
 	private String _id = "", _name = "";
 	private HashSet<String> _activeUsers = new HashSet<String>();
 	private HashSet<String> _requestedUsers = new HashSet<String>();
@@ -41,6 +39,7 @@ public class Kitchen implements Serializable, Nameable{
 		_id = id;
 		_name = name;
 	}
+	
 	
 	public String getName(){
 		return _name;

@@ -31,21 +31,17 @@ public class Client extends Thread {
     private ObjectOutputStream _out = null;
     private ObjectInputStream _in = null;
     private LoginWindow _login = null;
-    //private HomeWindow _gui = null;
     private GUIFrame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
-    private Wrapper _wrapper;
     private String _currentKitchen;
 	
     public Client(String hostname, int port) throws IOException {
 
         try {
             _kkSocket = new Socket(hostname, port);
-            //_out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
-            //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
             _in = new ObjectInputStream(_kkSocket.getInputStream());
             _login = new LoginWindow(this);
             _running = true;
@@ -120,7 +116,6 @@ public class Client extends Thread {
 							_login = new LoginWindow(this);
 						} else {
 							verified = true;	//successful login
-							
 							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
