@@ -22,11 +22,14 @@ public class Kitchen implements Serializable, Nameable{
 	private static final long serialVersionUID = 1L;
 	private HashSet<Event> _events = new HashSet<Event>();
 	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
-	private HashMap<Ingredient, List<String>> _ingToUsers = new HashMap<Ingredient, List<String>>();
+	private HashMap<Ingredient, HashSet<String>> _ingToUsers = new HashMap<Ingredient, HashSet<String>>();
 	
 	private String _id = "", _name = "";
 	private HashSet<String> _activeUsers = new HashSet<String>();
 	private HashSet<String> _requestedUsers = new HashSet<String>();
+	private HashMap<String, HashSet<String>> _dietRestricts = new HashMap<String, HashSet<String>>();
+	private HashMap<String, HashSet<String>> _allergies = new HashMap<String, HashSet<String>>();
+
 	//TODO: Create a message board.
 	//private ArrayList<String> _messageBoard;
 	
@@ -52,9 +55,15 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	
-	public void addActiveUser(String user){
-		removeRequestedUser(user);
-		_activeUsers.add(user);
+	public void addActiveUser(Account user){
+		removeRequestedUser(user.getID());
+		for(String r: user.getDietaryRestrictions()){
+			addDietaryRestriction(r, user.getID());
+		}
+		for(String r: user.getAllergies()){
+			addAllergy(r, user.getID());
+		}
+		_activeUsers.add(user.getID());
 	}
 	
 	public void addRequestedUser(String user){
@@ -81,7 +90,65 @@ public class Kitchen implements Serializable, Nameable{
 		return _ingToUsers.keySet();
 	}
 	
+	public Set<String> getDietaryRestrictions() {
+		return _dietRestricts.keySet();
+	}
 	
+	public Set<String> getAllergies() {
+		return _allergies.keySet();
+	}
+	
+	public void addIngredient(String user, Ingredient ing) {
+		if(!_ingToUsers.containsKey(ing)){
+			_ingToUsers.put(ing, new HashSet<String>());
+		}
+		_ingToUsers.get(ing).add(user);
+	}
+	
+	public void removeIngredient(String user, Ingredient ing){
+		if(!_ingToUsers.containsKey(ing)){
+			HashSet<String> hs = _ingToUsers.get(ing);
+			hs.remove(user);
+			if(hs.size()==0){
+				_ingToUsers.remove(ing);
+			}
+		}
+	}
+	
+	public void addDietaryRestriction(String restric, String userID){
+		if(!_dietRestricts.containsKey(restric)){
+			_dietRestricts.put(restric, new HashSet<String>());
+		}
+		_dietRestricts.get(restric).add(userID);
+	}
+	
+	public void removeDietaryRestriction(String restric, String userID){
+		if(_dietRestricts.containsKey(restric)){
+			HashSet<String> hs = _dietRestricts.get(restric);
+			hs.remove(userID);
+			if(hs.size()==0){
+				_dietRestricts.remove(restric);
+			}
+		}
+	}
+	
+	public void addAllergy(String allergy, String userID){
+		if(!_allergies.containsKey(allergy)){
+			_allergies.put(allergy, new HashSet<String>());
+		}
+		_allergies.get(allergy).add(userID);
+	}
+	
+	public void removeAllergy(String allergy, String userID){
+		if(_allergies.containsKey(allergy)){
+			HashSet<String> hs = _allergies.get(allergy);
+			hs.remove(userID);
+			if(hs.size()==0){
+				_allergies.remove(allergy);
+			}
+		}
+	}
+		
 	/**
 	 * Sets the id of the kitchen object.
 	 * @param id
@@ -141,6 +208,11 @@ public class Kitchen implements Serializable, Nameable{
 	public String toString() {
 		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
 				+ ", _recipes=" + _recipes + ", _id=" + _id + "]";
+	}
+
+	public void addActiveUserID(String kitchenUserID) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

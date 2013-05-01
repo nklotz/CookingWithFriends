@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import UserInfo.Account;
 import UserInfo.Event;
+import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.Recipe;
@@ -11,13 +12,15 @@ import UserInfo.Recipe;
 public class Request implements Serializable {
 
 
-	private String _kUserID, _username, _password, _kID, _kName, _ingredient;
-	private int _requestType;
+	private String _kUserID, _username, _password, _kID, _kName;
+	private int _requestType, _accountChangeType;
 	private Account _account;
 	private Kitchen _kitchen;
 	private Event _kEvent;
 	private Recipe _recipe;
 	private Invitation _invite;
+	private Ingredient _ingredient;
+	private String _restrictAllergy;
 	
 	
 	/*
@@ -48,7 +51,7 @@ public class Request implements Serializable {
 		return _requestType;
 	}
 	
-	public String getIngredient(){
+	public Ingredient getIngredient(){
 		return _ingredient;
 	}
 	
@@ -84,7 +87,7 @@ public class Request implements Serializable {
 		return _kName;
 	}
 	
-	public void setIngredient(String ing){
+	public void setIngredient(Ingredient ing){
 		_ingredient = ing;
 	}
 	
@@ -137,5 +140,20 @@ public class Request implements Serializable {
 		return _invite;
 	}
 	
+	public void setChangeType(int type){
+		_accountChangeType = type;
+	}
+	
+	public int getChangeType(){
+		return _accountChangeType;
+	}
+	
+	public void setRestrictAllergy(String ra){
+		_restrictAllergy = ra;
+	}
+	
+	public String getRestrictAllergy(){
+		return _restrictAllergy;
+	}
 	
 }
