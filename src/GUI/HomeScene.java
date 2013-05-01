@@ -1,8 +1,13 @@
 package GUI;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -10,11 +15,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -112,69 +119,6 @@ public class HomeScene implements GUIScene {
     			System.out.println("This doesn't do anything.");
         	}
         }, fridgeGrid), 0, 0);
-
-        final TextField ingredients = new TextField();
-        fridgeGrid.add(ingredients, 100, 100);
-       // ingredients.setOnAction(arg0)
-        //ingredients.get
-        ingredients.setOnAction(new EventHandler<ActionEvent>(){
-        	
-        	@Override
-            public void handle(ActionEvent e) {
-            	String text = ingredients.getText();
-            	System.out.println("In text handler!!!");
-//            	_account.setName(name);
-//            	_account.setAddress(userArea.getText());
-//            	updateAccount(); 
-//            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });
-        
-        /*save.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	String name = userName.getText();
-            	_account.setName(name);
-            	_account.setAddress(userArea.getText());
-            	updateAccount(); 
-            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });*/
-        
-        /*
-         * final TextField userName = new TextField();
-        Text area = new Text("Area: ");
-        final TextField userArea = new TextField();
-        info.add(name,0,0);
-        info.add(userName, 1, 0);
-        info.add(area,0,1);
-        info.add(userArea, 1, 1);
-        Text id = new Text("Email: ");
-        Text userId = new Text(_account.getID());
-        info.add(id, 0, 2);
-        info.add(userId, 1, 2);
-        //edit Info Button
-        Button save = new Button("Save");
-        save.setStyle(Style.BUTTON);
-        HBox hbBtn = new HBox(10);
-        hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(save);
-        info.add(hbBtn, 1, 4);
-        save.setOnAction(new EventHandler<ActionEvent>() {
-          	 
-            @Override
-            public void handle(ActionEvent e) {
-            	String name = userName.getText();
-            	_account.setName(name);
-            	_account.setAddress(userArea.getText());
-            	updateAccount(); 
-            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });
-         */
-        
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
@@ -293,6 +237,79 @@ public class HomeScene implements GUIScene {
         return info;
 	}
 
+	private VBox IngredientTypeBar(final GridPane grid){
+        GridPane info = new GridPane();
+        //GridPane buttonPane = new GridPane();
+        VBox vbox = new VBox();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(600, 600);
+        Text name = new Text("Ingredient: ");
+        final TextField ingredients = new TextField();
+        ingredients.setMinWidth(50);
+        ingredients.setPrefWidth(50);
+        ingredients.setMaxWidth(400);
+        final ComboBox<String> box = new ComboBox<String>();
+        List<String> list = new ArrayList<String>();
+        box.getItems().addAll(list);
+//        Button[] buttons = new Button[4];
+//        for(int i = 0; i < buttons.length; i++){
+//        	buttons[i] = new Button("hi");
+//        }
+        
+        ingredients.textProperty().addListener(new ChangeListener<String>() {
+        	
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            	ingredients.setPrefWidth(ingredients.getText().length() * 7); // why 7? Totally trial number.
+            	String text = ingredients.getText();
+            	
+            	List<String> suggs = null;
+            	//ObservableList<String> obs = new ObservableList<String>();
+            	if(text.trim().length()!=0)
+            		suggs = _autocorrect.getIngredientSuggestions(text);
+            	if(suggs!=null){
+            		box.getItems().remove(box.getItems());
+            		box.getItems().addAll(suggs);
+            	}
+            		
+            }
+        });
+        info.add(name,0,0);
+        info.add(ingredients, 1, 0);
+//        for(int i = 0; i < buttons.length; i++){
+//        	buttonPane.add(buttons[i], 0, i);
+//        	
+//        }
+        vbox.getChildren().add(info);
+        vbox.getChildren().add(box);
+//        vbox.getChildren().add(buttonPane);
+        //Pane[] ret = {info, buttonPane};
+        //return ret;
+        return vbox;
+        /*edit Info Button
+        Button save = new Button("Add");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 4);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	_account.addIngredient(new Ingredient(name));
+            	updateAccount(); 
+            	//grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            	System.out.println("REFRESH???");
+            }
+        }); */
+       
+	}
+	
+	
 	public GridPane displayPreferences(){
 		//main grid
 		GridPane info = new GridPane();
@@ -535,8 +552,18 @@ public class HomeScene implements GUIScene {
         		HBox hbBtn = new HBox(10);
                 hbBtn.setPrefHeight(80);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+                
+                //Working with pane arr returned and addding all the hbtn.
+               // Pane[] ingredientPanes = IngredientTypeBar(itemList);
+                VBox ingredientsBox = IngredientTypeBar(itemList);
+                hbBtn.getChildren().add(ingredientsBox);
                 hbBtn.getChildren().add(save);
-                listPane.add(hbBtn, 2, 2, 2,1);
+               // hbBtn.getChildren().add(ingredientPanes[1]);
+               
+            	
+                listPane.add(hbBtn, 2, 2, 2, 1);
+                //listPane.add(ingredientPanes[0], 1,7);
+               // listPane.add(ingredientPanes[1], arg1, arg2);
         		save.setOnAction(new EventHandler<ActionEvent>() {
         			@Override
                     public void handle(ActionEvent e) {

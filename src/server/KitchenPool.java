@@ -2,15 +2,14 @@ package server;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
+import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
-import UserInfo.User;
 
 /**
  * This class keeps track of the active kitchens and users. When a user logs in
@@ -38,6 +37,13 @@ public class KitchenPool {
 		_idToKitchen = new HashMap<String, Kitchen>();
 		_helper = helper;
 		_clients = clients;
+	}
+	
+	public void removeUserIngredient(String userID, Ingredient ing){
+		for(KitchenName kn: _userToKitchens.get(userID)){
+			Kitchen k = _idToKitchen.get(kn.getID());
+			
+		}
 	}
 	
 	/**
@@ -168,7 +174,7 @@ public class KitchenPool {
 		
 		switch (request.getType()){
 			case 3: //add user to kitchen
-				k.addActiveUser(request.getKitchenUserID());
+				k.addActiveUser(request.getAccount());
 				break;
 			case 4: //remove user from kitchen
 				k.removeActiveUser(request.getKitchenUserID());
@@ -189,6 +195,8 @@ public class KitchenPool {
 		  		break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		  		break;
+		  		
+		  		
   			default: 
   				return;
 		}

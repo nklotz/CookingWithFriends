@@ -193,7 +193,7 @@ public class ClientHandler extends Thread {
 	}
 
 	private void storeAccount(Request request) {
-		_taskPool.execute(new StoreAccountRequest(request.getAccount(), _helper));
+		_taskPool.execute(new StoreAccountRequest(request.getAccount(), _helper, _activeKitchens, request));
 	}
 	
 	private void storeKitchen(Request request) {

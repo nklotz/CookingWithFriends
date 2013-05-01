@@ -9,9 +9,11 @@ import javax.swing.JFrame;
 
 import server.AutocorrectEngines;
 import API.Wrapper;
+import API.YummlyAPIWrapper;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
+import UserInfo.Recipe;
 import client.Client;
 
 public class GUIFrame extends JFrame{
@@ -19,10 +21,11 @@ public class GUIFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private Client _client;
 	private JFXPanel _panel;
-	private Account _account;;
-	private GUIScene _kitchenScene, _homeScene, _searchScene;
+	private Account _account;
+	private GUIScene _kitchenScene, _homeScene, _searchScene, _recipeScene;
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
+	private Wrapper _api;
 	
 	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
@@ -50,11 +53,13 @@ public class GUIFrame extends JFrame{
     	_engines = engines;
     	_kitchens = kitchens;
     	loadKitchenScene(new Kitchen("38 Transit", "69"));
-
+    	_api = new YummlyAPIWrapper();
+    	
+    	//loadHomeScene();
 	}
 	
 	public void loadSearchScene(){
-		_searchScene = new SearchScene(_account, this, _kitchens);
+		_searchScene = new SearchScene(_account, this, _kitchens, _api);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
@@ -69,7 +74,7 @@ public class GUIFrame extends JFrame{
 		_homeScene = new HomeScene(_account, this,_engines, _client);
 		Platform.runLater(new Runnable() {
     		@Override
-    		public void run() {
+    		public void run(){
     			_panel.setScene(_homeScene.makeScene());
     		}
 		});
@@ -81,6 +86,16 @@ public class GUIFrame extends JFrame{
     		@Override
     		public void run() {
     			_panel.setScene(_kitchenScene.makeScene());
+    		}
+		});
+	}
+
+	public void loadRecipeScene(Recipe recipe) {
+		_recipeScene = new RecipeScene(recipe, _account, this, _client);
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_panel.setScene(_homeScene.makeScene());
     		}
 		});
 	}

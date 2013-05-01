@@ -92,7 +92,7 @@ public class DBHelper implements DBHelperInterface{
 		storeAccount(mu.getAccount());
 		for(KitchenName kn: mu.getAccount().getKitchens()){
 			Kitchen k = new Kitchen(kn.getName(), kn.getID());
-			k.addActiveUser(mu.getAccount().getID());
+			k.addActiveUser(mu.getAccount());
 			storeKitchen(k);
 		}
 		
