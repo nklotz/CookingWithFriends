@@ -537,7 +537,6 @@ public class HomeScene implements GUIScene {
 		edit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-            	parentGrid.add(IngredientTypeBar(itemList), 0, 1);
             	editBox.getChildren().remove(0);
             	int j = 0;
             	for (Nameable item : items){
@@ -570,6 +569,7 @@ public class HomeScene implements GUIScene {
                 hbBtn.setPrefHeight(80);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
                 hbBtn.getChildren().add(save);
+            	hbBtn.getChildren().add(IngredientTypeBar(itemList));
                 listPane.add(hbBtn, 2, 2, 2,1);
         		save.setOnAction(new EventHandler<ActionEvent>() {
         			@Override
