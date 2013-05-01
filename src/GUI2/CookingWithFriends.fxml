@@ -8,29 +8,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0000337890524" prefWidth="700.000022070315" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0000999999975" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller">
   <children>
-    <TabPane layoutX="0.0" layoutY="0.0" prefHeight="500.0" prefWidth="700.0" side="RIGHT" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="0.0" layoutY="0.0" prefHeight="960.0001220703125" prefWidth="1280.0" side="RIGHT" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab text="Home">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
               <children>
-                <Pane layoutX="38.0" layoutY="93.0" prefHeight="158.0" prefWidth="174.0" styleClass="section">
+                <Pane layoutX="60.0" layoutY="103.0" prefHeight="305.0" prefWidth="337.0" styleClass="section">
                   <children>
-                    <ListView fx:id="allergiesList" layoutX="19.0" layoutY="104.0" prefHeight="40.0" prefWidth="137.0" />
-                    <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="51.0" prefHeight="40.0" prefWidth="137.0" />
+                    <ListView fx:id="allergiesList" layoutX="19.0" layoutY="194.0" prefHeight="93.0" prefWidth="290.0" />
+                    <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="61.0" prefHeight="102.0" prefWidth="290.0" />
                     <Label fx:id="nameLabel" layoutX="19.0" layoutY="14.0" text="Name" />
-                    <Label layoutX="19.0" layoutY="36.0" text="Dietary Restricitons" />
-                    <Label layoutX="22.0" layoutY="91.0" text="Allergies" />
-                    <Button fx:id="editProfile" layoutX="134.0" layoutY="16.0" mnemonicParsing="false" text="Edit" />
+                    <Label layoutX="19.0" layoutY="46.0" text="Dietary Restricitons" />
+                    <Label layoutX="19.0" layoutY="179.0" text="Allergies" />
+                    <Button fx:id="editProfile" layoutX="301.0" layoutY="16.0" mnemonicParsing="false" text="Edit" />
                   </children>
                 </Pane>
-                <Pane layoutX="243.0" layoutY="93.0" prefHeight="375.0" prefWidth="185.0" styleClass="section">
+                <Pane layoutX="454.0" layoutY="103.0" prefHeight="815.0" prefWidth="337.0" styleClass="section, longSection">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="308.9998779296875" prefWidth="158.00009999999747">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="15.0" layoutY="15.0" prefHeight="734.0" prefWidth="308.999977929685">
                       <content>
-                        <ListView fx:id="fridgeList" prefHeight="307.9998779296875" prefWidth="158.0">
+                        <ListView fx:id="fridgeList" prefHeight="734.0" prefWidth="303.0">
                           <contextMenu>
                             <ContextMenu>
                               <items>
@@ -41,8 +41,8 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="152.0" layoutY="355.0" mnemonicParsing="false" text="Add" />
-                    <ComboBox fx:id="newIngredient" editable="true" layoutX="16.0" layoutY="330.0" prefWidth="158.0" promptText="New Ingredient">
+                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" text="Add" />
+                    <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" prefWidth="309.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -51,17 +51,17 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <ToggleButton id="remove" fx:id="removeFridge" layoutX="14.0" layoutY="355.0" mnemonicParsing="false" styleClass="button" text="Remove" />
+                    <ToggleButton id="remove" fx:id="removeFridge" layoutX="14.0" layoutY="790.0" mnemonicParsing="false" styleClass="button" text="Remove" />
                   </children>
                 </Pane>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
-                <Label layoutX="36.0" layoutY="74.0" styleClass="sectionHeader" text="Me" />
-                <Label layoutX="243.0" layoutY="74.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
-                <Pane layoutX="36.0" layoutY="289.0" prefHeight="179.0" prefWidth="174.0" styleClass="section">
+                <Label layoutX="60.0" layoutY="84.0" styleClass="sectionHeader" text="Me" />
+                <Label layoutX="454.0" layoutY="83.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
+                <Pane layoutX="60.0" layoutY="469.0" prefHeight="448.9999000000025" prefWidth="338.0" styleClass="section">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="112.9998779296875" prefWidth="150.0">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="369.0" prefWidth="309.0">
                       <content>
-                        <ListView fx:id="shoppingList" prefHeight="112.9998779296875" prefWidth="150.0">
+                        <ListView fx:id="shoppingList" prefHeight="369.0" prefWidth="303.0">
                           <contextMenu>
                             <ContextMenu>
                               <items>
@@ -72,7 +72,7 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="15.0" layoutY="130.0" prefWidth="150.0" promptText="New Ingredient" visible="true">
+                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="15.0" layoutY="391.0" prefWidth="309.0" promptText="New Ingredient" visible="true">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -81,15 +81,15 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button layoutX="143.0" layoutY="155.0" mnemonicParsing="false" text="Add" />
-                    <ToggleButton fx:id="removeShoppingList" layoutX="14.0" layoutY="155.0" mnemonicParsing="false" styleClass="button" text="Remove" />
+                    <Button layoutX="301.0" layoutY="420.0" mnemonicParsing="false" text="Add" />
+                    <ToggleButton fx:id="removeShoppingList" layoutX="15.0" layoutY="420.0" mnemonicParsing="false" styleClass="button" text="Remove" />
                   </children>
                 </Pane>
-                <Pane layoutX="452.0" layoutY="92.0" prefHeight="375.0" prefWidth="185.0" styleClass="section">
+                <Pane layoutX="858.0" layoutY="102.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="21.0" layoutY="16.0" prefHeight="346.0" prefWidth="150.0">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="777.0" prefWidth="309.0">
                       <content>
-                        <ListView fx:id="recipeList" editable="false" prefHeight="345.0" prefWidth="150.0">
+                        <ListView fx:id="recipeList" editable="false" prefHeight="775.9998779296875" prefWidth="309.0">
                           <contextMenu>
                             <ContextMenu>
                               <items>
@@ -102,8 +102,8 @@
                     </ScrollPane>
                   </children>
                 </Pane>
-                <Label layoutX="452.0" layoutY="73.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
-                <Label layoutX="36.0" layoutY="270.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
+                <Label layoutX="858.0" layoutY="80.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
+                <Label layoutX="60.0" layoutY="446.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
               </children>
             </AnchorPane>
           </content>
@@ -126,29 +126,29 @@
               <children>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Accordion expandedPane="$null" layoutX="24.0" layoutY="69.0" />
-                <Pane layoutX="24.0" layoutY="88.0" prefHeight="382.0" prefWidth="185.0" styleClass="section">
+                <Pane layoutX="24.0" layoutY="106.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
                   <children>
-                    <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" minWidth="157.0" prefHeight="354.0" prefWidth="157.0" />
+                    <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" minWidth="157.0" prefHeight="787.0" prefWidth="309.0" />
                   </children>
                 </Pane>
-                <Label layoutX="26.0" layoutY="68.0" styleClass="sectionHeader" text="Ingredients" />
-                <Pane layoutX="232.0" layoutY="87.0" prefHeight="53.0" prefWidth="406.0" styleClass="section">
+                <Label layoutX="26.0" layoutY="85.0" styleClass="sectionHeader" text="Ingredients" />
+                <Pane layoutX="427.0" layoutY="106.0" prefHeight="53.0" prefWidth="728.0" styleClass="section">
                   <children>
-                    <Button fx:id="searchButton" layoutX="358.0" layoutY="19.0" mnemonicParsing="false" text="Search" />
-                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="337.0" />
+                    <Button fx:id="searchButton" layoutX="680.0" layoutY="19.0" mnemonicParsing="false" text="Search" />
+                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="631.0" />
                   </children>
                 </Pane>
-                <Pane layoutX="235.0" layoutY="182.0" prefHeight="288.9999000000025" prefWidth="403.0" styleClass="section">
+                <Pane layoutX="430.0" layoutY="261.0" prefHeight="660.0" prefWidth="725.0" styleClass="section">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="260.0" prefWidth="375.0">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="632.0" prefWidth="697.0">
                       <content>
-                        <FlowPane prefHeight="259.0" prefWidth="374.0" />
+                        <FlowPane prefHeight="631.0" prefWidth="696.0" />
                       </content>
                     </ScrollPane>
                   </children>
                 </Pane>
-                <Label layoutX="236.0" layoutY="68.0" styleClass="sectionHeader" text="Search" />
-                <Label layoutX="234.0" layoutY="163.0" styleClass="sectionHeader" text="Results" />
+                <Label layoutX="427.0" layoutY="85.0" styleClass="sectionHeader" text="Search" />
+                <Label layoutX="430.0" layoutY="239.0" styleClass="sectionHeader" text="Results" />
               </children>
             </AnchorPane>
           </content>
@@ -157,6 +157,6 @@
     </TabPane>
   </children>
   <stylesheets>
-    <URL value="@../course/cs032/CookingWithFriends/gui_resources/style.css" />
+    <URL value="@style.css" />
   </stylesheets>
 </AnchorPane>

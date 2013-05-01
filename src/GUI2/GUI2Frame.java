@@ -1,11 +1,14 @@
 package GUI2;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -65,8 +68,19 @@ public class GUI2Frame extends JFrame {
     
 		    	Pane page;
 				try {
-					page = (Pane) FXMLLoader.load(GUI2Frame.class.getResource("CookingWithFriends.fxml"));
-			        Scene scene = new Scene(page);
+					URL location = getClass().getResource("CookingWithFriends.fxml");
+
+					FXMLLoader fxmlLoader = new FXMLLoader();
+					fxmlLoader.setLocation(location);
+					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+					Parent p = (Parent) fxmlLoader.load(location.openStream());
+					
+			        Controller controller = (Controller) fxmlLoader.getController();
+
+			        Scene scene = new Scene(p);
+			        
+			       controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {
 					System.out.println("ewrjhoewrjewr");
