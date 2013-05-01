@@ -253,12 +253,10 @@ public class HomeScene implements GUIScene {
             @Override
             public void handle(ActionEvent e) {
             	String name = userName.getText();
-            	
-            	items.remove(item);
-				_account.setIngredients((Set<Ingredient>) items);
-            	_account.ad
+            	_account.addIngredient(new Ingredient(name));
             	updateAccount(); 
-            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            	//grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            	System.out.println("REFRESH???");
             }
         });
         return info;
