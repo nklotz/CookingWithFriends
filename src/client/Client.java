@@ -14,6 +14,7 @@ import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
 import GUI.LoginWindow;
+import GUI2.GUI2Frame;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Ingredient;
@@ -32,7 +33,7 @@ public class Client extends Thread {
     private ObjectOutputStream _out = null;
     private ObjectInputStream _in = null;
     private LoginWindow _login = null;
-    private GUIFrame _gui = null;
+    private GUI2Frame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
@@ -123,7 +124,7 @@ public class Client extends Thread {
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
 							_id = response.getAccount().getID();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
+							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
 
 						}
 					} else {
