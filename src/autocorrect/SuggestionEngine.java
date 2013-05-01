@@ -32,7 +32,7 @@ public class SuggestionEngine implements Engine, Serializable{
 	
 	public SuggestionEngine(List<List<String>> words){
 		trie_ = new Trie(words);
-		g_ = new SuggestionGenerator(true, true, false, 2, trie_);
+		g_ = new SuggestionGenerator(false, true, false, 0, trie_);
 		r_ = new SuggestionRanker(words);
 	}
 	

@@ -14,7 +14,7 @@ public class SuggestionComparator implements Comparator<Suggestion> {
 	 * alphabetically.
 	 */
 	public int compare(Suggestion a, Suggestion b){
-		int aBigram = a.getBigramOccurences();
+		/*int aBigram = a.getBigramOccurences();
 		int bBigram = b.getBigramOccurences();
 		if(aBigram<bBigram){
 			return 1;
@@ -35,8 +35,9 @@ public class SuggestionComparator implements Comparator<Suggestion> {
 			//Rank alphabeticaly
 			else{
 				return a.getWord().compareTo(b.getWord());
-			}
-		}
+			}*/
+			return a.getWord().compareTo(b.getWord());
+		
 	}
 	
 	
