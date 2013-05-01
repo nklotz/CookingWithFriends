@@ -1,7 +1,9 @@
 package GUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -39,15 +42,16 @@ public class SearchScene implements GUIScene {
 	private Account _account;
 	private GUIFrame _frame;
 	private Map<KitchenName, Kitchen> _kitchens;
-	private Wrapper _wrapper;
+	private Wrapper _api;
 	
-	private GridPane _searchResults;
+	private FlowPane _searchResults;
 	private List<IngredientCheckBox> _checkBoxList;
 	
-	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens){
+	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens, Wrapper api){
 		_account = account;
 		_frame = frame;
 		_kitchens = kitchens;
+		_api = api;
 		_checkBoxList = new ArrayList<>();
 	}	
 	
@@ -95,7 +99,7 @@ public class SearchScene implements GUIScene {
         Text resultsHeader = new Text("Results");
         resultsHeader.setStyle(Style.SECTION_HEADER);
         grid.add(resultsHeader, 1, 1);
-        _searchResults = new GridPane();
+        _searchResults = new FlowPane();
         ScrollPane resultsScroll = new ScrollPane(); //Scrolling Panel
         resultsScroll.setPrefSize(300, 200);
         resultsScroll.setStyle(Style.SECTIONS);
@@ -117,13 +121,21 @@ public class SearchScene implements GUIScene {
         searchButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
-				List<Ingredient> selectedIngredients = new ArrayList<>();
+				List<String> selectedIngredients = new ArrayList<>();
 				for (IngredientCheckBox checkBox : _checkBoxList) {
-					if (checkBox.getCheckBox().isSelected()) {
-						selectedIngredients.add(checkBox.getIngredient());
-					}
+					if (checkBox.getCheckBox().isSelected())
+						selectedIngredients.add(checkBox.getIngredient().getName());
 				}
-				List<Recipe> recipes = _wrapper.searchRecipes(searchField.getText(), selectedIngredients, dislikes, dietRestrictions, allergies);
+				//Attempt to query API
+				try {
+					List<String> dummy = Collections.emptyList(); //TODO: POOL KITCHEN ALLERGIES
+					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummy, dummy, dummy);
+					for (Recipe recipe : results) {
+						_searchResults.getChildren().add(new RecipeBox(recipe));
+					}
+				} catch (IOException ex) {
+					_searchResults.getChildren().add(new Text("Error querying API -- is your internet connection down?"));
+				}
 			}
 		});
         searchPane.add(searchField, 0, 0);
