@@ -202,6 +202,14 @@ public class Account implements Serializable {
 	public void removeInvitation(String kitchenID){
 		_invitations.remove(kitchenID);
 	}
+	
+	public void addIngredient(Ingredient ingred){
+		_ingredients.add(ingred);
+	}
+	
+	public void removeIngredient(Ingredient ingred){
+		_ingredients.remove(ingred);
+	}
 
 	@Override
 	public String toString() {
