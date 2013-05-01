@@ -139,6 +139,15 @@ public class LoginWindow extends JFrame{
         return scene;
     }
     
+    private boolean isValidEmailStructure(String email){
+    	String[] splitAt = email.split("@");
+    	if(splitAt.length==2){
+    		String[] splitDot = email.split("\\.");
+    		return (splitDot.length==2);
+    	}
+    	return false;
+    }
+    
     private Scene newAccount(){
     	_newAcct = true;
     	GridPane grid = new GridPane();
@@ -186,7 +195,12 @@ public class LoginWindow extends JFrame{
         	
         	@Override
         	public void handle(ActionEvent e){
-        		loadLogin();
+                if(!isValidEmailStructure(userTextField.getText())){
+            		_actiontarget.setText("You must input a username and password");
+                }
+                else{
+        		    loadLogin();
+                }
         	}
         });
         

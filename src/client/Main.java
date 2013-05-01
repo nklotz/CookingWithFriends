@@ -2,6 +2,9 @@ package client;
 
 import java.io.IOException;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Pane;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -25,4 +28,7 @@ public class Main {
 		System.out.println("Usage: client <hostname> <port>");
 		System.exit(1);
 	}
+	
 }
+
+

@@ -52,7 +52,8 @@ public class GUIFrame extends JFrame{
     	_account = account;   	
     	_engines = engines;
     	_kitchens = kitchens;
-    	loadKitchenScene(new Kitchen("38 Transit", "69"));
+    	//loadKitchenScene(new Kitchen("38 Transit", "69"));
+    	loadKitchenScene(_kitchens.get("/k/1"));
     	_api = new YummlyAPIWrapper();
     	
     	//loadHomeScene();
