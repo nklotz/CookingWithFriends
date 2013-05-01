@@ -25,7 +25,7 @@ public class Server {
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
 	private Wrapper _apiWrapper;
-	private APIInfo _info;
+	private AutocorrectEngines _info;
 	
 	public Server(int port) throws IOException {
 		if (port <= 1024) {
@@ -38,7 +38,7 @@ public class Server {
 		
 		//Has all autocorrect suggestion engines.
 		//TODO: put back in later once jonathan's thing is dones
-		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		_info = new AutocorrectEngines(_apiWrapper.getPossibleIngredients(), _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
 		
 		
 		//TODO: package trie and lists to client handler

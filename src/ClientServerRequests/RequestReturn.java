@@ -3,7 +3,7 @@ package ClientServerRequests;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -19,7 +19,7 @@ public class RequestReturn implements Serializable {
 	private boolean _checkPass;
 	private HashMap<KitchenName, Kitchen> _kitchenMap;
 	private Invitation _invite;
-	private APIInfo _info;
+	private AutocorrectEngines _info;
 	
 	/*
 	 * Types:
@@ -76,11 +76,11 @@ public class RequestReturn implements Serializable {
 		return _invite;
 	}
 	
-	public APIInfo getAPIInfo(){
+	public AutocorrectEngines getAPIInfo(){
 		return _info;
 	}
 	
-	public void setAPIInfo(APIInfo info){
+	public void setAPIInfo(AutocorrectEngines info){
 		_info = info;
 	}
 }

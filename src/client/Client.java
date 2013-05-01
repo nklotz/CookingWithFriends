@@ -8,7 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
@@ -34,7 +34,7 @@ public class Client extends Thread {
     private GUIFrame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
-    private APIInfo _autocorrect;
+    private AutocorrectEngines _autocorrect;
     private String _currentKitchen;
 	
     public Client(String hostname, int port) throws IOException {

@@ -1,6 +1,6 @@
 package ClientServerRequests;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
 import server.ClientHandler;
 import server.KitchenPool;
 import Database.DBHelper;
@@ -11,9 +11,9 @@ public class AccountRequest implements Runnable {
 	private String _ID;
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
-	private APIInfo _info;
+	private AutocorrectEngines _info;
 	
-	public AccountRequest(ClientHandler ch, String accountID, DBHelper helper, KitchenPool kitchens, APIInfo info){
+	public AccountRequest(ClientHandler ch, String accountID, DBHelper helper, KitchenPool kitchens, AutocorrectEngines info){
 		_ch = ch;
 		_ID = accountID;
 		_helper = helper;
