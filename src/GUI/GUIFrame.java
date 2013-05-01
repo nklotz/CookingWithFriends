@@ -52,9 +52,10 @@ public class GUIFrame extends JFrame{
     	_account = account;   	
     	_engines = engines;
     	_kitchens = kitchens;
+    	loadKitchenScene(new Kitchen("38 Transit", "69"));
     	_api = new YummlyAPIWrapper();
     	
-    	loadHomeScene();
+    	//loadHomeScene();
 	}
 	
 	public void loadSearchScene(){
