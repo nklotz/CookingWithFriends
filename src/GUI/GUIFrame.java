@@ -49,8 +49,8 @@ public class GUIFrame extends JFrame{
     	_account = account;   	
     	_engines = engines;
     	_kitchens = kitchens;
-    	
-    	loadHomeScene();
+    	loadKitchenScene(new Kitchen("38 Transit", "69"));
+
 	}
 	
 	public void loadSearchScene(){
