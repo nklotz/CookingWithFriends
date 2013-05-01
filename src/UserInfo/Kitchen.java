@@ -20,8 +20,9 @@ public class Kitchen implements Serializable, Nameable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private HashSet<Event> _events = new HashSet<Event>();
-	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
+	private Set<Recipe> _recipes = new HashSet<Recipe>();
 	private HashMap<Ingredient, HashSet<String>> _ingToUsers = new HashMap<Ingredient, HashSet<String>>();
+	
 	private String _id = "", _name = "";
 	private HashSet<String> _activeUsers = new HashSet<String>();
 	private HashSet<String> _requestedUsers = new HashSet<String>();
@@ -47,6 +48,10 @@ public class Kitchen implements Serializable, Nameable{
 	
 	public Set<Recipe> getRecipes(){
 		return _recipes;
+	}
+	
+	public void setRecipes(Set<Recipe> rs){
+		_recipes = rs;
 	}
 	
 	public KitchenName getKitchenName(){
@@ -112,6 +117,10 @@ public class Kitchen implements Serializable, Nameable{
 				_ingToUsers.remove(ing);
 			}
 		}
+	}
+
+	public void setIngredients(Set<Ingredient> set){
+		//TODO: write this_ingToUsers.
 	}
 	
 	public void addDietaryRestriction(String restric, String userID){

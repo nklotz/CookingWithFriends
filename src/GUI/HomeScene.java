@@ -63,7 +63,7 @@ public class HomeScene implements GUIScene {
         
         Text scenetitle = new Text("Cooking with Friends: Home");
         scenetitle.setStyle(Style.PAGE_HEADER);
-        grid.add(scenetitle, 0, 0, 2, 1);
+        grid.add(scenetitle, 0, 0, 3, 1);
         
         //ME
         Text Me = new Text("Me");
