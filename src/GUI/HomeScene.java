@@ -74,15 +74,15 @@ public class HomeScene implements GUIScene {
         userGrid.add(myInfo, 0, 0);
         userGrid.add(displayUserInfo(userGrid), 0, 1, 1, 3);
         //diet
-        Text diet = new Text("Dietary Preferences");
+        Text diet = new Text("Dietary Restrictions");
         diet.setStyle(Style.INFO_HEADER);
         userGrid.add(diet, 1, 0);
         userGrid.add(displayPreferences(), 1, 1);
         //dislikes
-        Text dislike = new Text("Dislikes");
+       Text dislike = new Text("Dislikes");
         dislike.setStyle(Style.INFO_HEADER);
         userGrid.add(dislike, 1, 2);
-        userGrid.add(displayDislikes(), 1, 3);
+        userGrid.add(displayDislikes(), 1, 3); 
         
         //MY RECIPES
         Text MyRecipes = new Text("My Recipes");
@@ -197,9 +197,9 @@ public class HomeScene implements GUIScene {
         info.setStyle(Style.TEXT);
         info.setPrefSize(130, 160);
         Text name = new Text("Name: ");
-        final TextField userName = new TextField();
+        final TextField userName = new TextField(_account.getName());
         Text area = new Text("Area: ");
-        final TextField userArea = new TextField();
+        final TextField userArea = new TextField(_account.getAddress());
         info.add(name,0,0);
         info.add(userName, 1, 0);
         info.add(area,0,1);
@@ -229,6 +229,41 @@ public class HomeScene implements GUIScene {
         });
         return info;
 	}
+	
+	private Pane IngredientTypeBar(final GridPane grid){
+        GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 160);
+        Text name = new Text("Ingredient: ");
+        final TextField userName = new TextField();
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+  
+        //edit Info Button
+        Button save = new Button("Add");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 4);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	
+            	items.remove(item);
+				_account.setIngredients((Set<Ingredient>) items);
+            	_account.ad
+            	updateAccount(); 
+            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            }
+        });
+        return info;
+	}
+	
 	
 	public GridPane displayPreferences(){
 		//main grid

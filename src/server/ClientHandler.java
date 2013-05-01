@@ -170,6 +170,7 @@ public class ClientHandler extends Thread {
 		else{
 			RequestReturn toReturn = new RequestReturn(1);
 			toReturn.setCorrect(false);
+			send(toReturn);
 		}
 	}
 
