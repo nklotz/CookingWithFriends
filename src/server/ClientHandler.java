@@ -138,11 +138,11 @@ public class ClientHandler extends Thread {
 				_objectOut.flush();
 				_objectOut.reset();
 			} catch (IOException e) {
-				try {
-					kill();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+//				try {
+//					kill();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
 			}
 		}
 	}
