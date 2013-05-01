@@ -3,6 +3,8 @@ package GUI;
 import java.util.HashSet;
 import java.util.Set;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -234,11 +236,21 @@ public class HomeScene implements GUIScene {
         GridPane info = new GridPane();
         info.setVgap(8);
         info.setStyle(Style.TEXT);
-        info.setPrefSize(130, 160);
+        info.setPrefSize(500, 500);
         Text name = new Text("Ingredient: ");
-        final TextField userName = new TextField();
+        final TextField ingredients = new TextField();
+        ingredients.setMinWidth(50);
+        ingredients.setPrefWidth(50);
+        ingredients.setMaxWidth(400);
+        ingredients.textProperty().addListener(new ChangeListener<String>() {
+        	
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            	ingredients.setPrefWidth(ingredients.getText().length() * 7); // why 7? Totally trial number.
+            }
+        });
         info.add(name,0,0);
-        info.add(userName, 1, 0);
+        info.add(ingredients, 1, 0);
   
         /*edit Info Button
         Button save = new Button("Add");
@@ -505,9 +517,10 @@ public class HomeScene implements GUIScene {
         		HBox hbBtn = new HBox(10);
                 hbBtn.setPrefHeight(80);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtn.getChildren().add(IngredientTypeBar(itemList));
                 hbBtn.getChildren().add(save);
-            	hbBtn.getChildren().add(IngredientTypeBar(itemList));
-                listPane.add(hbBtn, 2, 2, 2,1);
+            	
+                listPane.add(hbBtn, 2, 2, 2, 1);
         		save.setOnAction(new EventHandler<ActionEvent>() {
         			@Override
                     public void handle(ActionEvent e) {
