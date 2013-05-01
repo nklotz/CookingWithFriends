@@ -4,17 +4,20 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import server.AutocorrectEngines;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import server.AutocorrectEngines;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
@@ -22,7 +25,7 @@ import UserInfo.KitchenName;
 import client.Client;
 
 
-public class Controller {
+public class Controller extends AnchorPane implements Initializable {
 
     @FXML
     private ResourceBundle resources;
@@ -66,13 +69,8 @@ public class Controller {
 
     }
     
-    private class  GuiBox extends Pane{
-    	protected String _toDisplay;
-    	
-    	public GuiBox(String display){
-    		_toDisplay = display;
-    	}
-    	
+    private class  GuiBox extends GridPane{
+
     	public void remove(){}
     }
     
@@ -90,12 +88,16 @@ public class Controller {
     	}
     }
     
-    private class UserIngredientBox{
+    private class UserIngredientBox extends GuiBox{
     	protected String _toDisplay;
 
     	public UserIngredientBox(String display){
     		_toDisplay = display;
-    	    		
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    removeButton remove = new removeButton(this);
+    	    remove.setVisible(false);
+    	    this.add(remove, 0, 0);
     	}
     	
     	public void remove(){
@@ -126,6 +128,19 @@ public class Controller {
     	}
     	fridgeList.setItems(listItems);
     }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		System.out.println("I HAVE BEEN INITIALIZED");
+		
+		assert addFridgeIngredient != null : "fx:id=\"addFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert addShoppingIngredient != null : "fx:id=\"addShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert fridgeList != null : "fx:id=\"fridgeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+
+	}
     
 
 }
