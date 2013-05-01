@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
+import API.Wrapper;
 import ClientServerRequests.AccountRequest;
 import ClientServerRequests.KitchenRequest;
 import ClientServerRequests.NewAccountRequest;
@@ -42,14 +43,16 @@ public class ClientHandler extends Thread {
 	private KitchenPool _activeKitchens;
 	private boolean _running;
 	private AutocorrectEngines _info;
+	private Wrapper _wrapper;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
 	 */
-	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper, AutocorrectEngines info) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper, AutocorrectEngines info, Wrapper wrapper) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
+		_wrapper = wrapper;
 		_info = info;
 		_helper = helper;
 		_pool = pool;
@@ -165,7 +168,7 @@ public class ClientHandler extends Thread {
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
 			System.out.println("executing task");
-			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _info));
+			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _info, _wrapper));
 		}
 		else{
 			RequestReturn toReturn = new RequestReturn(1);

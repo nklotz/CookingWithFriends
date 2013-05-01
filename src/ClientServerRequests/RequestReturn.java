@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import server.AutocorrectEngines;
+import API.Wrapper;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -20,6 +21,7 @@ public class RequestReturn implements Serializable {
 	private HashMap<KitchenName, Kitchen> _kitchenMap;
 	private Invitation _invite;
 	private AutocorrectEngines _info;
+	private Wrapper _wrapper;
 	
 	/*
 	 * Types:
@@ -82,5 +84,13 @@ public class RequestReturn implements Serializable {
 	
 	public void setAPIInfo(AutocorrectEngines info){
 		_info = info;
+	}
+	
+	public void setWrapper(Wrapper wrapper){
+		_wrapper = wrapper;
+	}
+	
+	public Wrapper getWrapper(){
+		return _wrapper;
 	}
 }

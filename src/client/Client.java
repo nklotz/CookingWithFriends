@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import server.AutocorrectEngines;
+import API.Wrapper;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
@@ -35,6 +36,7 @@ public class Client extends Thread {
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
+    private Wrapper _wrapper;
     private String _currentKitchen;
 	
     public Client(String hostname, int port) throws IOException {
@@ -121,6 +123,7 @@ public class Client extends Thread {
 							
 							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
+							_wrapper = response.getWrapper();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
 							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
