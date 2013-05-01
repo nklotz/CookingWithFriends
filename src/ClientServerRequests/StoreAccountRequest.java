@@ -12,10 +12,10 @@ public class StoreAccountRequest implements Runnable {
 	Request _request;
 	
 	public StoreAccountRequest(Account account, DBHelper helper, KitchenPool kitchens, Request request){
-		_account = account;
 		_helper = helper;
 		_kitchens = kitchens;
 		_request = request;
+		_account = account;
 	}
 	
 	@Override
@@ -24,14 +24,19 @@ public class StoreAccountRequest implements Runnable {
 		
 		switch(_request.getChangeType()){
 			case 1: // removed ingreint
+				_kitchens.removeUserIngredient(_account.getID(), _request.getIngredient());
 				break;
 			case 2: // add a dietary restriction
+				_kitchens.addUserDietRestriction(_account.getID(), _request.getRestrictAllergy());
 				break;
 			case 3: // removed a dietary restriction
+				_kitchens.removeUserDietRestriction(_account.getID(), _request.getRestrictAllergy());
 				break;
-			case 4: // add a allergy 
+			case 4: // add a allergy
+				_kitchens.addUserAllergy(_account.getID(), _request.getRestrictAllergy());
 				break;
 			case 5: // removed a allergy
+				_kitchens.removeUserAllergy(_account.getID(), _request.getRestrictAllergy());
 				break;
 			default:
 				break;

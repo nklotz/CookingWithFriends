@@ -42,7 +42,35 @@ public class KitchenPool {
 	public void removeUserIngredient(String userID, Ingredient ing){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
-			
+			k.removeIngredient(userID, ing);
+		}
+	}
+	
+	public void removeUserDietRestriction(String userID, String restric){
+		for(KitchenName kn: _userToKitchens.get(userID)){
+			Kitchen k = _idToKitchen.get(kn.getID());
+			k.removeDietaryRestriction(restric, userID);
+		}
+	}
+	
+	public void removeUserAllergy(String userID, String allergy){
+		for(KitchenName kn: _userToKitchens.get(userID)){
+			Kitchen k = _idToKitchen.get(kn.getID());
+			k.removeAllergy(allergy, userID);
+		}
+	}
+	
+	public void addUserDietRestriction(String userID, String restric){
+		for(KitchenName kn: _userToKitchens.get(userID)){
+			Kitchen k = _idToKitchen.get(kn.getID());
+			k.addDietaryRestriction(restric, userID);
+		}
+	}
+	
+	public void addUserAllergy(String userID, String allergy){
+		for(KitchenName kn: _userToKitchens.get(userID)){
+			Kitchen k = _idToKitchen.get(kn.getID());
+			k.addAllergy(allergy, userID);
 		}
 	}
 	
@@ -195,8 +223,7 @@ public class KitchenPool {
 		  		break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		  		break;
-		  		
-		  		
+		  			
   			default: 
   				return;
 		}

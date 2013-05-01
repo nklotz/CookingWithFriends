@@ -16,6 +16,7 @@ import GUI.GUIFrame;
 import GUI.LoginWindow;
 import UserInfo.Account;
 import UserInfo.Event;
+import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
@@ -36,6 +37,7 @@ public class Client extends Thread {
     private boolean _running;
     private AutocorrectEngines _autocorrect;
     private String _currentKitchen;
+    private String _id;
 	
     public Client(String hostname, int port) throws IOException {
 
@@ -120,6 +122,7 @@ public class Client extends Thread {
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
+							_id = response.getAccount().getID();
 							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
 
 						}
@@ -223,24 +226,48 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void addIngredient(String id, String ing){
+    public void addIngredient(String id, Ingredient ing){
     	Request r = new Request(9);
     	r.setKitchenID(id);
     	r.setIngredient(ing);
     	send(r);
     }
     
-    public void removeIngredient(String id, String ing){
+    public void removeIngredient(String id, Ingredient ing){
     	Request r = new Request(10);
     	r.setKitchenID(id);
     	r.setIngredient(ing);
     	send(r);
     }
     
-    public void storeAccount(String id, Account account){
+    
+    /**
+     * Types:
+     * 2--Added dietary restriction
+     * 3--removed dietary restriction
+     * 4--add allergy
+     * 5--removed allergy
+     */
+    public void storeAccount(Account account, int type, String restricAl){
     	Request r = new Request(11);
-    	r.setKitchenID(id);
     	r.setAccount(account);
+    	r.setChangeType(type);
+    	r.setRestrictAllergy(restricAl);
+    	send(r);
+    }
+    
+    public void storeAccount(Account account, Ingredient ing){
+    	Request r = new Request(11);
+    	r.setAccount(account);
+    	r.setChangeType(1);
+    	r.setIngredient(ing);
+    	send(r);
+    }
+    
+    public void storeAccount(Account account){
+    	Request r = new Request(11);
+    	r.setAccount(account);
+    	r.setChangeType(0);
     	send(r);
     }
     
