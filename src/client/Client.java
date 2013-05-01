@@ -8,7 +8,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
+import API.Wrapper;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
@@ -34,13 +35,14 @@ public class Client extends Thread {
     private GUIFrame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
-    private APIInfo _autocorrect;
+    private AutocorrectEngines _autocorrect;
+    private Wrapper _wrapper;
     private String _currentKitchen;
 	
-    public Client(int port) throws IOException {
+    public Client(String hostname, int port) throws IOException {
 
         try {
-            _kkSocket = new Socket("raj", port);
+            _kkSocket = new Socket(hostname, port);
             //_out = new PrintWriter(_kkSocket.getOutputStream(), true);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
             //_in = new BufferedReader(new InputStreamReader(_kkSocket.getInputStream()));
@@ -50,10 +52,10 @@ public class Client extends Thread {
             this.run();
 
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: localhost.");
+            System.err.println("Don't know about host: " + hostname);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: localhost.");
+            System.err.println("Couldn't get I/O for the connection to: " + hostname);
             System.exit(1);
         }       
 
@@ -124,7 +126,7 @@ public class Client extends Thread {
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
 							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
-							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
+
 						}
 					} else {
 						_login.displayIncorrect();

@@ -57,6 +57,7 @@ public class KitchenPool {
 	public void addKitchen(Kitchen kitchen){
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
+		System.out.println("CONTAINS: " + _idToKitchen.containsKey(kitchen.getID()));
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
 
 	}
@@ -122,6 +123,7 @@ public class KitchenPool {
 	 * Stores kitchen in data base before removing kitchen pool references to it.
 	 */
 	public void removeKitchen(String kID){
+		System.out.println("KITCHEN ID: " + _idToKitchen.get(kID));
 		_helper.storeKitchen(_idToKitchen.get(kID));
 		_kIDtoUsers.remove(kID);
 		_idToKitchen.remove(kID);	

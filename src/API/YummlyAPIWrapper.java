@@ -1,14 +1,10 @@
 package API;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +16,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import UserInfo.Ingredient;
 import UserInfo.Recipe;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 /**
  * This is a wrapper class for the Yummly API.
@@ -36,6 +29,10 @@ import com.google.gson.JsonSyntaxException;
  */
 public class YummlyAPIWrapper implements Wrapper {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// API ID and Key
 	private final static String APP_ID = "9404a024";
 	private final static String APP_KEY = "6e07b7b6599dd2da3b0cea88ae2285fc";
@@ -45,47 +42,14 @@ public class YummlyAPIWrapper implements Wrapper {
 	private final static String SEARCH_PATH = "/v1/api/recipes";
 	private final static String RECIPE_PATH = "/v1/api/recipe/";
 	
-	private final String[] DIETARY_RESTRICTIONS = {"Vegan", "Lacto vegetarian", "Ovo vegetarian", 
-			"Pescetarian", "Lacto-ovo vegetarian"};
-	private final String[] ALLERGIES = {"Wheat-Free", "Gluten-Free", "Peanut-Free", 
-			"Tree Nut-Free", "Dairy-Free", "Egg-Free", "Seafood-Free", "Sesame-Free", 
-			"Soy-Free", "Sulfite-Free"};
-	
 	private Gson _gson;
 	private Map<String, List<YummlyRecipe>> _searchCache;
 	private Map<String, YummlyRecipe> _recipeCache;
-	private List<Ingredient> _possibleIngredients;
 	
 	public YummlyAPIWrapper() {
 		_gson = new Gson();
 		_searchCache = new HashMap<>();
 		_recipeCache = new HashMap<>();
-		
-		_possibleIngredients = new ArrayList<>();
-		
-		//Read ingredient metadata
-		try {
-			for (String ingredientName : _gson.fromJson(new FileReader("ingredients"), String[].class)) {
-				_possibleIngredients.add(new Ingredient(ingredientName));
-			}
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			System.out.println("ERROR: Couldn't read files of search values.");
-		}
-	}
-		
-	@Override
-	public List<Ingredient> getPossibleIngredients() {
-		return _possibleIngredients;
-	}	
-	
-	@Override
-	public List<String> getPossibleDietaryRestrictions() {
-		return Arrays.asList(DIETARY_RESTRICTIONS);
-	}
-
-	@Override
-	public List<String> getPossibleAllergies() {
-		return Arrays.asList(ALLERGIES);
 	}
 	
 	@Override

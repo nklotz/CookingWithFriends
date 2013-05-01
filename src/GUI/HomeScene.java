@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
-import server.APIInfo;
+import server.AutocorrectEngines;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.KitchenName;
@@ -33,16 +33,16 @@ public class HomeScene implements GUIScene {
 
 	private Account _account;
 	private GUIFrame _frame;
-	private APIInfo _autocorrect;
+	private AutocorrectEngines _autocorrect;
 	private Client _client;
-	
-	public HomeScene(Account account, GUIFrame frame, APIInfo info, Client client){
+
+	public HomeScene(Account account, GUIFrame frame, AutocorrectEngines info, Client client){
 		_account = account;
 		_frame = frame;
 		_autocorrect = info;
 		_client = client;
 	}
-	
+
 	@Override
 	public Scene makeScene() {
 		final GridPane grid = new GridPane();
@@ -74,15 +74,15 @@ public class HomeScene implements GUIScene {
         userGrid.add(myInfo, 0, 0);
         userGrid.add(displayUserInfo(userGrid), 0, 1, 1, 3);
         //diet
-        Text diet = new Text("Dietary Restrictions");
+        Text diet = new Text("Dietary Preferences");
         diet.setStyle(Style.INFO_HEADER);
         userGrid.add(diet, 1, 0);
         userGrid.add(displayPreferences(), 1, 1);
         //dislikes
-       Text dislike = new Text("Dislikes");
+        Text dislike = new Text("Dislikes");
         dislike.setStyle(Style.INFO_HEADER);
         userGrid.add(dislike, 1, 2);
-        userGrid.add(displayDislikes(), 1, 3); 
+        userGrid.add(displayDislikes(), 1, 3);
         
         //MY RECIPES
         Text MyRecipes = new Text("My Recipes");
@@ -112,6 +112,69 @@ public class HomeScene implements GUIScene {
     			System.out.println("This doesn't do anything.");
         	}
         }, fridgeGrid), 0, 0);
+
+        final TextField ingredients = new TextField();
+        fridgeGrid.add(ingredients, 100, 100);
+       // ingredients.setOnAction(arg0)
+        //ingredients.get
+        ingredients.setOnAction(new EventHandler<ActionEvent>(){
+        	
+        	@Override
+            public void handle(ActionEvent e) {
+            	String text = ingredients.getText();
+            	System.out.println("In text handler!!!");
+//            	_account.setName(name);
+//            	_account.setAddress(userArea.getText());
+//            	updateAccount(); 
+//            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            }
+        });
+        
+        /*save.setOnAction(new EventHandler<ActionEvent>() {
+         	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	_account.setName(name);
+            	_account.setAddress(userArea.getText());
+            	updateAccount(); 
+            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            }
+        });*/
+        
+        /*
+         * final TextField userName = new TextField();
+        Text area = new Text("Area: ");
+        final TextField userArea = new TextField();
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+        info.add(area,0,1);
+        info.add(userArea, 1, 1);
+        Text id = new Text("Email: ");
+        Text userId = new Text(_account.getID());
+        info.add(id, 0, 2);
+        info.add(userId, 1, 2);
+        //edit Info Button
+        Button save = new Button("Save");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 4);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	_account.setName(name);
+            	_account.setAddress(userArea.getText());
+            	updateAccount(); 
+            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            }
+        });
+         */
+        
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
@@ -143,9 +206,9 @@ public class HomeScene implements GUIScene {
         kitchenGrid.add(displayKitchens(), 0, 0);
         
 		return scene;
-		
+
 	}
-	
+
 	private Pane displayUserInfo(final GridPane grid){
         //my info
         GridPane info = new GridPane();
@@ -182,24 +245,24 @@ public class HomeScene implements GUIScene {
         });
         return info;
 	}
-	
-	
+
+
 	private Text defaultFill(String message){
 		Text t = new Text(message);
 		t.setFont(Font.font ("Verdana", FontPosture.ITALIC, 10));
 		t.setFill(Color.GRAY);
 		return t;
 	}
-	
+
 	private Pane editPersonalInfo(final GridPane grid){
         GridPane info = new GridPane();
         info.setVgap(8);
         info.setStyle(Style.TEXT);
         info.setPrefSize(130, 160);
         Text name = new Text("Name: ");
-        final TextField userName = new TextField(_account.getName());
+        final TextField userName = new TextField();
         Text area = new Text("Area: ");
-        final TextField userArea = new TextField(_account.getAddress());
+        final TextField userArea = new TextField();
         info.add(name,0,0);
         info.add(userName, 1, 0);
         info.add(area,0,1);
@@ -229,7 +292,7 @@ public class HomeScene implements GUIScene {
         });
         return info;
 	}
-	
+
 	private Pane IngredientTypeBar(final GridPane grid){
         GridPane info = new GridPane();
         info.setVgap(8);
@@ -240,7 +303,7 @@ public class HomeScene implements GUIScene {
         info.add(name,0,0);
         info.add(userName, 1, 0);
   
-        //edit Info Button
+        /*edit Info Button
         Button save = new Button("Add");
         save.setStyle(Style.BUTTON);
         HBox hbBtn = new HBox(10);
@@ -258,7 +321,7 @@ public class HomeScene implements GUIScene {
             	//grid.add(displayUserInfo(grid), 0, 1, 1, 3);
             	System.out.println("REFRESH???");
             }
-        });
+        }); */
         return info;
 	}
 	
@@ -283,10 +346,10 @@ public class HomeScene implements GUIScene {
 		rList.setPrefSize(300, 200);
 		rList.setVgap(2);
 		sScroll.setContent(rList);
-		
-		
+
+
 		Set<String> preferences = _account.getDietaryRestrictions();
-		
+
 		if(preferences.size()==0){
 			rList.add(defaultFill("No dietary restrictions."), 0, 0);
 		}
@@ -297,9 +360,9 @@ public class HomeScene implements GUIScene {
 				i++;
 			}
 		}
-		
+
 		info.add(sScroll, 0, 0);
-		
+
         Button edit = new Button("+/-");
         edit.setStyle(Style.BUTTON);
         
@@ -317,7 +380,7 @@ public class HomeScene implements GUIScene {
         info.add(hbBtn, 1, 2);
         return info;
 	}
-	
+
 	/*
 	 *  GridPane kitchenList = new GridPane();
 		kitchenList.setHgap(3);
@@ -368,7 +431,7 @@ public class HomeScene implements GUIScene {
 		kitchenList.add(hbBtn, 1, 0);
 		return kitchenList;
 	 */
-	
+
 	public GridPane displayDislikes(){
 		GridPane dislikes = new GridPane();
 		dislikes.setStyle(Style.TEXT);
@@ -383,7 +446,7 @@ public class HomeScene implements GUIScene {
         dislikes.add(hbBtn, 1, 2);
         return dislikes;
 	}
-	
+
 	private GridPane displayKitchens(){
 		GridPane kitchenList = new GridPane();
 		kitchenList.setHgap(3);
@@ -406,12 +469,12 @@ public class HomeScene implements GUIScene {
 		}
 		System.out.println("kitchens: " + kitchenListSet);
 		int i = 0;
-		
+
 		if(kitchenListSet.size()==0){
 			rList.add(defaultFill("You don't currently belong to any kitchens. To add a kitchen click the +/- in the left hand corner :)"), 0, 0);
-		
+
 		}
-		
+
 		for (KitchenName s : kitchenListSet){
 			System.out.println("calling kitchen button");
 			rList.add(kitchenButton(s),0,i);
@@ -434,7 +497,7 @@ public class HomeScene implements GUIScene {
 		kitchenList.add(hbBtn, 1, 0);
 		return kitchenList;
 	}
-	
+
 	private Button kitchenButton(final KitchenName k){ //TODO: turn this into a generic list button
 		System.out.println("getting  called");
 		Button b = new Button(k.getName());
@@ -446,7 +509,7 @@ public class HomeScene implements GUIScene {
 		b.setWrapText(true);
 		return b;
 	}
-	
+
 	private GridPane displayList(final int width, final int height, final boolean isIngredients, final boolean isFridge, final Set<? extends Nameable> items,
 			final EventHandler<ActionEvent> itemDest, final GridPane parentGrid){
 		final GridPane listPane = new GridPane();
@@ -474,6 +537,7 @@ public class HomeScene implements GUIScene {
 		edit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+            	parentGrid.add(IngredientTypeBar(itemList), 0, 1);
             	editBox.getChildren().remove(0);
             	int j = 0;
             	for (Nameable item : items){
@@ -578,8 +642,8 @@ public class HomeScene implements GUIScene {
 		}
 		return listPane;
 	}
-	
-	
+
+
 	private GridPane buttonList(int width, int height, Set<? extends Nameable> items, EventHandler<ActionEvent> itemDest){
 		//grid panel for buttons
 		final GridPane itemListGrid = new GridPane();
@@ -592,7 +656,7 @@ public class HomeScene implements GUIScene {
 		}
 		return itemListGrid;
 	}
-	
+
 	private Button quantButton(String called){
 		System.out.println(called);
 		Button b = new Button(called);
@@ -606,7 +670,7 @@ public class HomeScene implements GUIScene {
 		});
 		return b;
 	}
-	
+
 	private Button itemButton(Nameable item, EventHandler<ActionEvent> destination){ 
 		Button b = new Button(item.getName());
 		b.setStyle(Style.RECIPE);
@@ -614,7 +678,7 @@ public class HomeScene implements GUIScene {
 		b.setOnAction(destination);
 		return b;
 	}
-	
+
 	private EventHandler<ActionEvent> nameHandler(final Button b){
 		EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>(){
 			@Override
@@ -624,41 +688,41 @@ public class HomeScene implements GUIScene {
 		};
 		return handler;
 	}
-	
+
 	private class KitchenHandler<ActionEvent> implements EventHandler{
-		
+
 		private String _kitchenID;
-		
+
 		public void setKitchen(String kitchenID){
 			_kitchenID = kitchenID;
 		}
-		
+
 		@Override
 		public void handle(Event arg0) {
 			System.out.println(" requesting kitchen: " + _kitchenID);
 			_client.setCurrentKitchen(_kitchenID);
 			requestKitchen(_kitchenID);
-			
+
 		}
 	}
-	
+
 	private class RecipeHandler<ActionEvent> implements EventHandler{
-		
+
 		private String _recipeID;
-		
+
 		public void setRecipe(String recipeID){
 			_recipeID = recipeID;
 		}
-		
-		
-		
+
+
+
 		@Override
 		public void handle(Event arg0) {
 			System.out.println(" requesting recipe: " + _recipeID);
 			//TODO: pop up recipe
 		}
 	}
-	
+
 	/**
 	 * Tells client to send account updates to server.
 	 */
@@ -667,7 +731,7 @@ public class HomeScene implements GUIScene {
 		System.out.println("client: " + _client);
 		_client.storeAccount(_account.getID(), _account); //TODO: this needs to be limited, and we should have an unchangeable userid that they don't ever see
 	}
-	
+
 	public void requestKitchen(String kitchenID){
 		_client.getKitchen(kitchenID);
 	}

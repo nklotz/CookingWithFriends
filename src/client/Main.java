@@ -3,14 +3,26 @@ package client;
 import java.io.IOException;
 
 public class Main {
-	
-	private final static int DEFAULT_PORT = 9882;
 
 	public static void main(String[] args) {
+		if (args.length != 2)
+			usage();
+		
+		int port = 0;
+		try {
+			port = Integer.parseInt(args[1]);
+		} catch (NumberFormatException ex) {
+			usage();
+		}
 		try{
-			Client c = new Client(DEFAULT_PORT);
+			new Client(args[0], port);
 		} catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	private static void usage() {
+		System.out.println("Usage: client <hostname> <port>");
+		System.exit(1);
 	}
 }

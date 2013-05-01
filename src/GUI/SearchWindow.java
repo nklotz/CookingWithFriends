@@ -1,53 +1,30 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GraphicsConfiguration;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Test.MockRecipe;
 import UserInfo.Account;
-import UserInfo.Ingredient;
 import UserInfo.KitchenName;
-import UserInfo.Recipe;
 import UserInfo.Nameable;
-
+import UserInfo.Recipe;
 import client.Client;
 
 public class SearchWindow extends JFrame {
@@ -74,7 +51,7 @@ public class SearchWindow extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    		initFX(fxPanel);
+    			initFX(fxPanel);
     		}
     	});
     }

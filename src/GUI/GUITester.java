@@ -2,29 +2,30 @@ package GUI;
 
 import java.util.Map;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-
 import javax.swing.JFrame;
 
-import server.AutocorrectEngines;
-import API.Wrapper;
+import server.APIInfo;
+import client.Client;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
-import client.Client;
 
-public class GUIFrame extends JFrame{
+public class GUITester extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	private Client _client;
 	private JFXPanel _panel;
 	private Account _account;;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
-	private AutocorrectEngines _engines;
+	private APIInfo _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
 	
-	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
+	public static void main(String[] args) {
+		new GUITester();
+	}
+	
+	public GUITester() {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -37,6 +38,7 @@ public class GUIFrame extends JFrame{
 		});
 		
 		this.setSize(1400, 1000);
+
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
@@ -45,16 +47,13 @@ public class GUIFrame extends JFrame{
     	this.setVisible(true);
     	_panel.setPreferredSize(new java.awt.Dimension(1400,1000));
     	
-    	_client = client;
-    	_account = account;   	
-    	_engines = engines;
-    	_kitchens = kitchens;
+    	_searchScene = new SearchScene(_account, this, _kitchens);
     	
     	loadHomeScene();
+    	
 	}
 	
 	public void loadSearchScene(){
-		_searchScene = new SearchScene(_account, this, _kitchens);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
