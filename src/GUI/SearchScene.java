@@ -27,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import API.Wrapper;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
@@ -38,13 +39,17 @@ public class SearchScene implements GUIScene {
 	private Account _account;
 	private GUIFrame _frame;
 	private Map<KitchenName, Kitchen> _kitchens;
+	private Wrapper _wrapper;
 	
 	private GridPane _searchResults;
+	private List<IngredientCheckBox> _checkBoxList;
 	
-	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens){
+	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens, Wrapper wrapper){
 		_account = account;
 		_frame = frame;
 		_kitchens = kitchens;
+		_wrapper = wrapper;
+		_checkBoxList = new ArrayList<>();
 	}	
 	
 	@Override
@@ -108,12 +113,18 @@ public class SearchScene implements GUIScene {
         GridPane searchPane = new GridPane();
         searchPane.setPrefSize(400, 100);
         searchPane.setStyle(Style.SECTIONS);
-        TextField searchField = new TextField();
+        final TextField searchField = new TextField();
         Button searchButton = new Button();
         searchButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
-				//TODO: Implement search!!!!!
+				List<Ingredient> selectedIngredients = new ArrayList<>();
+				for (IngredientCheckBox checkBox : _checkBoxList) {
+					if (checkBox.getCheckBox().isSelected()) {
+						selectedIngredients.add(checkBox.getIngredient());
+					}
+				}
+				List<Recipe> recipes = _wrapper.searchRecipes(searchField.getText(), selectedIngredients, dislikes, dietRestrictions, allergies);
 			}
 		});
         searchPane.add(searchField, 0, 0);
@@ -159,7 +170,9 @@ public class SearchScene implements GUIScene {
 		VBox itemList = new VBox();
 		itemList.setPrefSize(300, 200);
 		for (Ingredient ing : ingredients){
-			itemList.getChildren().add(new IngredientCheckBox(ing));
+			IngredientCheckBox checkBox = new IngredientCheckBox(ing);
+			_checkBoxList.add(checkBox);
+			itemList.getChildren().add(checkBox);
 		}
 		
 		scroll.setContent(itemList);
@@ -168,11 +181,22 @@ public class SearchScene implements GUIScene {
 	}
 	
 	private class IngredientCheckBox extends HBox {
+		private CheckBox _cb;
+		private Ingredient _ingredient;
 		public IngredientCheckBox(Ingredient ingredient) {
 			super();
+			_ingredient = ingredient;
+			_cb = new CheckBox();
 			Text ingredientName = new Text(ingredient.getName());
-			CheckBox cb = new CheckBox();
-			this.getChildren().addAll(ingredientName, cb);	
+			this.getChildren().addAll(ingredientName, _cb);	
+		}
+		
+		public CheckBox getCheckBox() {
+			return _cb;
+		}
+		
+		public Ingredient getIngredient() {
+			return _ingredient;
 		}
 	}
 	

@@ -10,7 +10,7 @@ import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JFrame;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -23,10 +23,10 @@ public class GUIFrame extends JFrame{
 	private JFXPanel _panel;
 	private Account _account;;
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
-	private APIInfo _engines;
+	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
 	
-	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, APIInfo engines) {
+	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -51,7 +51,6 @@ public class GUIFrame extends JFrame{
     	_account = account;   	
     	_engines = engines;
     	_kitchens = kitchens;
-    	_searchScene = new SearchScene(_account, this, _kitchens);
     	
     	loadHomeScene();
     	
@@ -60,6 +59,7 @@ public class GUIFrame extends JFrame{
 	
 	public void loadSearchScene(){
 		Platform.runLater(new Runnable() {
+			_searchScene = new SearchScene(_account, this, _kitchens);
     		@Override
     		public void run() {
     			_panel.setScene(_searchScene.makeScene());

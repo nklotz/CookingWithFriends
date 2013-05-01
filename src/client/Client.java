@@ -8,7 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-import server.APIInfo;
+import server.AutocorrectEngines;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import GUI.GUIFrame;
@@ -34,7 +34,7 @@ public class Client extends Thread {
     private GUIFrame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
-    private SuggestionEngines _suggestionEngines;
+    private AutocorrectEngines _autocorrect;
     private String _currentKitchen;
 	
     public Client(String hostname, int port) throws IOException {
@@ -120,11 +120,10 @@ public class Client extends Thread {
 							verified = true;	//successful login
 							
 							System.out.println("read as login");
-							_apiInfo = response.getAPIInfo();
+							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _apiInfo);
-							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
+							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
 						}
 					} else {
 						_login.displayIncorrect();

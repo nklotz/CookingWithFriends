@@ -41,12 +41,12 @@ public class ClientHandler extends Thread {
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
 	private boolean _running;
-	private APIInfo _info;
+	private AutocorrectEngines _info;
 	
 	/**
 	 * Thread for the client. Handles input and launches requests.
 	 */
-	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper, APIInfo info) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, ExecutorService taskPool, KitchenPool kitchens, DBHelper helper, AutocorrectEngines info) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}

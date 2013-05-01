@@ -11,7 +11,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import API.Wrapper;
+import API.WrapperDictionary;
 import API.YummlyAPIWrapper;
+import API.YummlyWrapperDictionary;
 import Database.DBHelper;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -24,8 +26,8 @@ public class Server {
 	private ServerSocket _socket;
 	private DBHelper _helper;
 	private KitchenPool _activeKitchens;
-	private Wrapper _apiWrapper;
-	private APIInfo _info;
+	private WrapperDictionary _apiDictionary;
+	private AutocorrectEngines _autocorrect;
 	
 	public Server(int port) throws IOException {
 		if (port <= 1024) {
@@ -34,12 +36,10 @@ public class Server {
 		}
 
 		_helper = new DBHelper();
-		_apiWrapper = new YummlyAPIWrapper();
+		_apiDictionary = new YummlyWrapperDictionary();
 		
 		//Has all autocorrect suggestion engines.
-		//TODO: put back in later once jonathan's thing is dones
-		
-		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		_autocorrect = new AutocorrectEngines(_apiDictionary);
 		
 		
 		//TODO: package trie and lists to client handler
