@@ -23,7 +23,8 @@ public class Kitchen implements Serializable, Nameable{
 	private HashSet<Event> _events = new HashSet<Event>();
 	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
 	private HashMap<Ingredient, List<String>> _ingToUsers = new HashMap<Ingredient, List<String>>();
-	
+	private HashSet<String> _allergies;
+	private HashSet<String> _restrictions;
 	private String _id = "", _name = "";
 	private HashSet<String> _activeUsers = new HashSet<String>();
 	private HashSet<String> _requestedUsers = new HashSet<String>();
@@ -39,6 +40,21 @@ public class Kitchen implements Serializable, Nameable{
 		_name = name;
 	}
 	
+	public HashSet<String> getAllergies(){
+		return _allergies;
+	}
+	
+	public HashSet<String> getRestrictions(){
+		return _restrictions;
+	}
+	
+	public void setAllergies(HashSet<String> allergies){
+		_allergies = allergies;
+	}
+	
+	public void setRestrictions(HashSet<String> restrictions){
+		_restrictions = restrictions;
+	}
 	public String getName(){
 		return _name;
 	}
