@@ -1,8 +1,5 @@
 package GUI;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.util.Map;
 
 import javafx.application.Platform;
@@ -11,6 +8,7 @@ import javafx.embed.swing.JFXPanel;
 import javax.swing.JFrame;
 
 import server.AutocorrectEngines;
+import API.Wrapper;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -53,13 +51,11 @@ public class GUIFrame extends JFrame{
     	_kitchens = kitchens;
     	
     	loadHomeScene();
-    	
-    	
 	}
 	
 	public void loadSearchScene(){
+		_searchScene = new SearchScene(_account, this, _kitchens);
 		Platform.runLater(new Runnable() {
-			_searchScene = new SearchScene(_account, this, _kitchens);
     		@Override
     		public void run() {
     			_panel.setScene(_searchScene.makeScene());

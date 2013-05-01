@@ -69,7 +69,7 @@ public class Server {
 			Socket clientSocket = null;
 	        try {
 	            clientSocket =_socket.accept();
-	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _activeKitchens, _helper, _info);
+	            ClientHandler thread = new ClientHandler(_clients, clientSocket, _taskPool, _activeKitchens, _helper, _autocorrect);
 	    		_clients.add(thread);
 	            thread.start();
 

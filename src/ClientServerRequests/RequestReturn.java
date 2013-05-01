@@ -21,6 +21,7 @@ public class RequestReturn implements Serializable {
 	private HashMap<KitchenName, Kitchen> _kitchenMap;
 	private Invitation _invite;
 	private AutocorrectEngines _info;
+	private Wrapper _wrapper;
 	
 	/*
 	 * Types:
@@ -85,7 +86,7 @@ public class RequestReturn implements Serializable {
 		_info = info;
 	}
 
-	public Wrapper getAPIWrapper() {
-		return null;
+	public Wrapper getWrapper(){
+		return _wrapper;
 	}
 }

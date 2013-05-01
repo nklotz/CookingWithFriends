@@ -29,6 +29,10 @@ import com.google.gson.Gson;
  */
 public class YummlyAPIWrapper implements Wrapper {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// API ID and Key
 	private final static String APP_ID = "9404a024";
 	private final static String APP_KEY = "6e07b7b6599dd2da3b0cea88ae2285fc";

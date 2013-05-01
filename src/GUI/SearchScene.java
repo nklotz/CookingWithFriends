@@ -44,11 +44,10 @@ public class SearchScene implements GUIScene {
 	private GridPane _searchResults;
 	private List<IngredientCheckBox> _checkBoxList;
 	
-	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens, Wrapper wrapper){
+	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens){
 		_account = account;
 		_frame = frame;
 		_kitchens = kitchens;
-		_wrapper = wrapper;
 		_checkBoxList = new ArrayList<>();
 	}	
 	
