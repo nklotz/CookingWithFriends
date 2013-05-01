@@ -2,8 +2,10 @@ package API;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import UserInfo.Ingredient;
 import UserInfo.Nameable;
@@ -110,4 +112,25 @@ public class YummlyRecipe implements Recipe, Nameable {
 	public String getImageUrl() {
 		return smallImageUrls[0];
 	}
+
+
+	@Override
+	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
+		// TODO Auto-generated method stub
+		
+		Set<Ingredient> difference = new HashSet<Ingredient>();
+		
+		for(Ingredient i: _ingredients){
+			if(!fridge.contains(i)){
+				difference.add(i);
+			}
+		}
+		
+		return difference;
+	}
+
+
+	
+
+
 }

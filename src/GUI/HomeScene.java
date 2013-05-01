@@ -81,15 +81,15 @@ public class HomeScene implements GUIScene {
         userGrid.add(myInfo, 0, 0);
         userGrid.add(displayUserInfo(userGrid), 0, 1, 1, 3);
         //diet
-        Text diet = new Text("Dietary Preferences");
+        Text diet = new Text("Dietary Restrictions");
         diet.setStyle(Style.INFO_HEADER);
         userGrid.add(diet, 1, 0);
-        userGrid.add(displayPreferences(), 1, 1);
+        userGrid.add(displayPreferences(userGrid), 1, 1);
         //dislikes
-        Text dislike = new Text("Dislikes");
-        dislike.setStyle(Style.INFO_HEADER);
-        userGrid.add(dislike, 1, 2);
-        userGrid.add(displayDislikes(), 1, 3);
+        Text allergies = new Text("Allergies");
+        allergies.setStyle(Style.INFO_HEADER);
+        userGrid.add(allergies, 1, 2);
+        userGrid.add(displayAllergies(userGrid), 1, 3);
         
         //MY RECIPES
         Text MyRecipes = new Text("My Recipes");
@@ -310,9 +310,9 @@ public class HomeScene implements GUIScene {
 	}
 	
 	
-	public GridPane displayPreferences(){
+	public GridPane displayPreferences(final GridPane grid){
 		//main grid
-		GridPane info = new GridPane();
+		final GridPane info = new GridPane();
         info.setVgap(8);
         info.setStyle(Style.TEXT);
         info.setPrefSize(130, 80);
@@ -354,6 +354,31 @@ public class HomeScene implements GUIScene {
             @Override
             public void handle(ActionEvent e) {
             	System.out.println("I WANT TO ADD A PREFERENCE!!");
+            	final TextField preference = new TextField();
+                Text label = new Text("Restrictions: ");
+                info.add(label,0,0);
+                info.add(preference, 1, 0);
+                
+                Button save = new Button("Add");
+                save.setStyle(Style.BUTTON);
+                HBox hbBtn = new HBox(10);
+                hbBtn.setPrefHeight(80);
+                hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtn.getChildren().add(save);
+                info.add(hbBtn, 1, 4);
+                save.setOnAction(new EventHandler<ActionEvent>() {
+                  	 
+                    @Override
+                    public void handle(ActionEvent e) {
+                    	String restric = preference.getText();
+                    	if(restric.trim().length()!=0){
+                    		_account.addRestriction(restric.trim());
+                    		_client.storeAccount(_account,2 , restric.trim());
+                    		grid.add(displayPreferences(grid), 1, 1);
+                    	}
+                    }
+                });
+                
             }
         });
         
@@ -365,19 +390,84 @@ public class HomeScene implements GUIScene {
         return info;
 	}
 
-	public GridPane displayDislikes(){
-		GridPane dislikes = new GridPane();
-		dislikes.setStyle(Style.TEXT);
-		dislikes.setPrefSize(130, 80);
-		//TODO: ACCOUNT.getDislikes (do we really need this?)
-		Button edit = new Button("+/-");
-		edit.setStyle(Style.BUTTON);
+	public GridPane displayAllergies(final GridPane grid){
+		//main grid
+		final GridPane allergies = new GridPane();
+		allergies.setStyle(Style.TEXT);
+		allergies.setPrefSize(130, 80);
+		
+        //scroll bar
+        ScrollPane sScroll = new ScrollPane();//Scrolling Panel
+		sScroll.setStyle(Style.TEXT);
+		sScroll.setPrefSize(222, 400);
+		sScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		sScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		sScroll.setFitToWidth(true);
+        
+		//preferences grid
+		GridPane rList = new GridPane();
+		rList.setPrefSize(300, 200);
+		rList.setVgap(2);
+		sScroll.setContent(rList);
+		
+		Set<String> accountAllergies = _account.getAllergies();
+
+		if(accountAllergies.size()==0){
+			rList.add(defaultFill("No allergies"), 0, 0);
+		}
+		else{
+			int i = 0;
+			for(String s: accountAllergies){
+				rList.add(new Text(s),0,i);
+				i++;
+			}
+		}
+
+		allergies.add(sScroll, 0, 0);
+		
+        
+        Button edit = new Button("+/-");
+        edit.setStyle(Style.BUTTON);
+                
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	final TextField preference = new TextField();
+                Text label = new Text("Allergies: ");
+                allergies.add(label,0,0);
+                allergies.add(preference, 1, 0);
+                
+                Button save = new Button("Add");
+                save.setStyle(Style.BUTTON);
+                HBox hbBtn = new HBox(10);
+                hbBtn.setPrefHeight(80);
+                hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtn.getChildren().add(save);
+                allergies.add(hbBtn, 1, 4);
+                save.setOnAction(new EventHandler<ActionEvent>() {
+                  	 
+                    @Override
+                    public void handle(ActionEvent e) {
+                    	String allerg = preference.getText();
+                    	if(allerg.trim().length()!=0){
+	                    	_account.addAllergy(allerg.trim());
+	                    	_client.storeAccount(_account,4 , allerg.trim());
+	                    	grid.add(displayAllergies(grid), 1, 3);
+                    	}
+                    }
+                });
+               
+            }
+                
+         });
+        
 		HBox hbBtn = new HBox(10);
         hbBtn.setPrefHeight(80);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(edit);
-        dislikes.add(hbBtn, 1, 2);
-        return dislikes;
+        allergies.add(hbBtn, 1, 2);
+        
+        return allergies;
 	}
 
 	private GridPane displayKitchens(){
