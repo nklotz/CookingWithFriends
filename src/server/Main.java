@@ -1,20 +1,30 @@
 package server;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class Main {
 	
-	private final static int DEFAULT_PORT = 9882;
-
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) {
+		if (args.length != 1)
+			usage();
+		
+		int port = 0;
+		try {
+			port = Integer.parseInt(args[0]);
+		} catch (NumberFormatException ex) {
+			usage();
+		}
+		
 		try{
-			System.out.println("server main");
-			Server s = new Server(DEFAULT_PORT);
+			Server s = new Server(port);
 			s.run();
 		} catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	private static void usage() {
+		System.out.println("Usage: server <port>");
 	}
 
 }

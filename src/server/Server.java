@@ -6,11 +6,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import API.*;
+
+import API.Wrapper;
+import API.YummlyAPIWrapper;
 import Database.DBHelper;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -26,7 +27,7 @@ public class Server {
 	private Wrapper _apiWrapper;
 	private APIInfo _info;
 	
-	public Server(int port) throws IOException, URISyntaxException {
+	public Server(int port) throws IOException {
 		if (port <= 1024) {
 			System.err.println("ERROR: Ports under 1024 are reserved!");
 			return;
@@ -37,8 +38,7 @@ public class Server {
 		
 		//Has all autocorrect suggestion engines.
 		//TODO: put back in later once jonathan's thing is dones
-		_info = new APIInfo(_apiWrapper.getPossibleIngredients(),
-				 _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
+		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
 		
 		
 		//TODO: package trie and lists to client handler
@@ -57,7 +57,7 @@ public class Server {
 		_clients = new ClientPool();
 		_activeKitchens = new KitchenPool(_helper, _clients);
     }
-	
+
 	/**
 	 * Wait for and handle connections indefinitely.
 	 */
@@ -96,7 +96,7 @@ public class Server {
 		_socket.close();
 	}
 	
-    private static String toString( Serializable o ) throws IOException {
+    private static String toString(Serializable o) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject( o );

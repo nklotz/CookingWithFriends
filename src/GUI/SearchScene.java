@@ -1,12 +1,14 @@
 package GUI;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import client.Client;
-import UserInfo.Account;
+import javax.imageio.ImageIO;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,21 +18,28 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
+import UserInfo.Recipe;
 
 public class SearchScene implements GUIScene {
 
 	private Account _account;
 	private GUIFrame _frame;
 	private Map<KitchenName, Kitchen> _kitchens;
+	
+	private GridPane _searchResults;
 	
 	public SearchScene(Account account, GUIFrame frame, Map<KitchenName, Kitchen> kitchens){
 		_account = account;
@@ -57,7 +66,6 @@ public class SearchScene implements GUIScene {
         Text ingredientsHeader = new Text("Ingredients");
         ingredientsHeader.setStyle(Style.SECTION_HEADER);
         grid.add(ingredientsHeader, 0, 1);
-        
         GridPane ingredientsGrid = new GridPane();
         ingredientsGrid.setPrefSize(250, 200);
         ingredientsGrid.setStyle(Style.SECTIONS);
@@ -79,41 +87,54 @@ public class SearchScene implements GUIScene {
         ingredientsAccordion.getPanes().addAll(kitchenPanes);
         ingredientsGrid.add(ingredientsAccordion, 0, 0);
         
-        //Search section
-        Text searchHeader = new Text("Search");
-        searchHeader.setStyle(Style.SECTION_HEADER);
-        grid.add(searchHeader, 0, 3);
-        //pane
-        GridPane searchGrid = new GridPane();
-        searchGrid.setPrefSize(300, 200);
-        searchGrid.setStyle(Style.SECTIONS);
-        grid.add(searchGrid, 0, 4);
-        
         //Results section
         Text resultsHeader = new Text("Results");
         resultsHeader.setStyle(Style.SECTION_HEADER);
         grid.add(resultsHeader, 1, 1);
-        //pane
-        GridPane resultsGrid = new GridPane();
-        resultsGrid.setPrefSize(300, 200);
-        resultsGrid.setStyle(Style.SECTIONS);
-        grid.add(resultsGrid, 1, 2);
+        _searchResults = new GridPane();
+        ScrollPane resultsScroll = new ScrollPane(); //Scrolling Panel
+        resultsScroll.setPrefSize(300, 200);
+        resultsScroll.setStyle(Style.SECTIONS);
+        resultsScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        resultsScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        resultsScroll.setFitToWidth(true);
+        resultsScroll.setContent(_searchResults);
+        grid.add(resultsScroll, 1, 2);
+        
+        //Search section
+        Text searchHeader = new Text("Search");
+        searchHeader.setStyle(Style.SECTION_HEADER);
+        grid.add(searchHeader, 0, 3);
+        GridPane searchPane = new GridPane();
+        searchPane.setPrefSize(400, 100);
+        searchPane.setStyle(Style.SECTIONS);
+        TextField searchField = new TextField();
+        Button searchButton = new Button();
+        searchButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				//TODO: Implement search!!!!!
+			}
+		});
+        searchPane.add(searchField, 0, 0);
+        searchPane.add(searchButton, 0, 1);
+        grid.add(searchPane, 0, 4);
+        
         
         //Left to buy
         Text leftToBuyHeader = new Text("Left to buy");
         leftToBuyHeader.setStyle(Style.SECTION_HEADER);
         grid.add(leftToBuyHeader, 1, 3);
-        //pane
         GridPane leftToBuyGrid = new GridPane();
         leftToBuyGrid.setPrefSize(300, 200);
         leftToBuyGrid.setStyle(Style.SECTIONS);
         grid.add(leftToBuyGrid, 1, 4);
         
         //Go back to the home page.
-        Button b = new Button("Back to home.");
-		b.setStyle(Style.BUTTON);
-		grid.add(b, 1, 1);
-		b.setOnAction(new EventHandler<ActionEvent>(){
+        Button homeButton = new Button("Back to home");
+        homeButton.setStyle(Style.BUTTON);
+		grid.add(homeButton, 1, 1);
+		homeButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
 				_frame.loadHomeScene();
@@ -152,6 +173,21 @@ public class SearchScene implements GUIScene {
 			Text ingredientName = new Text(ingredient.getName());
 			CheckBox cb = new CheckBox();
 			this.getChildren().addAll(ingredientName, cb);	
+		}
+	}
+	
+	private class RecipeBox extends Button {
+		public RecipeBox(final Recipe recipe) {
+			super();
+			Image recipeThumbnail = new Image(recipe.getImageUrl(), 20, 20, true, true, true); 
+			this.setGraphic(new ImageView(recipeThumbnail));
+			this.setText(recipe.getName());
+			this.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent e){
+					_frame.loadRecipeScene(recipe);
+				}
+			});
 		}
 	}
 }

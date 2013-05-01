@@ -51,11 +51,14 @@ public class GUIFrame extends JFrame{
     	_account = account;   	
     	_engines = engines;
     	_kitchens = kitchens;
+    	_searchScene = new SearchScene(_account, this, _kitchens);
+    	
     	loadHomeScene();
+    	
+    	
 	}
 	
 	public void loadSearchScene(){
-		_searchScene = new SearchScene(_account, this, _kitchens);
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
