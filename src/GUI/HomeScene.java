@@ -269,7 +269,8 @@ public class HomeScene implements GUIScene {
             	if(text.trim().length()!=0)
             		suggs = _autocorrect.getIngredientSuggestions(text);
             	if(suggs!=null){
-            		box.getItems().remove(box.getItems());
+            		box.getItems().clear();
+            		//box.getItems().remove(box.getItems());
             		box.getItems().addAll(suggs);
             	}
             		
