@@ -38,6 +38,7 @@ public class Server {
 		
 		//Has all autocorrect suggestion engines.
 		//TODO: put back in later once jonathan's thing is dones
+		
 		_info = new APIInfo(_apiWrapper.getPossibleIngredients(), _apiWrapper.getPossibleDietaryRestrictions(), _apiWrapper.getPossibleAllergies());
 		
 		

@@ -23,5 +23,6 @@ public class Main {
 	
 	private static void usage() {
 		System.out.println("Usage: client <hostname> <port>");
+		System.exit(1);
 	}
 }

@@ -34,7 +34,7 @@ public class Client extends Thread {
     private GUIFrame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
-    private APIInfo _autocorrect;
+    private SuggestionEngines _suggestionEngines;
     private String _currentKitchen;
 	
     public Client(String hostname, int port) throws IOException {
@@ -120,10 +120,10 @@ public class Client extends Thread {
 							verified = true;	//successful login
 							
 							System.out.println("read as login");
-							_autocorrect = response.getAPIInfo();
+							_apiInfo = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
+							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _apiInfo);
 							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 						}
 					} else {
