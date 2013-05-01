@@ -46,8 +46,4 @@ public class KitchenScene implements GUIScene {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
-	
 }

@@ -112,6 +112,7 @@ public class HomeScene implements GUIScene {
     			System.out.println("This doesn't do anything.");
         	}
         }, fridgeGrid), 0, 0);
+        JTextField ingredient = new JTextField();
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
