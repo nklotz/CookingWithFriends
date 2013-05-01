@@ -1,6 +1,7 @@
 package API;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import UserInfo.Ingredient;
@@ -9,7 +10,7 @@ import UserInfo.Recipe;
 /**
  * An interface for interacting with a recipe database API.
  */
-public interface Wrapper {
+public interface Wrapper extends Serializable{
 	
 	/**
 	 * Returns a list of recipes given a list of ingredients, dislikes, dietary restrictions, and allergies.

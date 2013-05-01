@@ -1,8 +1,5 @@
 package GUI;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.util.Map;
 
 import javafx.application.Platform;
@@ -11,6 +8,7 @@ import javafx.embed.swing.JFXPanel;
 import javax.swing.JFrame;
 
 import server.AutocorrectEngines;
+import API.Wrapper;
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -24,8 +22,9 @@ public class GUIFrame extends JFrame{
 	private GUIScene _kitchenScene, _homeScene, _searchScene;
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
+	private Wrapper _wrapper;
 	
-	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
+	public GUIFrame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines, Wrapper wrapper) {
 		super("Cooking with Friends!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -52,6 +51,7 @@ public class GUIFrame extends JFrame{
     	_engines = engines;
     	_kitchens = kitchens;
     	_searchScene = new SearchScene(_account, this, _kitchens);
+    	_wrapper = wrapper;
     	
     	loadHomeScene();
     	

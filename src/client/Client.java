@@ -126,7 +126,7 @@ public class Client extends Thread {
 							_wrapper = response.getWrapper();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
-							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect);
+							_gui = new GUIFrame(this, response.getAccount(), _kitchens, _autocorrect, _wrapper);
 							//_gui = new GUIFrame(this, response.getAccount(), _autocorrect);
 						}
 					} else {
