@@ -112,69 +112,6 @@ public class HomeScene implements GUIScene {
     			System.out.println("This doesn't do anything.");
         	}
         }, fridgeGrid), 0, 0);
-
-        final TextField ingredients = new TextField();
-        fridgeGrid.add(ingredients, 100, 100);
-       // ingredients.setOnAction(arg0)
-        //ingredients.get
-        ingredients.setOnAction(new EventHandler<ActionEvent>(){
-        	
-        	@Override
-            public void handle(ActionEvent e) {
-            	String text = ingredients.getText();
-            	System.out.println("In text handler!!!");
-//            	_account.setName(name);
-//            	_account.setAddress(userArea.getText());
-//            	updateAccount(); 
-//            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });
-        
-        /*save.setOnAction(new EventHandler<ActionEvent>() {
-         	 
-            @Override
-            public void handle(ActionEvent e) {
-            	String name = userName.getText();
-            	_account.setName(name);
-            	_account.setAddress(userArea.getText());
-            	updateAccount(); 
-            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });*/
-        
-        /*
-         * final TextField userName = new TextField();
-        Text area = new Text("Area: ");
-        final TextField userArea = new TextField();
-        info.add(name,0,0);
-        info.add(userName, 1, 0);
-        info.add(area,0,1);
-        info.add(userArea, 1, 1);
-        Text id = new Text("Email: ");
-        Text userId = new Text(_account.getID());
-        info.add(id, 0, 2);
-        info.add(userId, 1, 2);
-        //edit Info Button
-        Button save = new Button("Save");
-        save.setStyle(Style.BUTTON);
-        HBox hbBtn = new HBox(10);
-        hbBtn.setPrefHeight(80);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(save);
-        info.add(hbBtn, 1, 4);
-        save.setOnAction(new EventHandler<ActionEvent>() {
-          	 
-            @Override
-            public void handle(ActionEvent e) {
-            	String name = userName.getText();
-            	_account.setName(name);
-            	_account.setAddress(userArea.getText());
-            	updateAccount(); 
-            	grid.add(displayUserInfo(grid), 0, 1, 1, 3);
-            }
-        });
-         */
-        
         
         //MY SHOPPING LIST
         Text ShoppingList = new Text("My Shopping List");
@@ -293,6 +230,39 @@ public class HomeScene implements GUIScene {
         return info;
 	}
 
+	private Pane IngredientTypeBar(final GridPane grid){
+        GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 160);
+        Text name = new Text("Ingredient: ");
+        final TextField userName = new TextField();
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+  
+        /*edit Info Button
+        Button save = new Button("Add");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 4);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	_account.addIngredient(new Ingredient(name));
+            	updateAccount(); 
+            	//grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            	System.out.println("REFRESH???");
+            }
+        }); */
+        return info;
+	}
+	
+	
 	public GridPane displayPreferences(){
 		//main grid
 		GridPane info = new GridPane();
@@ -536,6 +506,7 @@ public class HomeScene implements GUIScene {
                 hbBtn.setPrefHeight(80);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
                 hbBtn.getChildren().add(save);
+            	hbBtn.getChildren().add(IngredientTypeBar(itemList));
                 listPane.add(hbBtn, 2, 2, 2,1);
         		save.setOnAction(new EventHandler<ActionEvent>() {
         			@Override

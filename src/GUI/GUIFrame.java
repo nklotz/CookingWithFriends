@@ -21,7 +21,7 @@ public class GUIFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private Client _client;
 	private JFXPanel _panel;
-	private Account _account;;
+	private Account _account;
 	private GUIScene _kitchenScene, _homeScene, _searchScene, _recipeScene;
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
@@ -73,7 +73,7 @@ public class GUIFrame extends JFrame{
 		_homeScene = new HomeScene(_account, this,_engines, _client);
 		Platform.runLater(new Runnable() {
     		@Override
-    		public void run() {
+    		public void run(){
     			_panel.setScene(_homeScene.makeScene());
     		}
 		});
