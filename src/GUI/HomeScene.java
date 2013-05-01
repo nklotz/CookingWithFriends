@@ -230,6 +230,39 @@ public class HomeScene implements GUIScene {
         return info;
 	}
 
+	private Pane IngredientTypeBar(final GridPane grid){
+        GridPane info = new GridPane();
+        info.setVgap(8);
+        info.setStyle(Style.TEXT);
+        info.setPrefSize(130, 160);
+        Text name = new Text("Ingredient: ");
+        final TextField userName = new TextField();
+        info.add(name,0,0);
+        info.add(userName, 1, 0);
+  
+        /*edit Info Button
+        Button save = new Button("Add");
+        save.setStyle(Style.BUTTON);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setPrefHeight(80);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(save);
+        info.add(hbBtn, 1, 4);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+          	 
+            @Override
+            public void handle(ActionEvent e) {
+            	String name = userName.getText();
+            	_account.addIngredient(new Ingredient(name));
+            	updateAccount(); 
+            	//grid.add(displayUserInfo(grid), 0, 1, 1, 3);
+            	System.out.println("REFRESH???");
+            }
+        }); */
+        return info;
+	}
+	
+	
 	public GridPane displayPreferences(){
 		//main grid
 		GridPane info = new GridPane();
@@ -473,6 +506,7 @@ public class HomeScene implements GUIScene {
                 hbBtn.setPrefHeight(80);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
                 hbBtn.getChildren().add(save);
+            	hbBtn.getChildren().add(IngredientTypeBar(itemList));
                 listPane.add(hbBtn, 2, 2, 2,1);
         		save.setOnAction(new EventHandler<ActionEvent>() {
         			@Override
