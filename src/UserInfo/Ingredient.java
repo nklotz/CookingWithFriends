@@ -57,4 +57,25 @@ public class Ingredient implements Nameable, Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public int hashCode(){
+		return _name.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (obj == null) {
+	        return false;
+	    }
+	    if (getClass() != obj.getClass()) {
+	        return false;
+	    }
+		
+	    final Ingredient other = (Ingredient) obj;
+	  
+	    return (_name.equals(other.getName()));
+	}
+
+	
 }

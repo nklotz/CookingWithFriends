@@ -1,6 +1,7 @@
 package Test;
 
 import java.util.List;
+import java.util.Set;
 
 import UserInfo.Ingredient;
 import UserInfo.Recipe;
@@ -62,6 +63,12 @@ public class MockRecipe implements Recipe {
 
 	@Override
 	public String getID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
 		// TODO Auto-generated method stub
 		return null;
 	}
