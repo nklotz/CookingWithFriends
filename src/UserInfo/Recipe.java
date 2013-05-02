@@ -28,5 +28,7 @@ public interface Recipe extends Nameable, Serializable {
 	public String getImageUrl();
 	
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge);
+
+	public boolean hasImage();
 	
 }

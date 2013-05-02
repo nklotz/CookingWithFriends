@@ -1,21 +1,22 @@
 package GUI2;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -27,13 +28,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import server.AutocorrectEngines;
+import API.Wrapper;
+import API.YummlyAPIWrapper;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
-import UserInfo.Nameable;
 import UserInfo.Recipe;
 import client.Client;
 
@@ -44,68 +48,46 @@ public class Controller extends AnchorPane implements Initializable {
 	
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
-    private Button addFridgeIngredient, editProfile;
-    
+    private Button addFridgeIngredient, editProfile, addRestriction, addAllergy, searchButton;
     @FXML
-    private CheckBox removeShoppingIngredient, removeFridgeIngredient;
-  
-    @FXML
-    private CheckBox removeAllergy;
-
+    private CheckBox removeShoppingIngredient, removeFridgeIngredient, removeAllergy, removeRestriction;
     @FXML
     private ComboBox<String> addShoppingIngredient;
-
     @FXML
     private ListView<UserIngredientBox> fridgeList;
-
     @FXML
     private ComboBox<String> newIngredient;
-
     @FXML
     private ListView<UserRecipeBox> recipeList;
-
     @FXML
     private ListView<ShoppingIngredientBox> shoppingList;
-
     @FXML
-    private Label nameLabel, locationLabel, emailLabel;
-    
+    private Label nameLabel, locationLabel, emailLabel;  
     @FXML
-    private TextField nameField, locationField;
-    
+    private TextField nameField, locationField, searchField;   
     @FXML
-    private ToggleButton removeFridge;
-    
+    private ToggleButton removeFridge;          
     @FXML
-    private Button addRestriction;
-    
-    @FXML
-    private Button addAllergy;
-    
-    @FXML
-    private CheckBox removeRestriction;
-    
-    @FXML
-    private ComboBox<String> addRestrictionBar;
-    
-    @FXML
-    private ComboBox<String> addAllergyBar;
-    
+    private ComboBox<String> addRestrictionBar, addAllergyBar;    
     @FXML
     private ListView<RestrictionBox> restrictionsList;
-    
     @FXML
     private ListView<AllergyBox> allergiesList;
+    @FXML
+    private FlowPane resultsFlow;
+    @FXML
+    private Accordion ingredientsAccordion;
 
+    //Local Data
     private Client _client;
     private Account _account;
     private Map<KitchenName,Kitchen> _kitchens;
     private AutocorrectEngines _engines;
+    private Wrapper _api;
+    private List<CheckBox> _ingredientsBoxes;
     
     
     @FXML
@@ -115,14 +97,13 @@ public class Controller extends AnchorPane implements Initializable {
     
     private abstract class  GuiBox extends GridPane{
 
-    	public void remove(){}
+    	public void remove() {};
     	
     	public RemoveButton getRemover(){
     		return null;
     	}
     	
     }
-    
     
     private class RemoveButton extends Button{
     	
@@ -245,7 +226,6 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-    
     private class UserRecipeBox extends Label{
     	private RemoveButton _remove;
     	private Recipe _recipe;
@@ -282,6 +262,8 @@ public class Controller extends AnchorPane implements Initializable {
     	_account = account;
     	_kitchens = kitchens;
     	_engines = engines;
+    	_api = new YummlyAPIWrapper();
+    	
     	initializeComboBoxes();
     	populateUserFridge();
     	populateUserRecipes();
@@ -290,6 +272,10 @@ public class Controller extends AnchorPane implements Initializable {
     	populateRestrictions();
     	populateInfo();
     	
+    	//Set up search page
+    	setUpSearchTab();
+    	
+    	
     	List<String> list = new ArrayList<String>();
     	addShoppingIngredient.getItems().addAll(list);
     	newIngredient.getItems().addAll(list);
@@ -297,7 +283,84 @@ public class Controller extends AnchorPane implements Initializable {
     //	initializeAutocorrect();
     }
     
-    public void initializeComboBoxes(){
+    private void setUpSearchTab() {
+    	_ingredientsBoxes = new ArrayList<>();
+    	populateSearchIngredients();
+    	searchButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				System.out.println("Clicked search button!");
+				List<String> selectedIngredients = new ArrayList<>();
+				for (CheckBox checkBox : _ingredientsBoxes) {
+					if (checkBox.isSelected()) selectedIngredients.add(checkBox.getText());
+				}
+				System.out.println("Querying with ingredients: " + selectedIngredients);
+				//Attempt to query API
+				try {
+					List<String> dummy = Collections.emptyList(); //TODO: POOL KITCHEN ALLERGIES
+					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummy, dummy, dummy);
+					System.out.println("Got results: " + results);
+					for (Recipe recipe : results) {
+						resultsFlow.getChildren().add(new RecipeBox(recipe));
+					}
+				} catch (IOException ex) {
+					resultsFlow.getChildren().add(new Text("Error querying API -- is your internet connection down?"));
+				}
+			}
+		});
+    }
+    
+    private class RecipeBox extends GridPane {
+    	public RecipeBox(Recipe recipe) {
+    		super();
+    		System.out.println("Creating recipe box");
+    		if (recipe.hasImage()) {
+    			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
+    			this.add(new ImageView(recipeThumbnail), 1, 1, 1, 1);
+    		}
+    		this.add(new Label(recipe.getName()), 0, 0);
+			this.setPrefSize(200, 200);
+			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent event) {
+					createPopup();					
+				}
+			});
+    	}
+    }
+    
+    private void createPopup() {
+		// TODO Auto-generated method stub
+		System.out.println("I WOULD BE POPPING UP AN INGREDIENT BOX");
+	}
+    
+    private void populateSearchIngredients() {
+    	List<TitledPane> kitchenPanes = new ArrayList<>();
+        TitledPane personalPane =  new TitledPane();
+        personalPane.setText("My Fridge");
+        personalPane.setContent(makeIngredientList(_account.getIngredients()));
+        kitchenPanes.add(personalPane);
+        for (Kitchen kitchen : _kitchens.values()) {
+        	TitledPane kitchenPane =  new TitledPane();
+        	kitchenPane.setText(kitchen.getName());
+        	kitchenPane.setContent(makeIngredientList(kitchen.getIngredients()));
+        	kitchenPanes.add(kitchenPane);
+        }
+        ingredientsAccordion.getPanes().addAll(kitchenPanes);		
+	}
+
+	private ListView<CheckBox> makeIngredientList(Set<Ingredient> ingredients) {
+		ListView<CheckBox> ingredientsView = new ListView<>();
+		List<CheckBox> thisList = new ArrayList<>();
+		for (Ingredient ing : ingredients) {
+			thisList.add(new CheckBox(ing.getName()));
+		}
+		_ingredientsBoxes.addAll(thisList);
+		ingredientsView.getItems().addAll(thisList);
+		return ingredientsView;
+	}
+
+	public void initializeComboBoxes(){
     	addRestrictionBar.getItems().clear();
     	newIngredient.getItems().clear();
     	addAllergyBar.getItems().clear();
@@ -307,6 +370,7 @@ public class Controller extends AnchorPane implements Initializable {
     	addAllergyBar.getItems().addAll("Wheat-Free", "Gluten-Free", "Peanut-Free", 
     			"Tree Nut-Free", "Dairy-Free", "Egg-Free", "Seafood-Free", "Sesame-Free", 
     			"Soy-Free", "Sulfite-Free");
+    	//TODO: READ THESE FROM SERVER? (just don't hard code them?) is this worth doing?!/!
     }
     
     public void addRestrictionListListener(){
@@ -546,5 +610,6 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 	}
     
+	
 
 }

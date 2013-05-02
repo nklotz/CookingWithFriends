@@ -17,15 +17,15 @@
           <content>
             <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
               <children>
-                <Pane layoutX="60.0" layoutY="103.0" prefHeight="393.0" prefWidth="338.0" styleClass="section">
+                <Pane layoutX="60.0" layoutY="103.0" prefHeight="395.0" prefWidth="338.0" styleClass="section">
                   <children>
-                    <ListView fx:id="allergiesList" layoutX="19.0" layoutY="248.0" prefHeight="93.0" prefWidth="290.0" />
-                    <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="96.0" prefHeight="90.8671875" prefWidth="289.999977929685" />
+                    <ListView fx:id="allergiesList" focusTraversable="false" layoutX="19.0" layoutY="248.0" prefHeight="93.0" prefWidth="303.0" />
+                    <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="19.0" layoutY="96.0" prefHeight="90.8671875" prefWidth="302.999977929685" />
                     <Label id="" layoutX="19.0" layoutY="13.0" prefWidth="43.0000084472631" text="Name:" />
                     <Label layoutX="20.0" layoutY="81.0" text="Dietary Restrictions" />
                     <Label layoutX="19.0" layoutY="233.0" text="Allergies" />
-                    <Button fx:id="editProfile" layoutX="302.0" layoutY="11.0" mnemonicParsing="false" onAction="#editInfo" text="Edit" />
-                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="19.0" layoutY="187.0" minHeight="15.5999755859375" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="19.0" prefWidth="290.0000999999975" promptText="">
+                    <Button fx:id="editProfile" layoutX="279.0" layoutY="11.0" mnemonicParsing="false" onAction="#editInfo" text="Edit" />
+                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="19.0" layoutY="187.0" minHeight="15.5999755859375" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -34,9 +34,9 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button id="addIngre" fx:id="addRestriction" layoutX="282.0" layoutY="209.0" mnemonicParsing="false" onAction="#addRestrictionListListener" onMouseClicked="#addRestrictionListListener" text="Add" />
-                    <CheckBox fx:id="removeRestriction" layoutX="21.0" layoutY="209.0" mnemonicParsing="false" onAction="#removeRestrictions" text="Remove" />
-                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="19.0" layoutY="344.0" minHeight="15.5999755859375" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="290.0000999999975" promptText="">
+                    <Button id="addIngre" fx:id="addRestriction" layoutX="279.0" layoutY="211.0" mnemonicParsing="false" onAction="#addRestrictionListListener" onMouseClicked="#addRestrictionListListener" text="Add" />
+                    <CheckBox fx:id="removeRestriction" layoutX="19.0" layoutY="210.0" mnemonicParsing="false" onAction="#removeRestrictions" text="Remove" />
+                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="19.0" layoutY="341.0" minHeight="15.5999755859375" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -46,7 +46,7 @@
                       </items>
                     </ComboBox>
                     <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="19.0" layoutY="367.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
-                    <Button id="addIngre" fx:id="addAllergy" layoutX="279.0" layoutY="368.0" mnemonicParsing="false" onAction="#addAllergyListener" onMouseClicked="#addIngredientListener" text="Add" />
+                    <Button id="addIngre" fx:id="addAllergy" layoutX="281.0" layoutY="362.0" mnemonicParsing="false" onAction="#addAllergyListener" onMouseClicked="#addIngredientListener" text="Add" />
                     <Label fx:id="nameLabel" layoutX="67.0" layoutY="13.0" prefWidth="223.0000084472631" text="default" />
                     <Label id="" layoutX="19.0" layoutY="37.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="74.9998863769506" text="Location:" />
                     <Label fx:id="locationLabel" layoutX="85.0" layoutY="38.0" prefWidth="217.0000084472631" text="default" />
@@ -56,9 +56,9 @@
                     <TextField fx:id="locationField" layoutX="81.0" layoutY="34.0" prefWidth="200.0" visible="false" />
                   </children>
                 </Pane>
-                <Pane layoutX="454.0" layoutY="103.0" prefHeight="815.0" prefWidth="337.0" styleClass="section, longSection">
+                <Pane layoutX="455.0" layoutY="103.0" prefHeight="815.0" prefWidth="337.0" styleClass="section, longSection">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="15.0" layoutY="15.0" prefHeight="734.0" prefWidth="308.999977929685">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="67.0" prefHeight="734.0" prefWidth="308.999977929685">
                       <content>
                         <ListView fx:id="fridgeList" prefHeight="734.0" prefWidth="303.0">
                           <contextMenu>
@@ -71,8 +71,9 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
-                    <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="309.0" promptText="New Ingredient">
+                    <CheckBox fx:id="removeFridgeIngredient" layoutX="15.0" layoutY="42.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
+                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="282.0" layoutY="37.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="13.0" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="309.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -81,17 +82,16 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <CheckBox fx:id="removeFridgeIngredient" layoutX="14.0" layoutY="790.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Label layoutX="60.0" layoutY="84.0" styleClass="sectionHeader" text="Me" />
                 <Label layoutX="454.0" layoutY="83.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
-                <Pane layoutX="60.0" layoutY="535.0" prefHeight="383.0" prefWidth="338.0" styleClass="section">
+                <Pane layoutX="60.0" layoutY="539.0" prefHeight="379.0" prefWidth="338.0" styleClass="section">
                   <children>
-                    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="292.0" prefWidth="309.0">
+                    <ScrollPane hbarPolicy="NEVER" layoutX="15.0" layoutY="68.0" prefHeight="292.3125" prefWidth="309.0">
                       <content>
-                        <ListView fx:id="shoppingList" prefHeight="303.0" prefWidth="303.0">
+                        <ListView fx:id="shoppingList" prefHeight="298.9998779296875" prefWidth="303.9998779296875">
                           <contextMenu>
                             <ContextMenu>
                               <items>
@@ -102,7 +102,9 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="15.0" layoutY="326.0" onInputMethodTextChanged="#shoppingListComboListener" onKeyPressed="#shoppingListComboListener" onKeyReleased="#shoppingListComboListener" onKeyTyped="#shoppingListComboListener" prefWidth="309.0" promptText="New Ingredient" visible="true">
+                    <Button layoutX="283.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#addShoppingListListener" text="Add" />
+                    <CheckBox fx:id="removeShoppingIngredient" layoutX="16.0" layoutY="41.0" mnemonicParsing="false" onAction="#removeShoppingIngredient" text="Remove" />
+                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="12.0" layoutY="11.0" onInputMethodTextChanged="#shoppingListComboListener" onKeyPressed="#shoppingListComboListener" onKeyReleased="#shoppingListComboListener" onKeyTyped="#shoppingListComboListener" prefWidth="309.0" promptText="New Ingredient" visible="true">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -111,8 +113,6 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button layoutX="302.0" layoutY="354.0" mnemonicParsing="false" onMouseClicked="#addShoppingListListener" text="Add" />
-                    <CheckBox fx:id="removeShoppingIngredient" layoutX="15.0" layoutY="353.0" mnemonicParsing="false" onAction="#removeShoppingIngredient" text="Remove" />
                   </children>
                 </Pane>
                 <Pane layoutX="858.0" layoutY="102.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
@@ -133,7 +133,7 @@
                   </children>
                 </Pane>
                 <Label layoutX="858.0" layoutY="80.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
-                <Label layoutX="60.0" layoutY="505.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
+                <Label layoutX="59.0" layoutY="520.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
               </children>
             </AnchorPane>
           </content>
@@ -166,7 +166,7 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button fx:id="kitchenAddIngredientButton" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" prefHeight="18.625" prefWidth="73.9296875" text="Add Ingredient" />
+                    <Button fx:id="kitchenAddIngredientButton" layoutX="136.0" layoutY="339.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Add Ingredient" />
                     <ScrollPane hbarPolicy="NEVER" layoutX="15.0" layoutY="14.0" prefHeight="286.0" prefWidth="225.0">
                       <content>
                         <ListView fx:id="kitchenIngredientList" prefHeight="286.0" prefWidth="224.0" />
@@ -180,7 +180,7 @@
                     <Pane layoutX="14.0" layoutY="106.0" prefHeight="299.0" prefWidth="254.0" styleClass="text">
                       <children>
                         <Button id="addIngre" fx:id="eventMenuAddButton" layoutX="186.0" layoutY="265.0" mnemonicParsing="false" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
-                        <ToggleButton id="remove" fx:id="eventMenuRemoveButton" layoutX="10.0" layoutY="265.0" mnemonicParsing="false" prefHeight="19.77337646484375" prefWidth="62.0" styleClass="button" text="Remove" />
+                        <ToggleButton id="remove" fx:id="eventMenuRemoveButton" layoutX="10.0" layoutY="265.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
                         <ScrollPane hbarPolicy="NEVER" layoutX="11.0" layoutY="11.0" prefHeight="247.0" prefWidth="230.99997792968497" vbarPolicy="ALWAYS">
                           <content>
                             <ListView id="eventShoppingList" fx:id="eventMenuList" prefHeight="246.0" prefWidth="216.171875" />
@@ -192,7 +192,7 @@
                     <Pane layoutX="280.0" layoutY="106.0" prefHeight="299.0" prefWidth="254.0" styleClass="text">
                       <children>
                         <Button id="addIngre" fx:id="eventShoppingAddButton" layoutX="186.0" layoutY="265.0" mnemonicParsing="false" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
-                        <ToggleButton id="remove" fx:id="eventShoppingRemoveButton" layoutX="10.0" layoutY="265.0" mnemonicParsing="false" prefHeight="19.77337646484375" prefWidth="62.0" styleClass="button" text="Remove" />
+                        <ToggleButton id="remove" fx:id="eventShoppingRemoveButton" layoutX="10.0" layoutY="265.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
                       </children>
                     </Pane>
                     <Text layoutX="280.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shoppping List" />
@@ -261,29 +261,29 @@
               <children>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Accordion expandedPane="$null" layoutX="24.0" layoutY="69.0" />
-                <Pane layoutX="24.0" layoutY="106.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
+                <Pane layoutX="52.0" layoutY="107.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
                   <children>
-                    <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" minWidth="157.0" prefHeight="787.0" prefWidth="309.0" />
+                    <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="14.0" minWidth="157.0" prefHeight="787.0" prefWidth="309.0" />
                   </children>
                 </Pane>
-                <Label layoutX="26.0" layoutY="85.0" styleClass="sectionHeader" text="Ingredients" />
-                <Pane layoutX="427.0" layoutY="106.0" prefHeight="53.0" prefWidth="728.0" styleClass="section">
+                <Label layoutX="52.0" layoutY="87.0" styleClass="sectionHeader" text="Ingredients" />
+                <Pane layoutX="459.0" layoutY="107.0" prefHeight="53.0" prefWidth="728.0" styleClass="section">
                   <children>
-                    <Button fx:id="searchButton" layoutX="680.0" layoutY="19.0" mnemonicParsing="false" text="Search" />
+                    <Button fx:id="searchButton" layoutX="658.0" layoutY="14.0" mnemonicParsing="false" text="Search" />
                     <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="631.0" />
                   </children>
                 </Pane>
-                <Pane layoutX="430.0" layoutY="261.0" prefHeight="660.0" prefWidth="725.0" styleClass="section">
+                <Pane layoutX="459.0" layoutY="262.0" prefHeight="660.0" prefWidth="728.0" styleClass="section">
                   <children>
                     <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="632.0" prefWidth="697.0">
                       <content>
-                        <FlowPane prefHeight="631.0" prefWidth="696.0" />
+                        <FlowPane fx:id="resultsFlow" prefHeight="631.0" prefWidth="696.0" />
                       </content>
                     </ScrollPane>
                   </children>
                 </Pane>
-                <Label layoutX="427.0" layoutY="85.0" styleClass="sectionHeader" text="Search" />
-                <Label layoutX="430.0" layoutY="239.0" styleClass="sectionHeader" text="Results" />
+                <Label layoutX="459.0" layoutY="87.0" styleClass="sectionHeader" text="Search" />
+                <Label layoutX="462.0" layoutY="243.0" styleClass="sectionHeader" text="Results" />
               </children>
             </AnchorPane>
           </content>

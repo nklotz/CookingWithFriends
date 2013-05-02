@@ -7,6 +7,7 @@
 	-fx-background-radius: 5; 
 	-fx-border-radius: 5; 
 	-fx-padding: 12;
+ 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 5 , 5 );
 }
 
 
@@ -43,12 +44,12 @@
 }
 
 .button {
-	-fx-background-color: rgba(0,0,0,0.08), linear-gradient(#9a9a9a, #909090),linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%); 
-	-fx-background-insets: 0 0 -1 0,0,1; 
-	-fx-background-radius: 5,5,4; 
-	-fx-padding: 3 ; 
-	-fx-text-fill: #242d35; 
-	-fx-font-size: 8px;
+	-fx-padding: 4 10 10 10;
+    	-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    	-fx-background-radius: 8;
+    	-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%), #9d4024, #d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);
+   	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+   	-fx-font-size: 0.8em;
 }
 
 .recipe {
@@ -69,4 +70,14 @@
 	-fx-font-weight: bold; 
 	-fx-font-size: 1.1em;
 }
+
+.check-box .box {
+	-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    	-fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    	-fx-background-radius: 2, 2, 1, 1;
+    	-fx-padding: 0.25em; 
+    	-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%), #9d4024, #d86e3a, radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c); 
+    	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 ); 
+}
+
 		

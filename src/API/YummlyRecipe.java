@@ -110,7 +110,10 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public String getImageUrl() {
-		return smallImageUrls[0];
+		if (smallImageUrls != null) {
+			return smallImageUrls[0];
+		}
+		return "";
 	}
 
 
@@ -154,6 +157,12 @@ public class YummlyRecipe implements Recipe, Nameable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	public boolean hasImage() {
+		return (smallImageUrls != null);
 	}
 
 
