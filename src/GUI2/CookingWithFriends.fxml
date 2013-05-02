@@ -142,8 +142,8 @@
                     </FXCollections>
                   </items>
                 </ComboBox>
-                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Dietary Preferences" />
-                <Pane layoutX="35.0" layoutY="155.0" prefHeight="341.0" prefWidth="254.0" styleClass="section" />
+                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Communal Dietary Preferences" />
+                <Pane layoutX="35.0" layoutY="155.0" prefHeight="200.0" prefWidth="254.0" styleClass="section" />
                 <Pane layoutX="35.0" layoutY="546.0" prefHeight="375.0" prefWidth="254.0" styleClass="section">
                   <children>
                     <ComboBox fx:id="kitchenIngredientComboBox" editable="true" layoutX="14.0" layoutY="310.0" prefWidth="226.0" promptText="Add an ingredient of yours!">
@@ -159,7 +159,7 @@
                     <ListView fx:id="kitchenIngredientList" layoutX="16.0" layoutY="15.0" prefHeight="286.0" prefWidth="224.0" />
                   </children>
                 </Pane>
-                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="533.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
+                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="537.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
                 <Pane layoutX="634.0" layoutY="154.0" prefHeight="766.0" prefWidth="559.0" styleClass="section">
                   <children>
                     <Pane layoutX="14.0" layoutY="106.0" prefHeight="299.0" prefWidth="254.0" styleClass="text">
@@ -215,7 +215,10 @@
                     </ComboBox>
                   </children>
                 </Pane>
-                <ListView id="dietPreferencesList" fx:id="kitchenDietList" layoutX="50.0" layoutY="169.0" prefHeight="313.0" prefWidth="225.0" />
+                <ListView id="dietPreferencesList" fx:id="kitchenDietList" layoutX="50.0" layoutY="169.0" prefHeight="172.0" prefWidth="225.0" />
+                <Text fill="LIGHTGREY" layoutX="36.0" layoutY="380.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Comunal Allergies" />
+                <Pane layoutX="36.0" layoutY="384.0" prefHeight="133.0" prefWidth="254.0" styleClass="section" />
+                <ListView id="dietPreferencesList" layoutX="51.0" layoutY="405.0" prefHeight="98.0" prefWidth="225.0" />
               </children>
             </AnchorPane>
           </content>

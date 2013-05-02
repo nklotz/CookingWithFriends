@@ -35,6 +35,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import server.AutocorrectEngines;
 import API.Wrapper;
@@ -122,7 +124,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ListView<?> kitchenIngredientList;
     @FXML
-    private ComboBox<?> kitchenSelector;
+    private ComboBox<SelectKitchen> kitchenSelector;
 
     
     
@@ -161,6 +163,29 @@ public class Controller extends AnchorPane implements Initializable {
     				parent.remove();
     			}
     		});
+    	}
+    }
+    
+    private class SelectKitchen extends GridPane{
+    	KitchenName _kname;
+    	
+    	public SelectKitchen(KitchenName kname){
+    		_kname = kname;
+    		this.add(new Label(kname.getName()), 0, 0);
+    		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent e){
+					displayKitchen(_kname);
+				}
+    		});
+    	}
+    	
+    	public String getName(){
+    		return _kname.getName();
+    	}
+    	
+    	public String getID(){
+    		return _kname.getID();
     	}
     }
     
@@ -316,6 +341,7 @@ public class Controller extends AnchorPane implements Initializable {
     	populateAllergies();
     	populateRestrictions();
     	populateInfo();
+    	populateKitchenSelector();
     	
     	//Set up search page
     	setUpSearchTab();
@@ -710,11 +736,15 @@ public class Controller extends AnchorPane implements Initializable {
 	public void populateKitchenSelector(){
 		
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
-		for(Kitchen k : kitchens.values()){
-			
+		kitchenSelector.getItems().clear();
+		for(KitchenName k : kitchens.keySet()){
+			kitchenSelector.getItems().add(new SelectKitchen(k));
 		}
 	}
     
-	
+	public void displayKitchen(KitchenName k){
+		System.out.println("I WANT TO DISPLAY KITCHEN: " + k.getName() + "   -->  " + k.getID());
+		
+	}
 
 }
