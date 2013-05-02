@@ -50,6 +50,10 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private CheckBox removeShoppingIngredient, removeFridgeIngredient;
 
+    
+    @FXML
+    private CheckBox removeAllergy;
+
     @FXML
     private ComboBox<String> addShoppingIngredient;
 
@@ -69,7 +73,23 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ToggleButton removeFridge;
     
- 
+    @FXML
+    private Button addRestriction;
+    
+    @FXML
+    private Button addAllergy;
+    
+    @FXML
+    private CheckBox removeRestriction;
+    
+    @FXML
+    private ComboBox<String> addRestrictionBar;
+    
+    @FXML
+    private ComboBox<String> addAllergyBar;
+    
+    @FXML
+    private ListView<RestrictionBox> restrictionsList;
 
     private Client _client;
     private Account _account;
@@ -87,6 +107,7 @@ public class Controller extends AnchorPane implements Initializable {
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert removeFridgeIngredient!= null: "fx:id=\removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert removeShoppingIngredient!= null: "fx:id=\removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 
     }
     
@@ -134,6 +155,32 @@ public class Controller extends AnchorPane implements Initializable {
     		_account.removeShoppingIngredient(ing);
     		_client.storeAccount(_account);
     		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
+    
+    private class RestrictionBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+
+    	public RestrictionBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);;
+    	}
+    	
+    	public void remove(){
+    		System.out.println("removing restriction!!!!!!!!!!!!!");
+    		_account.removeRestriction(_toDisplay);
+    		_client.storeAccount(_account, 3, _toDisplay);
+    		ObservableList<RestrictionBox> listItems = restrictionsList.getItems();
     		listItems.remove(this);
     	}
     	
@@ -206,10 +253,13 @@ public class Controller extends AnchorPane implements Initializable {
     	_account = account;
     	_kitchens = kitchens;
     	_engines = engines;
-    	
+    	initializeRestrictionsBar();
     	populateUserFridge();
     	populateUserRecipes();
     	populateShoppingList();
+    	populateAllergies();
+    	populateRestrictions();
+    	
     	List<String> list = new ArrayList<String>();
     	addShoppingIngredient.getItems().addAll(list);
     	newIngredient.getItems().addAll(list);
@@ -220,6 +270,11 @@ public class Controller extends AnchorPane implements Initializable {
 
     }
     
+    public void initializeRestrictionsBar(){
+    	newIngredient.getItems().clear();
+    	addRestrictionBar.getItems().addAll("Vegan", "Lacto vegetarian", "Ovo vegetarian", 
+    			"Pescetarian", "Lacto-ovo vegetarian");
+    }
     public void addShoppingListListener(){
     	System.out.println("ADD INGREDIENT LISTENER");
     	//addFridgeIngredient
@@ -276,6 +331,33 @@ public class Controller extends AnchorPane implements Initializable {
     		addShoppingIngredient.getItems().addAll(suggs);
     	}
     }
+    
+    public void restrictionComboListener(){
+    	System.out.println("REST LISTENER IS CALLED");
+    	String text = addRestrictionBar.getEditor().getText();
+    	List<String> suggs = null;
+    	if(text.trim().length()!=0)
+    		suggs = _engines.getRestrictionSuggestions(text);
+    	if(suggs!=null){
+    		addRestrictionBar.getItems().clear();
+    		addRestrictionBar.getItems().addAll(suggs);
+    	}
+    }
+    
+    public void populateAllergies(){
+    	
+    }
+    
+    public void populateRestrictions(){
+    	ObservableList<RestrictionBox> listItems = FXCollections.observableArrayList(); 
+    	for(String r: _account.getDietaryRestrictions()){
+    		RestrictionBox box = new RestrictionBox(r);
+    		listItems.add(box);
+    	}
+    	
+    	restrictionsList.setItems(listItems);
+    }
+    
     
     public void populateUserRecipes(){
     	ObservableList<UserRecipeBox> listItems = FXCollections.observableArrayList(); 

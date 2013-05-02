@@ -226,6 +226,8 @@ public class Account implements Serializable {
 	public void removeShoppingIngredient(Ingredient ingred){
 		_shoppingList.remove(ingred);
 	}
+	
+	
 
 	@Override
 	public String toString() {

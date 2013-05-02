@@ -16,14 +16,36 @@
           <content>
             <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
               <children>
-                <Pane layoutX="60.0" layoutY="103.0" prefHeight="305.0" prefWidth="337.0" styleClass="section">
+                <Pane layoutX="60.0" layoutY="103.0" prefHeight="335.0" prefWidth="337.9998779296875" styleClass="section">
                   <children>
-                    <ListView fx:id="allergiesList" layoutX="19.0" layoutY="194.0" prefHeight="93.0" prefWidth="290.0" />
-                    <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="61.0" prefHeight="102.0" prefWidth="290.0" />
+                    <ListView fx:id="allergiesList" layoutX="19.0" layoutY="190.0" prefHeight="93.0" prefWidth="290.0" />
+                    <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="60.0" prefHeight="65.0" prefWidth="289.999977929685" />
                     <Label fx:id="nameLabel" layoutX="19.0" layoutY="14.0" text="Name" />
-                    <Label layoutX="19.0" layoutY="46.0" text="Dietary Restrictions" />
-                    <Label layoutX="19.0" layoutY="179.0" text="Allergies" />
+                    <Label layoutX="19.0" layoutY="45.0" text="Dietary Restrictions" />
+                    <Label layoutX="19.0" layoutY="175.0" text="Allergies" />
                     <Button fx:id="editProfile" layoutX="301.0" layoutY="16.0" mnemonicParsing="false" text="Edit" />
+                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="19.0" layoutY="125.0" minHeight="15.5999755859375" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="19.0" prefWidth="290.0000999999975" promptText="">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <Button id="addIngre" fx:id="addRestriction" layoutX="287.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <CheckBox fx:id="removeRestriction" layoutX="14.0" layoutY="151.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
+                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="true" layoutX="19.0" layoutY="283.0" minHeight="15.5999755859375" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="290.0000999999975" promptText="New Allergy">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="21.0" layoutY="305.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
+                    <Button id="addIngre" fx:id="addAllergy" layoutX="279.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
                   </children>
                 </Pane>
                 <Pane layoutX="454.0" layoutY="103.0" prefHeight="815.0" prefWidth="337.0" styleClass="section, longSection">
