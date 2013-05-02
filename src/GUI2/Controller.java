@@ -19,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -69,6 +70,11 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ListView<ShoppingIngredientBox> shoppingList;
 
+    @FXML
+    private Label nameLabel, locationLabel, emailLabel;
+    
+    @FXML
+    private TextField nameField, locationField;
     
     @FXML
     private ToggleButton removeFridge;
@@ -108,7 +114,11 @@ public class Controller extends AnchorPane implements Initializable {
         assert removeFridgeIngredient!= null: "fx:id=\removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert removeShoppingIngredient!= null: "fx:id=\removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert nameLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert locationLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert nameLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 
+        
     }
     
     private abstract class  GuiBox extends GridPane{
@@ -417,6 +427,21 @@ public class Controller extends AnchorPane implements Initializable {
 		for(GuiBox gb: listview.getItems()){
 			gb.getRemover().setVisible(false);
 		}
+	}
+	
+	public void populateInfo(){
+		nameLabel.setText(_account.getName());
+		locationLabel.setText(_account.getAddress());
+		emailLabel.setText(_account.getID());
+		nameLabel.setVisible(true);
+		locationLabel.setVisible(true);
+		emailLabel.setVisible(true);
+	}
+	
+	public void editInfo(){
+		nameLabel.setVisible(false);
+		nameField.setVisible(true);
+		
 	}
     
 
