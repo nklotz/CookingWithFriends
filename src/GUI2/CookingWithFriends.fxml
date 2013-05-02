@@ -51,7 +51,7 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <CheckBox layoutX="17.0" layoutY="790.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
+                    <CheckBox fx:id="removeFridgeIngredient" layoutX="14.0" layoutY="790.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
@@ -81,8 +81,8 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button layoutX="301.0" layoutY="420.0" mnemonicParsing="false" text="Add" />
-                    <ToggleButton fx:id="removeShoppingList" layoutX="15.0" layoutY="420.0" mnemonicParsing="false" styleClass="button" text="Remove" />
+                    <Button layoutX="301.0" layoutY="420.0" mnemonicParsing="false" onMouseClicked="#addShoppingListListener" text="Add" />
+                    <CheckBox fx:id="removeShoppingIngredient" layoutX="15.0" layoutY="420.0" mnemonicParsing="false" onAction="#removeShoppingIngredient" text="Remove" />
                   </children>
                 </Pane>
                 <Pane layoutX="858.0" layoutY="102.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">

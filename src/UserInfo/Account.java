@@ -140,7 +140,7 @@ public class Account implements Serializable {
 	 * Returns the list of recipes in this account.
 	 * @return HashSet<String> List of recipes.
 	 */
-	public Set<? extends Nameable> getRecipes(){
+	public Set<Recipe> getRecipes(){
 		return _recipes;
 	}
 	
@@ -216,8 +216,15 @@ public class Account implements Serializable {
 		_ingredients.add(ingred);
 	}
 	
+	public void addShoppingIngredient(Ingredient ingred){
+		_shoppingList.add(ingred);
+	}
 	public void removeIngredient(Ingredient ingred){
 		_ingredients.remove(ingred);
+	}
+	
+	public void removeShoppingIngredient(Ingredient ingred){
+		_shoppingList.remove(ingred);
 	}
 
 	@Override
