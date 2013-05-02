@@ -265,22 +265,29 @@ public class Controller extends AnchorPane implements Initializable {
     	newIngredient.getItems().addAll(list);
     	//addShoppingIngredient.
     //	initializeAutocorrect();
-    	
-    	
-
     }
     
     public void initializeRestrictionsBar(){
     	newIngredient.getItems().clear();
+    	addRestrictionBar.getItems().removeAll();
     	addRestrictionBar.getItems().addAll("Vegan", "Lacto vegetarian", "Ovo vegetarian", 
     			"Pescetarian", "Lacto-ovo vegetarian");
     }
+    
+    public void addRestrictionListListener(){
+    	System.out.println("ADDING LISTENER RESTR: " +  addRestrictionBar.getValue());
+    	String name = addRestrictionBar.getValue();
+    	_account.addRestriction(name);
+    	_client.storeAccount(_account);
+    	populateRestrictions();
+    }
     public void addShoppingListListener(){
-    	System.out.println("ADD INGREDIENT LISTENER");
+    	System.out.println("ADD SHOPPING INGREDIENT LISTENER: " + addShoppingIngredient.getValue());
     	//addFridgeIngredient
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getEditor().getText();
+    	
     	_account.addShoppingIngredient(new Ingredient(name));
     	_client.storeAccount(_account);
     	populateShoppingList();

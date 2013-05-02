@@ -34,7 +34,7 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button id="addIngre" fx:id="addRestriction" layoutX="287.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <Button id="addIngre" fx:id="addRestriction" layoutX="287.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#addRestrictionListListener" text="Add" />
                     <CheckBox fx:id="removeRestriction" layoutX="14.0" layoutY="151.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                     <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="true" layoutX="19.0" layoutY="283.0" minHeight="15.5999755859375" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="290.0000999999975" promptText="New Allergy">
                       <items>
@@ -46,7 +46,7 @@
                       </items>
                     </ComboBox>
                     <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="21.0" layoutY="305.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
-                    <Button id="addIngre" fx:id="addAllergy" layoutX="279.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <Button id="addIngre" fx:id="addAllergy" layoutX="279.0" layoutY="310.0" mnemonicParsing="false" text="Add" />
                   </children>
                 </Pane>
                 <Pane layoutX="454.0" layoutY="103.0" prefHeight="815.0" prefWidth="337.0" styleClass="section, longSection">
