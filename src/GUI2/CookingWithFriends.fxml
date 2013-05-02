@@ -150,7 +150,6 @@
                 <Pane layoutX="35.0" layoutY="155.0" prefHeight="341.0" prefWidth="254.0" styleClass="section" />
                 <Pane layoutX="35.0" layoutY="546.0" prefHeight="375.0" prefWidth="254.0" styleClass="section">
                   <children>
-                    <ListView fx:id="kitchenIngredientList" layoutX="14.0" layoutY="14.0" prefHeight="286.0" prefWidth="225.99997792968497" />
                     <ComboBox fx:id="kitchenIngredientComboBox" editable="true" layoutX="14.0" layoutY="310.0" prefWidth="226.0" promptText="Add an ingredient of yours!">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -161,6 +160,11 @@
                       </items>
                     </ComboBox>
                     <Button fx:id="kitchenAddIngredientButton" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" prefHeight="18.625" prefWidth="73.9296875" text="Add Ingredient" />
+                    <ScrollPane hbarPolicy="NEVER" layoutX="15.0" layoutY="14.0" prefHeight="286.0" prefWidth="225.0">
+                      <content>
+                        <ListView fx:id="kitchenIngredientList" prefHeight="286.0" prefWidth="224.0" />
+                      </content>
+                    </ScrollPane>
                   </children>
                 </Pane>
                 <Text fill="LIGHTGREY" layoutX="35.0" layoutY="533.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
@@ -168,9 +172,13 @@
                   <children>
                     <Pane layoutX="14.0" layoutY="106.0" prefHeight="299.0" prefWidth="254.0" styleClass="text">
                       <children>
-                        <ListView fx:id="eventMenuList" layoutX="10.0" layoutY="14.0" prefHeight="243.14849853515625" prefWidth="230.99997792968497" />
                         <Button id="addIngre" fx:id="eventMenuAddButton" layoutX="186.0" layoutY="265.0" mnemonicParsing="false" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
                         <ToggleButton id="remove" fx:id="eventMenuRemoveButton" layoutX="10.0" layoutY="265.0" mnemonicParsing="false" prefHeight="19.77337646484375" prefWidth="62.0" styleClass="button" text="Remove" />
+                        <ScrollPane hbarPolicy="NEVER" layoutX="11.0" layoutY="11.0" prefHeight="247.0" prefWidth="230.99997792968497" vbarPolicy="ALWAYS">
+                          <content>
+                            <ListView id="eventShoppingList" fx:id="eventMenuList" prefHeight="246.0" prefWidth="216.171875" />
+                          </content>
+                        </ScrollPane>
                       </children>
                     </Pane>
                     <Text layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Menu" />
@@ -183,13 +191,21 @@
                     <Text layoutX="280.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shoppping List" />
                     <Pane layoutX="14.0" layoutY="463.0" prefHeight="286.0" prefWidth="520.0" styleClass="text">
                       <children>
-                        <TextArea fx:id="eventCommentDisplayField" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="149.0048828125" prefWidth="492.0" promptText="No comments yet..." wrapText="true" />
                         <TextArea fx:id="eventCommentWriteField" editable="true" layoutX="14.0" layoutY="181.0" prefHeight="51.0" prefWidth="492.0" promptText="Write something here!" wrapText="true" />
                         <Button fx:id="eventCommentPostButton" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Post" />
+                        <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="145.0" prefWidth="492.171875">
+                          <content>
+                            <TextArea fx:id="eventCommentDisplayField" editable="false" prefHeight="145.0" prefWidth="483.9999000000025" promptText="No comments yet..." wrapText="true" />
+                          </content>
+                        </ScrollPane>
                       </children>
                     </Pane>
                     <Text layoutX="14.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Comments" />
-                    <ListView fx:id="eventShoppingList" layoutX="290.0" layoutY="116.0" prefHeight="247.14849853515625" prefWidth="230.99997792968497" />
+                    <ScrollPane hbarPolicy="NEVER" layoutX="289.0" layoutY="116.0" prefHeight="246.9998779296875" prefWidth="231.00007792968245" vbarPolicy="ALWAYS">
+                      <content>
+                        <ListView fx:id="eventShoppingList" prefHeight="245.9998779296875" prefWidth="216.0" />
+                      </content>
+                    </ScrollPane>
                   </children>
                 </Pane>
                 <Pane layoutX="319.0" layoutY="155.0" prefHeight="766.0" prefWidth="286.0" styleClass="section">
@@ -197,12 +213,19 @@
                     <TextField fx:id="kitchenAddChefField" layoutX="9.0" layoutY="669.0" prefHeight="35.0" prefWidth="269.000022070315" promptText="Enter chef's email!" />
                     <Text layoutX="9.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Invite a Chef:" />
                     <Button fx:id="kitchenChefInviteButton" layoutX="187.0" layoutY="718.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
+                    <AnchorPane id="Content" layoutX="21.0" layoutY="154.0" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                      <children>
+                        <ScrollPane hbarPolicy="NEVER" layoutX="-7.0" layoutY="-140.0" prefHeight="622.0" prefWidth="261.0">
+                          <content>
+                            <ListView fx:id="kitchenChefList" prefHeight="621.0" prefWidth="260.0" />
+                          </content>
+                        </ScrollPane>
+                      </children>
+                    </AnchorPane>
                   </children>
                 </Pane>
                 <Text fill="LIGHTGREY" layoutX="633.0" layoutY="141.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Events" />
                 <Text fill="LIGHTGREY" layoutX="318.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999999999711725" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Chefs" />
-                <ListView id="dietPreferencesList" fx:id="kitchenDietList" layoutX="47.0" layoutY="165.0" prefHeight="320.0" prefWidth="230.00009999999747" />
-                <ListView fx:id="kitchenChefList" layoutX="327.0" layoutY="165.0" prefHeight="622.0" prefWidth="269.0" />
                 <Pane layoutX="643.0" layoutY="165.0" prefHeight="61.0" prefWidth="261.0" styleClass="text">
                   <children>
                     <ComboBox id="" fx:id="eventSelector" editable="false" layoutX="8.0" layoutY="12.0" prefHeight="37.9999915527369" prefWidth="245.99997792968497" promptText="Select an Event">
@@ -216,6 +239,11 @@
                     </ComboBox>
                   </children>
                 </Pane>
+                <ScrollPane hbarPolicy="NEVER" layoutX="49.0" layoutY="168.0" prefHeight="314.0" prefWidth="225.99978637695312">
+                  <content>
+                    <ListView id="dietPreferencesList" fx:id="kitchenDietList" prefHeight="313.0" prefWidth="225.0" />
+                  </content>
+                </ScrollPane>
               </children>
             </AnchorPane>
           </content>
