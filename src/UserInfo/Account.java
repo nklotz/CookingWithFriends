@@ -25,7 +25,7 @@ public class Account implements Serializable {
 	private Preferences _preferences = new Preferences();
 	
 	//Specific to account.
-	private HashSet<? extends Nameable> _recipes = new HashSet<Recipe>();
+	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
 	private Set<Ingredient> _ingredients = new HashSet<Ingredient>();
 	private Set<Ingredient> _shoppingList = new HashSet<Ingredient>();
 	private HashMap<String, Invitation> _invitations = new HashMap<String, Invitation>() ;
@@ -227,6 +227,14 @@ public class Account implements Serializable {
 				+ ",  _recipes=" + _recipes
 				+ ", _ingredients=" + _ingredients + ", _shoppingList="
 				+ _shoppingList + "]";
+	}
+	
+	public void removeRecipe(Recipe recipe){
+		_recipes.remove(recipe);
+	}
+	
+	public void addRecipe(Recipe recipe){
+		_recipes.add(recipe);
 	}
 	
 

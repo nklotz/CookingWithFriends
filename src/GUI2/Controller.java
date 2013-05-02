@@ -20,6 +20,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import server.AutocorrectEngines;
@@ -28,6 +30,7 @@ import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
+import UserInfo.Recipe;
 import client.Client;
 
 
@@ -58,7 +61,7 @@ public class Controller extends AnchorPane implements Initializable {
     private ListView<UserRecipeBox> recipeList;
 
     @FXML
-    private ListView<? extends GuiBox> shoppingList;
+    private ListView<UserIngredientBox> shoppingList;
     
     @FXML
     private ToggleButton removeFridge;
@@ -130,24 +133,28 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-    private class UserRecipeBox extends GuiBox{
-    	protected String _toDisplay;
-    	protected RemoveButton _remove;
+    
+    private class UserRecipeBox extends Button{
+    	private RemoveButton _remove;
+    	private Recipe _recipe;
 
-    	public UserRecipeBox(String display){
-    		_toDisplay = display;
-    	    Label rec = new Label(display);
-    	    this.add(rec, 1, 0);
-    	    _remove = new RemoveButton(this);
-    	    _remove.setVisible(false);
-    	    this.add(_remove, 0, 0);
+    	public UserRecipeBox(Recipe recipe){
+    		_recipe = recipe;
+    		Image thumbnail = new Image(recipe.getImageUrl(), 20, 20, true, true, true); 
+			this.setGraphic(new ImageView(thumbnail));
+			this.setText(recipe.getName());
+			this.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent e){
+					System.out.println("I WOULD TOTALLY POP UP A RECIPE WINDOW");
+				}
+			});
     	}
     	
     	public void remove(){
-    		Ingredient ing = new Ingredient(_toDisplay);
-    		_account.removeIngredient(ing);
-    		_client.storeAccount(_account, ing);
-    		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
+    		_account.removeRecipe(_recipe);
+    		_client.storeAccount(_account);
+    		ObservableList<UserRecipeBox> listItems = recipeList.getItems();
     		listItems.remove(this);
     	}
     	
@@ -237,8 +244,8 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void populateUserRecipes(){
     	ObservableList<UserRecipeBox> listItems = FXCollections.observableArrayList(); 
-    	for(Nameable r: _account.getRecipes()){
-    		UserRecipeBox box = new UserRecipeBox(r.getName());
+    	for(Recipe r: _account.getRecipes()){
+    		UserRecipeBox box = new UserRecipeBox(r);
     		listItems.add(box);
     	}
     	recipeList.setItems(listItems);
@@ -265,14 +272,19 @@ public class Controller extends AnchorPane implements Initializable {
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	}
 	
-	public void removeIngredients(){
-		System.out.println("EHROWRJOEJIEOW JHEYYYYYYYYYYYYYYYYYYYY");
-		
+	public void removeIngredients(){		
 		for(UserIngredientBox s: fridgeList.getItems()){
 			RemoveButton rButton = s.getRemover();
 			rButton.setVisible(!rButton.isVisible());
 		}
 	}
+	/*
+	public void removeShoppingIngredient(){		
+		for(UserIngredientBox s: shoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
+	}*/
     
 
 }
