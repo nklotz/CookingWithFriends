@@ -20,6 +20,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import server.AutocorrectEngines;
@@ -28,11 +30,14 @@ import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
+import UserInfo.Recipe;
 import client.Client;
 
 
 public class Controller extends AnchorPane implements Initializable {
 
+	private Image xImage = new Image("http://4.bp.blogspot.com/-JgoPXVNn5-U/UU3x1hDVHcI/AAAAAAAAA-E/s2dwrJcapd0/s1600/redx-300x297.jpg", 10, 10, true, true, true);
+	
     @FXML
     private ResourceBundle resources;
 
@@ -43,7 +48,8 @@ public class Controller extends AnchorPane implements Initializable {
     private Button addFridgeIngredient;
     
     @FXML
-    private CheckBox removeIngredientButton;
+    private CheckBox removeShoppingIngredient, removeFridgeIngredient;
+
     
     @FXML
     private CheckBox removeAllergy;
@@ -62,6 +68,7 @@ public class Controller extends AnchorPane implements Initializable {
 
     @FXML
     private ListView<ShoppingIngredientBox> shoppingList;
+
     
     @FXML
     private ToggleButton removeFridge;
@@ -98,20 +105,27 @@ public class Controller extends AnchorPane implements Initializable {
         assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert removeFridgeIngredient!= null: "fx:id=\removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert removeShoppingIngredient!= null: "fx:id=\removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 
     }
     
-    private class  GuiBox extends GridPane{
+    private abstract class  GuiBox extends GridPane{
 
     	public void remove(){}
+    	
+    	public RemoveButton getRemover(){
+    		return null;
+    	}
+    	
     }
     
     
     private class RemoveButton extends Button{
     	
     	public RemoveButton(final GuiBox parent){
-    		this.setText("X");
+    		this.setGraphic(new ImageView(xImage));
     		
     		this.setOnAction(new EventHandler<ActionEvent>() {
     			@Override
@@ -124,23 +138,28 @@ public class Controller extends AnchorPane implements Initializable {
     
     private class ShoppingIngredientBox extends GuiBox{
     	protected String _toDisplay;
-
+    	protected RemoveButton _remove;
+    	
     	public ShoppingIngredientBox(String display){
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
-    	    RemoveButton remove = new RemoveButton(this);
-    	    remove.setVisible(false);
-    	    this.add(remove, 0, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);;
     	}
     	
     	public void remove(){
     		System.out.println("REMOVING ingredient!!!!!!!!!!!!!");
     		Ingredient ing = new Ingredient(_toDisplay);
     		_account.removeShoppingIngredient(ing);
-    		_client.storeAccount(_account, ing);
+    		_client.storeAccount(_account);
     		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
     		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
     	}
     }
     
@@ -197,24 +216,30 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-    private class UserRecipeBox extends GuiBox{
-    	protected String _toDisplay;
-    	protected RemoveButton _remove;
+    
+    private class UserRecipeBox extends Button{
+    	private RemoveButton _remove;
+    	private Recipe _recipe;
 
-    	public UserRecipeBox(String display){
-    		_toDisplay = display;
-    	    Label rec = new Label(display);
-    	    this.add(rec, 1, 0);
-    	    _remove = new RemoveButton(this);
-    	    _remove.setVisible(false);
-    	    this.add(_remove, 0, 0);
+    	public UserRecipeBox(Recipe recipe){
+    		_recipe = recipe;
+    		if(recipe.getImageUrl()!=null){
+	    		Image thumbnail = new Image(recipe.getImageUrl(), 20, 20, true, true, true); 
+				this.setGraphic(new ImageView(thumbnail));
+    		}
+			this.setText(recipe.getName());
+			this.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent e){
+					System.out.println("I WOULD TOTALLY POP UP A RECIPE WINDOW");
+				}
+			});
     	}
     	
     	public void remove(){
-    		Ingredient ing = new Ingredient(_toDisplay);
-    		_account.removeIngredient(ing);
-    		_client.storeAccount(_account, ing);
-    		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
+    		_account.removeRecipe(_recipe);
+    		_client.storeAccount(_account);
+    		ObservableList<UserRecipeBox> listItems = recipeList.getItems();
     		listItems.remove(this);
     	}
     	
@@ -259,6 +284,8 @@ public class Controller extends AnchorPane implements Initializable {
     public void addShoppingListListener(){
     	System.out.println("ADD SHOPPING INGREDIENT LISTENER: " + addShoppingIngredient.getValue());
     	//addFridgeIngredient
+    	disableRemoves(shoppingList);
+    	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getEditor().getText();
     	
     	_account.addShoppingIngredient(new Ingredient(name));
@@ -269,6 +296,10 @@ public class Controller extends AnchorPane implements Initializable {
     public void addIngredientListener(){
     	System.out.println("ADD INGREDIENT LISTENER");
     	//addFridgeIngredient
+    	disableRemoves(fridgeList);
+    	System.out.println("was removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
+    	removeFridgeIngredient.setSelected(false);
+    	System.out.println("now removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
     	String name = newIngredient.getEditor().getText();
     	_account.addIngredient(new Ingredient(name));
     	_client.storeAccount(_account);
@@ -337,8 +368,8 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void populateUserRecipes(){
     	ObservableList<UserRecipeBox> listItems = FXCollections.observableArrayList(); 
-    	for(Nameable r: _account.getRecipes()){
-    		UserRecipeBox box = new UserRecipeBox(r.getName());
+    	for(Recipe r: _account.getRecipes()){
+    		UserRecipeBox box = new UserRecipeBox(r);
     		listItems.add(box);
     	}
     	recipeList.setItems(listItems);
@@ -375,12 +406,23 @@ public class Controller extends AnchorPane implements Initializable {
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	}
 	
-	public void removeIngredients(){
-		System.out.println("EHROWRJOEJIEOW JHEYYYYYYYYYYYYYYYYYYYY");
-		
+	public void removeIngredients(){		
 		for(UserIngredientBox s: fridgeList.getItems()){
 			RemoveButton rButton = s.getRemover();
 			rButton.setVisible(!rButton.isVisible());
+		}
+	}
+	
+	public void removeShoppingIngredient(){		
+		for(ShoppingIngredientBox s: shoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
+	}
+	
+	public void disableRemoves(ListView<? extends GuiBox> listview){
+		for(GuiBox gb: listview.getItems()){
+			gb.getRemover().setVisible(false);
 		}
 	}
     
