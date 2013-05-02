@@ -216,8 +216,15 @@ public class Account implements Serializable {
 		_ingredients.add(ingred);
 	}
 	
+	public void addShoppingIngredient(Ingredient ingred){
+		_shoppingList.add(ingred);
+	}
 	public void removeIngredient(Ingredient ingred){
 		_ingredients.remove(ingred);
+	}
+	
+	public void removeShoppingIngredient(Ingredient ingred){
+		_shoppingList.remove(ingred);
 	}
 
 	@Override

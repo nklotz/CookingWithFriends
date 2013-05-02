@@ -81,7 +81,7 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button layoutX="301.0" layoutY="420.0" mnemonicParsing="false" text="Add" />
+                    <Button layoutX="301.0" layoutY="420.0" mnemonicParsing="false" onMouseClicked="#addShoppingListListener" text="Add" />
                     <ToggleButton fx:id="removeShoppingList" layoutX="15.0" layoutY="420.0" mnemonicParsing="false" styleClass="button" text="Remove" />
                   </children>
                 </Pane>

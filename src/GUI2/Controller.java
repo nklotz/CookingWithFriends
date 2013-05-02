@@ -54,7 +54,7 @@ public class Controller extends AnchorPane implements Initializable {
     private ListView<UserRecipeBox> recipeList;
 
     @FXML
-    private ListView<? extends GuiBox> shoppingList;
+    private ListView<ShoppingIngredientBox> shoppingList;
     
     @FXML
     private ToggleButton removeFridge;
@@ -96,6 +96,28 @@ public class Controller extends AnchorPane implements Initializable {
     				parent.remove();
     			}
     		});
+    	}
+    }
+    
+    private class ShoppingIngredientBox extends GuiBox{
+    	protected String _toDisplay;
+
+    	public ShoppingIngredientBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    RemoveButton remove = new RemoveButton(this);
+    	    remove.setVisible(false);
+    	    this.add(remove, 0, 0);
+    	}
+    	
+    	public void remove(){
+    		System.out.println("REMOVING ingredient!!!!!!!!!!!!!");
+    		Ingredient ing = new Ingredient(_toDisplay);
+    		_account.removeShoppingIngredient(ing);
+    		_client.storeAccount(_account, ing);
+    		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
+    		listItems.remove(this);
     	}
     }
     
@@ -150,6 +172,7 @@ public class Controller extends AnchorPane implements Initializable {
     	
     	populateUserFridge();
     	populateUserRecipes();
+    	populateShoppingList();
     	List<String> list = new ArrayList<String>();
     	addShoppingIngredient.getItems().addAll(list);
     	newIngredient.getItems().addAll(list);
@@ -158,6 +181,15 @@ public class Controller extends AnchorPane implements Initializable {
     	
     	
 
+    }
+    
+    public void addShoppingListListener(){
+    	System.out.println("ADD INGREDIENT LISTENER");
+    	//addFridgeIngredient
+    	String name = addShoppingIngredient.getEditor().getText();
+    	_account.addShoppingIngredient(new Ingredient(name));
+    	_client.storeAccount(_account);
+    	populateShoppingList();
     }
     
     public void addIngredientListener(){
@@ -202,25 +234,6 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-   /* public void initializeAutocorrect(){
-    	newIngredient.setEditable(true);
-    	newIngredient.getEditor().textProperty().addListener(new ChangeListener<String>() {
-            //box.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-            	String text = newIngredient.getEditor().getText();
-            	List<String> suggs = null;
-            	if(text.trim().length()!=0)
-            		suggs = _engines.getIngredientSuggestions(text);
-            	if(suggs!=null){
-            		System.out.println("HEREEE NOT NULL");
-            		newIngredient.getItems().clear();
-            		newIngredient.getItems().addAll(suggs);
-            	}
-            }
-        });
-    }*/
-    
     public void populateUserRecipes(){
     	ObservableList<UserRecipeBox> listItems = FXCollections.observableArrayList(); 
     	for(Nameable r: _account.getRecipes()){
@@ -238,6 +251,16 @@ public class Controller extends AnchorPane implements Initializable {
     		listItems.add(box);
     	}
     	fridgeList.setItems(listItems);
+    }
+    
+    public void populateShoppingList(){
+    	ObservableList<ShoppingIngredientBox> listItems = FXCollections.observableArrayList();  
+    	shoppingList.setItems(listItems);
+    	for(Ingredient i: _account.getShoppingList()){
+    		ShoppingIngredientBox box = new ShoppingIngredientBox(i.getName());
+    		listItems.add(box);
+    	}
+    	shoppingList.setItems(listItems);
     }
 
 	@Override
