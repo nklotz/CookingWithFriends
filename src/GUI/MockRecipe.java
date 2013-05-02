@@ -77,4 +77,9 @@ public class MockRecipe implements Recipe, Serializable {
 		return null;
 	}
 
+	@Override
+	public boolean hasImage() {
+		return false;
+	}
+
 }

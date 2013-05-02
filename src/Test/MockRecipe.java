@@ -73,4 +73,9 @@ public class MockRecipe implements Recipe {
 		return null;
 	}
 
+	@Override
+	public boolean hasImage() {
+		return (_imageURL != null);
+	}
+
 }
