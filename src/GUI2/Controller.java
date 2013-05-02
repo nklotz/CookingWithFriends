@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -21,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleButton;
@@ -40,6 +42,7 @@ import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
+
 
 
 public class Controller extends AnchorPane implements Initializable {
@@ -79,8 +82,46 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private FlowPane resultsFlow;
     @FXML
-    private Accordion ingredientsAccordion;
+    private Accordion ingredientsAccordion;   
+    @FXML
+    private TextArea eventCommentDisplayField;
+    @FXML
+    private Button eventCommentPostButton;
+    @FXML
+    private TextArea eventCommentWriteField;
+    @FXML
+    private Button eventMenuAddButton;
+    @FXML
+    private ListView<?> eventMenuList; //*********************************************************
+    @FXML
+    private ToggleButton eventMenuRemoveButton;
+    @FXML
+    private ComboBox<?> eventSelector;  //*********************************************************
+    @FXML
+    private Button eventShoppingAddButton;
+    @FXML
+    private ListView<?> eventShoppingList; //*********************************************************
+    @FXML
+    private ToggleButton eventShoppingRemoveButton;
+    @FXML
+    private TextField kitchenAddChefField;
+    @FXML
+    private Button kitchenAddIngredientButton;
+    @FXML
+    private Button kitchenChefInviteButton;
+    @FXML
+    private ListView<?> kitchenChefList;
+    @FXML
+    private ListView<?> kitchenDietList;
+    @FXML
+    private ComboBox<?> kitchenIngredientComboBox;
+    @FXML
+    private ListView<?> kitchenIngredientList;
+    @FXML
+    private ComboBox<?> kitchenSelector;
 
+    
+    
     //Local Data
     private Client _client;
     private Account _account;
@@ -96,7 +137,7 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     private abstract class  GuiBox extends GridPane{
-
+    	//*********************************************************
     	public void remove() {};
     	
     	public RemoveButton getRemover(){
@@ -192,7 +233,7 @@ public class Controller extends AnchorPane implements Initializable {
     		_client.storeAccount(_account, 3, _toDisplay);
     		ObservableList<RestrictionBox> listItems = restrictionsList.getItems();
     		listItems.remove(this);
-    	}
+    	}//*********************************************************
     	
     	public RemoveButton getRemover(){
     		return _remove;
@@ -203,7 +244,7 @@ public class Controller extends AnchorPane implements Initializable {
     	protected String _toDisplay;
     	protected RemoveButton _remove;
 
-    	public UserIngredientBox(String display){
+    	public UserIngredientBox(String display){//*********************************************************
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
@@ -376,20 +417,25 @@ public class Controller extends AnchorPane implements Initializable {
     public void addRestrictionListListener(){
     	System.out.println("ADDING LISTENER RESTR: " +  addRestrictionBar.getValue());
     	String name = addRestrictionBar.getValue();
-    	_account.addRestriction(name);
-    	_client.storeAccount(_account, 2, name);
-    	populateRestrictions();
+    	if(name!=null){
+	    	if(name.trim().length()!=0){
+	    		_account.addRestriction(name);
+	    		_client.storeAccount(_account, 2, name);
+	    		populateRestrictions();
+	    	}
+    	}
     }
     
     public void addAllergyListener(){
     	System.out.println("ADDING LISTENER ALLERGY: " +  addAllergyBar.getValue());
     	String name = addAllergyBar.getValue();
-    	if(name!=null){
-    		_account.addAllergy(name);
-        	_client.storeAccount(_account, 4, name);
-        	populateAllergies();
-    	}
-    	
+	    if(name!=null){
+    		if(name.trim().length()!=0){
+	    		_account.addAllergy(name);
+	        	_client.storeAccount(_account, 4, name);
+	        	populateAllergies();
+	    	}
+	    }
     }
     
     public void addShoppingListListener(){
@@ -416,17 +462,19 @@ public class Controller extends AnchorPane implements Initializable {
     	removeFridgeIngredient.setSelected(false);
     	System.out.println("now removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
     	String name = newIngredient.getEditor().getText();
-    	if(name.trim().length()!=0){
-    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
-    		_client.storeAccount(_account);
-    	}
+	    if(name!=null){
+    		if(name.trim().length()!=0){
+	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
+	    		_client.storeAccount(_account);
+	    	}
+	    }
     	populateUserFridge();
     	
     	
     }
     
     /**
-     * Listener for new ingredient box.
+     * Listener for new ingrenamedient box.
      */
     public void ingredientComboListener(){
     	String text = newIngredient.getEditor().getText();
@@ -520,21 +568,51 @@ public class Controller extends AnchorPane implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("I HAVE BEEN INITIALIZED");
-	    assert addFridgeIngredient != null : "fx:id=\"addFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert addShoppingIngredient != null : "fx:id=\"addShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert fridgeList != null : "fx:id=\"fridgeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert removeFridgeIngredient!= null: "fx:id=\removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert removeShoppingIngredient!= null: "fx:id=\removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert nameLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert locationLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert nameLabel != null: "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-        assert editProfile !=null: "fx:id=\"editProfile\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-	    System.out.println(locationLabel);   
-	    System.out.println(nameLabel);   
+		 assert addAllergy != null : "fx:id=\"addAllergy\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addAllergyBar != null : "fx:id=\"addAllergyBar\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addFridgeIngredient != null : "fx:id=\"addFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addRestriction != null : "fx:id=\"addRestriction\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addRestrictionBar != null : "fx:id=\"addRestrictionBar\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addShoppingIngredient != null : "fx:id=\"addShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert allergiesList != null : "fx:id=\"allergiesList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert editProfile != null : "fx:id=\"editProfile\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert emailLabel != null : "fx:id=\"emailLabel\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventCommentDisplayField != null : "fx:id=\"eventCommentDisplayField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventCommentPostButton != null : "fx:id=\"eventCommentPostButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventCommentWriteField != null : "fx:id=\"eventCommentWriteField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventMenuAddButton != null : "fx:id=\"eventMenuAddButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventMenuList != null : "fx:id=\"eventMenuList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventMenuRemoveButton != null : "fx:id=\"eventMenuRemoveButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventSelector != null : "fx:id=\"eventSelector\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventShoppingAddButton != null : "fx:id=\"eventShoppingAddButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventShoppingList != null : "fx:id=\"eventShoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert eventShoppingRemoveButton != null : "fx:id=\"eventShoppingRemoveButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert fridgeList != null : "fx:id=\"fridgeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert ingredientsAccordion != null : "fx:id=\"ingredientsAccordion\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenAddChefField != null : "fx:id=\"kitchenAddChefField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenAddIngredientButton != null : "fx:id=\"kitchenAddIngredientButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenChefInviteButton != null : "fx:id=\"kitchenChefInviteButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenChefList != null : "fx:id=\"kitchenChefList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenDietList != null : "fx:id=\"kitchenDietList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenIngredientComboBox != null : "fx:id=\"kitchenIngredientComboBox\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenIngredientList != null : "fx:id=\"kitchenIngredientList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenSelector != null : "fx:id=\"kitchenSelector\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert locationField != null : "fx:id=\"locationField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert locationLabel != null : "fx:id=\"locationLabel\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert nameField != null : "fx:id=\"nameField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert nameLabel != null : "fx:id=\"nameLabel\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert removeAllergy != null : "fx:id=\"removeAllergy\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert removeFridgeIngredient != null : "fx:id=\"removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert removeRestriction != null : "fx:id=\"removeRestriction\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert removeShoppingIngredient != null : "fx:id=\"removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert resultsFlow != null : "fx:id=\"resultsFlow\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert searchField != null : "fx:id=\"searchField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	
 	}
 	
 	public void removeIngredients(){		
@@ -607,6 +685,14 @@ public class Controller extends AnchorPane implements Initializable {
 			editProfile.setText("Edit");
 			
 			populateInfo();
+		}
+	}
+	
+	public void populateKitchenSelector(){
+		
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		for(Kitchen k : kitchens.values()){
+			
 		}
 	}
     

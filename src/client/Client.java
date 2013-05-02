@@ -309,5 +309,9 @@ public class Client extends Thread {
 			System.exit(1);
 		}
     }
+    
+    public HashMap<KitchenName, Kitchen> getKitchens(){
+    	return _kitchens;
+    }
 }
 
