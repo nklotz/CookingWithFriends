@@ -8,16 +8,17 @@ import UserInfo.Recipe;
 
 public class MockRecipe implements Recipe {
 	
-	private String _name;
+	private String _name, _imageURL;
 	List<Ingredient> _ingredients;
 
 	public MockRecipe(String name) {
 		_name = name;
 	}
 	
-	public MockRecipe(String name, List<Ingredient> ingredients) {
+	public MockRecipe(String name, List<Ingredient> ingredients, String image) {
 		_name = name;
 		_ingredients = ingredients;
+		_imageURL = image;
 	}
 
 	@Override
@@ -57,8 +58,7 @@ public class MockRecipe implements Recipe {
 
 	@Override
 	public String getImageUrl() {
-		// TODO Auto-generated method stub
-		return null;
+		return _imageURL;
 	}
 
 	@Override

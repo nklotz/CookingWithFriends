@@ -49,9 +49,9 @@ public class MockUser {
 		ing.add(ci);
 		ing.add(di);
 		ing.add(ei);
-		Recipe r = new MockRecipe("chicken picatta", ing);
-		Recipe r2 = new MockRecipe("raspberry pie", ing);
-		Recipe r3 = new MockRecipe("turkey", ing);
+		Recipe r = new MockRecipe("chicken picatta", ing, "http://4.bp.blogspot.com/-Q8gBxP-bIWE/UIUQxrlWtVI/AAAAAAAAHqI/XB_lHiygXt4/s1600/cats_animals_little_kittens_kitten_kitty_cat_adorable_desktop_1920x1080_hd-wallpaper-782249.jpeg");
+		Recipe r2 = new MockRecipe("raspberry pie", ing, "http://t2.gstatic.com/images?q=tbn:ANd9GcRMoBC1drAmlgW9nySQRDi1Uta-3sy0B50nKlE6G_SSL8OVNrgG");
+		Recipe r3 = new MockRecipe("turkey", ing, "http://www.wallpapersonview.com/wallpapers/1/animals_beautiful_sweet_funny_cute_cats_picture-50.jpg");
 		
 		HashSet<Recipe> recipes = new HashSet<Recipe>();
 		recipes.add(r);
