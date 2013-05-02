@@ -15,10 +15,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import server.AutocorrectEngines;
@@ -27,11 +30,14 @@ import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Nameable;
+import UserInfo.Recipe;
 import client.Client;
 
 
 public class Controller extends AnchorPane implements Initializable {
 
+	private Image xImage = new Image("http://4.bp.blogspot.com/-JgoPXVNn5-U/UU3x1hDVHcI/AAAAAAAAA-E/s2dwrJcapd0/s1600/redx-300x297.jpg", 10, 10, true, true, true);
+	
     @FXML
     private ResourceBundle resources;
 
@@ -40,6 +46,13 @@ public class Controller extends AnchorPane implements Initializable {
 
     @FXML
     private Button addFridgeIngredient;
+    
+    @FXML
+    private CheckBox removeShoppingIngredient, removeFridgeIngredient;
+
+    
+    @FXML
+    private CheckBox removeAllergy;
 
     @FXML
     private ComboBox<String> addShoppingIngredient;
@@ -54,12 +67,29 @@ public class Controller extends AnchorPane implements Initializable {
     private ListView<UserRecipeBox> recipeList;
 
     @FXML
-    private ListView<? extends GuiBox> shoppingList;
+    private ListView<ShoppingIngredientBox> shoppingList;
+
     
     @FXML
     private ToggleButton removeFridge;
     
- 
+    @FXML
+    private Button addRestriction;
+    
+    @FXML
+    private Button addAllergy;
+    
+    @FXML
+    private CheckBox removeRestriction;
+    
+    @FXML
+    private ComboBox<String> addRestrictionBar;
+    
+    @FXML
+    private ComboBox<String> addAllergyBar;
+    
+    @FXML
+    private ListView<RestrictionBox> restrictionsList;
 
     private Client _client;
     private Account _account;
@@ -75,20 +105,27 @@ public class Controller extends AnchorPane implements Initializable {
         assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-
+        assert removeFridgeIngredient!= null: "fx:id=\removeFridgeIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert removeShoppingIngredient!= null: "fx:id=\removeShoppingIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+        assert restrictionsList != null : "fx:id=\"restrictionsList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 
     }
     
-    private class  GuiBox extends GridPane{
+    private abstract class  GuiBox extends GridPane{
 
     	public void remove(){}
+    	
+    	public RemoveButton getRemover(){
+    		return null;
+    	}
+    	
     }
     
     
     private class RemoveButton extends Button{
     	
     	public RemoveButton(final GuiBox parent){
-    		this.setText("-");
+    		this.setGraphic(new ImageView(xImage));
     		
     		this.setOnAction(new EventHandler<ActionEvent>() {
     			@Override
@@ -99,16 +136,70 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    private class ShoppingIngredientBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	
+    	public ShoppingIngredientBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);;
+    	}
+    	
+    	public void remove(){
+    		System.out.println("REMOVING ingredient!!!!!!!!!!!!!");
+    		Ingredient ing = new Ingredient(_toDisplay);
+    		_account.removeShoppingIngredient(ing);
+    		_client.storeAccount(_account);
+    		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
+    
+    private class RestrictionBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+
+    	public RestrictionBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);;
+    	}
+    	
+    	public void remove(){
+    		System.out.println("removing restriction!!!!!!!!!!!!!");
+    		_account.removeRestriction(_toDisplay);
+    		_client.storeAccount(_account, 3, _toDisplay);
+    		ObservableList<RestrictionBox> listItems = restrictionsList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
+    
     private class UserIngredientBox extends GuiBox{
     	protected String _toDisplay;
+    	protected RemoveButton _remove;
 
     	public UserIngredientBox(String display){
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
-    	    RemoveButton remove = new RemoveButton(this);
-    	    remove.setVisible(false);
-    	    this.add(remove, 0, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);;
     	}
     	
     	public void remove(){
@@ -119,26 +210,41 @@ public class Controller extends AnchorPane implements Initializable {
     		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
     		listItems.remove(this);
     	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
     }
     
-    private class UserRecipeBox extends GuiBox{
-    	protected String _toDisplay;
+    
+    private class UserRecipeBox extends Button{
+    	private RemoveButton _remove;
+    	private Recipe _recipe;
 
-    	public UserRecipeBox(String display){
-    		_toDisplay = display;
-    	    Label rec = new Label(display);
-    	    this.add(rec, 1, 0);
-    	    RemoveButton remove = new RemoveButton(this);
-    	    remove.setVisible(false);
-    	    this.add(remove, 0, 0);
+    	public UserRecipeBox(Recipe recipe){
+    		_recipe = recipe;
+    		if(recipe.getImageUrl()!=null){
+	    		Image thumbnail = new Image(recipe.getImageUrl(), 20, 20, true, true, true); 
+				this.setGraphic(new ImageView(thumbnail));
+    		}
+			this.setText(recipe.getName());
+			this.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent e){
+					System.out.println("I WOULD TOTALLY POP UP A RECIPE WINDOW");
+				}
+			});
     	}
     	
     	public void remove(){
-    		Ingredient ing = new Ingredient(_toDisplay);
-    		_account.removeIngredient(ing);
-    		_client.storeAccount(_account, ing);
-    		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
+    		_account.removeRecipe(_recipe);
+    		_client.storeAccount(_account);
+    		ObservableList<UserRecipeBox> listItems = recipeList.getItems();
     		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
     	}
     }
     
@@ -147,64 +253,116 @@ public class Controller extends AnchorPane implements Initializable {
     	_account = account;
     	_kitchens = kitchens;
     	_engines = engines;
-    	
+    	initializeRestrictionsBar();
     	populateUserFridge();
     	populateUserRecipes();
+    	populateShoppingList();
+    	populateAllergies();
+    	populateRestrictions();
+    	
+    	List<String> list = new ArrayList<String>();
+    	addShoppingIngredient.getItems().addAll(list);
+    	newIngredient.getItems().addAll(list);
+    	//addShoppingIngredient.
     //	initializeAutocorrect();
     	
     	
 
     }
     
+    public void initializeRestrictionsBar(){
+    	newIngredient.getItems().clear();
+    	addRestrictionBar.getItems().addAll("Vegan", "Lacto vegetarian", "Ovo vegetarian", 
+    			"Pescetarian", "Lacto-ovo vegetarian");
+    }
+    public void addShoppingListListener(){
+    	System.out.println("ADD INGREDIENT LISTENER");
+    	//addFridgeIngredient
+    	disableRemoves(shoppingList);
+    	removeShoppingIngredient.setSelected(false);
+    	String name = addShoppingIngredient.getEditor().getText();
+    	_account.addShoppingIngredient(new Ingredient(name));
+    	_client.storeAccount(_account);
+    	populateShoppingList();
+    }
+    
+    public void addIngredientListener(){
+    	System.out.println("ADD INGREDIENT LISTENER");
+    	//addFridgeIngredient
+    	disableRemoves(fridgeList);
+    	System.out.println("was removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
+    	removeFridgeIngredient.setSelected(false);
+    	System.out.println("now removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
+    	String name = newIngredient.getEditor().getText();
+    	_account.addIngredient(new Ingredient(name));
+    	_client.storeAccount(_account);
+    	populateUserFridge();
+    	
+    	
+    }
+    
+    /**
+     * Listener for new ingredient box.
+     */
     public void ingredientComboListener(){
-    	System.out.println("IN COMBO LISTENER");
     	String text = newIngredient.getEditor().getText();
     	List<String> suggs = null;
+    	if(text.trim().length()==0){
+    		newIngredient.getItems().clear();
+    	}
     	if(text.trim().length()!=0)
     		suggs = _engines.getIngredientSuggestions(text);
     	if(suggs!=null){
-    		System.out.println("HEREEE NOT NULL");
     		newIngredient.getItems().clear();
     		newIngredient.getItems().addAll(suggs);
     	}
     }
     
+    /**
+     * Listener for adding ingredient to shopping list.
+     */
     public void shoppingListComboListener(){
-    	System.out.println("IN COMBO LISTENER");
     	String text = addShoppingIngredient.getEditor().getText();
     	List<String> suggs = null;
     	if(text.trim().length()!=0)
     		suggs = _engines.getIngredientSuggestions(text);
     	if(suggs!=null){
-    		System.out.println("HEREEE NOT NULL");
     		addShoppingIngredient.getItems().clear();
     		addShoppingIngredient.getItems().addAll(suggs);
     	}
     }
     
-   /* public void initializeAutocorrect(){
-    	newIngredient.setEditable(true);
-    	newIngredient.getEditor().textProperty().addListener(new ChangeListener<String>() {
-            //box.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-            	String text = newIngredient.getEditor().getText();
-            	List<String> suggs = null;
-            	if(text.trim().length()!=0)
-            		suggs = _engines.getIngredientSuggestions(text);
-            	if(suggs!=null){
-            		System.out.println("HEREEE NOT NULL");
-            		newIngredient.getItems().clear();
-            		newIngredient.getItems().addAll(suggs);
-            	}
-            }
-        });
-    }*/
+    public void restrictionComboListener(){
+    	System.out.println("REST LISTENER IS CALLED");
+    	String text = addRestrictionBar.getEditor().getText();
+    	List<String> suggs = null;
+    	if(text.trim().length()!=0)
+    		suggs = _engines.getRestrictionSuggestions(text);
+    	if(suggs!=null){
+    		addRestrictionBar.getItems().clear();
+    		addRestrictionBar.getItems().addAll(suggs);
+    	}
+    }
+    
+    public void populateAllergies(){
+    	
+    }
+    
+    public void populateRestrictions(){
+    	ObservableList<RestrictionBox> listItems = FXCollections.observableArrayList(); 
+    	for(String r: _account.getDietaryRestrictions()){
+    		RestrictionBox box = new RestrictionBox(r);
+    		listItems.add(box);
+    	}
+    	
+    	restrictionsList.setItems(listItems);
+    }
+    
     
     public void populateUserRecipes(){
     	ObservableList<UserRecipeBox> listItems = FXCollections.observableArrayList(); 
-    	for(Nameable r: _account.getRecipes()){
-    		UserRecipeBox box = new UserRecipeBox(r.getName());
+    	for(Recipe r: _account.getRecipes()){
+    		UserRecipeBox box = new UserRecipeBox(r);
     		listItems.add(box);
     	}
     	recipeList.setItems(listItems);
@@ -212,11 +370,22 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void populateUserFridge(){
     	ObservableList<UserIngredientBox> listItems = FXCollections.observableArrayList();  
+    	fridgeList.setItems(listItems);
     	for(Ingredient i: _account.getIngredients()){
     		UserIngredientBox box = new UserIngredientBox(i.getName());
     		listItems.add(box);
     	}
     	fridgeList.setItems(listItems);
+    }
+    
+    public void populateShoppingList(){
+    	ObservableList<ShoppingIngredientBox> listItems = FXCollections.observableArrayList();  
+    	shoppingList.setItems(listItems);
+    	for(Ingredient i: _account.getShoppingList()){
+    		ShoppingIngredientBox box = new ShoppingIngredientBox(i.getName());
+    		listItems.add(box);
+    	}
+    	shoppingList.setItems(listItems);
     }
 
 	@Override
@@ -228,6 +397,26 @@ public class Controller extends AnchorPane implements Initializable {
         assert newIngredient != null : "fx:id=\"newIngredient\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	}
+	
+	public void removeIngredients(){		
+		for(UserIngredientBox s: fridgeList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
+	}
+	
+	public void removeShoppingIngredient(){		
+		for(ShoppingIngredientBox s: shoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
+	}
+	
+	public void disableRemoves(ListView<? extends GuiBox> listview){
+		for(GuiBox gb: listview.getItems()){
+			gb.getRemover().setVisible(false);
+		}
 	}
     
 
