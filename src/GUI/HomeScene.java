@@ -252,6 +252,7 @@ public class HomeScene implements GUIScene {
         box.setEditable(true);
         List<String> list = new ArrayList<String>();
         box.getItems().addAll(list);
+        
 //        Button[] buttons = new Button[4];
 //        for(int i = 0; i < buttons.length; i++){
 //        	buttons[i] = new Button("hi");
@@ -269,6 +270,7 @@ public class HomeScene implements GUIScene {
             	if(text.trim().length()!=0)
             		suggs = _autocorrect.getIngredientSuggestions(text);
             	if(suggs!=null){
+            		System.out.println("HEREEE NOT NULL");
             		box.getItems().clear();
             		box.getItems().addAll(suggs);
             	}
