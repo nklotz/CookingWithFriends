@@ -150,33 +150,48 @@ public class Controller extends AnchorPane implements Initializable {
     	
     	populateUserFridge();
     	populateUserRecipes();
+    	List<String> list = new ArrayList<String>();
+    	addShoppingIngredient.getItems().addAll(list);
+    	newIngredient.getItems().addAll(list);
+    	//addShoppingIngredient.
     //	initializeAutocorrect();
     	
     	
 
     }
     
+    public void addIngredientListener(){
+    	//addFridgeIngredient
+    	String ing = newIngredient.getEditor().getText();
+    	
+    }
+    
+    /**
+     * Listener for new ingredient box.
+     */
     public void ingredientComboListener(){
-    	System.out.println("IN COMBO LISTENER");
     	String text = newIngredient.getEditor().getText();
     	List<String> suggs = null;
+    	if(text.trim().length()==0){
+    		newIngredient.getItems().clear();
+    	}
     	if(text.trim().length()!=0)
     		suggs = _engines.getIngredientSuggestions(text);
     	if(suggs!=null){
-    		System.out.println("HEREEE NOT NULL");
     		newIngredient.getItems().clear();
     		newIngredient.getItems().addAll(suggs);
     	}
     }
     
+    /**
+     * Listener for adding ingredient to shopping list.
+     */
     public void shoppingListComboListener(){
-    	System.out.println("IN COMBO LISTENER");
     	String text = addShoppingIngredient.getEditor().getText();
     	List<String> suggs = null;
     	if(text.trim().length()!=0)
     		suggs = _engines.getIngredientSuggestions(text);
     	if(suggs!=null){
-    		System.out.println("HEREEE NOT NULL");
     		addShoppingIngredient.getItems().clear();
     		addShoppingIngredient.getItems().addAll(suggs);
     	}
