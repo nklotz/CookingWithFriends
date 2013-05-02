@@ -21,7 +21,7 @@
                     <ListView fx:id="allergiesList" layoutX="19.0" layoutY="194.0" prefHeight="93.0" prefWidth="290.0" />
                     <ListView id="restrictionsLabel" fx:id="restrictionsList" layoutX="19.0" layoutY="61.0" prefHeight="102.0" prefWidth="290.0" />
                     <Label fx:id="nameLabel" layoutX="19.0" layoutY="14.0" text="Name" />
-                    <Label layoutX="19.0" layoutY="46.0" text="Dietary Restricitons" />
+                    <Label layoutX="19.0" layoutY="46.0" text="Dietary Restrictions" />
                     <Label layoutX="19.0" layoutY="179.0" text="Allergies" />
                     <Button fx:id="editProfile" layoutX="301.0" layoutY="16.0" mnemonicParsing="false" text="Edit" />
                   </children>
@@ -41,8 +41,8 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" mouseTransparent="false" text="Add" />
-                    <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" prefWidth="309.0" promptText="New Ingredient">
+                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" text="Add" />
+                    <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="309.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -72,7 +72,7 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="15.0" layoutY="391.0" prefWidth="309.0" promptText="New Ingredient" visible="true">
+                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="15.0" layoutY="391.0" onInputMethodTextChanged="#shoppingListComboListener" onKeyPressed="#shoppingListComboListener" onKeyReleased="#shoppingListComboListener" onKeyTyped="#shoppingListComboListener" prefWidth="309.0" promptText="New Ingredient" visible="true">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />

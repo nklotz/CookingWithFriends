@@ -154,6 +154,7 @@ public class Client extends Thread {
 			}
 			
     	} catch (Exception e) {
+    		//TODO: Write message to login screen and home screen if server goes down.
     		e.printStackTrace();
     	}
 
