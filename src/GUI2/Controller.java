@@ -16,6 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -32,10 +34,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
+import GUI.Style;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
@@ -267,7 +271,7 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-    private class UserRecipeBox extends Label{
+    private class UserRecipeBox extends Label {
     	private RemoveButton _remove;
     	private Recipe _recipe;
 
@@ -340,7 +344,7 @@ public class Controller extends AnchorPane implements Initializable {
 				try {
 					List<String> dummy = Collections.emptyList(); //TODO: POOL KITCHEN ALLERGIES
 					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummy, dummy, dummy);
-					System.out.println("Got results: " + results);
+					System.out.println("Got " + results.size() + " results.");
 					for (Recipe recipe : results) {
 						resultsFlow.getChildren().add(new RecipeBox(recipe));
 					}
@@ -351,16 +355,30 @@ public class Controller extends AnchorPane implements Initializable {
 		});
     }
     
-    private class RecipeBox extends GridPane {
+    private class RecipeBox extends VBox {
     	public RecipeBox(Recipe recipe) {
     		super();
     		System.out.println("Creating recipe box");
+    		this.getStyleClass().add("recipeBox");
+//    		this.setPrefSize(150, 80);
+//			this.setMaxSize(150, 80);
+			this.setAlignment(Pos.CENTER);
+			
+			this.setPrefWidth(150);
+			this.setMaxWidth(150);
+			
+			this.setPrefHeight(80);
+			this.setMaxHeight(80);
+    		Label recipeLabel = new Label(recipe.getName());
+    		recipeLabel.setWrapText(true);
+    		this.getChildren().add(recipeLabel);
     		if (recipe.hasImage()) {
     			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
-    			this.add(new ImageView(recipeThumbnail), 1, 1, 1, 1);
+    			ImageView imageV = new ImageView(recipeThumbnail);
+    			imageV.getStyleClass().add("recipeThumbnail");
+    			this.getChildren().add(imageV);
     		}
-    		this.add(new Label(recipe.getName()), 0, 0);
-			this.setPrefSize(200, 200);
+    		
 			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent event) {
@@ -371,7 +389,8 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     private void createPopup() {
-		// TODO Auto-generated method stub
+    	//TODO: CREATE A bEAUTIFUL RECIPE POPUP!!!!!
+    	//Perhaps do it in scenebuilder??/??
 		System.out.println("I WOULD BE POPPING UP AN INGREDIENT BOX");
 	}
     

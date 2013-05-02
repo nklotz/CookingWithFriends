@@ -162,7 +162,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public boolean hasImage() {
-		return (smallImageUrls != null);
+		return (smallImageUrls.length > 0);
 	}
 
 
