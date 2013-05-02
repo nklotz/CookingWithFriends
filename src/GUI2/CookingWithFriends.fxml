@@ -14,7 +14,7 @@
       <tabs>
         <Tab text="Home">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
+            <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
               <children>
                 <Pane layoutX="60.0" layoutY="103.0" prefHeight="305.0" prefWidth="337.0" styleClass="section">
                   <children>
@@ -41,7 +41,7 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" text="Add" />
+                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" mouseTransparent="false" text="Add" />
                     <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" prefWidth="309.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -51,7 +51,7 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <ToggleButton id="remove" fx:id="removeFridge" layoutX="14.0" layoutY="790.0" mnemonicParsing="false" styleClass="button" text="Remove" />
+                    <CheckBox layoutX="17.0" layoutY="790.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />

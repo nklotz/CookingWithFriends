@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -35,6 +36,9 @@ public class Controller extends AnchorPane implements Initializable {
 
     @FXML
     private Button addFridgeIngredient;
+    
+    @FXML
+    private CheckBox removeIngredientButton;
 
     @FXML
     private ComboBox<? extends GuiBox> addShoppingIngredient;
@@ -77,7 +81,7 @@ public class Controller extends AnchorPane implements Initializable {
     private class removeButton extends Button{
     	
     	public removeButton(final GuiBox parent){
-    		this.setText("-");
+    		this.setText("X");
     		
     		this.setOnAction(new EventHandler<ActionEvent>() {
     			@Override
@@ -90,14 +94,15 @@ public class Controller extends AnchorPane implements Initializable {
     
     private class UserIngredientBox extends GuiBox{
     	protected String _toDisplay;
+    	protected removeButton _remove;
 
     	public UserIngredientBox(String display){
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
-    	    removeButton remove = new removeButton(this);
-    	    remove.setVisible(false);
-    	    this.add(remove, 0, 0);
+    	    _remove = new removeButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
     	}
     	
     	public void remove(){
@@ -106,6 +111,10 @@ public class Controller extends AnchorPane implements Initializable {
     		_client.storeAccount(_account, ing);
     		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
     		listItems.remove(this);
+    	}
+    	
+    	public removeButton getRemover(){
+    		return _remove;
     	}
     }
     
@@ -140,6 +149,15 @@ public class Controller extends AnchorPane implements Initializable {
         assert recipeList != null : "fx:id=\"recipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 
+	}
+	
+	public void removeIngredients(){
+		System.out.println("EHROWRJOEJIEOW JHEYYYYYYYYYYYYYYYYYYYY");
+		
+		for(UserIngredientBox s: fridgeList.getItems()){
+			removeButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
 	}
     
 
