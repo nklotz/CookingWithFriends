@@ -41,7 +41,7 @@
                         </ListView>
                       </content>
                     </ScrollPane>
-                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" text="Add" />
+                    <Button id="addIngre" fx:id="addFridgeIngredient" layoutX="301.0" layoutY="790.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
                     <ComboBox fx:id="newIngredient" editable="true" layoutX="14.0" layoutY="762.0" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="309.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">

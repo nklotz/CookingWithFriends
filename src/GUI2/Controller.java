@@ -161,8 +161,13 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void addIngredientListener(){
+    	System.out.println("ADD INGREDIENT LISTENER");
     	//addFridgeIngredient
-    	String ing = newIngredient.getEditor().getText();
+    	String name = newIngredient.getEditor().getText();
+    	_account.addIngredient(new Ingredient(name));
+    	_client.storeAccount(_account);
+    	populateUserFridge();
+    	
     	
     }
     
@@ -227,6 +232,7 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void populateUserFridge(){
     	ObservableList<UserIngredientBox> listItems = FXCollections.observableArrayList();  
+    	fridgeList.setItems(listItems);
     	for(Ingredient i: _account.getIngredients()){
     		UserIngredientBox box = new UserIngredientBox(i.getName());
     		listItems.add(box);
