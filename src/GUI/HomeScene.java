@@ -647,7 +647,7 @@ public class HomeScene implements GUIScene {
 		@Override
 		public void handle(Event arg0) {
 			System.out.println(" requesting kitchen: " + _kitchenID);
-			_client.setCurrentKitchen(_kitchenID);
+			//_client.setCurrentKitchen(_kitchenID);
 			requestKitchen(_kitchenID);
 
 		}

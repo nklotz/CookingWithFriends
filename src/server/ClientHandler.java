@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 
 import API.Wrapper;
 import ClientServerRequests.AccountRequest;
+import ClientServerRequests.InvitationRequest;
 import ClientServerRequests.KitchenRequest;
 import ClientServerRequests.NewAccountRequest;
 import ClientServerRequests.NewKitchenRequest;
@@ -106,6 +107,9 @@ public class ClientHandler extends Thread {
 								break;
 							case 15: //invite to kitchen
 								invite(request);
+								break;
+							case 16: //DECLINE INVITATION
+								System.out.println("DECLINED INVITATION IMPLEMENT!!!");
 								break;
 							default:
 								updateKitchen(request);
@@ -204,6 +208,9 @@ public class ClientHandler extends Thread {
 	}
 	
 	private void invite(Request request) {
+		System.out.println("OOO an invite!");
+		_taskPool.execute(new InvitationRequest(this, _pool, _helper, request.getInvitation()));
+		
 		// TODO Auto-generated method stub
 		
 	}

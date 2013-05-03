@@ -123,6 +123,7 @@
                 </Pane>
                 <Label layoutX="858.0" layoutY="80.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
                 <Label layoutX="59.0" layoutY="520.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
+                <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="358.0" layoutY="21.0" prefHeight="49.0" prefWidth="861.0" />
               </children>
             </AnchorPane>
           </content>
@@ -179,8 +180,13 @@
                       <children>
                         <ListView fx:id="kitchenChefList" layoutX="-6.0" layoutY="-139.0" prefHeight="232.0" prefWidth="226.0" />
                         <Text layoutX="-6.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Invite a Chef:" />
-                        <TextField fx:id="kitchenAddChefField" layoutX="-10.0" layoutY="122.0" prefHeight="35.0" prefWidth="239.0" promptText="Enter chef's email!" />
-                        <Button fx:id="kitchenChefInviteButton" layoutX="129.0" layoutY="166.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
+                        <TextField fx:id="kitchenAddChefField" layoutX="-10.0" layoutY="119.0" prefHeight="35.0" prefWidth="239.0" promptText="Enter chef's email!" />
+                        <Button fx:id="kitchenChefInviteButton" layoutX="129.0" layoutY="173.0" mnemonicParsing="false" onAction="#checkAndSendEmail" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
+                        <Label fx:id="invalidEmailError" layoutX="-9.0" layoutY="157.0" text="Please provide a valid e-mail!" textFill="RED" visible="false">
+                          <font>
+                            <Font size="11.0" />
+                          </font>
+                        </Label>
                       </children>
                     </AnchorPane>
                   </children>
@@ -206,7 +212,7 @@
                 <ListView id="" fx:id="kitchenAllergyList" editable="false" layoutX="51.0" layoutY="399.0" prefHeight="105.0" prefWidth="225.0" />
                 <Pane layoutX="319.0" layoutY="155.0" prefHeight="766.0" prefWidth="284.0" styleClass="section">
                   <children>
-                    <ComboBox fx:id="kitchenIngredientComboBox" editable="true" layoutX="16.0" layoutY="691.0" prefWidth="250.655517578125" promptText="Add an ingredient of yours!">
+                    <ComboBox fx:id="kitchenIngredientComboBox" editable="false" layoutX="16.0" layoutY="691.0" onAction="#addIngredientToKichen" prefWidth="250.655517578125" promptText="Select Ingredient from Fridge">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />

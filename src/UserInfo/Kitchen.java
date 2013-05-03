@@ -103,6 +103,7 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void addIngredient(String user, Ingredient ing) {
+		System.out.println("adding " + ing.getName() + " from " + user);
 		if(!_ingToUsers.containsKey(ing)){
 			_ingToUsers.put(ing, new HashSet<String>());
 		}
@@ -215,7 +216,7 @@ public class Kitchen implements Serializable, Nameable{
 	@Override
 	public String toString() {
 		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
-				+ ", _recipes=" + _recipes + ", _id=" + _id + ", _restrictions=" + _dietRestricts + ", _allergies" + _allergies+"]";
+				+ ", _recipes=" + _recipes + ", _id=" + _id + ", _ingredients" + _ingToUsers.keySet() + ", _restrictions=" + _dietRestricts + ", _allergies" + _allergies+"]";
 	}
 	
 	public HashMap<Ingredient, HashSet<String>> getIngredientsMap(){

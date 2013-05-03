@@ -231,9 +231,18 @@ public class KitchenPool {
 		  		k.removeRecipe(request.getRecipe());
 		  		break;
 	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		  		break;	
+		  		k.addIngredient(request.getUsername(), request.getIngredient());
+	  			break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		  		break;	
+		  		k.removeIngredient(request.getUsername(), request.getIngredient());
+	  			break;
+	  		case 11:
+	  			System.out.println("requested to add user " +  request.getUsername());
+	  			k.addRequestedUser(request.getUsername());
+	  			break;
+	  		case 12:
+	  			k.removeRequestedUser(request.getUsername());
+	  			break;
   			default: 
   				return;
 		}
@@ -242,7 +251,7 @@ public class KitchenPool {
 		
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);
-		_clients.broadcastList(_kIDtoUsers.get(request.getKitchenName()), toReturn);
+		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
 		
 	}
 	

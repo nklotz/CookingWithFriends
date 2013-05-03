@@ -25,12 +25,13 @@ public class InvitationRequest implements Runnable {
 		toReturn.setInvitation(_invite);
 		
 		if(_clients.isActiveClient(_invite.getToID())){
-			//send invitation to active client
-			/* TODO: THIS!!!!!!!!!!!!!!!!!!*/
+			System.out.println("CLIENT IS ACTIVE OIJEWROIJEWR IJOW. i shat myself");
 		}
 		else{
-			Account acc = _helper.getAccount(_invite.getFromID());
+			System.out.println("invitinggggg");
+			Account acc = _helper.getAccount(_invite.getToID());
 			acc.addInvitation(_invite);
+			_helper.storeAccount(acc);
 		}
 		
 	}

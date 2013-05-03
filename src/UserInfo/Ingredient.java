@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 public class Ingredient implements Nameable, Serializable {
 
+	
 	private static final long serialVersionUID = 1L;
 	private String _name;
 	private String _unit;
@@ -57,25 +58,33 @@ public class Ingredient implements Nameable, Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
-	public int hashCode(){
-		return _name.hashCode();
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ingredient other = (Ingredient) obj;
+		if (_name == null) {
+			if (other._name != null)
+				return false;
+		} else if (!_name.equals(other._name))
+			return false;
+		return true;
 	}
 	
-	@Override
-	public boolean equals(Object obj){
-		if (obj == null) {
-	        return false;
-	    }
-	    if (getClass() != obj.getClass()) {
-	        return false;
-	    }
-		
-	    final Ingredient other = (Ingredient) obj;
-	  
-	    return (_name.equals(other.getName()));
-	}
+	
 
 	
 }

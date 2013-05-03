@@ -1,14 +1,21 @@
 package UserInfo;
 
-public class Invitation {
+import java.io.Serializable;
 
-	private String _fromID, _fromName, _toID, _kitchenID;
+public class Invitation implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String _fromID, _fromName, _toID;
+	private KitchenName _kitchenName;
 	
-	public Invitation(String fromID, String fromName, String toID, String kitchenID){
+	public Invitation(String fromID, String fromName, String toID, KitchenName kitchenName){
 		_fromID = fromID;
 		_fromName = fromName;
 		_toID = toID;
-		_kitchenID = kitchenID;
+		_kitchenName = kitchenName;
 	}
 	
 	public String getFromID(){
@@ -23,8 +30,12 @@ public class Invitation {
 		return _toID;
 	}
 	
-	public String getKitchenID(){
-		return _kitchenID;
+	public KitchenName getKitchenID(){
+		return _kitchenName;
+	}
+	
+	public String getMessage(){
+		return "Hello! " + _fromName + " (" + _fromID + " ) would like you to join kitchen \"" + _kitchenName.getName() + "\"!!!!"; 
 	}
 		
 }

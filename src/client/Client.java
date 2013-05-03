@@ -18,6 +18,7 @@ import GUI2.GUI2Frame;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Ingredient;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
@@ -198,17 +199,17 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void addKitchenUser(String id, String user){
+    public void addActiveKitchenUser(String id){
     	Request r = new Request(3);
     	r.setKitchenID(id);
-    	r.setKitchenUserID(user);
+    	r.setKitchenUserID(_id);
     	send(r);
     }
     
-    public void removeKitchenUser(String id, String user){
+    public void removeActiveKitchenUser(String id){
     	Request r = new Request(4);
     	r.setKitchenID(id);
-    	r.setKitchenUserID(user);
+    	r.setKitchenUserID(_id);
     	send(r);
     }
     
@@ -244,6 +245,7 @@ public class Client extends Thread {
     	Request r = new Request(9);
     	r.setKitchenID(id);
     	r.setIngredient(ing);
+    	r.setUsername(_id);
     	send(r);
     }
     
@@ -251,6 +253,22 @@ public class Client extends Thread {
     	Request r = new Request(10);
     	r.setKitchenID(id);
     	r.setIngredient(ing);
+    	r.setUsername(_id);
+    	send(r);
+    }
+    
+    public void addRequestedKitchenUser(String toId, String fromName, KitchenName kitchenName){
+    	Request r = new Request(15);
+    	Invitation invite = new Invitation(_id, fromName, toId, kitchenName); 	
+    	r.setInvitation(invite);
+    	send(r);
+    }
+    
+    public void removeRequestedKitchenUser(String id){
+    	System.out.println("WHAT AM I DOING???????!?!?!?!?!");
+    	Request r = new Request(16);
+    	r.setKitchenID(id);
+    	r.setKitchenUserID(_id);
     	send(r);
     }
     

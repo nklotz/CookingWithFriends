@@ -40,6 +40,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -48,6 +49,7 @@ import API.YummlyAPIWrapper;
 import GUI.Style;
 import UserInfo.Account;
 import UserInfo.Ingredient;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
@@ -120,16 +122,19 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Button kitchenChefInviteButton;
     @FXML
-    private ListView<?> kitchenChefList;
+    private ListView<Text> kitchenChefList;
     @FXML
     private ListView<String> kitchenDietList, kitchenAllergyList;
     @FXML
-    private ComboBox<?> kitchenIngredientComboBox;
+    private ComboBox<String> kitchenIngredientComboBox;
     @FXML
     private ListView<String> kitchenIngredientList;
     @FXML
     private ComboBox<String> kitchenSelector;
-
+    @FXML
+    private Label invalidEmailError;
+    @FXML 
+    private ListView<InvitationBox> invitationsList;
     
     
     //Local Data
@@ -275,6 +280,50 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    private class InvitationBox extends GridPane{
+    	protected Invitation _invite;
+
+    	public InvitationBox(Invitation invite){
+    		_invite = invite;
+
+    		
+    		Label message = new Label(_invite.getMessage());
+    		Button accept = new Button("Accept");
+    		accept.setOnAction(new EventHandler<ActionEvent>(){
+    			@Override
+    			public void handle(ActionEvent e){
+    				System.out.println("Accept invitatioN!!!");
+    				
+    				_account.getInvitions().remove(_invite.getKitchenID());
+    				_account.getKitchens().add(_invite.getKitchenID());
+    				_client.storeAccount(_account);
+    				_client.addActiveKitchenUser(_invite.getKitchenID().getID());
+    				invitationsList.getItems().remove(this);
+    				invitationsList.getItems().clear(); /*don't actually do this ********************************/
+    			}
+    		});
+    		
+    		Button decline = new Button("Decline");
+    		decline.setOnAction(new EventHandler<ActionEvent>(){
+    			@Override
+    			public void handle(ActionEvent e){
+    				System.out.println("REJECT invitatioN!!!");
+    				
+    				_account.getInvitions().remove(_invite.getKitchenID());
+    				_client.storeAccount(_account);
+    				_client.removeRequestedKitchenUser(_invite.getKitchenID().getID());
+    				invitationsList.getItems().remove(this);
+    				invitationsList.getItems().clear();
+    			}
+    		});
+    		
+    		this.add(message, 0, 0);
+    		this.add(accept, 1, 0);
+    		this.add(decline, 2, 0);
+    	}
+
+    }
+    
     private class UserIngredientBox extends GuiBox{
     	protected String _toDisplay;
     	protected RemoveButton _remove;
@@ -348,6 +397,7 @@ public class Controller extends AnchorPane implements Initializable {
     	populateRestrictions();
     	populateInfo();
     	populateKitchenSelector();
+    	populateInvitations();
     	
     	//Set up search page
     	setUpSearchTab();
@@ -665,7 +715,8 @@ public class Controller extends AnchorPane implements Initializable {
 	        assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert searchField != null : "fx:id=\"searchField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-	
+	        assert invalidEmailError != null : "fx:id=\"invalidEmailError\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        
 	}
 	
 	public void removeIngredients(){		
@@ -834,11 +885,83 @@ public class Controller extends AnchorPane implements Initializable {
 			kitchenIngredientList.getItems().add(toDisplay);
 		}
 		
+		kitchenIngredientComboBox.getItems().clear();
+		for(Ingredient ing: _account.getIngredients()){
+			kitchenIngredientComboBox.getItems().add(ing.getName());
+		}
+		
+		kitchenChefList.getItems().clear();
+		for(String user: k.getActiveUsers()){
+			kitchenChefList.getItems().add(new Text(user));
+		}
+		for(String user: k.getRequestedUsers()){
+			Text t = new Text(user + " (pending)");
+			t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
+			t.setFill(Color.GRAY);
+			kitchenChefList.getItems().add(t);
+		}
+		
+		
 	}
 
 	public void reDisplayKitchen() {
 		System.out.println("redisplaying " + _client.getCurrentKitchen().getName());
 		displayKitchen(_client.getCurrentKitchen());
+	}
+	
+	public void addIngredientToKichen(){
+		System.out.println("add my ingredient to kitcheN!" );
+
+		String ing = kitchenIngredientComboBox.getValue();
+		if(ing!=null){
+			if(!ing.equals("Select Ingredient from Fridge")){
+				System.out.println("trying to add " + ing);
+				_client.addIngredient(_client.getCurrentKitchen().getID(), new Ingredient(ing));
+			}
+		}
+		
+		
+	}
+	
+	public void checkAndSendEmail(){
+		if(kitchenAddChefField.getText() != null){
+			if(isValidEmail(kitchenAddChefField.getText())){
+				System.out.println("SENDING REQUEST TO " + kitchenAddChefField.getText());
+				_client.addRequestedKitchenUser(kitchenAddChefField.getText(), _account.getName(), _client.getCurrentKitchen());
+			}
+			else{
+				invalidEmailError.setVisible(true);
+			}
+		}
+	}
+	
+	public void clearError(){
+		invalidEmailError.setVisible(false);
+	}
+	
+	public boolean isValidEmail(String email){
+		if(email.trim().length()!=0){
+			String[] atSplit = email.split("\\@");
+			System.out.println(atSplit);
+			if(atSplit.length==2){
+				String[] dotSplit = atSplit[1].split("\\.");
+				if(dotSplit.length>1){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void populateInvitations(){
+		System.out.println("populate invitations");
+		invitationsList.getItems().clear();
+		HashMap<KitchenName, Invitation> invites = _account.getInvitions();
+		System.out.println("user has " + invites.size() + " invitations!!!");
+		for(KitchenName kn: _account.getInvitions().keySet()){
+			invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+		}
+		
 	}
 
 }

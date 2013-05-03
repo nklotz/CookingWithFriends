@@ -28,7 +28,7 @@ public class Account implements Serializable {
 	private HashSet<Recipe> _recipes = new HashSet<Recipe>();
 	private Set<Ingredient> _ingredients = new HashSet<Ingredient>();
 	private Set<Ingredient> _shoppingList = new HashSet<Ingredient>();
-	private HashMap<String, Invitation> _invitations = new HashMap<String, Invitation>() ;
+	private HashMap<KitchenName, Invitation> _invitations = new HashMap<KitchenName, Invitation>() ;
 	private Set<String> _dietRestrictions = new HashSet<String>();
 	private Set<String> _allergies = new HashSet<String>();
 	
@@ -200,7 +200,7 @@ public class Account implements Serializable {
 		_address = add;
 	}
 	
-	public HashMap<String, Invitation> getInvitions(){
+	public HashMap<KitchenName, Invitation> getInvitions(){
 		return _invitations;
 	}
 	

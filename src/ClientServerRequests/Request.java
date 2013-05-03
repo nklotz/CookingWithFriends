@@ -7,6 +7,7 @@ import UserInfo.Event;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenName;
 import UserInfo.Recipe;
 
 public class Request implements Serializable {
@@ -21,7 +22,7 @@ public class Request implements Serializable {
 	private Invitation _invite;
 	private Ingredient _ingredient;
 	private String _restrictAllergy;
-	
+	private KitchenName _kitchenNameObj;
 	
 	/*
 	 * 1 = verify account 
@@ -39,6 +40,7 @@ public class Request implements Serializable {
 	 * 13 = make account
 	 * 14 = make kitchen
 	 * 15 = invite User ToKitchen
+	 * 16 = declineInvitation
 	 */
 	
 	
@@ -85,6 +87,14 @@ public class Request implements Serializable {
 	
 	public String getKitchenName(){
 		return _kName;
+	}
+	
+	public void setKitchenNameObj(KitchenName kitchenName){
+		_kitchenNameObj = kitchenName;
+	}
+	
+	public KitchenName getKitchenNameObj(){
+		return _kitchenNameObj;
 	}
 	
 	public void setIngredient(Ingredient ing){
