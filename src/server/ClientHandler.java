@@ -82,7 +82,7 @@ public class ClientHandler extends Thread {
 				while(_running && _client.isConnected()) {
 					if((request = (Request) _objectIn.readObject()) != null){
 						type = request.getType();
-						
+						System.out.println("recieved request type: " + type);
 						switch (type){
 							case 1:  //verify account
 								checkPassword(request);
@@ -92,6 +92,7 @@ public class ClientHandler extends Thread {
 								break;
 							//case 3 -- 10 are update kitchens (handled by default
 							case 11: //store Account
+								System.out.println("client handler recieved store acount request!");
 								storeAccount(request);
 								break;
 							case 12: //close client
@@ -133,6 +134,8 @@ public class ClientHandler extends Thread {
 	 */
 	public synchronized void send(RequestReturn toReturn) {
 		if(toReturn != null){
+			System.out.println("sending request of type: " + toReturn.getType());
+			
 			try {
 				_objectOut.writeObject(toReturn);
 				_objectOut.flush();
@@ -219,6 +222,7 @@ public class ClientHandler extends Thread {
 	
 	public void setID(String id){
 		_clientID = id;
+		_pool.addID(id, this);
 	}
 	
 }
