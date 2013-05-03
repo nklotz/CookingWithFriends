@@ -33,6 +33,7 @@ public class GUI2Frame extends JFrame {
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
 	private Wrapper _api;
+	private Controller _controller;
 	
 	public GUI2Frame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
@@ -76,17 +77,37 @@ public class GUI2Frame extends JFrame {
 
 					Parent p = (Parent) fxmlLoader.load(location.openStream());
 					
-			        Controller controller = (Controller) fxmlLoader.getController();
+			        _controller = (Controller) fxmlLoader.getController();
 
 			        Scene scene = new Scene(p);
 			        
-			       controller.setUp(_client, _account, _kitchens, _engines);
+			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {
 					System.out.println("ewrjhoewrjewr");
 					e.printStackTrace();
 				}
     	
+    		}
+		});
+	}
+	
+	public void updateKitchen(){
+		System.out.println("CALLED UPDATE KITCHEN");
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.reDisplayKitchen();
+    		}
+		});
+	}
+	
+	public void updateSearch(){
+		System.out.println("CALLED UPDATE KITCHEN");
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.populateSearchIngredients();
     		}
 		});
 	}

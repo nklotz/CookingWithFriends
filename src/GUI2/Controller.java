@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -122,7 +123,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ComboBox<?> kitchenIngredientComboBox;
     @FXML
-    private ListView<?> kitchenIngredientList;
+    private ListView<String> kitchenIngredientList;
     @FXML
     private ComboBox<SelectKitchen> kitchenSelector;
 
@@ -422,7 +423,8 @@ public class Controller extends AnchorPane implements Initializable {
 		System.out.println("I WOULD BE POPPING UP AN INGREDIENT BOX");
 	}
     
-    private void populateSearchIngredients() {
+    protected void populateSearchIngredients() {
+    	
     	List<TitledPane> kitchenPanes = new ArrayList<>();
         TitledPane personalPane =  new TitledPane();
         personalPane.setText("My Fridge");
@@ -434,6 +436,7 @@ public class Controller extends AnchorPane implements Initializable {
         	kitchenPane.setContent(makeIngredientList(kitchen.getIngredients()));
         	kitchenPanes.add(kitchenPane);
         }
+        ingredientsAccordion.getPanes().clear();
         ingredientsAccordion.getPanes().addAll(kitchenPanes);		
 	}
 
@@ -516,7 +519,7 @@ public class Controller extends AnchorPane implements Initializable {
 	    	}
 	    }
     	populateUserFridge();
-    	
+        populateSearchIngredients();
     	
     }
     
@@ -747,7 +750,7 @@ public class Controller extends AnchorPane implements Initializable {
 	public void displayKitchen(KitchenName kn){
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
-		_client.setCurrentKitchen(kn.getID());
+		_client.setCurrentKitchen(kn);
 		
 		Kitchen k = _client.getKitchens().get(kn);
 		
@@ -762,6 +765,24 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 		
 		
+		kitchenIngredientList.getItems().clear();
+		HashMap<Ingredient, HashSet<String>> map = k.getIngredientsMap();
+		HashSet<String> toAddAll = new HashSet<String>();
+		for(Ingredient ing: map.keySet()){
+			String toDisplay = ing.getName() + " (";
+			for(String user: map.get(ing)){
+				toDisplay += " " + user;
+			}
+			toDisplay += ")";
+				
+			kitchenIngredientList.getItems().add(toDisplay);
+		}
+		
+	}
+
+	public void reDisplayKitchen() {
+		System.out.println("redisplaying " + _client.getCurrentKitchen().getName());
+		displayKitchen(_client.getCurrentKitchen());
 	}
 
 }

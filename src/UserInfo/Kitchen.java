@@ -217,10 +217,8 @@ public class Kitchen implements Serializable, Nameable{
 		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
 				+ ", _recipes=" + _recipes + ", _id=" + _id + ", _restrictions=" + _dietRestricts + ", _allergies" + _allergies+"]";
 	}
-
-	public void addActiveUserID(String kitchenUserID) {
-		// TODO Auto-generated method stub
-		
-	}
 	
+	public HashMap<Ingredient, HashSet<String>> getIngredientsMap(){
+		return _ingToUsers;
+	}
 }

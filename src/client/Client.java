@@ -37,7 +37,7 @@ public class Client extends Thread {
     private HashMap<KitchenName, Kitchen> _kitchens;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
-    private String _currentKitchen;
+    private KitchenName _currentKitchen;
     private String _id;
 	
     public Client(String hostname, int port) throws IOException {
@@ -147,9 +147,10 @@ public class Client extends Thread {
 							_kitchens.put(k.getKitchenName(), k);
 							if(_currentKitchen != null){
 								System.out.println("curr k: " + _currentKitchen);
-								System.out.println("is that the same as: " + k.getID());
-								if(_currentKitchen.equals(k.getID())){
+								System.out.println("is that the same as: " + k);
+								if(_currentKitchen.equals(k.getKitchenName())){
 									System.out.println("new kitchen is gui's current!!!");
+									_gui.updateKitchen();
 								}
 							}
 						}
@@ -294,11 +295,11 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void setCurrentKitchen(String kitchen){
+    public void setCurrentKitchen(KitchenName kitchen){
     	_currentKitchen = kitchen;
     }
     
-    public String getCurrentKitchen(){
+    public KitchenName getCurrentKitchen(){
     	return _currentKitchen;
     	
     }
