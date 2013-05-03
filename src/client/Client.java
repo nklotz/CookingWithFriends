@@ -35,6 +35,7 @@ public class Client extends Thread {
     private LoginWindow _login = null;
     private GUI2Frame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
+    private HashMap<String,KitchenName> _kitchenIdToName;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
     private String _currentKitchen;
@@ -123,6 +124,7 @@ public class Client extends Thread {
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
+							_kitchenIdToName = kitchenIdMap(_kitchens);
 							_id = response.getAccount().getID();
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
 
@@ -144,6 +146,7 @@ public class Client extends Thread {
 						if(type == 2){
 							Kitchen k = response.getKitchen();
 							_kitchens.put(k.getKitchenName(), k);
+							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
 						}
 					}
 				}
@@ -312,6 +315,18 @@ public class Client extends Thread {
     
     public HashMap<KitchenName, Kitchen> getKitchens(){
     	return _kitchens;
+    }
+    
+    public HashMap<String,KitchenName> getKitchenIdMap(){
+    	return _kitchenIdToName;
+    }
+    
+    private HashMap<String,KitchenName> kitchenIdMap(HashMap<KitchenName, Kitchen> kitchenMap){
+    	HashMap<String,KitchenName> map = new HashMap<>();
+    	for (KitchenName item : kitchenMap.keySet()){
+    		map.put(item.getID(), item);
+    	}
+    	return map; 
     }
 }
 

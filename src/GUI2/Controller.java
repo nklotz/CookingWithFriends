@@ -22,7 +22,9 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -38,6 +40,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
@@ -124,7 +127,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ListView<?> kitchenIngredientList;
     @FXML
-    private ComboBox<SelectKitchen> kitchenSelector;
+    private ComboBox<String> kitchenSelector;
 
     
     
@@ -736,10 +739,63 @@ public class Controller extends AnchorPane implements Initializable {
 	public void populateKitchenSelector(){
 		
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		final HashMap<String,KitchenName> kitchenIds = _client.getKitchenIdMap();
 		kitchenSelector.getItems().clear();
-		for(KitchenName k : kitchens.keySet()){
-			kitchenSelector.getItems().add(new SelectKitchen(k));
-		}
+		kitchenSelector.getItems().addAll(kitchenIds.keySet());
+		/*for(String k : kitchenIds.keySet()){
+			kitchenSelector.getItems().add(k);
+		}*/
+		kitchenSelector.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(final ListView<String> name) {
+				return new ListCell<String>() {
+					private final Label id;
+					{
+						setContentDisplay(ContentDisplay.TEXT_ONLY);
+						id = new Label("balls");
+				    }
+					
+					@Override
+					protected void updateItem(String name, boolean empty) {
+						super.updateItem(name, empty);
+						
+						if (name == null || empty) {
+							setText("why is this null");
+						} else {
+							//id.setText(kitchenIds.get(name).getName());
+							setText(kitchenIds.get(name).getName());
+						}
+					}
+				};
+			}
+		});
+		
+		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e){
+				String id = kitchenSelector.getValue();
+				kitchenSelector.setButtonCell(new ListCell<String>() {
+					private final Label id;
+					{
+						setContentDisplay(ContentDisplay.TEXT_ONLY);
+						id = new Label("balls");
+				    }
+					
+					@Override
+					protected void updateItem(String name, boolean empty) {
+						super.updateItem(name, empty);
+						
+						if (name == null || empty) {
+							setText("why is this null");
+						} else {
+							//id.setText(kitchenIds.get(name).getName());
+							setText(kitchenIds.get(name).getName());
+						}
+					}
+				});
+				displayKitchen(kitchenIds.get(id));
+			}
+		});
 	}
     
 	public void displayKitchen(KitchenName k){
