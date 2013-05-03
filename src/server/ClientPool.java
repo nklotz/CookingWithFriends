@@ -58,8 +58,12 @@ public class ClientPool {
 	 * Send a RequestReturn to a list clients in the pool.
 	 */
 	public synchronized void broadcastList(HashSet<String> clients, RequestReturn toReturn) {
+		System.out.println("BROAD CASTING");
 		for (String c : clients) {
-			_ids.get(c).send(toReturn);
+			System.out.println("client: " + c);
+			if(_ids.get(c)!=null){
+				_ids.get(c).send(toReturn);
+			}
 		}
 	}
 	

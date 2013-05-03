@@ -43,6 +43,7 @@ public class KitchenPool {
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.removeIngredient(userID, ing);
+			broadCastKitchen(k);
 		}
 	}
 	
@@ -50,6 +51,7 @@ public class KitchenPool {
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.removeDietaryRestriction(restric, userID);
+			broadCastKitchen(k);
 		}
 	}
 	
@@ -57,6 +59,7 @@ public class KitchenPool {
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.removeAllergy(allergy, userID);
+			broadCastKitchen(k);
 		}
 	}
 	
@@ -64,13 +67,17 @@ public class KitchenPool {
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.addDietaryRestriction(restric, userID);
+			broadCastKitchen(k);
 		}
 	}
 	
 	public void addUserAllergy(String userID, String allergy){
+		System.out.println("userID " + userID + " has allergy to " + allergy);
 		for(KitchenName kn: _userToKitchens.get(userID)){
-			Kitchen k = _idToKitchen.get(kn.getID());
-			k.addAllergy(allergy, userID);
+			System.out.println("addding to kitchen " + kn.getName());	
+			_idToKitchen.get(kn.getID()).addAllergy(allergy, userID);
+			System.out.println(_idToKitchen.get(kn.getID()));
+			broadCastKitchen(_idToKitchen.get(kn.getID()));
 		}
 	}
 	
@@ -91,8 +98,12 @@ public class KitchenPool {
 	public void addKitchen(Kitchen kitchen){
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
-		System.out.println("CONTAINS: " + _idToKitchen.containsKey(kitchen.getID()));
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
+		System.out.println("kid to users contains " + kitchen.getKitchenName() + ": " + _kIDtoUsers.get(kitchen.getKitchenName()));
+		
+		KitchenName n = new KitchenName(kitchen.getName(), kitchen.getID());
+		System.out.println("kid to users contains " + n + ": " + _kIDtoUsers.get(n));
+
 
 	}
 	
@@ -146,7 +157,7 @@ public class KitchenPool {
 				System.out.println("users: " + users);
 				if(!hasActiveUser(users, userID)){
 					System.out.println("it doesn't! remove!");				
-					removeKitchen(k.getID());
+					removeKitchen(k);
 				}
 			}
 			_userToKitchens.remove(userID);
@@ -156,11 +167,11 @@ public class KitchenPool {
 	/**
 	 * Stores kitchen in data base before removing kitchen pool references to it.
 	 */
-	public void removeKitchen(String kID){
-		System.out.println("KITCHEN ID: " + _idToKitchen.get(kID));
-		_helper.storeKitchen(_idToKitchen.get(kID));
-		_kIDtoUsers.remove(kID);
-		_idToKitchen.remove(kID);	
+	public void removeKitchen(KitchenName kName){
+		System.out.println("KITCHEN ID: " + _idToKitchen.get(kName.getID()));
+		_helper.storeKitchen(_idToKitchen.get(kName.getID()));
+		_kIDtoUsers.remove(kName);
+		_idToKitchen.remove(kName.getID());	
 	}
 	
 	/**
@@ -171,7 +182,7 @@ public class KitchenPool {
 		for(String u: kitchenUsers){
 			//if the user is not the one we're about to delete and it is in the hashmap,
 			//then the kitchen has an active user
-			if(! u.equals(userToDelete) && _userToKitchens.containsKey(u)){
+			if(!u.equals(userToDelete) && _userToKitchens.containsKey(u)){
 				return true;
 			}
 		}
@@ -222,15 +233,23 @@ public class KitchenPool {
 	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		  		break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		  		break;
-		  			
+		  		break;	
   			default: 
   				return;
 		}
 		
+		System.out.println("well i handeled that kitchen request");
+		
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);
-		_clients.broadcastList(_kIDtoUsers.get(request.getKitchenID()), toReturn);
+		_clients.broadcastList(_kIDtoUsers.get(request.getKitchenName()), toReturn);
 		
+	}
+	
+	
+	public void broadCastKitchen(Kitchen k){
+		RequestReturn toReturn = new RequestReturn(2);
+		toReturn.setKitchen(k);
+		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
 	}
 }

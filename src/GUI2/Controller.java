@@ -121,7 +121,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ListView<?> kitchenChefList;
     @FXML
-    private ListView<?> kitchenDietList;
+    private ListView<String> kitchenDietList, kitchenAllergyList;
     @FXML
     private ComboBox<?> kitchenIngredientComboBox;
     @FXML
@@ -169,18 +169,20 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
-    private class SelectKitchen extends GridPane{
+    private class SelectKitchen extends Label{
     	KitchenName _kname;
     	
     	public SelectKitchen(KitchenName kname){
     		_kname = kname;
-    		this.add(new Label(kname.getName()), 0, 0);
+    		this.setText(_kname.getName());
+    		this.setTextFill(Color.BLACK);
+    		//this.setFont(Font.font ("Verdana", 25));
     		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent e){
 					displayKitchen(_kname);
 				}
-    		});
+    		}); 
     	}
     	
     	public String getName(){
@@ -798,8 +800,23 @@ public class Controller extends AnchorPane implements Initializable {
 		});
 	}
     
-	public void displayKitchen(KitchenName k){
-		System.out.println("I WANT TO DISPLAY KITCHEN: " + k.getName() + "   -->  " + k.getID());
+	public void displayKitchen(KitchenName kn){
+		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
+		
+		_client.setCurrentKitchen(kn.getID());
+		
+		Kitchen k = _client.getKitchens().get(kn);
+		
+		kitchenDietList.getItems().clear();
+		for(String r: k.getDietaryRestrictions()){
+			kitchenDietList.getItems().add(r);
+		}
+		
+		kitchenAllergyList.getItems().clear();
+		for(String r: k.getAllergies()){
+			kitchenAllergyList.getItems().add(r);
+		}
+		
 		
 	}
 

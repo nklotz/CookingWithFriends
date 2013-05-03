@@ -215,7 +215,7 @@ public class Kitchen implements Serializable, Nameable{
 	@Override
 	public String toString() {
 		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
-				+ ", _recipes=" + _recipes + ", _id=" + _id + "]";
+				+ ", _recipes=" + _recipes + ", _id=" + _id + ", _restrictions=" + _dietRestricts + ", _allergies" + _allergies+"]";
 	}
 
 	public void addActiveUserID(String kitchenUserID) {

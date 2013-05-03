@@ -145,8 +145,16 @@ public class Client extends Thread {
 						int type = response.getType();
 						if(type == 2){
 							Kitchen k = response.getKitchen();
+							System.out.println("got new kitchen: " + k.getName());
 							_kitchens.put(k.getKitchenName(), k);
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
+							if(_currentKitchen != null){
+								System.out.println("curr k: " + _currentKitchen);
+								System.out.println("is that the same as: " + k.getID());
+								if(_currentKitchen.equals(k.getID())){
+									System.out.println("new kitchen is gui's current!!!");
+								}
+							}
 						}
 					}
 				}
@@ -254,6 +262,8 @@ public class Client extends Thread {
      * 5--removed allergy
      */
     public void storeAccount(Account account, int type, String restricAl){
+    	System.out.println("making account store of type: " + type);
+    	System.out.println("change item: " + restricAl);
     	Request r = new Request(11);
     	r.setAccount(account);
     	r.setChangeType(type);
