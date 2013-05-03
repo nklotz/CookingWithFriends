@@ -144,22 +144,7 @@
                 </ComboBox>
                 <Text fill="LIGHTGREY" layoutX="35.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Communal Dietary Preferences" />
                 <Pane layoutX="35.0" layoutY="155.0" prefHeight="200.0" prefWidth="254.0" styleClass="section" />
-                <Pane layoutX="35.0" layoutY="546.0" prefHeight="375.0" prefWidth="254.0" styleClass="section">
-                  <children>
-                    <ComboBox fx:id="kitchenIngredientComboBox" editable="true" layoutX="14.0" layoutY="310.0" prefWidth="226.0" promptText="Add an ingredient of yours!">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
-                    <Button fx:id="kitchenAddIngredientButton" layoutX="136.0" layoutY="339.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Add Ingredient" />
-                    <ListView fx:id="kitchenIngredientList" layoutX="16.0" layoutY="15.0" prefHeight="286.0" prefWidth="224.0" />
-                  </children>
-                </Pane>
-                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="537.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
+                <Text fill="LIGHTGREY" layoutX="319.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
                 <Pane layoutX="634.0" layoutY="154.0" prefHeight="766.0" prefWidth="559.0" styleClass="section">
                   <children>
                     <Pane layoutX="14.0" layoutY="106.0" prefHeight="299.0" prefWidth="254.0" styleClass="text">
@@ -188,20 +173,20 @@
                     <ListView fx:id="eventShoppingList" layoutX="290.0" layoutY="117.0" prefHeight="245.9998779296875" prefWidth="224.0" />
                   </children>
                 </Pane>
-                <Pane layoutX="319.0" layoutY="155.0" prefHeight="766.0" prefWidth="286.0" styleClass="section">
+                <Pane layoutX="36.0" layoutY="551.0" prefHeight="369.0" prefWidth="254.0" styleClass="section">
                   <children>
-                    <TextField fx:id="kitchenAddChefField" layoutX="9.0" layoutY="669.0" prefHeight="35.0" prefWidth="269.000022070315" promptText="Enter chef's email!" />
-                    <Text layoutX="9.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Invite a Chef:" />
-                    <Button fx:id="kitchenChefInviteButton" layoutX="187.0" layoutY="718.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
                     <AnchorPane id="Content" layoutX="21.0" layoutY="154.0" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                       <children>
-                        <ListView fx:id="kitchenChefList" layoutX="-6.0" layoutY="-139.0" prefHeight="621.0" prefWidth="260.0" />
+                        <ListView fx:id="kitchenChefList" layoutX="-6.0" layoutY="-139.0" prefHeight="232.0" prefWidth="226.0" />
+                        <Text layoutX="-6.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Invite a Chef:" />
+                        <TextField fx:id="kitchenAddChefField" layoutX="-10.0" layoutY="122.0" prefHeight="35.0" prefWidth="239.0" promptText="Enter chef's email!" />
+                        <Button fx:id="kitchenChefInviteButton" layoutX="129.0" layoutY="166.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
                       </children>
                     </AnchorPane>
                   </children>
                 </Pane>
-                <Text fill="LIGHTGREY" layoutX="633.0" layoutY="141.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Events" />
-                <Text fill="LIGHTGREY" layoutX="318.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999999999711725" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Chefs" />
+                <Text fill="LIGHTGREY" layoutX="633.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Events" />
+                <Text fill="LIGHTGREY" layoutX="36.0" layoutY="540.0" scaleX="0.9999972212342166" scaleY="0.9999999999711725" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Chefs" />
                 <Pane layoutX="643.0" layoutY="165.0" prefHeight="61.0" prefWidth="261.0" styleClass="text">
                   <children>
                     <ComboBox id="" fx:id="eventSelector" editable="false" layoutX="8.0" layoutY="12.0" prefHeight="37.9999915527369" prefWidth="245.99997792968497" promptText="Select an Event">
@@ -219,6 +204,21 @@
                 <Text fill="LIGHTGREY" layoutX="36.0" layoutY="380.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Comunal Allergies" />
                 <Pane layoutX="36.0" layoutY="385.0" prefHeight="133.0" prefWidth="254.0" styleClass="section" />
                 <ListView id="" fx:id="kitchenAllergyList" editable="false" layoutX="51.0" layoutY="399.0" prefHeight="105.0" prefWidth="225.0" />
+                <Pane layoutX="319.0" layoutY="155.0" prefHeight="766.0" prefWidth="284.0" styleClass="section">
+                  <children>
+                    <ComboBox fx:id="kitchenIngredientComboBox" editable="true" layoutX="16.0" layoutY="691.0" prefWidth="250.655517578125" promptText="Add an ingredient of yours!">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <Button fx:id="kitchenAddIngredientButton" layoutX="163.0" layoutY="720.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Add Ingredient" />
+                    <ListView fx:id="kitchenIngredientList" layoutX="16.0" layoutY="14.0" prefHeight="666.0" prefWidth="250.655517578125" />
+                  </children>
+                </Pane>
               </children>
             </AnchorPane>
           </content>
