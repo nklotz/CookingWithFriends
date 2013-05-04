@@ -92,7 +92,7 @@ public class ClientHandler extends Thread {
 							case 2:  //getKitchen
 								getKitchen(request);
 								break;
-							//case 3 -- 10 are update kitchens (handled by default
+							//case 3 -- 10, and 17 are update kitchens (handled by default
 							case 11: //store Account
 								System.out.println("client handler recieved store acount request!");
 								storeAccount(request);

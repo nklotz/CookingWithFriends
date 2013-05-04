@@ -1055,34 +1055,39 @@ public class Controller extends AnchorPane implements Initializable {
 		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
+				System.out.println("HANDLE!: " + kitchenSelector.getValue());
 				String id = kitchenSelector.getValue();
-				kitchenSelector.setButtonCell(new ListCell<String>() {
-					private final Label id;
-					{
-						setContentDisplay(ContentDisplay.TEXT_ONLY);
-						id = new Label("balls");
-				    }
-					
-					@Override
-					protected void updateItem(String name, boolean empty) {
-						super.updateItem(name, empty);
+				if(id!= null){
+					kitchenSelector.setButtonCell(new ListCell<String>() {
+						private final Label id;
+						{
+							setContentDisplay(ContentDisplay.TEXT_ONLY);
+							id = new Label("balls");
+					    }
 						
-						if (name == null || empty) {
-							setText("why is this null");
-						} else {
-							//id.setText(kitchenIds.get(name).getName());
-							setText(kitchenIds.get(name).getName());
+						@Override
+						protected void updateItem(String name, boolean empty) {
+							super.updateItem(name, empty);
+							
+							if (name == null || empty) {
+								setText("why is this null");
+							} else {
+								//id.setText(kitchenIds.get(name).getName());
+								setText(kitchenIds.get(name).getName());
+							}
 						}
-					}
-				});
-				displayKitchen(kitchenIds.get(id));
+					});
+					System.out.println("id: " + id);
+					System.out.println("kitchenName " + kitchenIds.get(id));
+					displayKitchen(kitchenIds.get(id));
+				}
 			}
 		});
 		
 	}
     
 	public void displayKitchen(KitchenName kn){
-		//System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
+		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
 		_client.setCurrentKitchen(kn);
 		

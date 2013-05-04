@@ -7,6 +7,7 @@ import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
+import UserInfo.Event;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -234,13 +235,15 @@ public class KitchenPool {
 	  			System.out.println("CASE 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
 	  			break;
-	  		case 11:
-	  			System.out.println("requested to add user " +  request.getUsername() + " to kitchen");
-	  			k.addRequestedUser(request.getUsername());
+	  		case 15:
+	  			System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this should be handled by invite");
+	  			//k.addRequestedUser(request.getUsername());
 	  			break;
-	  		case 12:
+	  		case 16:
 	  			k.removeRequestedUser(request.getUsername());
 	  			break;
+	  		case 17:
+	  			k.getEvent(new Event(request.getEventName(), null, k));
   			default: 
   				return;
 		}

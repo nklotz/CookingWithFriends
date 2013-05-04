@@ -194,7 +194,24 @@ public class Client extends Thread {
 	 * 12 = close client
 	 * 13 = make account
 	 * 14 = make kitchen
+	 * 15 = invite User ToKitchen
+	 * 16 = declineInvitation
+	 * 17 = add Ingredient to kitchen Event
 	 */
+
+    public void createNewKitchen(String kitchenName){
+    	Request r = new Request(14);
+    	r.setKitchenName(kitchenName);
+    	send(r);
+    }
+    
+    public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
+    	Request r = new Request(17);
+    	r.setEventName(eventName);
+    	r.setKitchenID(kId);
+    	r.setIngredient(ing);
+    	send(r);
+    }
     
     public void getKitchen(String id){
     	Request r = new Request(2);
@@ -329,6 +346,8 @@ public class Client extends Thread {
     	return _currentKitchen;
     	
     }
+    
+    
     
     /**
      * Method to shut down streams and socket.
