@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -33,7 +32,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 //import sun.security.provider.SecureRandom;
 //import org.apache.commons.codec.binary.Base6;
@@ -197,6 +195,7 @@ public class DBHelper implements DBHelperInterface{
 	
 	@Override
 	public boolean checkUsernamePassword(String username, String password) {
+		System.out.println("IN DB HELPER CHECK USERNAME PASS");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userPassCollection_.find(searchQuery);
@@ -260,7 +259,7 @@ public class DBHelper implements DBHelperInterface{
                 password.toCharArray(), salt, iterations, desiredKeyLen)
             );
             return Base64.encodeBase64String(key.getEncoded());
-    	} catch(NoSuchAlgorithmException | InvalidKeySpecException e){
+    	} catch(Exception e){
     		System.out.println("ERROR: Unable to hash password." + e.getMessage());
     		return null; //TODO: Make empty string later.
     	}
@@ -331,7 +330,10 @@ public class DBHelper implements DBHelperInterface{
             Object o  = ois.readObject();
             ois.close();
             return o;
-    	} catch(IOException | ClassNotFoundException e){
+    	} catch(IOException  e){
+    		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
+    		return null;
+    	} catch(ClassNotFoundException e){
     		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
     		return null;
     	}

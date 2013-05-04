@@ -37,6 +37,7 @@ public class GUI2Frame extends JFrame {
 	
 	public GUI2Frame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
+		System.out.println("CONSTRUCTING GUI2FRAME");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -84,7 +85,7 @@ public class GUI2Frame extends JFrame {
 			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {
-					System.out.println("ewrjhoewrjewr");
+					System.out.println("ERROR: IN GUI 2 Frame");
 					e.printStackTrace();
 				}
     	

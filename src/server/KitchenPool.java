@@ -41,6 +41,7 @@ public class KitchenPool {
 	
 	public void removeUserIngredient(String userID, Ingredient ing){
 		for(KitchenName kn: _userToKitchens.get(userID)){
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!K: " +  _idToKitchen.get(kn.getID()));
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.removeIngredient(userID, ing);
 			broadCastKitchen(k);

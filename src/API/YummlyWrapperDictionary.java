@@ -25,16 +25,23 @@ public class YummlyWrapperDictionary implements WrapperDictionary {
 	
 	public YummlyWrapperDictionary() {
 		_gson = new Gson();
-		_possibleIngredients = new ArrayList<>();
+		_possibleIngredients = new ArrayList<Ingredient>();
 		
 		//Read ingredient metadata
 		try {
 			for (String ingredientName : _gson.fromJson(new FileReader("ingredients"), String[].class)) {
 				_possibleIngredients.add(new Ingredient(ingredientName));
 			}
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+		} catch(JsonSyntaxException e){
+			System.out.println("ERROR: Couldn't read files of search values.");
+		} catch(JsonIOException e){
+			System.out.println("ERROR: Couldn't read files of search values.");
+		} catch(FileNotFoundException e){
 			System.out.println("ERROR: Couldn't read files of search values.");
 		}
+//		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+//			System.out.println("ERROR: Couldn't read files of search values.");
+//		}
 	}
 		
 	@Override
