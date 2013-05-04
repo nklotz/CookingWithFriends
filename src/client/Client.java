@@ -43,7 +43,7 @@ public class Client extends Thread {
     private String _id;
 	
     public Client(String hostname, int port) throws IOException {
-
+    	System.out.println("IN CLIENT CONSTRUCTOR");
         try {
             _kkSocket = new Socket(hostname, port);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
@@ -69,6 +69,7 @@ public class Client extends Thread {
      */
     public void send(Object o){
     	try{
+    		System.out.println("SENDING: " + o);
     		_out.writeObject(o);
         	_out.flush();
         	_out.reset();
@@ -109,7 +110,7 @@ public class Client extends Thread {
 				//Response will have 
 				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
-				System.out.println("received response");
+				System.out.println("received  password response");
 				if (response != null){
 					int type = response.getType();
 					System.out.println("got response");
@@ -127,6 +128,7 @@ public class Client extends Thread {
 							_kitchens = response.getKitchenMap();
 							_kitchenIdToName = kitchenIdMap(_kitchens);
 							_id = response.getAccount().getID();
+							System.out.println("SHOULD CREATE NEW GUI");
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
 
 						}
@@ -351,7 +353,7 @@ public class Client extends Thread {
     }
     
     private HashMap<String,KitchenName> kitchenIdMap(HashMap<KitchenName, Kitchen> kitchenMap){
-    	HashMap<String,KitchenName> map = new HashMap<>();
+    	HashMap<String,KitchenName> map = new HashMap<String,KitchenName>();
     	for (KitchenName item : kitchenMap.keySet()){
     		map.put(item.getID(), item);
     	}

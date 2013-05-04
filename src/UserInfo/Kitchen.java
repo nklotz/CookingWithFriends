@@ -111,8 +111,10 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeIngredient(String user, Ingredient ing){
-		if(!_ingToUsers.containsKey(ing)){
+		if(_ingToUsers.containsKey(ing)){
 			HashSet<String> hs = _ingToUsers.get(ing);
+			System.out.println("USER: " + user);
+			System.out.println("HASHTABLE: " + hs);
 			hs.remove(user);
 			if(hs.size()==0){
 				_ingToUsers.remove(ing);
