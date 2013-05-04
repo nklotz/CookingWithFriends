@@ -495,14 +495,26 @@ public class Controller extends AnchorPane implements Initializable {
 	    		populateRestrictions();
 	    	}
     	}
-    	addRestrictionBar.setValue("");
-    	addRestrictionBar.setEditable(false);
-    	//addRestrictionBar.getEditor().setText("");
-    	//addRestrictionBar.setEditable(true);
-    	//System.out.println("about to try to reset prompt");
-    	////addRestrictionBar.setPromptText("");
-    	//addRestrictionBar.setEditable(false);
 	    System.out.println("restrict val: " + addRestrictionBar.getValue());
+	    addRestrictionBar.setButtonCell(new ListCell<String>() {
+			private final Label id;
+			{
+				setContentDisplay(ContentDisplay.TEXT_ONLY);
+				id = new Label("balls");
+		    }
+			
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("why is this null");
+				} else {
+					//id.setText(kitchenIds.get(name).getName());
+					setText("Select a Restriction to add it");
+				}
+			}
+		});
 
     }
     
@@ -517,11 +529,25 @@ public class Controller extends AnchorPane implements Initializable {
 	        	populateAllergies();
 	    	}
 	    }
-	    //addRestrictionBar.setEditable(true);
-	    addAllergyBar.setEditable(true);
-    	addAllergyBar.setValue("");
-    	addAllergyBar.setEditable(false);
-    	//addRestrictionBar.setEditable(false);
+    	addAllergyBar.setButtonCell(new ListCell<String>() {
+			private final Label id;
+			{
+				setContentDisplay(ContentDisplay.TEXT_ONLY);
+				id = new Label("balls");
+		    }
+			
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("why is this null");
+				} else {
+					//id.setText(kitchenIds.get(name).getName());
+					setText("Select an Allergy to add it");
+				}
+			}
+		});
     }
     
     public void addShoppingListListener(){
