@@ -495,9 +495,14 @@ public class Controller extends AnchorPane implements Initializable {
 	    		populateRestrictions();
 	    	}
     	}
-    	addRestrictionBar.setEditable(true);
     	addRestrictionBar.setValue("");
     	addRestrictionBar.setEditable(false);
+    	//addRestrictionBar.getEditor().setText("");
+    	//addRestrictionBar.setEditable(true);
+    	//System.out.println("about to try to reset prompt");
+    	////addRestrictionBar.setPromptText("");
+    	//addRestrictionBar.setEditable(false);
+	    System.out.println("restrict val: " + addRestrictionBar.getValue());
 
     }
     
@@ -606,8 +611,11 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    //TODO: confirm this is not being used, delete it
     public void restrictionComboListener(){
     	String text = addRestrictionBar.getEditor().getText();
+    	System.out.println("hurr");
+    	addRestrictionBar.getEditor().setText("Select a Restriction to add it");
     	List<String> suggs = null;
     	if(text.trim().length()!=0)
     		suggs = _engines.getRestrictionSuggestions(text.toLowerCase());

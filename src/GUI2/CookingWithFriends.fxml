@@ -26,8 +26,8 @@
                     <Label id="" layoutX="19.0" layoutY="13.0" prefWidth="43.0000084472631" text="Name:" />
                     <Label layoutX="20.0" layoutY="81.0" text="Dietary Restrictions" />
                     <Label layoutX="19.0" layoutY="233.0" text="Allergies" />
-                    <Button fx:id="editProfile" layoutX="279.0" layoutY="11.0" mnemonicParsing="false" onAction="#editInfo" text="Edit" />
-                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="19.0" layoutY="187.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="">
+                    <Button fx:id="editProfile" layoutX="279.0" layoutY="11.0" mnemonicParsing="false" onAction="#editInfo" text="Edit" textFill="WHITE" />
+                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="19.0" layoutY="187.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="Select a Restriction to add it">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -37,7 +37,7 @@
                       </items>
                     </ComboBox>
                     <CheckBox fx:id="removeRestriction" layoutX="19.0" layoutY="210.0" mnemonicParsing="false" onAction="#removeRestrictions" text="Remove" />
-                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="19.0" layoutY="341.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="">
+                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="19.0" layoutY="341.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="19.0" prefWidth="302.9998558593725" promptText="Select an Allergy to add it">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -125,7 +125,7 @@
                 <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
                 <ImageView fx:id="envelope" fitHeight="39.999996185302734" fitWidth="57.99935805761338" layoutX="351.0" layoutY="26.0" onMouseClicked="#displayInvitations" pickOnBounds="true" preserveRatio="true" smooth="true">
                   <image>
-                    <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="true" />
+                    <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="false" />
                   </image>
                 </ImageView>
                 <Label fx:id="numberOfInvites" layoutX="375.0" layoutY="30.0" prefHeight="19.0" prefWidth="12.3333740234375" text="0">
