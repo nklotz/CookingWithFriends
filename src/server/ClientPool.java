@@ -62,6 +62,7 @@ public class ClientPool {
 		for (String c : clients) {
 			System.out.println("client: " + c);
 			if(_ids.get(c)!=null){
+				System.out.println("client handler " +_ids.get(c));
 				_ids.get(c).send(toReturn);
 			}
 		}

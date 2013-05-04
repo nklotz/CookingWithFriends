@@ -60,6 +60,7 @@ public class Kitchen implements Serializable, Nameable{
 	
 	
 	public void addActiveUser(Account user){
+		System.out.println("trying to add active user: " + user.getName() + " to myself (" + _id + ")");
 		removeRequestedUser(user.getID());
 		for(String r: user.getDietaryRestrictions()){
 			addDietaryRestriction(r, user.getID());
@@ -111,8 +112,10 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeIngredient(String user, Ingredient ing){
-		if(!_ingToUsers.containsKey(ing)){
+		System.out.println("removing " + ing.getName() + " by " + user);
+		if(_ingToUsers.containsKey(ing)){
 			HashSet<String> hs = _ingToUsers.get(ing);
+			System.out.println(hs);
 			hs.remove(user);
 			if(hs.size()==0){
 				_ingToUsers.remove(ing);

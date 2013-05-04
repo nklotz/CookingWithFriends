@@ -291,36 +291,38 @@ public class Controller extends AnchorPane implements Initializable {
 
     		
     		Label message = new Label(_invite.getMessage());
-    		Button accept = new Button("Accept");
-    		accept.setOnAction(new EventHandler<ActionEvent>(){
-    			@Override
-    			public void handle(ActionEvent e){
-    				System.out.println("Accept invitatioN!!!");
-    				
-    				_account.getInvitions().remove(_invite.getKitchenID());
-    				_account.getKitchens().add(_invite.getKitchenID());
-    				_client.storeAccount(_account);
-    				_client.addActiveKitchenUser(_invite.getKitchenID().getID());
-    				populateInvitations();
-    			}
-    		});
-    		
-    		Button decline = new Button("Decline");
-    		decline.setOnAction(new EventHandler<ActionEvent>(){
-    			@Override
-    			public void handle(ActionEvent e){
-    				System.out.println("REJECT invitatioN!!!");
-    				
-    				_account.getInvitions().remove(_invite.getKitchenID());
-    				_client.storeAccount(_account);
-    				_client.removeRequestedKitchenUser(_invite.getKitchenID().getID());
-    				populateInvitations();
-    			}
-    		});
-    		
-    		this.add(message, 0, 0);
-    		this.add(accept, 1, 0);
-    		this.add(decline, 2, 0);
+    		if(message != null){
+	    		Button accept = new Button("Accept");
+	    		accept.setOnAction(new EventHandler<ActionEvent>(){
+	    			@Override
+	    			public void handle(ActionEvent e){
+	    				System.out.println("Accept invitatioN!!!");
+	    				
+	    				_account.getInvitions().remove(_invite.getKitchenID());
+	    				_account.getKitchens().add(_invite.getKitchenID());
+	    				_client.storeAccount(_account);
+	    				_client.addActiveKitchenUser(_invite.getKitchenID().getID(), _account);
+	    				populateInvitations();
+	    			}
+	    		});
+	    		
+	    		Button decline = new Button("Decline");
+	    		decline.setOnAction(new EventHandler<ActionEvent>(){
+	    			@Override
+	    			public void handle(ActionEvent e){
+	    				System.out.println("REJECT invitatioN!!!");
+	    				
+	    				_account.getInvitions().remove(_invite.getKitchenID());
+	    				_client.storeAccount(_account);
+	    				_client.removeRequestedKitchenUser(_invite.getKitchenID().getID());
+	    				populateInvitations();
+	    			}
+	    		});
+	    		
+	    		this.add(message, 0, 0);
+	    		this.add(accept, 1, 0);
+	    		this.add(decline, 2, 0);
+    		}
     	}
 
     }
@@ -565,6 +567,7 @@ public class Controller extends AnchorPane implements Initializable {
         populateSearchIngredients();
     	newIngredient.setValue("");
     	newIngredient.getItems().clear();
+    	reDisplayKitchen();
     }
     
     /**
@@ -857,6 +860,7 @@ public class Controller extends AnchorPane implements Initializable {
 				displayKitchen(kitchenIds.get(id));
 			}
 		});
+		
 	}
     
 	public void displayKitchen(KitchenName kn){
@@ -910,8 +914,9 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 
 	public void reDisplayKitchen() {
-		System.out.println("redisplaying " + _client.getCurrentKitchen().getName());
-		displayKitchen(_client.getCurrentKitchen());
+		if(_client.getCurrentKitchen() != null){
+			displayKitchen(_client.getCurrentKitchen());
+		}
 	}
 	
 	public void addIngredientToKichen(){

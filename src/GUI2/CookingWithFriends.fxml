@@ -125,7 +125,7 @@
                 <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
                 <ImageView fx:id="envelope" fitHeight="39.999996185302734" fitWidth="57.99935805761338" layoutX="351.0" layoutY="26.0" onMouseClicked="#displayInvitations" pickOnBounds="true" preserveRatio="true" smooth="true">
                   <image>
-                    <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="true" />
+                    <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="false" />
                   </image>
                 </ImageView>
                 <Label fx:id="numberOfInvites" layoutX="375.0" layoutY="30.0" prefHeight="19.0" prefWidth="12.3333740234375" text="0">
@@ -232,6 +232,7 @@
                     </ComboBox>
                     <Button fx:id="kitchenAddIngredientButton" layoutX="163.0" layoutY="720.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Add Ingredient" />
                     <ListView fx:id="kitchenIngredientList" layoutX="16.0" layoutY="14.0" prefHeight="666.0" prefWidth="250.655517578125" />
+                    <CheckBox id="removeFridgeIngredient" fx:id="remove" layoutX="16.0" layoutY="720.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
               </children>
