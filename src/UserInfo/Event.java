@@ -5,6 +5,7 @@ package UserInfo;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author hacheson
@@ -19,13 +20,37 @@ public class Event implements Serializable {
 	private String _date;
 	private String _name;
 	private Kitchen _kitchen;
+	private Set<Recipe> _menu;
+	private Set<Ingredient> _shoppingIng;
 	
 	public Event(String name, String date, Kitchen kitchen){
 		_name = name;
 		_date = date;
 		_kitchen = kitchen;
+		_menu = new HashSet<Recipe>();
+		_shoppingIng = new HashSet<Ingredient>();
 	}
 	
+	public void addShoppingIngredient(Ingredient i){
+		_shoppingIng.add(i);
+	}
+	public void removeShoppingIngredient(Ingredient i){
+		_shoppingIng.remove(i);
+	}
+	public Set<Ingredient> getShoppingIngredients(){
+		return _shoppingIng;
+	}
+	public void addRecipe(Recipe r){
+		_menu.add(r);
+	}
+	
+	public void removeRecipe(Recipe r){
+		_menu.remove(r);
+	}
+	
+	public  Set<Recipe> getMenuRecipes(){
+		return _menu;
+	}
 	/**
 	 * Sets the name of the event.
 	 * @param name String name to set.

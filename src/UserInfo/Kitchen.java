@@ -41,7 +41,19 @@ public class Kitchen implements Serializable, Nameable{
 		_name = name;
 	}
 	
-	
+	/**
+	 * Gets the event if it equals the event given the event name.
+	 * @param eventName
+	 * @return
+	 */
+	public Event getEvent(Event event){
+		for(Event e: _events){
+			if(e.equals(event))
+				return e;
+		}
+		System.out.println("UNABLE TO GET EVENT IN KITCEHN");
+		return null;
+	}
 	public String getName(){
 		return _name;
 	}

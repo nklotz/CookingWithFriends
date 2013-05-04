@@ -45,6 +45,7 @@ import javafx.util.Callback;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
+import API.YummlyRecipe;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Ingredient;
@@ -103,7 +104,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Button eventMenuAddButton;
     @FXML
-    private ListView<?> eventMenuList; //*********************************************************
+    private ListView<EventMenuBox> eventMenuList; //*********************************************************
     @FXML
     private ToggleButton eventMenuRemoveButton;
     @FXML
@@ -111,7 +112,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Button eventShoppingAddButton;
     @FXML
-    private ListView<?> eventShoppingList; //*********************************************************
+    private ListView<EventShoppingListBox> eventShoppingList; //*********************************************************
     @FXML
     private ToggleButton eventShoppingRemoveButton;
     @FXML
@@ -147,6 +148,9 @@ public class Controller extends AnchorPane implements Initializable {
     
     @FXML
     private TextArea createDateField;
+    
+    @FXML
+    private ComboBox<String> eventShoppingComboBox;
     
     //Local Data
     private Client _client;
@@ -213,6 +217,56 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    private class EventMenuBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	
+    	public EventMenuBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
+    	    
+    	}
+    	
+    	public void remove(){
+//    		Recipe rec = new YummlyRecipe(_toDisplay);
+//    		_account.removeShoppingIngredient(ing);
+//    		_client.storeAccount(_account);
+//    		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
+//    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
+    
+    private class EventShoppingListBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	
+    	public EventShoppingListBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
+    	    
+    	}
+    	
+    	public void remove(){
+//    		Ingredient ing = new Ingredient(_toDisplay);
+//    		_account.removeShoppingIngredient(ing);
+//    		_client.storeAccount(_account);
+//    		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
+//    		listItems.remove(this);
+    	}
+    }
+    
     private class ShoppingIngredientBox extends GuiBox{
     	protected String _toDisplay;
     	protected RemoveButton _remove;
@@ -238,8 +292,6 @@ public class Controller extends AnchorPane implements Initializable {
     	public RemoveButton getRemover(){
     		return _remove;
     	}
-    	
-    	
     }
     
     private class AllergyBox extends GuiBox{
@@ -593,6 +645,16 @@ public class Controller extends AnchorPane implements Initializable {
     	
     }
     
+    public void addEventShoppingIngredientListener(){
+    	disableRemoves(eventShoppingList);
+    	eventShoppingRemoveButton.setSelected(false);
+    	String name = eventShoppingComboBox.getValue();
+    	if(name!=null){
+    		if(name.trim().length()!=0){
+    			
+    		}
+    	}
+    }
     
     public void addIngredientListener(){
     	System.out.println("ADD INGREDIENT LISTENER");
@@ -612,6 +674,25 @@ public class Controller extends AnchorPane implements Initializable {
         populateSearchIngredients();
     	newIngredient.setValue("");
     	newIngredient.getItems().clear();
+    }
+    
+    
+    public void eventShoppingComboListener(){
+    	String text = eventShoppingComboBox.getEditor().getText();
+    	if(eventShoppingComboBox.getValue()!=null){
+    		eventShoppingComboBox.getItems().clear();
+	    	List<String> suggs = null;
+	    	if(text.trim().length()!=0){
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+	    	}
+	    	if(suggs!=null){
+	    		eventShoppingComboBox.getItems().addAll(suggs);
+	    	}
+    	}
+    	else{
+    		//TODO: WHY DOES THIS WORK FOR SHOPPING BUT NOT INGREDIENTS
+    		//addIngredientListener();
+    	}
     }
     
     /**
@@ -699,6 +780,45 @@ public class Controller extends AnchorPane implements Initializable {
     	//CLEAR SOMEHOW?
     	for(Recipe r: _account.getRecipes()){
     		recipeFlow.getChildren().add(new RecipeBox(r));
+    	}
+    }
+    
+    
+    public void populateEventMenu(){
+    	ObservableList<EventMenuBox> listItems = FXCollections.observableArrayList();  
+    	eventMenuList.getItems().clear();
+    	String eventName = eventSelector.getValue();
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+ 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		Event e = k.getEvent(new Event(eventName, null, k));
+    		if(k!=null){
+    			for(Recipe r: e.getMenuRecipes()){
+    	    		EventMenuBox b = new EventMenuBox(r.getName());
+    	    		listItems.add(b);
+    	        	eventMenuList.setItems(listItems);
+    	    	}
+    		}
+    	}
+    }
+    
+    public void populateEventShoppingList(){
+    	ObservableList<EventShoppingListBox> listItems = FXCollections.observableArrayList();  
+    	eventShoppingList.getItems().clear();
+    	String eventName = eventSelector.getValue();
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+ 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		Event e = k.getEvent(new Event(eventName, null, k));
+    		if(k!=null){
+    			for(Ingredient i: e.getShoppingIngredients()){
+    				EventShoppingListBox b = new EventShoppingListBox(i.getName());
+    	    		listItems.add(b);
+    	    		eventShoppingList.setItems(listItems);
+    	    	}
+    		}
     	}
     }
     
@@ -846,6 +966,8 @@ public class Controller extends AnchorPane implements Initializable {
 	
 	public void loadEvent(){
 		System.out.println("HEREEE LOAD EVENT");
+		populateEventMenu();
+		populateEventShoppingList();
 	}
 	
 	public void populateEventSelector(){
