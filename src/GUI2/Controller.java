@@ -132,6 +132,10 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ComboBox<String> kitchenSelector;
     @FXML
+    private Button newKitchenButton;
+    @FXML
+    private Button leaveKitchenButton;
+    @FXML
     private Label invalidEmailError;
     @FXML 
     private ListView<InvitationBox> invitationsList;
@@ -139,6 +143,22 @@ public class Controller extends AnchorPane implements Initializable {
     private ImageView envelope;
     @FXML
     private Label numberOfInvites;
+    @FXML
+    private Button goToRecipeSearchButton;
+    @FXML
+    private ComboBox<String> addRecipeEventSelector;
+    @FXML
+    private Button addRecipeToEventButton;
+    @FXML
+    private ListView<String> kitchenRecipeList;
+    @FXML
+    private Button getRecipeChecksButton;
+    @FXML
+    private TextField newKitchenNameField;
+    @FXML
+    private Button newKitchenCreateButton;
+    @FXML
+    private Label newKitchenLabel;
     
     //Local Data
     private Client _client;
@@ -744,7 +764,16 @@ public class Controller extends AnchorPane implements Initializable {
 	        assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert invalidEmailError != null : "fx:id=\"invalidEmailError\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert envelope != null : "fx:id=\"envelope\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
-
+	        assert newKitchenButton != null : "fx:id=\"newKitchenButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert leaveKitchenButton != null : "fx:id=\"leaveKitchenButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert goToRecipeSearchButton != null : "fx:id=\"goToRecipeSearchButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addRecipeToEventButton != null : "fx:id=\"addRecipeToEvent\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert addRecipeEventSelector != null : "fx:id=\"addRecipeEventSelector\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert kitchenRecipeList != null : "fx:id=\"kitchenRecipeList\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert getRecipeChecksButton != null : "fx:id=\"getRecipeChecksButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newKitchenNameField != null : "fx:id=\"newKitchenNameField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newKitchenCreateButton != null : "fx:id=\"newKitchenCreateButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newKitchenLabel != null : "fx:id=\"newKitchenLabel\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	}
 	
 	public void removeIngredients(){		
