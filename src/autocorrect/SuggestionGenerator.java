@@ -30,7 +30,6 @@ public class SuggestionGenerator implements Generator, Serializable {
 	 */
 	public SuggestionGenerator(boolean isLED, boolean isPrefix, boolean isWhitespace, int maxEdits, WordStructure trie){
 		isLED_ = isLED;
-		System.out.println("IS LED: " + isLED);
 		isLED_ = false;
 		isPrefix_ = isPrefix;
 		isWhitespace_ = isWhitespace;
