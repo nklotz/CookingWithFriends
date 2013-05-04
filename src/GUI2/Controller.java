@@ -17,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
@@ -46,8 +45,8 @@ import javafx.util.Callback;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
-import GUI.Style;
 import UserInfo.Account;
+import UserInfo.Event;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -108,7 +107,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ToggleButton eventMenuRemoveButton;
     @FXML
-    private ComboBox<?> eventSelector;  //*********************************************************
+    private ComboBox<String> eventSelector;  //*********************************************************
     @FXML
     private Button eventShoppingAddButton;
     @FXML
@@ -139,6 +138,15 @@ public class Controller extends AnchorPane implements Initializable {
     private ImageView envelope;
     @FXML
     private Label numberOfInvites;
+    
+    @FXML
+    private TextArea createEventField;
+    
+    @FXML
+    private Button createEventButton;
+    
+    @FXML
+    private TextArea createDateField;
     
     //Local Data
     private Client _client;
@@ -215,7 +223,6 @@ public class Controller extends AnchorPane implements Initializable {
     	    this.add(ingred, 1, 0);
     	    _remove = new RemoveButton(this);
     	    _remove.setVisible(false);
-    	    //this.addEventHandler()
     	    this.add(_remove, 0, 0);
     	    
     	}
@@ -381,7 +388,24 @@ public class Controller extends AnchorPane implements Initializable {
     	//addShoppingIngredient.
     //	initializeAutocorrect();
     }
-    
+   
+    public void createEventListener(){
+    	String name = createEventField.getText();
+    	String date = createDateField.getText();
+    	if(name!=null && date!=null && name.trim().length()!= 0 && date.trim().length()!=0){
+    		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    		if(kitchens.get(_client.getCurrentKitchen())!=null){
+    			Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    			Event event = new Event(name, date, k);
+            	_client.addEvent(k.getID(), event);
+            	//populateEventSelector();
+            	
+    		}
+    		
+    	}
+    	
+    	System.out.println("TEXT: " + createEventField.getText());
+    }
     private void setUpSearchTab() {
     	_ingredientsBoxes = new ArrayList<CheckBox>();
     	populateSearchIngredients();
@@ -786,6 +810,22 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 	}
 	
+	public void loadEvent(){
+		System.out.println("HEREEE LOAD EVENT");
+	}
+	
+	public void populateEventSelector(){
+		System.out.println("POPUOLATE EVENTTT SELECTOR");
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+		//If kitchen doesn't equal null.
+		if(k!=null){
+			HashSet<String> names = k.getEventNames();
+			eventSelector.getItems().clear();
+			eventSelector.getItems().addAll(k.getEventNames());
+		}
+	}
+	
 	public void populateKitchenSelector(){
 		
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
@@ -894,6 +934,7 @@ public class Controller extends AnchorPane implements Initializable {
 			t.setFill(Color.GRAY);
 			kitchenChefList.getItems().add(t);
 		}
+		populateEventSelector();
 		
 		
 	}

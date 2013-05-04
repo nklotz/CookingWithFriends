@@ -176,6 +176,22 @@ public class Kitchen implements Serializable, Nameable{
 		return _id;
 	}
 	
+	public HashSet<Event> getEvents(){
+		return _events; 
+	}
+	
+	/**
+	 * Returns a list of names, used to populate the event selector in controller class.
+	 * @return
+	 */
+	public HashSet<String> getEventNames(){
+		HashSet<String> names = new HashSet<String>();
+		for(Event e: _events){
+			names.add(e.getName());
+		}
+		return names;
+	}
+	
 	/**
 	 * Adds an event to the kitchen.
 	 * @param e Event e to add to kitchen.

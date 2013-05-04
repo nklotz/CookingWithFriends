@@ -41,7 +41,6 @@ public class KitchenPool {
 	
 	public void removeUserIngredient(String userID, Ingredient ing){
 		for(KitchenName kn: _userToKitchens.get(userID)){
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!K: " +  _idToKitchen.get(kn.getID()));
 			Kitchen k = _idToKitchen.get(kn.getID());
 			k.removeIngredient(userID, ing);
 			broadCastKitchen(k);
@@ -73,9 +72,7 @@ public class KitchenPool {
 	}
 	
 	public void addUserAllergy(String userID, String allergy){
-		System.out.println("userID " + userID + " has allergy to " + allergy);
 		for(KitchenName kn: _userToKitchens.get(userID)){
-			System.out.println("addding to kitchen " + kn.getName());	
 			_idToKitchen.get(kn.getID()).addAllergy(allergy, userID);
 			System.out.println(_idToKitchen.get(kn.getID()));
 			broadCastKitchen(_idToKitchen.get(kn.getID()));
@@ -100,10 +97,8 @@ public class KitchenPool {
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
-		System.out.println("kid to users contains " + kitchen.getKitchenName() + ": " + _kIDtoUsers.get(kitchen.getKitchenName()));
 		
 		KitchenName n = new KitchenName(kitchen.getName(), kitchen.getID());
-		System.out.println("kid to users contains " + n + ": " + _kIDtoUsers.get(n));
 
 
 	}
@@ -126,15 +121,12 @@ public class KitchenPool {
 	 * Adds a user and opens up all non-opened kitchens
 	 */
 	public void addAccount(Account account){
-		System.out.println("oepning account " + account.getID());
 		String userName = account.getID();
 		HashSet<KitchenName> kitchenIDs = account.getKitchens();
-		System.out.println("HERE ARE THE account's kitchens " + kitchenIDs);
 		_userToKitchens.put(userName, kitchenIDs);
 		if (kitchenIDs != null){
 			for(KitchenName k: kitchenIDs){
 				if(!_idToKitchen.containsKey(k)){
-					System.out.println("find kitchen: " + k.getName());
 					Kitchen kit = _helper.getKitchen(k.getID());
 					addKitchen(kit);
 				}
@@ -147,17 +139,12 @@ public class KitchenPool {
 	 * that kitchen is removed from memory.
 	 */
 	public void removeUser(String userID){
-		System.out.println("removing user " + userID + " from Kitchen pool");
 	
 		HashSet<KitchenName> kitchens = _userToKitchens.get(userID);
-		System.out.println("kitchens: " + kitchens);
 		if (kitchens != null){
 			for(KitchenName k: kitchens){
 				HashSet<String> users = _kIDtoUsers.get(k);
-				System.out.println("checking if kitchen " + k.getName() + " has active users");
-				System.out.println("users: " + users);
 				if(!hasActiveUser(users, userID)){
-					System.out.println("it doesn't! remove!");				
 					removeKitchen(k);
 				}
 			}
@@ -169,7 +156,6 @@ public class KitchenPool {
 	 * Stores kitchen in data base before removing kitchen pool references to it.
 	 */
 	public void removeKitchen(KitchenName kName){
-		System.out.println("KITCHEN ID: " + _idToKitchen.get(kName.getID()));
 		_helper.storeKitchen(_idToKitchen.get(kName.getID()));
 		_kIDtoUsers.remove(kName);
 		_idToKitchen.remove(kName.getID());	
@@ -238,7 +224,6 @@ public class KitchenPool {
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
 	  			break;
 	  		case 11:
-	  			System.out.println("requested to add user " +  request.getUsername());
 	  			k.addRequestedUser(request.getUsername());
 	  			break;
 	  		case 12:
@@ -248,7 +233,6 @@ public class KitchenPool {
   				return;
 		}
 		
-		System.out.println("well i handeled that kitchen request");
 		
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);

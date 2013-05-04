@@ -105,7 +105,6 @@ public class DBHelper implements DBHelperInterface{
 		
 		while (cursor.hasNext()) {
 			String s  = cursor.next().get("account").toString();
-			System.out.println("account: " + (Account)getObjectFromString(s));
 			return (Account)getObjectFromString(s);
 			//System.out.println(cursor.next());
 		}
@@ -131,13 +130,10 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public Kitchen getKitchen(String id) {
-		System.out.println("looking for kitchen: " + id);
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("id", id);
-		System.out.println("sq: " + searchQuery);
 		
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		System.out.println("cursor size: " + cursor.size());
 		while (cursor.hasNext()) {
 			//System.out.println(cursor.next());
 			String s = cursor.next().get("kitchen").toString();
@@ -148,7 +144,6 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public void storeKitchen(Kitchen k) {
-		System.out.println("storing kitchen: " + k);
 		
 		BasicDBObject document = new BasicDBObject();
 		document.put("id", k.getID());
@@ -157,7 +152,6 @@ public class DBHelper implements DBHelperInterface{
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("id", k.getID());
 		
-		System.out.println("want to store: " + document);
 		//Adds it if it doesn't exist  currently.
 		if(kitchenCollection_.find(searchQuery).length() == 0){
 			System.out.println("kitchen wasn't in DB");
@@ -165,7 +159,6 @@ public class DBHelper implements DBHelperInterface{
 		}
 		//Otherwise remove the current object, and add the new kitchen.
 		else{
-			System.out.println("replace kitchen");
 			kitchenCollection_.remove(searchQuery);
 			kitchenCollection_.insert(document);
 		}
@@ -195,7 +188,6 @@ public class DBHelper implements DBHelperInterface{
 	
 	@Override
 	public boolean checkUsernamePassword(String username, String password) {
-		System.out.println("IN DB HELPER CHECK USERNAME PASS");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userPassCollection_.find(searchQuery);
