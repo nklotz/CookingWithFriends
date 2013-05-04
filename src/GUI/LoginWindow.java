@@ -195,12 +195,12 @@ public class LoginWindow extends JFrame{
         	
         	@Override
         	public void handle(ActionEvent e){
-                if(!isValidEmailStructure(userTextField.getText())){
+                /*if(!isValidEmailStructure(userTextField.getText())){
             		_actiontarget.setText("You must input a username and password");
                 }
-                else{
-        		    loadLogin();
-                }
+                else{*/
+        		loadLogin();
+                //}
         	}
         });
         
