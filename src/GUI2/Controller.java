@@ -819,8 +819,9 @@ public class Controller extends AnchorPane implements Initializable {
  
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    		Event e = k.getEvent(new Event(eventName, null, k));
     		if(k!=null){
+    			Event e = k.getEvent(new Event(eventName, null, k));
+    			System.out.println("e: " + e);
     			for(Recipe r: e.getMenuRecipes()){
     	    		EventMenuBox b = new EventMenuBox(r.getName());
     	    		listItems.add(b);
