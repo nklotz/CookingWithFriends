@@ -519,9 +519,26 @@ public class Controller extends AnchorPane implements Initializable {
 	    		populateRestrictions();
 	    	}
     	}
-    	addRestrictionBar.setEditable(true);
-    	addRestrictionBar.setValue("");
-    	addRestrictionBar.setEditable(false);
+	    System.out.println("restrict val: " + addRestrictionBar.getValue());
+	    addRestrictionBar.setButtonCell(new ListCell<String>() {
+			private final Label id;
+			{
+				setContentDisplay(ContentDisplay.TEXT_ONLY);
+				id = new Label("balls");
+		    }
+			
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("why is this null");
+				} else {
+					//id.setText(kitchenIds.get(name).getName());
+					setText("Select a Restriction to add it");
+				}
+			}
+		});
 
     }
     
@@ -536,11 +553,25 @@ public class Controller extends AnchorPane implements Initializable {
 	        	populateAllergies();
 	    	}
 	    }
-	    //addRestrictionBar.setEditable(true);
-	    addAllergyBar.setEditable(true);
-    	addAllergyBar.setValue("");
-    	addAllergyBar.setEditable(false);
-    	//addRestrictionBar.setEditable(false);
+    	addAllergyBar.setButtonCell(new ListCell<String>() {
+			private final Label id;
+			{
+				setContentDisplay(ContentDisplay.TEXT_ONLY);
+				id = new Label("balls");
+		    }
+			
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("why is this null");
+				} else {
+					//id.setText(kitchenIds.get(name).getName());
+					setText("Select an Allergy to add it");
+				}
+			}
+		});
     }
     
     public void addShoppingListListener(){
@@ -630,8 +661,11 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    //TODO: confirm this is not being used, delete it
     public void restrictionComboListener(){
     	String text = addRestrictionBar.getEditor().getText();
+    	System.out.println("hurr");
+    	addRestrictionBar.getEditor().setText("Select a Restriction to add it");
     	List<String> suggs = null;
     	if(text.trim().length()!=0)
     		suggs = _engines.getRestrictionSuggestions(text.toLowerCase());
