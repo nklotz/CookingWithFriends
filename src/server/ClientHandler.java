@@ -92,7 +92,7 @@ public class ClientHandler extends Thread {
 							case 2:  //getKitchen
 								getKitchen(request);
 								break;
-							//case 3 -- 10 are update kitchens (handled by default
+							//case 3 -- 10, and 17 are update kitchens (handled by default
 							case 11: //store Account
 								System.out.println("client handler recieved store acount request!");
 								storeAccount(request);
@@ -138,6 +138,7 @@ public class ClientHandler extends Thread {
 	 * Send a RequestReturn to the client via the socket
 	 */
 	public synchronized void send(RequestReturn toReturn) {
+		System.out.println("SENDDDDDDDD");
 		if(toReturn != null){
 			System.out.println("SERVER SENDING TO CLIENT: sending request of type: " + toReturn.getType());
 			
@@ -189,6 +190,7 @@ public class ClientHandler extends Thread {
 	}
 	
 	public void updateKitchen(Request request){
+		System.out.println("upadting kitchen!");
 		_taskPool.execute(new UpdateKitchenRequest(_activeKitchens, request));
 	}
 	

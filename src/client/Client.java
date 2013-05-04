@@ -151,6 +151,7 @@ public class Client extends Thread {
 							System.out.println("got new kitchen: " + k.getName());
 							_kitchens.put(k.getKitchenName(), k);
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
+							_gui.updateKitchenDropDown();
 							if(_currentKitchen != null){
 								System.out.println("curr k: " + _currentKitchen);
 								System.out.println("is that the same as: " + k);
@@ -193,7 +194,24 @@ public class Client extends Thread {
 	 * 12 = close client
 	 * 13 = make account
 	 * 14 = make kitchen
+	 * 15 = invite User ToKitchen
+	 * 16 = declineInvitation
+	 * 17 = add Ingredient to kitchen Event
 	 */
+
+    public void createNewKitchen(String kitchenName){
+    	Request r = new Request(14);
+    	r.setKitchenName(kitchenName);
+    	send(r);
+    }
+    
+    public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
+    	Request r = new Request(17);
+    	r.setEventName(eventName);
+    	r.setKitchenID(kId);
+    	r.setIngredient(ing);
+    	send(r);
+    }
     
     public void getKitchen(String id){
     	Request r = new Request(2);
@@ -201,10 +219,11 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void addActiveKitchenUser(String id){
+    public void addActiveKitchenUser(String id, Account account){
     	Request r = new Request(3);
     	r.setKitchenID(id);
     	r.setKitchenUserID(_id);
+    	r.setAccount(account);
     	send(r);
     }
     
@@ -261,6 +280,7 @@ public class Client extends Thread {
     
     public void addRequestedKitchenUser(String toId, String fromName, KitchenName kitchenName){
     	Request r = new Request(15);
+    	r.setKitchenID(kitchenName.getID());
     	Invitation invite = new Invitation(_id, fromName, toId, kitchenName); 	
     	r.setInvitation(invite);
     	send(r);
@@ -326,6 +346,8 @@ public class Client extends Thread {
     	return _currentKitchen;
     	
     }
+    
+    
     
     /**
      * Method to shut down streams and socket.

@@ -13,7 +13,7 @@ import UserInfo.Recipe;
 public class Request implements Serializable {
 
 
-	private String _kUserID, _username, _password, _kID, _kName;
+	private String _kUserID, _username, _password, _kID, _kName, _eventName;
 	private int _requestType, _accountChangeType;
 	private Account _account;
 	private Kitchen _kitchen;
@@ -23,6 +23,7 @@ public class Request implements Serializable {
 	private Ingredient _ingredient;
 	private String _restrictAllergy;
 	private KitchenName _kitchenNameObj;
+	
 	
 	/*
 	 * 1 = verify account 
@@ -41,6 +42,7 @@ public class Request implements Serializable {
 	 * 14 = make kitchen
 	 * 15 = invite User ToKitchen
 	 * 16 = declineInvitation
+	 * 17 = add Ingredient to kitchen Event
 	 */
 	
 	
@@ -124,6 +126,14 @@ public class Request implements Serializable {
 	
 	public String getUsername(){
 		return _username;
+	}
+	
+	public void setEventName(String eventName){
+		_eventName = eventName;
+	}
+	
+	public String getEventName(){
+		return _eventName;
 	}
 	
 	public void setRecipe(Recipe recipe){

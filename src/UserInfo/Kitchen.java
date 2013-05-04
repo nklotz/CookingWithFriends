@@ -72,6 +72,7 @@ public class Kitchen implements Serializable, Nameable{
 	
 	
 	public void addActiveUser(Account user){
+		System.out.println("trying to add active user: " + user.getName() + " to myself (" + _id + ")");
 		removeRequestedUser(user.getID());
 		for(String r: user.getDietaryRestrictions()){
 			addDietaryRestriction(r, user.getID());
@@ -123,10 +124,9 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeIngredient(String user, Ingredient ing){
+		System.out.println("removing " + ing.getName() + " by " + user);
 		if(_ingToUsers.containsKey(ing)){
 			HashSet<String> hs = _ingToUsers.get(ing);
-			System.out.println("USER: " + user);
-			System.out.println("HASHTABLE: " + hs);
 			hs.remove(user);
 			if(hs.size()==0){
 				_ingToUsers.remove(ing);
@@ -251,5 +251,30 @@ public class Kitchen implements Serializable, Nameable{
 	
 	public HashMap<Ingredient, HashSet<String>> getIngredientsMap(){
 		return _ingToUsers;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_id == null) ? 0 : _id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Kitchen other = (Kitchen) obj;
+		if (_id == null) {
+			if (other._id != null)
+				return false;
+		} else if (!_id.equals(other._id))
+			return false;
+		return true;
 	}
 }

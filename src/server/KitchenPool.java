@@ -7,6 +7,7 @@ import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
+import UserInfo.Event;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -40,9 +41,12 @@ public class KitchenPool {
 	}
 	
 	public void removeUserIngredient(String userID, Ingredient ing){
+		System.out.println("systimatically removing " + ing.getName() + " from ktichens belonging to " + userID);
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
+			
 			k.removeIngredient(userID, ing);
+			updateKitchenReferences(k);
 			broadCastKitchen(k);
 		}
 	}
@@ -190,16 +194,23 @@ public class KitchenPool {
 	}
 	
 	public void updateKitchen(Request request){
-		if(request.getKitchenID()==null){
+		System.out.println("I'm updating a kitchennnn " + request.getKitchenID());
+		if(request.getKitchenID()==null ){
 			return;
 		}
 		Kitchen k = getKitchen(request.getKitchenID());
 		if(k==null){
-			return;
+			System.out.println("kitchen isn't active!");
+			k = _helper.getKitchen(request.getKitchenID());
+			if(k==null){
+				System.out.println("kitchen DOESN'T EXIST!");
+				return;
+			}
 		}
 		
 		switch (request.getType()){
 			case 3: //add user to kitchen
+	  			System.out.println("ADDING USER " +  request.getKitchenUserID() + " to kitchen");
 				k.addActiveUser(request.getAccount());
 				break;
 			case 4: //remove user from kitchen
@@ -221,14 +232,18 @@ public class KitchenPool {
 		  		k.addIngredient(request.getUsername(), request.getIngredient());
 	  			break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	  			System.out.println("CASE 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
 	  			break;
-	  		case 11:
-	  			k.addRequestedUser(request.getUsername());
+	  		case 15:
+	  			System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this should be handled by invite");
+	  			//k.addRequestedUser(request.getUsername());
 	  			break;
-	  		case 12:
+	  		case 16:
 	  			k.removeRequestedUser(request.getUsername());
 	  			break;
+	  		case 17:
+	  			k.getEvent(new Event(request.getEventName(), null, k));
   			default: 
   				return;
 		}
@@ -236,6 +251,9 @@ public class KitchenPool {
 		
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);
+		updateKitchenReferences(k);
+		
+		
 		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
 		
 	}
@@ -245,5 +263,18 @@ public class KitchenPool {
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);
 		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
+	}
+	
+	public void updateKitchenReferences(Kitchen kitchen){
+	
+		_idToKitchen.put(kitchen.getID(), kitchen);
+		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
+
+		for(String s: kitchen.getActiveUsers()){
+			if(_userToKitchens.containsKey(s)){
+				_userToKitchens.get(s).add(kitchen.getKitchenName());
+			}
+		}
+		_helper.storeKitchen(kitchen);
 	}
 }

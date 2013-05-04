@@ -113,4 +113,13 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	public void updateKitchenDropDown(){
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.populateKitchenSelector();
+    		}
+		});
+	}
+	
 }

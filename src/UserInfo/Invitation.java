@@ -35,7 +35,12 @@ public class Invitation implements Serializable {
 	}
 	
 	public String getMessage(){
-		return "Hello! " + _fromName + " (" + _fromID + " ) would like you to join kitchen \"" + _kitchenName.getName() + "\"!!!!"; 
-	}
+		try{
+			return "Hello! " + _fromName + " (" + _fromID + " ) would like you to join kitchen \"" + _kitchenName.getName() + "\"!!!!"; 
+		}catch(NullPointerException e){
+			System.out.println("i fucked up");
+			return null;
+		}
+		}
 		
 }
