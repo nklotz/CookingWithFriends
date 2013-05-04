@@ -159,10 +159,6 @@ public class KitchenPool {
 	 * Stores kitchen in data base before removing kitchen pool references to it.
 	 */
 	public void removeKitchen(KitchenName kName){
-<<<<<<< HEAD
-		System.out.println("Storing Kitchen: " + _idToKitchen.get(kName.getID()));
-=======
->>>>>>> fb573c4307b0033f75d323db4f406d0042236bc5
 		_helper.storeKitchen(_idToKitchen.get(kName.getID()));
 		_kIDtoUsers.remove(kName);
 		_idToKitchen.remove(kName.getID());	
