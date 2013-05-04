@@ -86,6 +86,7 @@ public class ClientHandler extends Thread {
 						System.out.println("recieved request type: " + type);
 						switch (type){
 							case 1:  //verify account
+								System.out.println("SHOULD CHECK PASSWORD");
 								checkPassword(request);
 								break;
 							case 2:  //getKitchen
@@ -118,7 +119,7 @@ public class ClientHandler extends Thread {
 					}
 
 			}
-		} catch (IOException | ClassNotFoundException  e) {
+		} catch (Exception e) {
 				try {
 					kill();
 				} catch (IOException e1) {
@@ -139,7 +140,7 @@ public class ClientHandler extends Thread {
 	public synchronized void send(RequestReturn toReturn) {
 		System.out.println("SENDDDDDDDD");
 		if(toReturn != null){
-			System.out.println("sending request of type: " + toReturn.getType());
+			System.out.println("SERVER SENDING TO CLIENT: sending request of type: " + toReturn.getType());
 			
 			try {
 				_objectOut.writeObject(toReturn);

@@ -41,7 +41,19 @@ public class Kitchen implements Serializable, Nameable{
 		_name = name;
 	}
 	
-	
+	/**
+	 * Gets the event if it equals the event given the event name.
+	 * @param eventName
+	 * @return
+	 */
+	public Event getEvent(Event event){
+		for(Event e: _events){
+			if(e.equals(event))
+				return e;
+		}
+		System.out.println("UNABLE TO GET EVENT IN KITCEHN");
+		return null;
+	}
 	public String getName(){
 		return _name;
 	}
@@ -115,7 +127,6 @@ public class Kitchen implements Serializable, Nameable{
 		System.out.println("removing " + ing.getName() + " by " + user);
 		if(_ingToUsers.containsKey(ing)){
 			HashSet<String> hs = _ingToUsers.get(ing);
-			System.out.println(hs);
 			hs.remove(user);
 			if(hs.size()==0){
 				_ingToUsers.remove(ing);
@@ -175,6 +186,22 @@ public class Kitchen implements Serializable, Nameable{
 	 */
 	public String getID(){
 		return _id;
+	}
+	
+	public HashSet<Event> getEvents(){
+		return _events; 
+	}
+	
+	/**
+	 * Returns a list of names, used to populate the event selector in controller class.
+	 * @return
+	 */
+	public HashSet<String> getEventNames(){
+		HashSet<String> names = new HashSet<String>();
+		for(Event e: _events){
+			names.add(e.getName());
+		}
+		return names;
 	}
 	
 	/**

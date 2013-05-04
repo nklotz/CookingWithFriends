@@ -67,4 +67,9 @@ public class KitchenName implements Nameable, Serializable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "KitchenName [_id=" + _id + ", _name=" + _name + "]";
+	}
 }

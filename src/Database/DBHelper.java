@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -33,7 +32,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 //import sun.security.provider.SecureRandom;
 //import org.apache.commons.codec.binary.Base6;
@@ -107,7 +105,6 @@ public class DBHelper implements DBHelperInterface{
 		
 		while (cursor.hasNext()) {
 			String s  = cursor.next().get("account").toString();
-			System.out.println("account: " + (Account)getObjectFromString(s));
 			return (Account)getObjectFromString(s);
 			//System.out.println(cursor.next());
 		}
@@ -133,13 +130,10 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public Kitchen getKitchen(String id) {
-		System.out.println("looking for kitchen: " + id);
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("id", id);
-		System.out.println("sq: " + searchQuery);
 		
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		System.out.println("cursor size: " + cursor.size());
 		while (cursor.hasNext()) {
 			//System.out.println(cursor.next());
 			String s = cursor.next().get("kitchen").toString();
@@ -150,7 +144,6 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public void storeKitchen(Kitchen k) {
-		System.out.println("storing kitchen: " + k);
 		
 		BasicDBObject document = new BasicDBObject();
 		document.put("id", k.getID());
@@ -159,7 +152,6 @@ public class DBHelper implements DBHelperInterface{
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("id", k.getID());
 		
-		System.out.println("want to store: " + document);
 		//Adds it if it doesn't exist  currently.
 		if(kitchenCollection_.find(searchQuery).length() == 0){
 			System.out.println("kitchen wasn't in DB");
@@ -167,7 +159,6 @@ public class DBHelper implements DBHelperInterface{
 		}
 		//Otherwise remove the current object, and add the new kitchen.
 		else{
-			System.out.println("replace kitchen");
 			kitchenCollection_.remove(searchQuery);
 			kitchenCollection_.insert(document);
 		}
@@ -260,7 +251,7 @@ public class DBHelper implements DBHelperInterface{
                 password.toCharArray(), salt, iterations, desiredKeyLen)
             );
             return Base64.encodeBase64String(key.getEncoded());
-    	} catch(NoSuchAlgorithmException | InvalidKeySpecException e){
+    	} catch(Exception e){
     		System.out.println("ERROR: Unable to hash password." + e.getMessage());
     		return null; //TODO: Make empty string later.
     	}
@@ -331,7 +322,10 @@ public class DBHelper implements DBHelperInterface{
             Object o  = ois.readObject();
             ois.close();
             return o;
-    	} catch(IOException | ClassNotFoundException e){
+    	} catch(IOException  e){
+    		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
+    		return null;
+    	} catch(ClassNotFoundException e){
     		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
     		return null;
     	}
