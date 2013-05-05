@@ -245,7 +245,8 @@ public class LoginWindow extends JFrame{
             				System.out.println("CHECKING PASSWORD");
             				_client.checkPassword(userTextField.getText(), pwBox.getText());
             			}
-            			_actiontarget.setText("You must enter a valid email address.");
+            			else
+            				_actiontarget.setText("You must enter a valid email address.");
     					
     				} catch (IOException e1) {
     					// TODO Auto-generated catch block
