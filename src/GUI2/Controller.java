@@ -1265,6 +1265,7 @@ public class Controller extends AnchorPane implements Initializable {
 		//if(eventSelector.getEditor().getText().trim().length()!=0){
 			populateEventMenu();
 			populateEventShoppingList();
+			displayMessages();
 		}
 		
 //		if(eventSelector.getValue()== null && _currentEventName !=null){
@@ -1643,9 +1644,18 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 	}
 	
-	public void displayMessages(String newText){
-		eventCommentDisplayField.setText("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?");
-		//TODO: thissss
+	public void displayMessages(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if(k!=null){
+    			Event e = k.getEvent(new Event(_currentEventName, null, k));
+    			System.out.println("event: " + e);
+    			System.out.println("messages: " + e.getMessages());
+    			eventCommentDisplayField.setText(e.getMessages().toString());
+    		}
+    	}
 	}
 	
 	public void postMessage(){
@@ -1665,7 +1675,8 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 		eventCommentDisplayField.setText(pre + mid + post);
 		String forServer = mid+post;
-		//TODO: post forServer to server
+		System.out.println("trying to add this " + forServer);
+		_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 	}
 
 	public void recieveInvite(Invitation invitation) {

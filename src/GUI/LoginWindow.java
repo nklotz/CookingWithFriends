@@ -80,6 +80,7 @@ public class LoginWindow extends JFrame{
         grid.add(_actiontarget, 1, 6);
         
         Scene scene = new Scene(grid, 300, 275);
+        scene.getStylesheets().add("src/GUI2/style.css");
         
         Text scenetitle = new Text("Welcome to Cooking with Friends");
         scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
@@ -99,6 +100,7 @@ public class LoginWindow extends JFrame{
         
         
         Button btn = new Button("Sign in");
+        //btn.getStyleClass().add("button");
         Button newAcct = new Button("Create Account");
         Button passBtn = new Button("Forgot Password");
         HBox hbBtn = new HBox(10);
