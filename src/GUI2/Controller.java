@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,11 +47,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
-import API.YummlyRecipe;
 import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Event;
@@ -58,7 +62,6 @@ import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
-
 
 
 public class Controller extends AnchorPane implements Initializable {
@@ -184,14 +187,17 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Label NoSearchResults;
     
+    @FXML
+    private Pane inviteBigPane;
+    
     //Local Data
     private Client _client;
     private Account _account;
-    private Map<KitchenName,Kitchen> _kitchens;
+    private Map<KitchenName, Kitchen> _kitchens;
     private AutocorrectEngines _engines;
     private Wrapper _api;
-    private List<CheckBox> _ingredientsBoxes;
     private String _currentEventName;
+    private KitchenPane _currentKitchenPane;
     
     
     @FXML
@@ -199,7 +205,7 @@ public class Controller extends AnchorPane implements Initializable {
     	System.out.println("HOLY SHIT I DIDN'T KNOW THIS METHOD EVER GETS CALLED?");
     }
     
-    private abstract class  GuiBox extends GridPane{
+    private abstract class GuiBox extends GridPane{
     	//*********************************************************
     	public void remove() {};
     	
@@ -371,7 +377,7 @@ public class Controller extends AnchorPane implements Initializable {
 	    		accept.setOnAction(new EventHandler<ActionEvent>(){
 	    			@Override
 	    			public void handle(ActionEvent e){
-	    				System.out.println("Accept invitatioN!!!");
+	    			//	System.out.println("Accept invitatioN!!!");
 	    				
 	    				_account.getInvitions().remove(_invite.getKitchenID());
 	    				_account.getKitchens().add(_invite.getKitchenID());
@@ -385,7 +391,7 @@ public class Controller extends AnchorPane implements Initializable {
 	    		decline.setOnAction(new EventHandler<ActionEvent>(){
 	    			@Override
 	    			public void handle(ActionEvent e){
-	    				System.out.println("REJECT invitatioN!!!");
+	    			//	System.out.println("REJECT invitatioN!!!");
 	    				
 	    				_account.getInvitions().remove(_invite.getKitchenID());
 	    				_client.storeAccount(_account);
@@ -437,7 +443,7 @@ public class Controller extends AnchorPane implements Initializable {
     	_api = new YummlyAPIWrapper();
     	
     	kitchenHide.setVisible(true);
-    	//NoSearchResults.setVisible(false);
+    	NoSearchResults.setVisible(false);
     	
     	initializeComboBoxes();
     	populateUserFridge();
@@ -477,47 +483,58 @@ public class Controller extends AnchorPane implements Initializable {
     		
     	}
     	
-    	System.out.println("TEXT: " + createEventField.getText());
+   // 	System.out.println("TEXT: " + createEventField.getText());
     }
+    
+    
+    /***************************************************************************************
+     * Search Page Methods
+     */
     private void setUpSearchTab() {
-    	_ingredientsBoxes = new ArrayList<CheckBox>();
     	populateSearchIngredients();
+    	
     	searchButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
-				System.out.println("search");
 				NoSearchResults.setVisible(false);
-				List<String> selectedIngredients = new ArrayList<String>();
-				for (CheckBox checkBox : _ingredientsBoxes) {
-					if (checkBox.isSelected()) selectedIngredients.add(checkBox.getText());
+				resultsFlow.getChildren().clear();
+				
+				if (_currentKitchenPane == null) {
+					NoSearchResults.setText("Please select a kitchen");
+					NoSearchResults.setVisible(true);
+					return;
 				}
-				//Attempt to query API
-				try {
-					List<String> dummy = Collections.emptyList(); //TODO: POOL KITCHEN ALLERGIES
-					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummy, dummy, dummy);
-					resultsFlow.getChildren().clear();
-					if(results.size()==0){
+					
+				try { //Attempt to query API
+					List<String> dummyList = Collections.emptyList(); 
+					List<String> selectedIngredients = _currentKitchenPane.getSelectedIngredients();
+					List<String> restrictions = _currentKitchenPane.getRestrictions();
+					List<String> allergies = _currentKitchenPane.getAllergies();
+					
+					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummyList, restrictions, allergies);
+					
+					if (results.size() == 0) {
 						System.out.println("no results!!");
-						String message = "We're sorry, but your search didn't yeild any results \n" + "SearchField: " + searchField.getText() + "\n";
-						if(selectedIngredients.size()!=0){
-							message += "Selected Ingredients: ";
-							for(int i = 0; i < selectedIngredients.size(); i++){
+						String message = "Your search didn't yield any results.\n You searched for:  /'" + searchField.getText() + "/'\n";
+						if (selectedIngredients.size() != 0){
+							message += "with required ingredients: ";
+							for (int i = 0; i < selectedIngredients.size(); i++){
 								message += selectedIngredients.get(i);
-								if(i != selectedIngredients.size()-1){
+								if(i != selectedIngredients.size() - 1){
 									message += ", ";
 								}
-								
 							}
 						}
 						NoSearchResults.setText(message);
-						System.out.println(NoSearchResults.getText());
 						NoSearchResults.setVisible(true);
 					}
-					for (Recipe recipe : results) {
-						resultsFlow.getChildren().add(new RecipeBox(recipe));
+					else {
+						for (Recipe recipe : results)
+							resultsFlow.getChildren().add(new RecipeBox(recipe));
 					}
 				} catch (IOException ex) {
-					resultsFlow.getChildren().add(new Text("Error querying API -- is your internet connection down?"));
+					NoSearchResults.setText("Error querying API -- is your internet connection down?");
+					NoSearchResults.setVisible(true);
 				}
 			}
 		});
@@ -561,32 +578,101 @@ public class Controller extends AnchorPane implements Initializable {
 	}
     
     protected void populateSearchIngredients() {
-    	
-    	List<TitledPane> kitchenPanes = new ArrayList<TitledPane>();
-        TitledPane personalPane =  new TitledPane();
-        personalPane.setText("My Fridge");
-        personalPane.setContent(makeIngredientList(_account.getIngredients()));
-        kitchenPanes.add(personalPane);
+    	List<KitchenPane> kitchenPanes = new ArrayList<>();
+        kitchenPanes.add(new KitchenPane(_account.getIngredients()));
+        
         for (Kitchen kitchen : _kitchens.values()) {
-        	TitledPane kitchenPane =  new TitledPane();
-        	kitchenPane.setText(kitchen.getName());
-        	kitchenPane.setContent(makeIngredientList(kitchen.getIngredients()));
-        	kitchenPanes.add(kitchenPane);
+        	kitchenPanes.add(new KitchenPane(kitchen));
         }
+        
         ingredientsAccordion.getPanes().clear();
-        ingredientsAccordion.getPanes().addAll(kitchenPanes);		
+        ingredientsAccordion.getPanes().addAll(kitchenPanes);
 	}
-
-	private ListView<CheckBox> makeIngredientList(Set<Ingredient> ingredients) {
-		ListView<CheckBox> ingredientsView = new ListView<CheckBox>();
-		List<CheckBox> thisList = new ArrayList<CheckBox>();
-		for (Ingredient ing : ingredients) {
-			thisList.add(new CheckBox(ing.getName()));
+    
+    private class KitchenPane extends TitledPane {
+    	
+    	private List<CheckBox> _ingredientBoxes;
+    	private KitchenPane _thisPane;
+    	
+    	public KitchenPane(Kitchen kitchen) {
+    		super();
+    		_ingredientBoxes = new ArrayList<>();
+        	this.setText(kitchen.getName()); 	
+    		this.setContent(this.makeIngredientsList(kitchen.getIngredients())); 	
+    		_thisPane = this;
+    		this.expandedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					if (arg2) _currentKitchenPane = _thisPane;
+					else _currentKitchenPane = null;
+				}
+    		});
+    	}
+    	
+    	public KitchenPane(Set<Ingredient> ingredients) {
+    		super();
+    		_ingredientBoxes = new ArrayList<>();
+    		this.setText("My Fridge"); 	
+    		this.setContent(this.makeIngredientsList(ingredients)); 	
+    		_thisPane = this;
+    		this.expandedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					if (arg2) _currentKitchenPane = _thisPane;
+					else _currentKitchenPane = null;
+				}
+    		});
+    	}
+    	
+		public List<String> getSelectedIngredients() {
+			List<String> selectedIngredients = new ArrayList<>();
+			for (CheckBox ingredientBox : _ingredientBoxes) {
+				if (ingredientBox.isSelected()) {
+					selectedIngredients.add(ingredientBox.getText());
+				}
+			}
+			return selectedIngredients;
 		}
-		_ingredientsBoxes.addAll(thisList);
-		ingredientsView.getItems().addAll(thisList);
-		return ingredientsView;
-	}
+
+		
+    	
+    	public ListView<CheckBox> makeIngredientsList(Set<Ingredient> ingredients) {
+    		ListView<CheckBox> ingredientsView = new ListView<>();    		
+    		for (Ingredient ing : ingredients)
+    			_ingredientBoxes.add(new CheckBox(ing.getName()));
+    		CheckBox selectAll = new SelectAllBox(_ingredientBoxes);
+    		ingredientsView.getItems().add(selectAll);
+    		ingredientsView.getItems().addAll(_ingredientBoxes);
+			return ingredientsView;
+    	}
+    }
+    
+    private class SelectAllBox extends CheckBox {
+    	private List<CheckBox> _associatedBoxes;
+    	private CheckBox _allBox;
+    	
+    	public SelectAllBox(List<CheckBox> boxes) {
+    		_associatedBoxes = boxes;
+    		this.setText("Select all");
+    		this.getStyleClass().add("selectAllBox");
+    		_allBox = this;
+    		
+    		this.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override
+			    public void handle(ActionEvent event) {
+			    	for (CheckBox box : _associatedBoxes) {
+		        		box.setSelected(_allBox.isSelected());
+		        	}
+			    }
+			});
+    	}	
+    }
+    
+    /****************************************************************************************
+     * END Search page methods
+     */
+    
+    
 
 	public void initializeComboBoxes(){
 		kitchenSelector.getItems().clear();
@@ -615,7 +701,6 @@ public class Controller extends AnchorPane implements Initializable {
 	    		populateRestrictions();
 	    	}
     	}
-	    System.out.println("restrict val: " + addRestrictionBar.getValue());
 	    addRestrictionBar.setButtonCell(new ListCell<String>() {
 			private final Label id;
 			{
@@ -671,7 +756,6 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void addShoppingListListener(){
-    	System.out.println("ADD SHOPPING LIST LISTENER: " + addShoppingIngredient.getValue());
     	//addFridgeIngredient
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
@@ -690,7 +774,6 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void addEventShoppingIngredientListener(){
-    	System.out.println("ADD ING TO EVENT");
     	disableRemoves(eventShoppingList);
     	eventShoppingRemoveButton.setSelected(false);
     	String name = eventShoppingComboBox.getValue();
@@ -703,16 +786,15 @@ public class Controller extends AnchorPane implements Initializable {
     	    		if(k!=null){
     	    			System.out.println("adding " + name + " to event " + _currentEventName + " in kitchen " + k.getName());
     	   	    		_client.addIngToEventShopping(_currentEventName, k.getID(), new Ingredient(name));
-
+    	   	    		System.out.println("KITCHEN: " + k);
     	    		}
     	    	}
-   		 }
+    		}
     	}
-
+    	loadEvent();
     }
     
     public void addIngredientListener(){
-    	System.out.println("ADD INGREDIENT LISTENER");
     	//addFridgeIngredient
     	disableRemoves(fridgeList);
     	System.out.println("was removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
@@ -734,9 +816,9 @@ public class Controller extends AnchorPane implements Initializable {
     
     
     public void eventShoppingComboListener(){
-    	System.out.println("IN EVENT COMBO LISTENER");
     	String text = eventShoppingComboBox.getEditor().getText();
-    	if(eventShoppingComboBox.getValue()!=null){
+    //	if(eventShoppingComboBox.getValue()!=null){
+    	if(text!=null){
     		eventShoppingComboBox.getItems().clear();
 	    	List<String> suggs = null;
 	    	if(text.trim().length()!=0){
@@ -746,10 +828,10 @@ public class Controller extends AnchorPane implements Initializable {
 	    		eventShoppingComboBox.getItems().addAll(suggs);
 	    	}
     	}
-    	else{
+    //	else{
     		//TODO: WHY DOES THIS WORK FOR SHOPPING BUT NOT INGREDIENTS
     		//addIngredientListener();
-    	}
+    //	}
     }
     
     public void newKitchenButtonListener(){
@@ -801,8 +883,6 @@ public class Controller extends AnchorPane implements Initializable {
      */
     public void shoppingListComboListener(){
     	String text = addShoppingIngredient.getEditor().getText();
-    	System.out.println(addShoppingIngredient.getValue());
-    	System.out.println("ADD SHOPPING: " + addShoppingIngredient.getValue());
     	if(addShoppingIngredient.getValue() != null){
     		addShoppingIngredient.getItems().clear();
     		List<String> suggs = null;
@@ -875,7 +955,7 @@ public class Controller extends AnchorPane implements Initializable {
     		if(k!=null){
     			Event e = k.getEvent(new Event(eventName, null, k));
 
-
+    			
     			for(Recipe r: e.getMenuRecipes()){
     	    		EventMenuBox b = new EventMenuBox(r.getName());
     	    		listItems.add(b);
@@ -886,6 +966,7 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void populateEventShoppingList(){
+    	System.out.println("IN POPULATE SHOPPING LIST!!!!!!!!!");
     	ObservableList<EventShoppingListBox> listItems = FXCollections.observableArrayList();  
     	eventShoppingList.getItems().clear();
     	String eventName = eventSelector.getValue();
@@ -896,6 +977,7 @@ public class Controller extends AnchorPane implements Initializable {
     		if(k!=null){
     			Event e = k.getEvent(new Event(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
+    				System.out.println("ADDING INGREDIENT: " + i);
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
     	    		eventShoppingList.setItems(listItems);
@@ -984,6 +1066,8 @@ public class Controller extends AnchorPane implements Initializable {
 	        assert newKitchenCancelButton != null : "fx:id=\"newKitchenCancelButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert recipeSearchTab != null : "fx:id=\"recipeSearchTab\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert inviteBigPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        
 	}
 	
 	public void goToRecipeTab(){
@@ -1074,22 +1158,20 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void loadEvent(){
-		System.out.println("HEREEE LOAD EVENT");
-
+		System.out.println("TOP OF LOAD EVENT!!!!!!!!!");
 		if(eventSelector.getValue()!= null){
 			System.out.println("setting current event to " + eventSelector.getValue());
 			_currentEventName = eventSelector.getValue();
 		}
 		else if (_currentEventName != null){
 			eventSelector.setEditable(true);
-			System.out.println("setting selector to " + _currentEventName);
 			eventSelector.setValue(_currentEventName);
-			System.out.println("value is now " + eventSelector.getValue());
 			eventSelector.setEditable(false);
 		}
 
-		
-		if(eventSelector.getValue() != null){
+		System.out.println("EDITOR TEXT: " + eventSelector.getEditor().getText());
+		if(eventSelector.getValue()!=null){
+		//if(eventSelector.getEditor().getText().trim().length()!=0){
 			populateEventMenu();
 			populateEventShoppingList();
 		}
@@ -1110,7 +1192,6 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void populateEventSelector(){
-		System.out.println("POPUOLATE EVENTTT SELECTOR");
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
 		Kitchen k = kitchens.get(_client.getCurrentKitchen());
 		
@@ -1121,13 +1202,14 @@ public class Controller extends AnchorPane implements Initializable {
 			eventSelector.getItems().clear();
 			eventSelector.getItems().addAll(k.getEventNames());
 		}
+		System.out.println("IN POPOULATE EVENT SELECTOR: SETTING SELECTOR TO FIRST ITEM");
+		eventSelector.setValue(eventSelector.getItems().get(0));
 		
-		eventSelector.setEditable(true);
-		System.out.println("current value: " + eventSelector.getValue());
-		eventSelector.setValue(_currentEventName);
-		System.out.println("current value is now: " + eventSelector.getValue());
-
-		eventSelector.setEditable(false);
+//		eventSelector.setEditable(true);
+//		System.out.println("CURRENT EVENT NAME: " + _currentEventName);
+//		eventSelector.setValue(_currentEventName);
+//
+//		eventSelector.setEditable(false);
 		
 //		if(_currentEventName != null){
 //			eventSelector.setEditable(true);
@@ -1185,10 +1267,7 @@ public class Controller extends AnchorPane implements Initializable {
 				kitchenHide.setVisible(false);
 				kitchenHide.setDisable(true);
 				
-				System.out.println(e.getEventType().getName());
-				System.out.println(e.toString());
-				System.out.println(e);
-				System.out.println("HANDLE!: " + kitchenSelector.getValue());
+
 				String id = kitchenSelector.getValue();
 				if(id!= null){
 					_currentEventName = null;
@@ -1211,10 +1290,7 @@ public class Controller extends AnchorPane implements Initializable {
 							}
 						}
 					});
-					System.out.println("id: " + id);
-					System.out.println("kitchenName " + kitchenIds.get(id));
 					displayKitchen(kitchenIds.get(id));
-					System.out.println("i'm changing current event to null");
 				}
 			}
 		});
@@ -1222,7 +1298,6 @@ public class Controller extends AnchorPane implements Initializable {
 	}
     
 	public void hideNewKitchenStuff(){
-		System.out.println("getting called");
 		newKitchenLabel.setVisible(false);
 		newKitchenNameField.setVisible(false);
 		newKitchenNameField.setText("");
@@ -1233,7 +1308,9 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void displayKitchen(KitchenName kn){
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
+		
 		//Clearing/hiding new kitchen stuff
 		hideNewKitchenStuff();
 		
@@ -1258,7 +1335,8 @@ public class Controller extends AnchorPane implements Initializable {
 		});
 		
 		Kitchen k = _client.getKitchens().get(kn);
-		
+		System.out.println("SHOULD DISPLAY KITCHEN: " + k);
+		System.out.println("EVENTS ARE: " + k.getEvents());
 		kitchenDietList.getItems().clear();
 		for(String r: k.getDietaryRestrictions()){
 			kitchenDietList.getItems().add(r);
@@ -1301,13 +1379,14 @@ public class Controller extends AnchorPane implements Initializable {
 		kitchenAddChefField.setText("");
 		
 		populateEventSelector();
-		
+		System.out.println("ABOVE LOAD EVENT");
+		loadEvent();
 		
 	}
 
 	public void reDisplayKitchen() {
 		if(_client.getCurrentKitchen() != null){
-			System.out.println("I would redisplay");
+			//System.out.println("I would redisplay");
 			displayKitchen(_client.getCurrentKitchen());
 		}
 	}
@@ -1324,31 +1403,50 @@ public class Controller extends AnchorPane implements Initializable {
 		
 	}
 	
-	public void checkAndSendEmail(){
+	public void sendInviteEmails(boolean userInDatabase){
 		String email = kitchenAddChefField.getText();
 		if(email != null){
 			//TODO: PUT ALL THIS IN.
 			//if(_client.userExists(email)){
-				if(isValidEmail(email)){
-					Kitchen k = null;
-					if(_client.getKitchens()!=null){
-						k = _client.getKitchens().get(_client.getCurrentKitchen());
-						_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
-						
-						//instant display update
-						Text t = new Text(kitchenAddChefField.getText() + " (pending)");
-						t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
-						t.setFill(Color.GRAY);
-						kitchenChefList.getItems().add(t);
-						
-						String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
-								+ "wants you to join the kitchen, " + k.getName();
-						message += ". To accept this invitation, you must log in and accept.";
-						Sender.send(kitchenAddChefField.getText(), message);
-						System.out.println("SENT TO: " + message);
+
+			if(isValidEmail(email)){
+				if(userInDatabase){
+					if(isValidEmail(email)){
+						Kitchen k = null;
+						if(_client.getKitchens()!=null){
+							k = _client.getKitchens().get(_client.getCurrentKitchen());
+							_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
+							
+							//instant display update
+							Text t = new Text(kitchenAddChefField.getText() + " (pending)");
+							t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
+							t.setFill(Color.GRAY);
+							kitchenChefList.getItems().add(t);
+							
+							String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+									+ "wants you to join the kitchen, " + k.getName();
+							message += ". To accept this invitation, you must log in and accept.";
+							Sender.send(kitchenAddChefField.getText(), message);
+							//System.out.println("SENT TO: " + message);
+						}
 					}
 				}
-			//}
+				else{
+					PopupWindow pop = new Popup();
+					pop.setX(100);
+					pop.setY(100);
+					pop.setWidth(100);
+					pop.setHeight(100);
+					pop.show(inviteBigPane, 100, 100);
+					pop.setAutoHide(false);
+					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
+					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
+							+ " them to join?");
+					invalidEmailError.setVisible(true);
+				}
+			}
+			
+			
 			
 			else{
 				invalidEmailError.setVisible(true);
@@ -1356,6 +1454,39 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 		kitchenAddChefField.setText("");
 	}
+	public void checkAndSendEmail(){
+		System.out.println("IN CHECK AND SEND EMAIL.");
+		String email = kitchenAddChefField.getText();
+		if(email != null){
+			_client.userInDatabase(email);
+		}
+	}
+		
+//		String email = kitchenAddChefField.getText();
+//		if(email != null){
+//			//TODO: PUT ALL THIS IN.
+//			
+//			if(_client.userInDatabase(email)){
+//				if(isValidEmail(email)){
+//					Kitchen k = null;
+//					if(_client.getKitchens()!=null){
+//						k = _client.getKitchens().get(_client.getCurrentKitchen());
+//						_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
+//						String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+//								+ "wants you to join the kitchen, " + k.getName();
+//						message += ". To accept this invitation, you must log in and accept.";
+//						Sender.send(kitchenAddChefField.getText(), message);
+//						//System.out.println("SENT TO: " + message);
+//					}
+//				}
+//			}
+//			
+//			else{
+//				invalidEmailError.setVisible(true);
+//			}
+//		}
+//		kitchenAddChefField.setText("");
+
 	
 	public void clearError(){
 		invalidEmailError.setVisible(false);
@@ -1375,8 +1506,10 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void leaveKitchen(){
+
 		System.out.println("leavvving");
 		_client.removeKitchen(_client.getCurrentKitchen());
+
 		_account.removeKitchen(_client.getCurrentKitchen());
 		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
 		kitchenSelector.setValue(null);
@@ -1390,6 +1523,7 @@ public class Controller extends AnchorPane implements Initializable {
 			invitationsList.getItems().clear();
 			HashMap<KitchenName, Invitation> invites = _account.getInvitions();
 			numberOfInvites.setText(Integer.toString(invites.size()));
+
 			System.out.println("user has " + invites.size() + " invitations!!!");
 			if(invites.size()==0){
 				invitationsList.setVisible(false);
@@ -1403,7 +1537,7 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void removeItem(){
-		System.out.println("REMOVE");
+	//	System.out.println("REMOVE");
 	}
 	
 	public void displayInvitations(){

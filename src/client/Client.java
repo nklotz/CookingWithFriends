@@ -179,6 +179,11 @@ public class Client extends Thread {
 							_gui.sendInvite(response.getInvitation());
 						}
 						else if(type == 4){
+							System.out.println("TYPE IS 19 IN CLIENT");
+							//If the user exists, then it is not a valid user.
+							boolean userInDatabase = (response.getUserInDatabase());
+							_gui.sendEmail(userInDatabase);
+
 							
 						}
 					}
@@ -226,6 +231,7 @@ public class Client extends Thread {
     	send(r);
     }
     
+    
     public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
     	System.out.println("sending event ing request");
     	Request r = new Request(17);
@@ -238,6 +244,12 @@ public class Client extends Thread {
     public void getKitchen(String id){
     	Request r = new Request(2);
     	r.setKitchenID(id);
+    	send(r);
+    }
+    
+    public void userInDatabase(String username){
+    	Request r = new Request(19);
+    	r.setUsername(username);
     	send(r);
     }
     
@@ -316,15 +328,7 @@ public class Client extends Thread {
     	send(r);
     }
     
-    
-    /**
-     * Types:
-     * 2--Added dietary restriction
-     * 3--removed dietary restriction
-     * 4--add allergy
-     * 5--removed allergy
-     * 6--remove User from kitchen and vice versa
-     */
+  
     public void storeAccount(Account account, int type, String restricAl){
     	System.out.println("making account store of type: " + type);
     	System.out.println("change item: " + restricAl);

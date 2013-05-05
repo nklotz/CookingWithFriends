@@ -94,6 +94,17 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	public void sendEmail(final boolean userInDatabase){
+		System.out.println("CALLED UPDATE KITCHEN");
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			//Displays the message asking if the user actually wants to invite the user.
+    			_controller.sendInviteEmails(userInDatabase);
+    		}
+		});
+	}
+	
 	public void updateKitchen(){
 		System.out.println("CALLED UPDATE KITCHEN");
 		Platform.runLater(new Runnable() {

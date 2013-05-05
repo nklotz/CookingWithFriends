@@ -55,10 +55,25 @@
 	-fx-padding: 4 10 10 10;
     	-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
     	-fx-background-radius: 8;
-    	-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a3132b 0%, #901228 100%), #9d2444, #d83a55,radial-gradient(center 50% 50%, radius 100%, #cd0000, #B22222);
+    	-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a3132b 0%, #901228 100%), #9d2444, #d83a55, radial-gradient(center 50% 50%, radius 100%, #cd0000, #B22222);
    	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
    	-fx-font-size: 0.8em;
 	-fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #a3132b 0%, #901228 100%), #9d2444, #d83a55, radial-gradient(center 50% 50%, radius 100%, #ff4444, #B22222);
+}
+
+.button:pressed {
+    -fx-padding: 6 10 8 10;
+    -fx-background-insets: 2 0 0 0, 2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+.button Text {
+    -fx-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
 
 .recipe {
@@ -94,13 +109,20 @@
 }
 
 .recipeBox {
-    -fx-background-color: LightGray;
-    -fx-border-color: black;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    -fx-padding: 10 10 10 10;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 ); 
+   	-fx-background-color: LightGray;
+   	-fx-border-color: black;
+    	-fx-border-radius: 10;
+    	-fx-background-radius: 10;
+   	-fx-padding: 10 10 10 10;
+   	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 ); 
+}	
+
+.selectAllBox {
+	-fx-font-weight: bold;
 }
 
+#searchField {
+	-fx-font-size: 1.6em;
+}
 
 		
