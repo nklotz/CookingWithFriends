@@ -179,7 +179,8 @@ public class DBHelper implements DBHelperInterface{
 		document.put("password", encryptedPassword);
 		//document.put("encryptKey", getEncryptedKey(password));
 		//Adds it if it doesn't exist  currently.
-		if(uniqueUsername(username)){
+		//if(uniqueUsername(username)){
+		if(!inDatabase(username)){
 			userPassCollection_.insert(document);
 		}
 		
