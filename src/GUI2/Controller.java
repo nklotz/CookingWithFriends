@@ -1051,7 +1051,6 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void populateEventShoppingList(){
-    	System.out.println("IN POPULATE SHOPPING LIST!!!!!!!!!");
     	ObservableList<EventShoppingListBox> listItems = FXCollections.observableArrayList();  
     	eventShoppingList.getItems().clear();
     	String eventName = eventSelector.getValue();
@@ -1062,7 +1061,6 @@ public class Controller extends AnchorPane implements Initializable {
     		if(k!=null){
     			Event e = k.getEvent(new Event(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
-    				System.out.println("ADDING INGREDIENT: " + i);
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
     	    		eventShoppingList.setItems(listItems);

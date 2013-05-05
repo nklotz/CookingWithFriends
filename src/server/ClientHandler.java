@@ -101,6 +101,7 @@ public class ClientHandler extends Thread {
 								kill();
 								break;
 							case 13: //create new account	
+								System.out.println("SHOULD CREATE NEW USER");
 								createNewUser(request);
 								break;
 							case 14: //create new Kitchen
