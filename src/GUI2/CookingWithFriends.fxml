@@ -300,7 +300,7 @@
                 <Pane layoutX="52.0" layoutY="106.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
                   <children>
                     <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="37.0" minWidth="157.0" prefHeight="485.1399756835963" prefWidth="308.9999000000025" />
-                    <ComboBox id="newIngredient" fx:id="searchAdditionalBox" editable="true" layoutX="17.0" layoutY="596.0" onAction="#addIngredientListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="303.0" promptText="New Ingredient">
+                    <ComboBox id="newIngredient" fx:id="searchAdditionalBox" editable="true" layoutX="17.0" layoutY="596.0" onAction="#addSearchBoxListener" onInputMethodTextChanged="#searchComboListener" onKeyPressed="#searchComboListener" onKeyReleased="#searchComboListener" onKeyTyped="#searchComboListener" prefWidth="303.0" promptText="New Ingredient">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -321,7 +321,7 @@
                     <Text layoutX="17.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Select a kitchen" />
                     <Text layoutX="15.0" layoutY="539.0" scaleX="1.0" scaleY="0.9999867837301142" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: italic;&#10;-fx-font-size: 0.9em&#10;" text="Dietary restrictions and allergies for the selected kitchen will be included in your search." textAlignment="LEFT" wrappingWidth="300.0" />
                     <Text layoutX="14.0" layoutY="591.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Supplemental Ingredients" />
-                    <Button id="addIngre" fx:id="searchAdditionalAdd" layoutX="278.0" layoutY="621.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <Button id="addIngre" fx:id="searchAdditionalAdd" layoutX="278.0" layoutY="621.0" mnemonicParsing="false" onMouseClicked="#addSearchBoxListener" text="Add" />
                     <CheckBox id="removeFridgeIngredient" fx:id="searchAdditionalRemove" layoutX="17.0" layoutY="626.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
@@ -329,7 +329,7 @@
                 <Pane layoutX="459.0" layoutY="107.0" prefHeight="77.0" prefWidth="728.0" styleClass="section">
                   <children>
                     <Button fx:id="searchButton" layoutX="644.0" layoutY="22.0" mnemonicParsing="false" prefHeight="32.10624885559082" prefWidth="70.0" text="Search" />
-                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="612.0" promptText="What are you looking for?" styleClass="" />
+                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="612.0" promptText="What are you looking for?" styleClass="null" />
                   </children>
                 </Pane>
                 <Pane layoutX="459.0" layoutY="262.0" prefHeight="660.0" prefWidth="728.0" styleClass="section">
