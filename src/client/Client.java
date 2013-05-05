@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import server.AutocorrectEngines;
 import API.Wrapper;
@@ -37,10 +39,12 @@ public class Client extends Thread {
     private GUI2Frame _gui = null;
     private HashMap<KitchenName, Kitchen> _kitchens;
     private HashMap<String,KitchenName> _kitchenIdToName;
+    private Set<String> _kitchenNames;
     private boolean _running;
     private AutocorrectEngines _autocorrect;
     private KitchenName _currentKitchen;
     private String _id;
+    private String _newKitchen = "";
 	
     public Client(String hostname, int port) throws IOException {
     	System.out.println("IN CLIENT CONSTRUCTOR");
@@ -127,6 +131,7 @@ public class Client extends Thread {
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
 							_kitchenIdToName = kitchenIdMap(_kitchens);
+							_kitchenNames = kitchenNameSet(_kitchens);
 							_id = response.getAccount().getID();
 							System.out.println("SHOULD CREATE NEW GUI");
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
@@ -151,13 +156,22 @@ public class Client extends Thread {
 							System.out.println("got new kitchen: " + k.getName());
 							_kitchens.put(k.getKitchenName(), k);
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
+							_kitchenNames.add(k.getKitchenName().getName());
 							_gui.updateKitchenDropDown();
-							if(_currentKitchen != null){
+							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
 								System.out.println("curr k: " + _currentKitchen);
 								System.out.println("is that the same as: " + k);
-								if(_currentKitchen.equals(k.getKitchenName())){
-									System.out.println("new kitchen is gui's current!!!");
-									_gui.updateKitchen();
+								if(_currentKitchen != null){
+									if(_currentKitchen.equals(k.getKitchenName())){
+										System.out.println("new kitchen is gui's current!!!");
+										_gui.updateKitchen();
+									} else if (k.getKitchenName().getName().equals(_newKitchen)){
+										System.out.println("this is the new kitchen");
+										_gui.displayNewKitchen(k);
+									} //TODO: this is ugly as shit. Better way to do it? I'm too tired to think.
+								} else if (k.getKitchenName().getName().equals(_newKitchen)){
+									System.out.println("this is the new kitchen");
+									_gui.displayNewKitchen(k);
 								}
 							}
 						}
@@ -374,12 +388,28 @@ public class Client extends Thread {
     	return _kitchenIdToName;
     }
     
+    public Set<String> getKitchenNameSet(){
+    	return _kitchenNames;
+    }
+    
     private HashMap<String,KitchenName> kitchenIdMap(HashMap<KitchenName, Kitchen> kitchenMap){
     	HashMap<String,KitchenName> map = new HashMap<String,KitchenName>();
     	for (KitchenName item : kitchenMap.keySet()){
     		map.put(item.getID(), item);
     	}
     	return map; 
+    }
+    
+    private Set<String> kitchenNameSet(HashMap<KitchenName, Kitchen> kitchenMap){
+    	Set<String> names = new HashSet<>();
+    	for (KitchenName item : kitchenMap.keySet()) {
+    		names.add(item.getName());
+    	}
+    	return names;
+    }
+    
+    public void setNewKitchen(String newK){
+    	_newKitchen = newK;
     }
 }
 

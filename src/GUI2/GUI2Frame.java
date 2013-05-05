@@ -103,6 +103,16 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	//TODO: Make sure this jives.
+	public void displayNewKitchen(final Kitchen k){
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run(){
+				_controller.displayKitchen(k.getKitchenName());
+			}
+		});
+	}
+	
 	public void updateSearch(){
 		System.out.println("CALLED UPDATE KITCHEN");
 		Platform.runLater(new Runnable() {
