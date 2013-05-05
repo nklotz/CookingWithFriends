@@ -190,6 +190,7 @@ public class Controller extends AnchorPane implements Initializable {
     private AutocorrectEngines _engines;
     private Wrapper _api;
     private List<CheckBox> _ingredientsBoxes;
+    private String _currentEventName;
     
     
     @FXML
@@ -296,6 +297,10 @@ public class Controller extends AnchorPane implements Initializable {
 //    		_client.storeAccount(_account);
 //    		ObservableList<ShoppingIngredientBox> listItems = shoppingList.getItems();
 //    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
     	}
     }
     
@@ -687,6 +692,7 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void addEventShoppingIngredientListener(){
+    	System.out.println("ADD ING TO EVENT");
     	disableRemoves(eventShoppingList);
     	eventShoppingRemoveButton.setSelected(false);
     	String name = eventShoppingComboBox.getValue();
@@ -694,17 +700,14 @@ public class Controller extends AnchorPane implements Initializable {
     		if(name.trim().length()!=0){
     			HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     			 
-    	    	if(kitchens!=null){
+   	    	if(kitchens!=null){
     	    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
     	    		if(k!=null){
-    	    			Event e = k.getEvent(new Event(eventSelector.getValue(), null, k));
-    	    		
-    	    			//_client.addShoppingIngredient(e, k.getID());
+    	    			System.out.println("adding " + name + " to event " + _currentEventName + " in kitchen " + k.getName());
+    	   	    		_client.addIngToEventShopping(_currentEventName, k.getID(), new Ingredient(name));
     	    		}
-    	    			
     	    	}
-    			//_client.addIngredientToShoppingList();
-    		}
+   		 }
     	}
     }
     
@@ -1072,20 +1075,73 @@ public class Controller extends AnchorPane implements Initializable {
 	
 	public void loadEvent(){
 		System.out.println("HEREEE LOAD EVENT");
-		populateEventMenu();
-		populateEventShoppingList();
+
+		if(eventSelector.getValue()!= null){
+			System.out.println("setting current event to " + eventSelector.getValue());
+			_currentEventName = eventSelector.getValue();
+		}
+		else if (_currentEventName != null){
+			eventSelector.setEditable(true);
+			System.out.println("setting selector to " + _currentEventName);
+			eventSelector.setValue(_currentEventName);
+			System.out.println("value is now " + eventSelector.getValue());
+			eventSelector.setEditable(false);
+		}
+
+		
+		if(eventSelector.getValue() != null){
+			populateEventMenu();
+			populateEventShoppingList();
+		}
+		
+//		if(eventSelector.getValue()== null && _currentEventName !=null){
+//			System.out.println("value was null but current event is " + _currentEventName);
+//			eventSelector.setEditable(true);
+//			eventSelector.setValue(_currentEventName);
+//			eventSelector.setEditable(false);
+//			System.out.println("I WOULD display event: " + _currentEventName);
+//		}
+//		else if(eventSelector.getValue() != null && !eventSelector.getValue().equals("Select an Event")){
+//			System.out.println("setting current event to " + eventSelector.getValue());
+//			_currentEventName = eventSelector.getValue();
+//			populateEventMenu();
+//			populateEventShoppingList();
+//		}
 	}
 	
 	public void populateEventSelector(){
 		System.out.println("POPUOLATE EVENTTT SELECTOR");
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
 		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+		
+		
 		//If kitchen doesn't equal null.
 		if(k!=null){
 			HashSet<String> names = k.getEventNames();
 			eventSelector.getItems().clear();
 			eventSelector.getItems().addAll(k.getEventNames());
 		}
+		
+		eventSelector.setEditable(true);
+		System.out.println("current value: " + eventSelector.getValue());
+		eventSelector.setValue(_currentEventName);
+		System.out.println("current value is now: " + eventSelector.getValue());
+
+		eventSelector.setEditable(false);
+		
+//		if(_currentEventName != null){
+//			eventSelector.setEditable(true);
+//			eventSelector.setValue(_currentEventName);
+//			eventSelector.setEditable(false);
+//			System.out.println("editable? " + eventSelector.isEditable());
+//		}
+//		else{
+//			eventSelector.setEditable(true);
+//			eventSelector.setValue(null);
+//			eventSelector.setEditable(false);
+//			System.out.println("editable? " + eventSelector.isEditable());
+//
+//		}
 	}
 	
 	public void populateKitchenSelector(){
@@ -1125,9 +1181,13 @@ public class Controller extends AnchorPane implements Initializable {
 		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
+				System.out.println(e.getEventType().getName());
+				System.out.println(e.toString());
+				System.out.println(e);
 				System.out.println("HANDLE!: " + kitchenSelector.getValue());
 				String id = kitchenSelector.getValue();
 				if(id!= null){
+					_currentEventName = null;
 					kitchenSelector.setButtonCell(new ListCell<String>() {
 						private final Label id;
 						{
@@ -1150,6 +1210,7 @@ public class Controller extends AnchorPane implements Initializable {
 					System.out.println("id: " + id);
 					System.out.println("kitchenName " + kitchenIds.get(id));
 					displayKitchen(kitchenIds.get(id));
+					System.out.println("i'm changing current event to null");
 				}
 			}
 		});
@@ -1240,7 +1301,8 @@ public class Controller extends AnchorPane implements Initializable {
 
 	public void reDisplayKitchen() {
 		if(_client.getCurrentKitchen() != null){
-			displayKitchen(_client.getCurrentKitchen());
+			System.out.println("I would redisplay");
+			//displayKitchen(_client.getCurrentKitchen());
 		}
 	}
 	

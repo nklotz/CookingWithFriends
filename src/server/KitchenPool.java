@@ -101,8 +101,15 @@ public class KitchenPool {
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
+		_userToKitchens = new HashMap<String, HashSet<KitchenName>>();
+		for(String user: kitchen.getActiveUsers()){
+			if(_userToKitchens.containsKey(user)){
+				_userToKitchens.get(user).add(kitchen.getKitchenName());
+			}
+		}
 		
-		KitchenName n = new KitchenName(kitchen.getName(), kitchen.getID());
+		_helper.storeKitchen(kitchen);
+		
 
 
 	}
@@ -208,6 +215,7 @@ public class KitchenPool {
 			}
 		}
 		
+		System.out.println("update type: " + request.getType());
 		switch (request.getType()){
 			case 3: //add user to kitchen
 	  			System.out.println("ADDING USER " +  request.getKitchenUserID() + " to kitchen");
@@ -243,7 +251,11 @@ public class KitchenPool {
 	  			k.removeRequestedUser(request.getUsername());
 	  			break;
 	  		case 17:
-	  			k.getEvent(new Event(request.getEventName(), null, k));
+	  			Event e = k.getEvent(new Event(request.getEventName(), null, k));
+	  			System.out.println("E: " + e);
+	  			e.addShoppingIngredient(request.getIngredient());
+	  			k.addEvent(e);
+	  			break;
   			default: 
   				return;
 		}

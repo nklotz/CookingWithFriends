@@ -164,7 +164,7 @@ public class Client extends Thread {
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
 										System.out.println("new kitchen is gui's current!!!");
-										_gui.updateKitchen();
+										//_gui.updateKitchen();
 									} else if (k.getKitchenName().getName().equals(_newKitchen)){
 										System.out.println("this is the new kitchen");
 										_gui.displayNewKitchen(k);
@@ -220,6 +220,7 @@ public class Client extends Thread {
     }
     
     public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
+    	System.out.println("sending event ing request");
     	Request r = new Request(17);
     	r.setEventName(eventName);
     	r.setKitchenID(kId);

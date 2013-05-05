@@ -114,7 +114,7 @@ public class GUI2Frame extends JFrame {
 	}
 	
 	public void updateSearch(){
-		System.out.println("CALLED UPDATE KITCHEN");
+		System.out.println("CALLED UPDATE SEARC");
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {

@@ -94,7 +94,7 @@ public class Event implements Serializable {
 	@Override
 	public String toString() {
 		return "Event [_date=" + _date + ", _name=" + _name + ", _kitchen="
-				+ _kitchen + "]";
+				+ _kitchen.getName() + ", _shoppingList " + _shoppingIng + "]";
 	}
 
 	@Override
@@ -128,5 +128,7 @@ public class Event implements Serializable {
 			return false;
 		return true;
 	}
+	
+	
 	
 }
