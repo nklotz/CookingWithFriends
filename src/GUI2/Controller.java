@@ -25,6 +25,8 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -39,6 +41,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -151,13 +154,17 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private ListView<String> kitchenRecipeList;
     @FXML
-    private Button getRecipeChecksButton;
+    private CheckBox getRecipeChecksButton;
     @FXML
     private TextField newKitchenNameField;
     @FXML
     private Button newKitchenCreateButton;
     @FXML
     private Label newKitchenLabel;
+    @FXML
+    private Text newKitchenActionText;
+    @FXML
+    private Button newKitchenCancelButton;
     
     @FXML
     private TextArea createEventField;
@@ -170,6 +177,10 @@ public class Controller extends AnchorPane implements Initializable {
     
     @FXML
     private ComboBox<String> eventShoppingComboBox;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private Tab recipeSearchTab;
     
     //Local Data
     private Client _client;
@@ -200,8 +211,9 @@ public class Controller extends AnchorPane implements Initializable {
     private class RemoveButton extends Button{
     	
     	public RemoveButton(final GuiBox parent){
-    		this.setGraphic(new ImageView(xImage));
-    		
+    		//this.setGraphic(new ImageView(xImage));
+    		this.setText("X");
+    		this.setFont(Font.font("Verdana", FontWeight.BLACK,13));
     		this.setOnAction(new EventHandler<ActionEvent>() {
     			@Override
                 public void handle(ActionEvent e) {
@@ -741,6 +753,27 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     }
     
+    public void newKitchenButtonListener(){
+    	newKitchenCreateButton.setVisible(true);
+    	newKitchenNameField.setVisible(true);
+    	newKitchenLabel.setVisible(true);
+    	newKitchenCancelButton.setVisible(true);
+    }
+    
+    public void newKitchenCreateButtonListener(){
+    	String name = newKitchenNameField.getText();
+    	if (name.length() == 0){
+    		newKitchenActionText.setText("Please enter a name.");
+    		newKitchenActionText.setVisible(true);
+    	} else if (_client.getKitchenNameSet().contains(name)){
+    		newKitchenActionText.setText("You've already got a kitchen with that name");
+    		newKitchenActionText.setVisible(true);
+    	} else {
+    		_client.setNewKitchen(name);
+    		_client.createNewKitchen(name);
+    	}
+    }
+    
     /**
      * Listener for new ingrenamedient box.
      */
@@ -948,6 +981,25 @@ public class Controller extends AnchorPane implements Initializable {
 	        assert newKitchenNameField != null : "fx:id=\"newKitchenNameField\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert newKitchenCreateButton != null : "fx:id=\"newKitchenCreateButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
 	        assert newKitchenLabel != null : "fx:id=\"newKitchenLabel\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newKitchenActionText != null : "fx:id=\"newKitchenActionText\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert newKitchenCancelButton != null : "fx:id=\"newKitchenCancelButton\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert recipeSearchTab != null : "fx:id=\"recipeSearchTab\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	        assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'CookingWithFriends.fxml'.";
+	}
+	
+	public void goToRecipeTab(){
+		tabPane.getSelectionModel().select(recipeSearchTab);
+	}
+	
+	public void addRtoEMode(){
+		if (!getRecipeChecksButton.isSelected()){
+			addRecipeEventSelector.setVisible(false);
+			addRecipeToEventButton.setVisible(false);
+		} else {
+			addRecipeEventSelector.setVisible(true);
+			addRecipeToEventButton.setVisible(true);
+		}
+		
 	}
 	
 	public void removeIngredients(){		
@@ -1109,10 +1161,41 @@ public class Controller extends AnchorPane implements Initializable {
 		
 	}
     
+	public void hideNewKitchenStuff(){
+		System.out.println("getting called");
+		newKitchenLabel.setVisible(false);
+		newKitchenNameField.setVisible(false);
+		newKitchenNameField.setText("");
+		newKitchenCreateButton.setVisible(false);
+		newKitchenActionText.setVisible(false);
+		newKitchenActionText.setText("");
+		newKitchenCancelButton.setVisible(false);
+	}
+	
 	public void displayKitchen(KitchenName kn){
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
+		//Clearing/hiding new kitchen stuff
+		hideNewKitchenStuff();
 		
 		_client.setCurrentKitchen(kn);
+		
+		//Making sure selector displays correctly
+		final String currentName = _client.getCurrentKitchen().getName();
+		final String currentId = _client.getCurrentKitchen().getID();
+		kitchenSelector.setValue(currentId);
+		kitchenSelector.setButtonCell(new ListCell<String>() {
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("why is this null");
+				} else {
+					//id.setText(kitchenIds.get(name).getName());
+					setText(currentName);
+				}
+			}
+		});
 		
 		Kitchen k = _client.getKitchens().get(kn);
 		
