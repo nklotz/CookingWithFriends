@@ -43,6 +43,7 @@ public class Request implements Serializable {
 	 * 15 = invite User ToKitchen
 	 * 16 = declineInvitation
 	 * 17 = add Ingredient to kitchen Event
+	 * 18 = change user password
 	 */
 	
 	

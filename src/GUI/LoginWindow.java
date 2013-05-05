@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import Email.Sender;
+
 import client.Client;
 
 import javafx.application.Platform;
@@ -98,12 +100,29 @@ public class LoginWindow extends JFrame{
         
         Button btn = new Button("Sign in");
         Button newAcct = new Button("Create Account");
+        Button passBtn = new Button("Forgot Password");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(newAcct);
         hbBtn.getChildren().add(btn);
+        hbBtn.getChildren().add(passBtn);
         grid.add(hbBtn, 1, 4);
-        
+        passBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent e){
+        		String email = userTextField.getText().trim();
+        		if(email!=null || email.trim().length()==0){
+        			String pass = String.valueOf(generateRandomPassword());
+        			String message = "Your new password is: " + pass;
+        			_client.changePassword(email, pass);
+        			System.out.println("SENDING EMAIL!!!!!!!!!!!!!!!!!!!!!!!!");
+            		Sender.send(email, message);
+        		}
+        		
+        	}
+        });
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
         	 
             @Override
@@ -148,6 +167,9 @@ public class LoginWindow extends JFrame{
     	return false;
     }
     
+    public int generateRandomPassword(){
+		return (int)(Math.random()*1000000);
+	}
     private Scene newAccount(){
     	_newAcct = true;
     	GridPane grid = new GridPane();

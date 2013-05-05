@@ -112,6 +112,14 @@ public class ClientHandler extends Thread {
 							case 16: //DECLINE INVITATION
 								System.out.println("DECLINED INVITATION IMPLEMENT!!!");
 								break;
+							//CHANGE THE PASSWORD.
+							case 18:
+								changePassword(request);
+								break;
+							//IS VALID USER NAME.	
+							case 19:
+								isValidUser(request);
+								break;
 							default:
 								updateKitchen(request);
 								break;
@@ -185,6 +193,11 @@ public class ClientHandler extends Thread {
 		}
 	}
 
+	private void changePassword(Request request){
+		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
+		_helper.changePassword(request.getUsername(), request.getPassword());
+	}
+	
 	public void getKitchen(Request request){
 		_taskPool.execute(new KitchenRequest(this, request.getKitchenID(), _activeKitchens));
 	}
@@ -218,10 +231,15 @@ public class ClientHandler extends Thread {
 		
 	}
 	
+	public boolean isValidUser(Request request){
+		return !_helper.validUser(request.getUsername());
+	}
+	
+	
     private static String toString( Serializable o ) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream( baos );
-        oos.writeObject( o );
+        oos.writeObject(o);
         oos.close();
         return new String( Base64.encode( baos.toByteArray() ) );
     }

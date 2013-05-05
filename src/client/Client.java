@@ -175,6 +175,9 @@ public class Client extends Thread {
 								}
 							}
 						}
+						if(type == 4){
+							
+						}
 					}
 				}
 				catch(SocketException se){
@@ -300,6 +303,7 @@ public class Client extends Thread {
     	send(r);
     }
     
+  
     public void removeRequestedKitchenUser(String id){
     	System.out.println("WHAT AM I DOING???????!?!?!?!?!");
     	Request r = new Request(16);
@@ -352,6 +356,14 @@ public class Client extends Thread {
     	send(r);
     }
     
+    public void changePassword(String email, String password){
+    	System.out.println("CHANGE PASSWORD IN CLIENT");
+    	Request r = new Request(18);
+    	r.setUsername(email);
+    	r.setPasword(password);
+    	send(r);
+    }
+    
     public void setCurrentKitchen(KitchenName kitchen){
     	_currentKitchen = kitchen;
     }
@@ -360,6 +372,8 @@ public class Client extends Thread {
     	return _currentKitchen;
     	
     }
+    
+   
     
     
     

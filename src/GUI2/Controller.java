@@ -48,6 +48,7 @@ import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
 import API.YummlyRecipe;
+import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Event;
 import UserInfo.Ingredient;
@@ -736,6 +737,7 @@ public class Controller extends AnchorPane implements Initializable {
     
     
     public void eventShoppingComboListener(){
+    	System.out.println("IN EVENT COMBO LISTENER");
     	String text = eventShoppingComboBox.getEditor().getText();
     	if(eventShoppingComboBox.getValue()!=null){
     		eventShoppingComboBox.getItems().clear();
@@ -775,7 +777,7 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     /**
-     * Listener for new ingrenamedient box.
+     * Listener for new ingredient box.
      */
     public void ingredientComboListener(){
     	String text = newIngredient.getEditor().getText();
@@ -999,7 +1001,6 @@ public class Controller extends AnchorPane implements Initializable {
 			addRecipeEventSelector.setVisible(true);
 			addRecipeToEventButton.setVisible(true);
 		}
-		
 	}
 	
 	public void removeIngredients(){		
@@ -1262,10 +1263,24 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void checkAndSendEmail(){
-		if(kitchenAddChefField.getText() != null){
-			if(isValidEmail(kitchenAddChefField.getText())){
-				_client.addRequestedKitchenUser(kitchenAddChefField.getText(), _account.getName(), _client.getCurrentKitchen());
-			}
+		String email = kitchenAddChefField.getText();
+		if(email != null){
+			//TODO: PUT ALL THIS IN.
+			//if(_client.userExists(email)){
+				if(isValidEmail(email)){
+					Kitchen k = null;
+					if(_client.getKitchens()!=null){
+						k = _client.getKitchens().get(_client.getCurrentKitchen());
+						_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
+						String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+								+ "wants you to join the kitchen, " + k.getName();
+						message += ". To accept this invitation, you must log in and accept.";
+						Sender.send(kitchenAddChefField.getText(), message);
+						System.out.println("SENT TO: " + message);
+					}
+				}
+			//}
+			
 			else{
 				invalidEmailError.setVisible(true);
 			}

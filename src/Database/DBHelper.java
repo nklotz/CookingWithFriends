@@ -164,6 +164,13 @@ public class DBHelper implements DBHelperInterface{
 		}
 	}
 	
+	/**
+	 * Changes the username to generate a random password.
+	 * @param username
+	 */
+	public void changePassword(String username, String password){
+		storeUsernamePassword(username, password);
+	}
 	
 	public void storeUsernamePassword(String username, String password){
 		String encryptedPassword = getEncrypted(password);
