@@ -49,14 +49,14 @@ public class GUI2Frame extends JFrame {
 		    }
 		});
 		
-		this.setSize(1280, 960);
+		this.setSize(1244, 961);
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1280, 960);
+    	this.setSize(1244, 961);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(1280,960));
+    	_panel.setPreferredSize(new java.awt.Dimension(1244, 961));
     	
     	_client = client;
     	_account = account;   	
