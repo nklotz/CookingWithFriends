@@ -108,6 +108,7 @@ public class DBHelper implements DBHelperInterface{
 			return (Account)getObjectFromString(s);
 			//System.out.println(cursor.next());
 		}
+		System.out.println("GET ACCOUNT RETURNING NULL");
 		return null;
 	}
 
@@ -179,7 +180,8 @@ public class DBHelper implements DBHelperInterface{
 		document.put("password", encryptedPassword);
 		//document.put("encryptKey", getEncryptedKey(password));
 		//Adds it if it doesn't exist  currently.
-		if(uniqueUsername(username)){
+		//if(uniqueUsername(username)){
+		if(!inDatabase(username)){
 			userPassCollection_.insert(document);
 		}
 		
@@ -195,18 +197,27 @@ public class DBHelper implements DBHelperInterface{
 	
 	@Override
 	public boolean checkUsernamePassword(String username, String password) {
+		System.out.println("IN DB CHECK USERNAME PASSWORD");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = userPassCollection_.find(searchQuery);
-		//Username doesn't exist in database.
-		if(!cursor.hasNext()){
-			return false;
-		}
-		else{
-			//System.out.println("next: " + cursor.next());
+		if(inDatabase(username)){
+			DBCursor cursor = userPassCollection_.find(searchQuery);
 			String storedPassword = cursor.next().get("password").toString();
 			return check(password, storedPassword);
 		}
+		else{
+			return false;
+		}
+//		DBCursor cursor = userPassCollection_.find(searchQuery);
+//		//Username doesn't exist in database.
+//		if(!cursor.hasNext()){
+//			return false;
+//		}
+//		else{
+//			//System.out.println("next: " + cursor.next());
+//			String storedPassword = cursor.next().get("password").toString();
+//			return check(password, storedPassword);
+//		}
 		//encode the password that you're given and check if it matches.
 	}
 	
@@ -266,21 +277,21 @@ public class DBHelper implements DBHelperInterface{
     	
     }
 	
-    /**
-     * Returns true if it is a valid username, ie if nobody already has that username.
-     */
-	public boolean uniqueUsername(String username){
-		System.out.println("IN DATABASE: " + username);
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("username", username);
-		DBCursor cursor = userPassCollection_.find(searchQuery);
-		System.out.println("CURSOR: " + cursor);
-		if(cursor.size() !=0) {
-			
-			return false;
-		}
-		return true;
-	}
+//    /**
+//     * Returns true if it is a valid username, ie if nobody already has that username.
+//     */
+//	public boolean uniqueUsername(String username){
+//		System.out.println("IN DATABASE: " + username);
+//		BasicDBObject searchQuery = new BasicDBObject();
+//		searchQuery.put("username", username);
+//		DBCursor cursor = userPassCollection_.find(searchQuery);
+//		System.out.println("CURSOR: " + cursor);
+//		if(cursor.size() !=0) {
+//			
+//			return false;
+//		}
+//		return true;
+//	}
 	
     /**
      * Returns true if it is a valid username, ie if nobody already has that username.
@@ -293,9 +304,10 @@ public class DBHelper implements DBHelperInterface{
 		DBCursor cursor = userPassCollection_.find(searchQuery);
 		System.out.println("CURSOR: " + cursor);
 		if(cursor.size() !=0) {
-			
+			System.out.println("REUTRNING TRUE");
 			return true;
 		}
+		System.out.println("RETURNING FALSE");
 		return false;
 	}
 	

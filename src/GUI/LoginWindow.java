@@ -118,7 +118,6 @@ public class LoginWindow extends JFrame{
         			String pass = String.valueOf(generateRandomPassword());
         			String message = "Your new password is: " + pass;
         			_client.changePassword(email, pass);
-        			System.out.println("SENDING EMAIL!!!!!!!!!!!!!!!!!!!!!!!!");
             		Sender.send(email, message);
         		}
         		_actiontarget.setFill(Color.BLACK);
@@ -165,7 +164,7 @@ public class LoginWindow extends JFrame{
     	String[] splitAt = email.split("@");
     	if(splitAt.length==2){
     		String[] splitDot = email.split("\\.");
-    		return (splitDot.length==2);
+    		return (splitDot.length>1);
     	}
     	return false;
     }
@@ -244,7 +243,13 @@ public class LoginWindow extends JFrame{
             	else{
             		try {
             			_actiontarget.setText("");
-    					_client.checkPassword(userTextField.getText(), pwBox.getText());
+            			if(isValidEmailStructure(userTextField.getText())){
+            				System.out.println("CHECKING PASSWORD");
+            				_client.checkPassword(userTextField.getText(), pwBox.getText());
+            			}
+            			else
+            				_actiontarget.setText("You must enter a valid email address.");
+    					
     				} catch (IOException e1) {
     					// TODO Auto-generated catch block
     					e1.printStackTrace();

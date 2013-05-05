@@ -91,6 +91,7 @@ public class Client extends Thread {
     public void checkPassword(String username, String password) throws IOException{
     	Request userPass;
     	if (_login.isNewAccount()){
+    		System.out.println("NEW ACCOUNT");
     		userPass = new Request(13);
     	} else {
     		userPass = new Request(1);

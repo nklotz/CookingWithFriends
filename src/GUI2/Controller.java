@@ -844,29 +844,23 @@ public class Controller extends AnchorPane implements Initializable {
     
     
     public void addSearchBoxListener(){
-    	System.out.println("ADD SEARCH LSITENER!!");
-    	disableRemoves(searchAdditionalList);
+    	//disableRemoves(searchAdditionalList);
     	//searchAdditionalList.getItems().clear();
     	
-    	String ing = searchAdditionalBox.getEditor().getText();
-    	
-    	if(ing!=null && ing.trim().length()!=0){
-    		System.out.println("ADDING: " + ing);
+    	//String ing = searchAdditionalBox.getEditor().getText();
+    	String ing = searchAdditionalBox.getValue();
+    	System.out.println("ADD SEARCH LSITENER!!: " + ing);
+    	if(ing!=null&&ing.trim().length()!=0){
     		_setOfAdditionalSearchIngs.add(ing);
-    		//SearchAdditionBox box = new SearchAdditionBox(ing);
-    		searchAdditionalList.getItems().clear();
-    		ObservableList<SearchAdditionBox> listItems = FXCollections.observableArrayList();  
-    		//searchAdditionalList.setItems(listItems);
-        	for(String i: _setOfAdditionalSearchIngs){
-        		SearchAdditionBox box = new SearchAdditionBox(i);
-        		listItems.add(box);
-        	}
-        	searchAdditionalList.setItems(listItems);
-    	}    	
+    		populateAddSearchBox();	
+    	}
+    		
+    	
     }
     
     
     public void addIngredientListener(){
+    	//System.out.println("add ingredient listener!: " + newIngredient.getValue());
     	//addFridgeIngredient
     	disableRemoves(fridgeList);
     	System.out.println("was removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
@@ -929,8 +923,8 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void searchComboListener(){
     	String text = searchAdditionalBox.getEditor().getText();
-
-    	if(searchAdditionalBox.getValue()!=null){
+    	System.out.println("SEARCH COMBO LISTENER: " + text);
+    	if(text!=null){
     		searchAdditionalBox.getItems().clear();
 	    	List<String> suggs = null;
 	    	if(text.trim().length()!=0){
@@ -942,7 +936,7 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     	else{
     		//TODO: WHY DOES THIS WORK FOR SHOPPING BUT NOT INGREDIENTS
-    		addSearchBoxListener();
+    		//addSearchBoxListener();
     	}
     }
     
@@ -1057,7 +1051,6 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void populateEventShoppingList(){
-    	System.out.println("IN POPULATE SHOPPING LIST!!!!!!!!!");
     	ObservableList<EventShoppingListBox> listItems = FXCollections.observableArrayList();  
     	eventShoppingList.getItems().clear();
     	String eventName = eventSelector.getValue();
@@ -1068,13 +1061,28 @@ public class Controller extends AnchorPane implements Initializable {
     		if(k!=null){
     			Event e = k.getEvent(new Event(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
-    				System.out.println("ADDING INGREDIENT: " + i);
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
     	    		eventShoppingList.setItems(listItems);
     	    	}
     		}
     	}
+    }
+    
+    public void populateAddSearchBox(){
+		System.out.println("POPULATING BOX");
+		//SearchAdditionBox box = new SearchAdditionBox(ing);
+		ObservableList<SearchAdditionBox> listItems = FXCollections.observableArrayList(); 
+		searchAdditionalList.setItems(listItems);
+		//searchAdditionalList.setItems(listItems);
+    	for(String i: _setOfAdditionalSearchIngs){
+    		if(i.trim().length()!=0){
+    			SearchAdditionBox box = new SearchAdditionBox(i);
+        		listItems.add(box);
+    		}
+    		
+    	}
+    	searchAdditionalList.setItems(listItems);
     }
     
     public void populateUserFridge(){
