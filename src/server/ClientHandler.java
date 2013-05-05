@@ -109,9 +109,6 @@ public class ClientHandler extends Thread {
 							case 15: //invite to kitchen
 								invite(request);
 								break;
-							case 16: //DECLINE INVITATION
-								System.out.println("DECLINED INVITATION IMPLEMENT!!!");
-								break;
 							//CHANGE THE PASSWORD.
 							case 18:
 								changePassword(request);

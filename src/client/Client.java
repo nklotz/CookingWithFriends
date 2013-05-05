@@ -160,8 +160,7 @@ public class Client extends Thread {
 							_gui.updateKitchenDropDown();
 							_gui.refreshSearchAccordian();
 							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
-								System.out.println("curr k: " + _currentKitchen);
-								System.out.println("is that the same as: " + k);
+								System.out.println("got Kitchen: " + k.getName());
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
 										System.out.println("new kitchen is gui's current!!!");
@@ -176,7 +175,10 @@ public class Client extends Thread {
 								}
 							}
 						}
-						if(type == 4){
+						else if(type == 3){
+							_gui.sendInvite(response.getInvitation());
+						}
+						else if(type == 4){
 							
 						}
 					}
@@ -308,7 +310,6 @@ public class Client extends Thread {
     
   
     public void removeRequestedKitchenUser(String id){
-    	System.out.println("WHAT AM I DOING???????!?!?!?!?!");
     	Request r = new Request(16);
     	r.setKitchenID(id);
     	r.setKitchenUserID(_id);
@@ -408,6 +409,14 @@ public class Client extends Thread {
     
     public HashMap<KitchenName, Kitchen> getKitchens(){
     	return _kitchens;
+    }
+    
+    public void removeKitchen(KitchenName kn){
+    	 _kitchens.remove(kn); 
+		 _kitchenIdToName = kitchenIdMap(_kitchens);
+		 _kitchenNames = kitchenNameSet(_kitchens);
+		 _gui.updateKitchenDropDown();
+		 _gui.refreshSearchAccordian();
     }
     
     public HashMap<String,KitchenName> getKitchenIdMap(){
