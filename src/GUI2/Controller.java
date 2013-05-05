@@ -586,6 +586,9 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 
 	public void initializeComboBoxes(){
+		kitchenSelector.getItems().clear();
+		eventSelector.getItems().clear();
+		eventShoppingComboBox.getItems().clear();
     	addRestrictionBar.getItems().clear();
     	newIngredient.getItems().clear();
     	addAllergyBar.getItems().clear();
@@ -689,7 +692,18 @@ public class Controller extends AnchorPane implements Initializable {
     	String name = eventShoppingComboBox.getValue();
     	if(name!=null){
     		if(name.trim().length()!=0){
-    			
+    			HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    			 
+    	    	if(kitchens!=null){
+    	    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    	    		if(k!=null){
+    	    			Event e = k.getEvent(new Event(eventSelector.getValue(), null, k));
+    	    		
+    	    			//_client.addShoppingIngredient(e, k.getID());
+    	    		}
+    	    			
+    	    	}
+    			//_client.addIngredientToShoppingList();
     		}
     	}
     }
@@ -852,8 +866,12 @@ public class Controller extends AnchorPane implements Initializable {
  
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    		Event e = k.getEvent(new Event(eventName, null, k));
+
+    		
     		if(k!=null){
+    			Event e = k.getEvent(new Event(eventName, null, k));
+
+
     			for(Recipe r: e.getMenuRecipes()){
     	    		EventMenuBox b = new EventMenuBox(r.getName());
     	    		listItems.add(b);
@@ -871,8 +889,8 @@ public class Controller extends AnchorPane implements Initializable {
  
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    		Event e = k.getEvent(new Event(eventName, null, k));
     		if(k!=null){
+    			Event e = k.getEvent(new Event(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
