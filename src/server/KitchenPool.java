@@ -83,6 +83,13 @@ public class KitchenPool {
 		}
 	}
 	
+	public void addRequestedUser(KitchenName kn, String userID){
+		System.out.println("adding requested user");
+		Kitchen k = _idToKitchen.get(kn.getID());
+		k.addRequestedUser(userID);
+		broadCastKitchen(k);
+	}
+	
 	/**
 	 * Returns an active kitchen
 	 */
@@ -93,6 +100,71 @@ public class KitchenPool {
 		return null;
 	}
 	
+	public void removeUserFromKitchen(String userID, String kID){
+		System.out.println("ermoving " + userID + " from " + kID);
+		
+		//removing a user from a kitchen
+		Kitchen k = _idToKitchen.get(kID);
+		
+		System.out.println("before: "+ k);
+		
+		//remove ingredients that user contributed
+		HashMap<Ingredient, HashSet<String>> imap = k.getIngredientsMap();
+		
+		HashSet<Ingredient> iToRemove = new HashSet<Ingredient>();
+		
+		for(Ingredient i: imap.keySet()){
+			HashSet users = imap.get(i);
+			if(users.contains(userID)){
+				iToRemove.add(i);
+			}
+		}
+		
+		for(Ingredient i: iToRemove){
+			k.removeIngredient(userID, i);
+		}
+		
+		//remove restrictions that user contributed
+		HashMap<String, HashSet<String>> dmap = k.getDietaryRestrictionsMap();
+		
+		HashSet<String> dToRemove = new HashSet<String>();
+
+		for(String d: dmap.keySet()){
+			HashSet users = dmap.get(d);
+			if(users.contains(userID)){
+				dToRemove.add(d);
+			}
+		}
+		
+		for(String d: dToRemove){
+			k.removeDietaryRestriction(d, userID);
+		}
+		
+		//remove allergies that user contributed
+		HashMap<String, HashSet<String>> amap = k.getAllergiesMap();
+		HashSet<String> aToRemove = new HashSet<String>();
+
+		for(String a: amap.keySet()){
+			HashSet users = amap.get(a);
+			if(users.contains(userID)){
+				aToRemove.add(a);
+			}
+		}
+		
+		for(String a: aToRemove){
+			k.removeAllergy(a, userID);
+		}
+		
+		k.removeActiveUser(userID);
+			
+		_userToKitchens.get(userID).remove(k.getKitchenName());
+
+		System.out.println("after: "+ k);
+		updateKitchenReferences(k);
+		broadCastKitchen(k);
+		
+	}
+	
 	
 	/**
 	 * Adds a kitchen and extracts users.
@@ -101,15 +173,8 @@ public class KitchenPool {
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
-		_userToKitchens = new HashMap<String, HashSet<KitchenName>>();
-		for(String user: kitchen.getActiveUsers()){
-			if(_userToKitchens.containsKey(user)){
-				_userToKitchens.get(user).add(kitchen.getKitchenName());
-			}
-		}
 		
-		_helper.storeKitchen(kitchen);
-		
+		KitchenName n = new KitchenName(kitchen.getName(), kitchen.getID());
 
 
 	}
@@ -119,6 +184,7 @@ public class KitchenPool {
 	 * active users
 	 */
 	public void addNewKitchen(Kitchen kitchen){
+		System.out.println("add new kitchen!!");
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		for(String u: kitchen.getActiveUsers()){
 			if(_userToKitchens.containsKey(u)){
@@ -252,7 +318,6 @@ public class KitchenPool {
 	  			break;
 	  		case 17:
 	  			Event e = k.getEvent(new Event(request.getEventName(), null, k));
-	  			System.out.println("E: " + e);
 	  			e.addShoppingIngredient(request.getIngredient());
 	  			k.addEvent(e);
 	  			break;

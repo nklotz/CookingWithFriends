@@ -173,8 +173,8 @@ public class Account implements Serializable {
 	 * Removes a kitchen from the user.
 	 * @param k Kitchen kitchen to remove.
 	 */
-	public void removeKitchen(String kID){
-		_kitchens.remove(kID);
+	public void removeKitchen(KitchenName kn){
+		_kitchens.remove(kn);
 	}
 	
 	/**

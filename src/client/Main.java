@@ -2,12 +2,14 @@ package client;
 
 import java.io.IOException;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import Email.Sender;
+
+//import sun.rmi.transport.Transport;
 
 public class Main {
 
 	public static void main(String[] args) {
+		//Sender.send("hannah_acheson-field@brown.edu", "Email message");
 		if (args.length != 2)
 			usage();
 		
@@ -29,6 +31,10 @@ public class Main {
 		System.exit(1);
 	}
 	
+	
+		
+
+
 }
 
 

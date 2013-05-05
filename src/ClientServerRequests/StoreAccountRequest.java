@@ -38,6 +38,9 @@ public class StoreAccountRequest implements Runnable {
 			case 5: // removed a allergy
 				_kitchens.removeUserAllergy(_account.getID(), _request.getRestrictAllergy());
 				break;
+			case 6:
+				System.out.println("type 6!");
+				_kitchens.removeUserFromKitchen(_account.getID(), _request.getKitchenID());
 			default:
 				break;
 		}

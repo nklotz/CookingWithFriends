@@ -12,12 +12,14 @@ public class NewKitchenRequest implements Runnable {
 	Request _request;
 	DBHelper _helper;
 	KitchenPool _kitchens;
+	Account _account;
 	
-	public NewKitchenRequest(ClientHandler ch, Request request, DBHelper helper, KitchenPool kitchens){
+	public NewKitchenRequest(ClientHandler ch, Request request, DBHelper helper, KitchenPool kitchens, Account account){
 		_ch = ch;
 		_request = request;
 		_helper = helper;
 		_kitchens = kitchens;
+		_account = account;
 	}
 	@Override
 	public void run() {
@@ -27,9 +29,11 @@ public class NewKitchenRequest implements Runnable {
 		k.setID(_helper.createKitchenId());
 		k.addActiveUser(_helper.getAccount(_ch.getID()));
 		
+		_account.addKitchen(k.getKitchenName());
+		_helper.storeAccount(_account);
 		toReturn.setKitchen(k);
 		
-		_kitchens.addKitchen(k);
+		_kitchens.addNewKitchen(k);
 		
 		_ch.send(toReturn);
 	}

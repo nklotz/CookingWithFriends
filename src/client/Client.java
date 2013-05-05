@@ -158,13 +158,14 @@ public class Client extends Thread {
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
 							_kitchenNames.add(k.getKitchenName().getName());
 							_gui.updateKitchenDropDown();
+							_gui.refreshSearchAccordian();
 							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
 								System.out.println("curr k: " + _currentKitchen);
 								System.out.println("is that the same as: " + k);
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
 										System.out.println("new kitchen is gui's current!!!");
-										//_gui.updateKitchen();
+										_gui.updateKitchen();
 									} else if (k.getKitchenName().getName().equals(_newKitchen)){
 										System.out.println("this is the new kitchen");
 										_gui.displayNewKitchen(k);
@@ -174,6 +175,9 @@ public class Client extends Thread {
 									_gui.displayNewKitchen(k);
 								}
 							}
+						}
+						if(type == 4){
+							
 						}
 					}
 				}
@@ -213,9 +217,10 @@ public class Client extends Thread {
 	 * 17 = add Ingredient to kitchen Event
 	 */
 
-    public void createNewKitchen(String kitchenName){
+    public void createNewKitchen(String kitchenName, Account account){
     	Request r = new Request(14);
     	r.setKitchenName(kitchenName);
+    	r.setAccount(account);
     	send(r);
     }
     
@@ -301,6 +306,7 @@ public class Client extends Thread {
     	send(r);
     }
     
+  
     public void removeRequestedKitchenUser(String id){
     	System.out.println("WHAT AM I DOING???????!?!?!?!?!");
     	Request r = new Request(16);
@@ -316,6 +322,7 @@ public class Client extends Thread {
      * 3--removed dietary restriction
      * 4--add allergy
      * 5--removed allergy
+     * 6--remove User from kitchen and vice versa
      */
     public void storeAccount(Account account, int type, String restricAl){
     	System.out.println("making account store of type: " + type);
@@ -332,6 +339,14 @@ public class Client extends Thread {
     	r.setAccount(account);
     	r.setChangeType(1);
     	r.setIngredient(ing);
+    	send(r);
+    }
+    
+    public void storeAccount(Account account, String kID){
+    	Request r = new Request(11);
+    	r.setAccount(account);
+    	r.setChangeType(6);
+    	r.setKitchenID(kID);
     	send(r);
     }
     
@@ -353,6 +368,14 @@ public class Client extends Thread {
     	send(r);
     }
     
+    public void changePassword(String email, String password){
+    	System.out.println("CHANGE PASSWORD IN CLIENT");
+    	Request r = new Request(18);
+    	r.setUsername(email);
+    	r.setPasword(password);
+    	send(r);
+    }
+    
     public void setCurrentKitchen(KitchenName kitchen){
     	_currentKitchen = kitchen;
     }
@@ -361,6 +384,8 @@ public class Client extends Thread {
     	return _currentKitchen;
     	
     }
+    
+   
     
     
     

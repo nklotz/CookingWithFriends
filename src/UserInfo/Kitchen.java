@@ -113,8 +113,16 @@ public class Kitchen implements Serializable, Nameable{
 		return _dietRestricts.keySet();
 	}
 	
+	public HashMap<String, HashSet<String>> getDietaryRestrictionsMap() {
+		return _dietRestricts;
+	}
+	
 	public Set<String> getAllergies() {
 		return _allergies.keySet();
+	}
+	
+	public HashMap<String, HashSet<String>> getAllergiesMap() {
+		return _allergies;
 	}
 	
 	public void addIngredient(String user, Ingredient ing) {

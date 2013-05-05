@@ -132,4 +132,13 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	public void refreshSearchAccordian(){
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.populateSearchIngredients();
+    		}
+		});
+	}
+	
 }
