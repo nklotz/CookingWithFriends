@@ -1351,7 +1351,7 @@ public class Controller extends AnchorPane implements Initializable {
 						super.updateItem(name, empty);
 						
 						if (name == null || empty) {
-							setText("why is this null");
+							setText("Select Kitchen");
 						} else {
 							//id.setText(kitchenIds.get(name).getName());
 							setText(kitchenIds.get(name).getName());
@@ -1384,7 +1384,7 @@ public class Controller extends AnchorPane implements Initializable {
 							super.updateItem(name, empty);
 							
 							if (name == null || empty) {
-								setText("why is this null");
+								setText("Select Kitchen");
 							} else {
 								//id.setText(kitchenIds.get(name).getName());
 								setText(kitchenIds.get(name).getName());
@@ -1507,6 +1507,9 @@ public class Controller extends AnchorPane implements Initializable {
 	public void sendInviteEmails(boolean userInDatabase){
 		String email = kitchenAddChefField.getText();
 		if(email != null){
+			//TODO: PUT ALL THIS IN.
+			//if(_client.userExists(email)){
+
 			if(isValidEmail(email)){
 				if(userInDatabase){
 					if(isValidEmail(email)){
@@ -1514,6 +1517,13 @@ public class Controller extends AnchorPane implements Initializable {
 						if(_client.getKitchens()!=null){
 							k = _client.getKitchens().get(_client.getCurrentKitchen());
 							_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
+							
+							//instant display update
+							Text t = new Text(kitchenAddChefField.getText() + " (pending)");
+							t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
+							t.setFill(Color.GRAY);
+							kitchenChefList.getItems().add(t);
+							
 							String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
 									+ "wants you to join the kitchen, " + k.getName();
 							message += ". To accept this invitation, you must log in and accept.";
@@ -1597,9 +1607,16 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void leaveKitchen(){
-		//System.out.println("leavvving");
+
+		System.out.println("leavvving");
+		_client.removeKitchen(_client.getCurrentKitchen());
+
 		_account.removeKitchen(_client.getCurrentKitchen());
 		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
+		kitchenSelector.setValue(null);
+		kitchenHide.setVisible(true);
+		_client.setCurrentKitchen(null);
+		
 	}
 	
 	public void populateInvitations(){
@@ -1607,9 +1624,15 @@ public class Controller extends AnchorPane implements Initializable {
 			invitationsList.getItems().clear();
 			HashMap<KitchenName, Invitation> invites = _account.getInvitions();
 			numberOfInvites.setText(Integer.toString(invites.size()));
-			//System.out.println("user has " + invites.size() + " invitations!!!");
-			for(KitchenName kn: _account.getInvitions().keySet()){
-				invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+
+			System.out.println("user has " + invites.size() + " invitations!!!");
+			if(invites.size()==0){
+				invitationsList.setVisible(false);
+			}
+			else{
+				for(KitchenName kn: _account.getInvitions().keySet()){
+					invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+				}
 			}
 		
 	}
@@ -1628,6 +1651,38 @@ public class Controller extends AnchorPane implements Initializable {
 				populateInvitations();
 			}
 		}
+	}
+	
+	public void displayMessages(String newText){
+		eventCommentDisplayField.setText("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?");
+		//TODO: thissss
+	}
+	
+	public void postMessage(){
+		String post = eventCommentWriteField.getText();
+		eventCommentWriteField.setText("");
+		String pre = "";
+		String mid = "";
+		String email = _account.getID();
+		String id = email.split("@")[0];
+		if (!_account.getName().equals("")){
+			mid = id + " (" + _account.getName() + "): ";
+		} else {
+			mid = id +": ";
+		}
+		if (eventCommentDisplayField.getText().length() != 0){
+			pre = eventCommentDisplayField.getText() + "\n";
+		}
+		eventCommentDisplayField.setText(pre + mid + post);
+		String forServer = mid+post;
+		//TODO: post forServer to server
+	}
+
+	public void recieveInvite(Invitation invitation) {
+		_account.addInvitation(invitation);
+		_client.storeAccount(_account);
+		populateInvitations();
+		
 	}
 
 }

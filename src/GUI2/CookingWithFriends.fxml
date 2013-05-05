@@ -167,7 +167,7 @@
                     <Text layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Menu" />
                     <Pane layoutX="284.0" layoutY="119.0" prefHeight="307.0" prefWidth="251.171875" styleClass="text">
                       <children>
-                        <ComboBox id="newIngredient" fx:id="eventShoppingComboBox" editable="true" layoutX="0.0" layoutY="-1.0" minHeight="15.1328125" onAction="#addEventShoppingIngredientListener" onInputMethodTextChanged="#eventShoppingComboListener" onKeyPressed="#eventShoppingComboListener" onKeyReleased="#eventShoppingComboListener" onKeyTyped="#eventShoppingComboListener" prefHeight="18.624900000002526" prefWidth="254.0001220703125" promptText="New Ingredient">
+                        <ComboBox id="newIngredient" fx:id="eventShoppingComboBox" editable="true" layoutX="14.0" layoutY="14.0" minHeight="15.1328125" onAction="#addEventShoppingIngredientListener" onInputMethodTextChanged="#eventShoppingComboListener" onKeyPressed="#eventShoppingComboListener" onKeyReleased="#eventShoppingComboListener" onKeyTyped="#eventShoppingComboListener" prefHeight="18.624900000002526" prefWidth="224.0" promptText="New Ingredient">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -184,16 +184,16 @@
                     <Pane layoutX="14.0" layoutY="463.0" prefHeight="286.0" prefWidth="520.0" styleClass="text">
                       <children>
                         <TextArea fx:id="eventCommentWriteField" editable="true" layoutX="14.0" layoutY="181.0" prefHeight="51.0" prefWidth="492.0" promptText="Write something here!" wrapText="true" />
-                        <Button fx:id="eventCommentPostButton" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Post" />
+                        <Button fx:id="eventCommentPostButton" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" onAction="#postMessage" prefHeight="26.3125" prefWidth="90.632568359375" text="Post" />
                         <TextArea fx:id="eventCommentDisplayField" editable="false" layoutX="15.0" layoutY="15.0" prefHeight="145.0" prefWidth="483.9999000000025" promptText="No comments yet..." wrapText="true" />
                       </children>
                     </Pane>
                     <Text layoutX="14.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Comments" />
-                    <ListView fx:id="eventShoppingList" layoutX="297.0" layoutY="177.0" prefHeight="245.9998779296875" prefWidth="224.0" />
-                    <Label id="" fx:id="eventLabel" layoutX="274.0" layoutY="14.0" prefWidth="192.0000084472631" text="Create New Event" />
+                    <ListView fx:id="eventShoppingList" layoutX="298.0" layoutY="200.0" prefHeight="211.85137939453125" prefWidth="224.0" />
+                    <Label id="" fx:id="eventLabel" layoutX="276.0" layoutY="11.0" prefWidth="192.0000084472631" styleClass="infoHeader" text="Create New Event" />
                     <Label id="" fx:id="nameEventLabel" layoutX="274.0" layoutY="29.0" prefWidth="53.0000084472631" text="Name:" />
                     <TextArea id="eventCommentDisplayField" fx:id="createEventField" editable="true" layoutX="327.0" layoutY="28.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
-                    <Button id="addIngre" fx:id="createEventButton" layoutX="482.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#createEventListener" prefHeight="26.10624885559082" prefWidth="62.538857324216224" text="Create" />
+                    <Button id="addIngre" fx:id="createEventButton" layoutX="489.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#createEventListener" prefHeight="26.106148855593347" prefWidth="62.538857324216224" text="Create" />
                     <TextArea id="eventCommentDisplayField" fx:id="createDateField" editable="true" layoutX="327.0" layoutY="58.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
                     <Label id="" layoutX="278.0" layoutY="63.0" prefWidth="45.1248863769506" text="Date:" />
                   </children>

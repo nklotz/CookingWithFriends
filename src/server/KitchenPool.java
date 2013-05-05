@@ -314,6 +314,7 @@ public class KitchenPool {
 	  			//k.addRequestedUser(request.getUsername());
 	  			break;
 	  		case 16:
+	  			System.out.println("CASE 16");
 	  			k.removeRequestedUser(request.getUsername());
 	  			break;
 	  		case 17:

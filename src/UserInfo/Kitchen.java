@@ -94,6 +94,7 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeRequestedUser(String user){
+		System.out.println("removing requested User!");
 		_requestedUsers.remove(user);
 	}
 	

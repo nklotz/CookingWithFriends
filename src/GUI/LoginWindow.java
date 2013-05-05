@@ -119,7 +119,8 @@ public class LoginWindow extends JFrame{
         			System.out.println("SENDING EMAIL!!!!!!!!!!!!!!!!!!!!!!!!");
             		Sender.send(email, message);
         		}
-        		
+        		_actiontarget.setFill(Color.BLACK);
+        		_actiontarget.setText("We have sent you an email with a new password.");
         	}
         });
 

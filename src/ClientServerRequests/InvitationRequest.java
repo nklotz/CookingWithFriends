@@ -24,11 +24,10 @@ public class InvitationRequest implements Runnable {
 	}
 	@Override
 	public void run() {
-		RequestReturn toReturn = new RequestReturn(3);
-		toReturn.setInvitation(_invite);
 		
-		if(_clients.isActiveClient(_invite.getToID())){
-			System.out.println("CLIENT IS ACTIVE OIJEWROIJEWR IJOW. i shat myself");
+		if(_clients.isActiveClient(_invite.getToID())){		
+			System.out.println("CLIENT IS ACTIVE ");
+			_clients.sendInviteToClient(_invite);
 		}
 		else{
 			System.out.println("invitinggggg");
