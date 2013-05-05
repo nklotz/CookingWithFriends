@@ -1341,7 +1341,7 @@ public class Controller extends AnchorPane implements Initializable {
 						super.updateItem(name, empty);
 						
 						if (name == null || empty) {
-							setText("why is this null");
+							setText("Select Kitchen");
 						} else {
 							//id.setText(kitchenIds.get(name).getName());
 							setText(kitchenIds.get(name).getName());
@@ -1374,7 +1374,7 @@ public class Controller extends AnchorPane implements Initializable {
 							super.updateItem(name, empty);
 							
 							if (name == null || empty) {
-								setText("why is this null");
+								setText("Select Kitchen");
 							} else {
 								//id.setText(kitchenIds.get(name).getName());
 								setText(kitchenIds.get(name).getName());
@@ -1497,6 +1497,9 @@ public class Controller extends AnchorPane implements Initializable {
 	public void sendInviteEmails(boolean userInDatabase){
 		String email = kitchenAddChefField.getText();
 		if(email != null){
+			//TODO: PUT ALL THIS IN.
+			//if(_client.userExists(email)){
+
 			if(isValidEmail(email)){
 				if(userInDatabase){
 					if(isValidEmail(email)){
@@ -1504,6 +1507,13 @@ public class Controller extends AnchorPane implements Initializable {
 						if(_client.getKitchens()!=null){
 							k = _client.getKitchens().get(_client.getCurrentKitchen());
 							_client.addRequestedKitchenUser(email, _account.getName(), _client.getCurrentKitchen());
+							
+							//instant display update
+							Text t = new Text(kitchenAddChefField.getText() + " (pending)");
+							t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
+							t.setFill(Color.GRAY);
+							kitchenChefList.getItems().add(t);
+							
 							String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
 									+ "wants you to join the kitchen, " + k.getName();
 							message += ". To accept this invitation, you must log in and accept.";
@@ -1587,9 +1597,16 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void leaveKitchen(){
-		//System.out.println("leavvving");
+
+		System.out.println("leavvving");
+		_client.removeKitchen(_client.getCurrentKitchen());
+
 		_account.removeKitchen(_client.getCurrentKitchen());
 		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
+		kitchenSelector.setValue(null);
+		kitchenHide.setVisible(true);
+		_client.setCurrentKitchen(null);
+		
 	}
 	
 	public void populateInvitations(){
@@ -1597,9 +1614,15 @@ public class Controller extends AnchorPane implements Initializable {
 			invitationsList.getItems().clear();
 			HashMap<KitchenName, Invitation> invites = _account.getInvitions();
 			numberOfInvites.setText(Integer.toString(invites.size()));
-			//System.out.println("user has " + invites.size() + " invitations!!!");
-			for(KitchenName kn: _account.getInvitions().keySet()){
-				invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+
+			System.out.println("user has " + invites.size() + " invitations!!!");
+			if(invites.size()==0){
+				invitationsList.setVisible(false);
+			}
+			else{
+				for(KitchenName kn: _account.getInvitions().keySet()){
+					invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+				}
 			}
 		
 	}
@@ -1618,6 +1641,13 @@ public class Controller extends AnchorPane implements Initializable {
 				populateInvitations();
 			}
 		}
+	}
+
+	public void recieveInvite(Invitation invitation) {
+		_account.addInvitation(invitation);
+		_client.storeAccount(_account);
+		populateInvitations();
+		
 	}
 
 }

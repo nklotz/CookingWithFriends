@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import UserInfo.Invitation;
+
 import ClientServerRequests.RequestReturn;
 
 /**
@@ -90,5 +92,14 @@ public class ClientPool {
 	
 	public boolean isActiveClient(String id){
 		return _ids.containsKey(id);
+	}
+	
+	public void sendInviteToClient(Invitation invite){
+		RequestReturn toReturn = new RequestReturn(3);
+		toReturn.setInvitation(invite);
+		ClientHandler ch = _ids.get(invite.getToID());
+		if(ch!= null){
+			ch.send(toReturn);
+		}
 	}
 }

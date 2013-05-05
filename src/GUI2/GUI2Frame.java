@@ -19,6 +19,7 @@ import API.Wrapper;
 import API.YummlyAPIWrapper;
 import GUI.GUIScene;
 import UserInfo.Account;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import client.Client;
@@ -144,6 +145,15 @@ public class GUI2Frame extends JFrame {
     		@Override
     		public void run() {
     			_controller.populateSearchIngredients();
+    		}
+		});
+	}
+
+	public void sendInvite(final Invitation invitation) {
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.recieveInvite(invitation);
     		}
 		});
 	}
