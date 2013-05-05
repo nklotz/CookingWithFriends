@@ -44,7 +44,7 @@ public class Sender {
 		                               new InternetAddress(to));
 	
 	      // Set Subject: header field
-	  message.setSubject("This is the Subject Line!");
+	  message.setSubject("Message from Cooking with Friends.");
 	
 	  // Now set the actual message
 	  message.setText(emailMessage);

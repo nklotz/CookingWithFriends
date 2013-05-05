@@ -22,13 +22,14 @@ public class RequestReturn implements Serializable {
 	private Invitation _invite;
 	private AutocorrectEngines _info;
 	private Wrapper _wrapper;
+	private boolean _userInDatabase;		//Whether or not the user already exists in the database.
 	
 	/*
 	 * Types:
 	 *   1 -- Password Check (extract getCorrect())
 	 *   2 -- Singular Kitchen (extract getKitchen)
 	 *   3 -- Invitation
-	 *   4 -- Invalid user.
+	 *   4 -- Valid user.
 	 */
 	
 	public RequestReturn(int type){
@@ -37,6 +38,14 @@ public class RequestReturn implements Serializable {
 	
 	public int getType(){
 		return _type;
+	}
+	
+	public boolean getUserInDatabase(){
+		return _userInDatabase;
+	}
+	
+	public void setUserInDatabase(boolean valid){
+		_userInDatabase = valid;
 	}
 	
 	public void setCorrect(boolean correct){
