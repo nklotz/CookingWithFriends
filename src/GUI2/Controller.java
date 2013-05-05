@@ -190,6 +190,9 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Pane inviteBigPane;
     
+    @FXML ComboBox<String> searchAdditionalBox;
+    @FXML ListView<SearchAdditionBox> searchAdditionalList;
+    
     //Local Data
     private Client _client;
     private Account _account;
@@ -198,6 +201,7 @@ public class Controller extends AnchorPane implements Initializable {
     private Wrapper _api;
     private String _currentEventName;
     private KitchenPane _currentKitchenPane;
+    private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
     
     
     @FXML
@@ -231,6 +235,33 @@ public class Controller extends AnchorPane implements Initializable {
     		});
     	}
     }
+    
+    private class SearchAdditionBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	
+    	public SearchAdditionBox(String display){
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    
+    	}
+    	
+    	public void remove(){
+    		Ingredient ing = new Ingredient(_toDisplay);
+    		//_account.removeShoppingIngredient(ing);
+    		//_client.storeAccount(_account);
+    		ObservableList<SearchAdditionBox> listItems = searchAdditionalList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
+    
     
     private class EventMenuBox extends GuiBox{
     	protected String _toDisplay;
@@ -682,6 +713,7 @@ public class Controller extends AnchorPane implements Initializable {
     	newIngredient.getItems().clear();
     	addAllergyBar.getItems().clear();
     	addShoppingIngredient.getItems().clear();
+    	searchAdditionalBox.getItems().clear();
     	addRestrictionBar.getItems().addAll("Vegan", "Lacto vegetarian", "Ovo vegetarian", 
     			"Pescetarian", "Lacto-ovo vegetarian");
     	addAllergyBar.getItems().addAll("Wheat-Free", "Gluten-Free", "Peanut-Free", 
@@ -794,6 +826,30 @@ public class Controller extends AnchorPane implements Initializable {
     	loadEvent();
     }
     
+    
+    public void addSearchBoxListener(){
+    	System.out.println("ADD SEARCH LSITENER!!");
+    	disableRemoves(searchAdditionalList);
+    	//searchAdditionalList.getItems().clear();
+    	
+    	String ing = searchAdditionalBox.getEditor().getText();
+    	
+    	if(ing!=null && ing.trim().length()!=0){
+    		System.out.println("ADDING: " + ing);
+    		_setOfAdditionalSearchIngs.add(ing);
+    		//SearchAdditionBox box = new SearchAdditionBox(ing);
+    		searchAdditionalList.getItems().clear();
+    		ObservableList<SearchAdditionBox> listItems = FXCollections.observableArrayList();  
+    		//searchAdditionalList.setItems(listItems);
+        	for(String i: _setOfAdditionalSearchIngs){
+        		SearchAdditionBox box = new SearchAdditionBox(i);
+        		listItems.add(box);
+        	}
+        	searchAdditionalList.setItems(listItems);
+    	}    	
+    }
+    
+    
     public void addIngredientListener(){
     	//addFridgeIngredient
     	disableRemoves(fridgeList);
@@ -852,6 +908,25 @@ public class Controller extends AnchorPane implements Initializable {
     	} else {
     		_client.setNewKitchen(name);
     		_client.createNewKitchen(name, _account);
+    	}
+    }
+    
+    public void searchComboListener(){
+    	String text = searchAdditionalBox.getEditor().getText();
+
+    	if(searchAdditionalBox.getValue()!=null){
+    		searchAdditionalBox.getItems().clear();
+	    	List<String> suggs = null;
+	    	if(text.trim().length()!=0){
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+	    	}
+	    	if(suggs!=null){
+	    		searchAdditionalBox.getItems().addAll(suggs);
+	    	}
+    	}
+    	else{
+    		//TODO: WHY DOES THIS WORK FOR SHOPPING BUT NOT INGREDIENTS
+    		addSearchBoxListener();
     	}
     }
     
@@ -1428,7 +1503,7 @@ public class Controller extends AnchorPane implements Initializable {
 					pop.setWidth(100);
 					pop.setHeight(100);
 					pop.show(inviteBigPane, 100, 100);
-					pop.setAutoHide(false);
+					pop.setAutoHide(true);
 					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
 					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
 							+ " them to join?");
