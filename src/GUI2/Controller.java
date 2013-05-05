@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -686,14 +685,20 @@ public class Controller extends AnchorPane implements Initializable {
     	    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
     	    		if(k!=null){
     	    			Event e = k.getEvent(new Event(eventSelector.getValue(), null, k));
-    	    		
+    	    			Ingredient i = new Ingredient(eventShoppingComboBox.getValue());
+    	    			_client.addIngToEventShopping(eventSelector.getValue(), k.getID(), i);
+    	    			System.out.println("GOT :LWKEJRFL:SDJKFL:SDKJF:LSKDJFL:KSDJFL:KSDF:JK");
+    	    			System.out.println("GOT HEREEEE");
+    	    			
     	    			//_client.addShoppingIngredient(e, k.getID());
     	    		}
     	    			
     	    	}
     			//_client.addIngredientToShoppingList();
     		}
+    		
     	}
+    	loadEvent();
     }
     
     public void addIngredientListener(){
