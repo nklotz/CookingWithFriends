@@ -123,12 +123,12 @@
                 <Label layoutX="858.0" layoutY="80.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
                 <Label layoutX="59.0" layoutY="520.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
                 <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
-                <ImageView fx:id="envelope" fitHeight="39.999996185302734" fitWidth="57.99935805761338" layoutX="351.0" layoutY="26.0" onMouseClicked="#displayInvitations" pickOnBounds="true" preserveRatio="true" smooth="true">
+                <ImageView fx:id="envelope" fitHeight="39.999996185302734" fitWidth="57.99935805761338" layoutX="352.0" layoutY="26.0" onMouseClicked="#displayInvitations" pickOnBounds="true" preserveRatio="true" smooth="true">
                   <image>
                     <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="false" />
                   </image>
                 </ImageView>
-                <Label fx:id="numberOfInvites" layoutX="375.0" layoutY="30.0" prefHeight="19.0" prefWidth="12.3333740234375" text="0">
+                <Label fx:id="numberOfInvites" layoutX="375.0" layoutY="30.0" prefHeight="20.999908447265625" prefWidth="12.999900000002526" text="0">
                   <font>
                     <Font name="Verdana Bold" size="15.0" />
                   </font>
@@ -297,16 +297,39 @@
               <children>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Accordion expandedPane="$null" layoutX="24.0" layoutY="69.0" />
-                <Pane layoutX="52.0" layoutY="107.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
+                <Pane layoutX="52.0" layoutY="106.0" prefHeight="815.0" prefWidth="337.0" styleClass="section">
                   <children>
-                    <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="14.0" minWidth="157.0" prefHeight="787.0" prefWidth="309.0" />
+                    <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="37.0" minWidth="157.0" prefHeight="485.1399756835963" prefWidth="308.9999000000025" />
+                    <ComboBox id="newIngredient" fx:id="searchAdditionalBox" editable="true" layoutX="17.0" layoutY="596.0" onAction="#addIngredientListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefWidth="303.0" promptText="New Ingredient">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <ListView id="fridgeList" fx:id="searchAdditionalList" layoutX="17.0" layoutY="653.0" prefHeight="136.0" prefWidth="303.0">
+                      <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                          </items>
+                        </ContextMenu>
+                      </contextMenu>
+                    </ListView>
+                    <Text layoutX="17.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Select a kitchen" />
+                    <Text layoutX="15.0" layoutY="539.0" scaleX="1.0" scaleY="0.9999867837301142" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: italic;&#10;-fx-font-size: 0.9em&#10;" text="Dietary restrictions and allergies for the selected kitchen will be included in your search." textAlignment="LEFT" wrappingWidth="300.0" />
+                    <Text layoutX="14.0" layoutY="591.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Supplemental Ingredients" />
+                    <Button id="addIngre" fx:id="searchAdditionalAdd" layoutX="278.0" layoutY="621.0" mnemonicParsing="false" onMouseClicked="#addIngredientListener" text="Add" />
+                    <CheckBox id="removeFridgeIngredient" fx:id="searchAdditionalRemove" layoutX="17.0" layoutY="626.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
                   </children>
                 </Pane>
-                <Label layoutX="52.0" layoutY="87.0" styleClass="sectionHeader" text="Ingredients" />
-                <Pane layoutX="459.0" layoutY="107.0" prefHeight="53.0" prefWidth="728.0" styleClass="section">
+                <Label layoutX="52.0" layoutY="83.0" styleClass="sectionHeader" text="Ingredients" />
+                <Pane layoutX="459.0" layoutY="107.0" prefHeight="77.0" prefWidth="728.0" styleClass="section">
                   <children>
-                    <Button fx:id="searchButton" layoutX="658.0" layoutY="14.0" mnemonicParsing="false" text="Search" />
-                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="631.0" />
+                    <Button fx:id="searchButton" layoutX="644.0" layoutY="22.0" mnemonicParsing="false" prefHeight="32.10624885559082" prefWidth="70.0" text="Search" />
+                    <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="612.0" promptText="What are you looking for?" styleClass="" />
                   </children>
                 </Pane>
                 <Pane layoutX="459.0" layoutY="262.0" prefHeight="660.0" prefWidth="728.0" styleClass="section">
@@ -324,7 +347,7 @@
                 </Pane>
                 <Label layoutX="459.0" layoutY="87.0" styleClass="sectionHeader" text="Search" />
                 <Label layoutX="462.0" layoutY="243.0" styleClass="sectionHeader" text="Results" />
-                <Label fx:id="NoSearchResults" layoutX="462.0" layoutY="169.0" prefHeight="74.0" prefWidth="650.0" text="No Search Results :(" textFill="WHITE" visible="false" wrapText="true">
+                <Label fx:id="NoSearchResults" layoutX="462.0" layoutY="194.0" prefHeight="49.0" prefWidth="650.0" text="No Search Results :(" textFill="WHITE" visible="false" wrapText="true">
                   <font>
                     <Font name="Shlop" size="13.0" />
                   </font>
