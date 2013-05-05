@@ -160,8 +160,7 @@ public class Client extends Thread {
 							_gui.updateKitchenDropDown();
 							_gui.refreshSearchAccordian();
 							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
-								System.out.println("curr k: " + _currentKitchen);
-								System.out.println("is that the same as: " + k);
+								System.out.println("got Kitchen: " + k.getName());
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
 										System.out.println("new kitchen is gui's current!!!");
@@ -176,7 +175,15 @@ public class Client extends Thread {
 								}
 							}
 						}
-						if(type == 4){
+						else if(type == 3){
+							_gui.sendInvite(response.getInvitation());
+						}
+						else if(type == 4){
+							System.out.println("TYPE IS 19 IN CLIENT");
+							//If the user exists, then it is not a valid user.
+							boolean userInDatabase = (response.getUserInDatabase());
+							_gui.sendEmail(userInDatabase);
+
 							
 						}
 					}
@@ -224,6 +231,7 @@ public class Client extends Thread {
     	send(r);
     }
     
+    
     public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
     	System.out.println("sending event ing request");
     	Request r = new Request(17);
@@ -236,6 +244,12 @@ public class Client extends Thread {
     public void getKitchen(String id){
     	Request r = new Request(2);
     	r.setKitchenID(id);
+    	send(r);
+    }
+    
+    public void userInDatabase(String username){
+    	Request r = new Request(19);
+    	r.setUsername(username);
     	send(r);
     }
     
@@ -308,22 +322,13 @@ public class Client extends Thread {
     
   
     public void removeRequestedKitchenUser(String id){
-    	System.out.println("WHAT AM I DOING???????!?!?!?!?!");
     	Request r = new Request(16);
     	r.setKitchenID(id);
     	r.setKitchenUserID(_id);
     	send(r);
     }
     
-    
-    /**
-     * Types:
-     * 2--Added dietary restriction
-     * 3--removed dietary restriction
-     * 4--add allergy
-     * 5--removed allergy
-     * 6--remove User from kitchen and vice versa
-     */
+  
     public void storeAccount(Account account, int type, String restricAl){
     	System.out.println("making account store of type: " + type);
     	System.out.println("change item: " + restricAl);
@@ -408,6 +413,14 @@ public class Client extends Thread {
     
     public HashMap<KitchenName, Kitchen> getKitchens(){
     	return _kitchens;
+    }
+    
+    public void removeKitchen(KitchenName kn){
+    	 _kitchens.remove(kn); 
+		 _kitchenIdToName = kitchenIdMap(_kitchens);
+		 _kitchenNames = kitchenNameSet(_kitchens);
+		 _gui.updateKitchenDropDown();
+		 _gui.refreshSearchAccordian();
     }
     
     public HashMap<String,KitchenName> getKitchenIdMap(){

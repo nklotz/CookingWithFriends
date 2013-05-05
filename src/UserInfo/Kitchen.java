@@ -48,8 +48,8 @@ public class Kitchen implements Serializable, Nameable{
 	 */
 	public Event getEvent(Event event){
 		for(Event e: _events){
-			System.out.println("comparing " + event + " and " + e);
-			System.out.println("comparing k: " + event.getKitchen().hashCode() + " n: " + event.getName().hashCode() + " to k: " + e.getKitchen().getID()+ " n: " + event.getName().hashCode());
+		//	System.out.println("comparing " + event + " and " + e);
+		//	System.out.println("comparing k: " + event.getKitchen().hashCode() + " n: " + event.getName().hashCode() + " to k: " + e.getKitchen().getID()+ " n: " + event.getName().hashCode());
 			if(e.equals(event))
 				return e;
 		}
@@ -94,6 +94,7 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeRequestedUser(String user){
+		System.out.println("removing requested User!");
 		_requestedUsers.remove(user);
 	}
 	

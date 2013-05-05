@@ -269,11 +269,12 @@ public class DBHelper implements DBHelperInterface{
     /**
      * Returns true if it is a valid username, ie if nobody already has that username.
      */
-	@Override
 	public boolean uniqueUsername(String username){
+		System.out.println("IN DATABASE: " + username);
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userPassCollection_.find(searchQuery);
+		System.out.println("CURSOR: " + cursor);
 		if(cursor.size() !=0) {
 			
 			return false;
@@ -283,19 +284,37 @@ public class DBHelper implements DBHelperInterface{
 	
     /**
      * Returns true if it is a valid username, ie if nobody already has that username.
-     * An active user that is already in the database. Does the opposite of 
-     * uniqueUsername.
      */
-	public boolean validUser(String username){
+	@Override
+	public boolean inDatabase(String username){
+		System.out.println("IN DATABASE: " + username);
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
-		DBCursor cursor = kitchenCollection_.find(searchQuery);
-		
-		if(cursor.hasNext()) {
+		DBCursor cursor = userPassCollection_.find(searchQuery);
+		System.out.println("CURSOR: " + cursor);
+		if(cursor.size() !=0) {
+			
 			return true;
 		}
 		return false;
 	}
+	
+	
+    /**
+     * Returns true if it is a valid username, ie if nobody already has that username.
+     * An active user that is already in the database. Does the opposite of 
+     * uniqueUsername.
+     */
+	/*public boolean validUser(String username){
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("username", username);
+		//DBCursor cursor = kitchenCollection_.find(searchQuery);
+		DBCursor cursor = userPassCollection_.find(searchQuery);
+		if(cursor.hasNext()) {
+			return true;
+		}
+		return false;
+	}*/
 	
 	
 	

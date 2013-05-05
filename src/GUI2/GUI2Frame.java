@@ -19,6 +19,7 @@ import API.Wrapper;
 import API.YummlyAPIWrapper;
 import GUI.GUIScene;
 import UserInfo.Account;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import client.Client;
@@ -48,14 +49,14 @@ public class GUI2Frame extends JFrame {
 		    }
 		});
 		
-		this.setSize(1280, 960);
+		this.setSize(1244, 961);
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1280, 960);
+    	this.setSize(1244, 961);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(1280,960));
+    	_panel.setPreferredSize(new java.awt.Dimension(1244, 961));
     	
     	_client = client;
     	_account = account;   	
@@ -89,6 +90,17 @@ public class GUI2Frame extends JFrame {
 					e.printStackTrace();
 				}
     	
+    		}
+		});
+	}
+	
+	public void sendEmail(final boolean userInDatabase){
+		System.out.println("CALLED UPDATE KITCHEN");
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			//Displays the message asking if the user actually wants to invite the user.
+    			_controller.sendInviteEmails(userInDatabase);
     		}
 		});
 	}
@@ -137,6 +149,15 @@ public class GUI2Frame extends JFrame {
     		@Override
     		public void run() {
     			_controller.populateSearchIngredients();
+    		}
+		});
+	}
+
+	public void sendInvite(final Invitation invitation) {
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.recieveInvite(invitation);
     		}
 		});
 	}

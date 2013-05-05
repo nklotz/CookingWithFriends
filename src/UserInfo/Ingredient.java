@@ -83,6 +83,11 @@ public class Ingredient implements Nameable, Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Ingredient [_name=" + _name + "]";
+	}
 	
 	
 

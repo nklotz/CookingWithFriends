@@ -109,16 +109,14 @@ public class ClientHandler extends Thread {
 							case 15: //invite to kitchen
 								invite(request);
 								break;
-							case 16: //DECLINE INVITATION
-								System.out.println("DECLINED INVITATION IMPLEMENT!!!");
-								break;
 							//CHANGE THE PASSWORD.
 							case 18:
 								changePassword(request);
 								break;
 							//IS VALID USER NAME.	
 							case 19:
-								isValidUser(request);
+								System.out.println("CASE 19 USER IN DATABASE");
+								userInDatabase(request);
 								break;
 							default:
 								updateKitchen(request);
@@ -231,8 +229,14 @@ public class ClientHandler extends Thread {
 		
 	}
 	
-	public boolean isValidUser(Request request){
-		return !_helper.validUser(request.getUsername());
+	public void userInDatabase(Request request){
+		
+		boolean inDB = _helper.inDatabase(request.getUsername());
+		System.out.println("USER IN DATABASE CLIENT HANDLER: " + inDB);
+		//If it's a unique user ie if it's not already in the data base.
+		RequestReturn req = new RequestReturn(4);
+		req.setUserInDatabase(inDB);
+		send(req);
 	}
 	
 	
