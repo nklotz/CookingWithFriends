@@ -29,10 +29,8 @@ public class GUI2Frame extends JFrame {
 	private Client _client;
 	private JFXPanel _panel;
 	private Account _account;
-	private GUIScene _kitchenScene, _homeScene, _searchScene, _recipeScene;
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
-	private Wrapper _api;
 	private Controller _controller;
 	
 	public GUI2Frame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
@@ -48,21 +46,19 @@ public class GUI2Frame extends JFrame {
 		    }
 		});
 		
-		this.setSize(1244, 961);
+		this.setSize(1280, 980);
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1244, 961);
+    	this.setSize(1280, 980);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(1244, 961));
+    	_panel.setPreferredSize(new java.awt.Dimension(1280, 980));
     	
     	_client = client;
     	_account = account;   	
     	_engines = engines;
-    	_kitchens = kitchens;
-    	_api = new YummlyAPIWrapper();
-    	
+    	_kitchens = kitchens;    	
     	
     	Platform.runLater(new Runnable() {
     		@Override
