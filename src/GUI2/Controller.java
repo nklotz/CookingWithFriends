@@ -194,6 +194,10 @@ public class Controller extends AnchorPane implements Initializable {
     
     @FXML ComboBox<String> searchAdditionalBox;
     @FXML ListView<SearchAdditionBox> searchAdditionalList;
+    @FXML Pane inviteInvalidUserPane;
+    @FXML Button yesInviteButton;
+    @FXML Button noInviteButton;
+    @FXML Label inviteLabel;
     
     //Local Data
     private Client _client;
@@ -1533,17 +1537,26 @@ public class Controller extends AnchorPane implements Initializable {
 					}
 				}
 				else{
-					PopupWindow pop = new Popup();
-					pop.setX(100);
-					pop.setY(100);
-					pop.setWidth(100);
-					pop.setHeight(100);
-					pop.show(inviteBigPane, 100, 100);
-					pop.setAutoHide(true);
-					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
-					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
+					inviteInvalidUserPane.setVisible(true);
+					yesInviteButton.setVisible(true);
+					noInviteButton.setVisible(true);
+					inviteLabel.maxHeight(200);
+					inviteLabel.maxWidth(200);
+					inviteLabel.setText(email + "is not a member of CWF. Would you like to invite"
 							+ " them to join?");
-					invalidEmailError.setVisible(true);
+					
+					
+//					PopupWindow pop = new Popup();
+//					pop.setX(100);
+//					pop.setY(100);
+//					pop.setWidth(100);
+//					pop.setHeight(100);
+//					pop.show(inviteBigPane, 100, 100);
+//					pop.setAutoHide(true);
+//					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
+//					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
+//							+ " them to join?");
+//					invalidEmailError.setVisible(true);
 				}
 			}
 			
