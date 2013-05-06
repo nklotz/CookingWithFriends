@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0000999999975" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0000999999975" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller2">
   <children>
     <TabPane fx:id="tabPane" layoutX="0.0" layoutY="0.0" prefHeight="960.0001220703125" prefWidth="1280.0" side="RIGHT" tabClosingPolicy="UNAVAILABLE">
       <tabs>
