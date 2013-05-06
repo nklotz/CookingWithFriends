@@ -28,6 +28,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -1661,30 +1662,37 @@ public class Controller extends AnchorPane implements Initializable {
     			Event e = k.getEvent(new Event(_currentEventName, null, k));
     			System.out.println("event: " + e);
     			System.out.println("messages: " + e.getMessages());
-    			eventCommentDisplayField.setText(e.getMessages().toString());
+    			String messages = e.getMessages().toString();
+    			//eventCommentDisplayField.setVisible(false);
+    			eventCommentDisplayField.setText(messages);
+    			eventCommentDisplayField.positionCaret(messages.length());
+    			//eventCommentDisplayField.setVisible(true);
+    			//TODO: see if we can make this look less shitty.
     		}
     	}
 	}
 	
 	public void postMessage(){
 		String post = eventCommentWriteField.getText();
-		eventCommentWriteField.setText("");
-		String pre = "";
-		String mid = "";
-		String email = _account.getID();
-		String id = email.split("@")[0];
-		if (!_account.getName().equals("")){
-			mid = id + " (" + _account.getName() + "): ";
-		} else {
-			mid = id +": ";
+		if (post.length()!=0){
+			eventCommentWriteField.setText("");
+			String pre = "";
+			String mid = "";
+			String email = _account.getID();
+			String id = email.split("@")[0];
+			if (!_account.getName().equals("")){
+				mid = id + " (" + _account.getName() + "): ";
+			} else {
+				mid = id +": ";
+			}
+			if (eventCommentDisplayField.getText().length() != 0){
+				pre = eventCommentDisplayField.getText() + "\n";
+			}
+			eventCommentDisplayField.setText(pre + mid + post);
+			String forServer = mid+post+"\n";
+			System.out.println("trying to add this " + forServer);
+			_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 		}
-		if (eventCommentDisplayField.getText().length() != 0){
-			pre = eventCommentDisplayField.getText() + "\n";
-		}
-		eventCommentDisplayField.setText(pre + mid + post);
-		String forServer = mid+post;
-		System.out.println("trying to add this " + forServer);
-		_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 	}
 
 	public void recieveInvite(Invitation invitation) {
