@@ -181,9 +181,26 @@ public class LoginWindow extends JFrame{
     	return false;
     }
     
-    public int generateRandomPassword(){
-		return (int)(Math.random()*1000000);
-	}
+    //From: http://javapassgen.blogspot.com/
+    public String generateRandomPassword() {
+    	int len=8;
+    	char[] pwd = new char[len];
+    	int c = 'A';
+    	int rand = 0;
+    	for (int i=0; i < 8; i++)
+    	{
+    	rand = (int)(Math.random() * 3);
+    	switch(rand) {
+    	case 0: c = '0' + (int)(Math.random() * 10); break;
+    	case 1: c = 'a' + (int)(Math.random() * 26); break;
+    	case 2: c = 'A' + (int)(Math.random() * 26); break;
+    	}
+    	pwd[i] = (char)c;
+    	}
+    	return new String(pwd);
+    	}
+    
+
     private Scene newAccount(){
     	_newAcct = true;
     	GridPane grid = new GridPane();
@@ -261,6 +278,9 @@ public class LoginWindow extends JFrame{
                 else if(!pwBox.getText().equals(pwBox2.getText())){
             		_actiontarget.setText("Passwords don't match!");
             	}
+                else if(!isValidPassword(pwBox.getText())){
+                	_actiontarget.setText("Your password must be at least 6 letters, numbers, or digits.");
+                }
             	else{
             		try {
             			_actiontarget.setText("");
@@ -297,6 +317,17 @@ public class LoginWindow extends JFrame{
     	return _newAcct;
     }
     
+    /**
+     * Returns true if the password is of appropriate length.
+     * @param password
+     * @return
+     */
+    public boolean isValidPassword(String password){
+    	if(password.length()<6){
+    		return false;
+    	}
+    	return true;
+    }
     /**
      * Taken from:http://stackoverflow.com/questions/13074459/javafx-2-and-css-pseudo-classes-setting-hover-attributes-in-setstyle-method
      * @param node

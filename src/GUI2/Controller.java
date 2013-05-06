@@ -1544,16 +1544,17 @@ public class Controller extends AnchorPane implements Initializable {
 							message += ". To accept this invitation, you must log in and accept.";
 							Sender.send(kitchenAddChefField.getText(), message);
 							//System.out.println("SENT TO: " + message);
+							kitchenAddChefField.setText("");
 						}
 					}
 				}
 				else{
+					
 					inviteInvalidUserPane.setVisible(true);
 					yesInviteButton.setVisible(true);
 					noInviteButton.setVisible(true);
-					inviteLabel.maxHeight(200);
-					inviteLabel.maxWidth(200);
-					inviteLabel.setText(email + "is not a member of CWF. Would you like to invite"
+					inviteLabel.setVisible(true);
+					inviteLabel.setText(email + " is not a member of CWF. Would you like to invite"
 							+ " them to join?");
 					
 					
@@ -1577,12 +1578,35 @@ public class Controller extends AnchorPane implements Initializable {
 				invalidEmailError.setVisible(true);
 			}
 		}
+		//kitchenAddChefField.setText("");
+	}
+	public void yesButtonListener(){
+		String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+				+ "wants to invite you to join Cooking with Friends, the social cooking coordinator.";
+		message += "To accept this invitation, you must log in and accept.";
+		System.out.println("SENDING TO : " + kitchenAddChefField.getText());
+		disableInvitePane();
+		Sender.send(kitchenAddChefField.getText(), message);
+		kitchenAddChefField.setText("");
+		
+	}
+	
+	public void disableInvitePane(){
+		inviteInvalidUserPane.setVisible(false);
+		yesInviteButton.setVisible(false);
+		noInviteButton.setVisible(false);
+		inviteLabel.setVisible(false);
+	}
+	public void noButtonListener(){
+		disableInvitePane();
 		kitchenAddChefField.setText("");
 	}
+
 	public void checkAndSendEmail(){
 		System.out.println("IN CHECK AND SEND EMAIL.");
 		String email = kitchenAddChefField.getText();
 		if(email != null){
+			//Will call sendInviteEmail.
 			_client.userInDatabase(email);
 		}
 	}
