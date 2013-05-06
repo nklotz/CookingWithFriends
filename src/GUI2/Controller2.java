@@ -506,7 +506,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 	}
     
-    public void addShoppingListListener(Event event) {
+    public void addShoppingListListener() {
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getValue();
@@ -827,9 +827,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML void hideNewKitchenStuff(ActionEvent event) {
     }
 
-    @FXML void ingredientComboListener(InputEvent event) {
-    }
-
     @FXML void leaveKitchen(ActionEvent event) {
     }
 
@@ -839,8 +836,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML void newKitchenCreateButtonListener(ActionEvent event) {
     }
 
-    @FXML void shoppingListComboListener(InputEvent event) {
-    }
+
     
     
     
@@ -1042,6 +1038,54 @@ public class Controller2 extends AnchorPane implements Initializable {
 			});
     	}	
     }
+    
+    /**
+     * COMBO BOX LISTENERS. _-----------------------------------------------
+     */
+    
+    /**
+     * Listener for adding ingredient to shopping list.
+     */
+    public void shoppingListComboListener(){
+    	String text = addShoppingIngredient.getEditor().getText();
+    	if(text != null){
+    		addShoppingIngredient.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+		    		addShoppingIngredient.getItems().clear();
+		    		addShoppingIngredient.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		 addShoppingListListener();
+    	}
+    }
+    
+    public void ingredientComboListener(){
+    	String text = newIngredient.getEditor().getText();
+    	if(text != null){
+    		newIngredient.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+	    	    	newIngredient.getItems().clear();
+	    	    	newIngredient.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		 addShoppingListListener();
+    	}
+    }
+    
     
 
 }
