@@ -509,14 +509,12 @@ public class Controller extends AnchorPane implements Initializable {
 //		}
 		
 		Stage stage = new Stage();
-	    Parent root2 = FXMLLoader.load(getClass().getResource("EditProfileWindow.fxml"));
-	    stage.setScene(new Scene(root2));
+	    Parent p = FXMLLoader.load(getClass().getResource("EditProfileWindow.fxml"));
+	    stage.setScene(new Scene(p));
 	    stage.setTitle("My modal window");
 	    stage.initModality(Modality.APPLICATION_MODAL);
 	    stage.initOwner(null);
-	    stage.show();
-		
-		
+	    stage.show();		
     }
    
     public void createEventListener(){
@@ -1570,6 +1568,7 @@ public class Controller extends AnchorPane implements Initializable {
 		}
 		//kitchenAddChefField.setText("");
 	}
+	
 	public void yesButtonListener(){
 		String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
 				+ "wants to invite you to join Cooking with Friends, the social cooking coordinator.";
@@ -1587,6 +1586,7 @@ public class Controller extends AnchorPane implements Initializable {
 		//noInviteButton.setVisible(false);
 		//inviteLabel.setVisible(false);
 	}
+	
 	public void noButtonListener(){
 		disableInvitePane();
 		kitchenAddChefField.setText("");

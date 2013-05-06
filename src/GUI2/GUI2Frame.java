@@ -29,7 +29,7 @@ public class GUI2Frame extends JFrame {
 	private Account _account;
 	private AutocorrectEngines _engines;
 	private Map<KitchenName,Kitchen> _kitchens;
-	private Controller _controller;
+	private Controller2 _controller;
 	
 	public GUI2Frame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
@@ -61,14 +61,13 @@ public class GUI2Frame extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-		    	Pane page;
 				try {
 					URL location = getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					fxmlLoader.setLocation(location);
 					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 					Parent p = (Parent) fxmlLoader.load(location.openStream());
-			        _controller = (Controller) fxmlLoader.getController();
+			        _controller = (Controller2) fxmlLoader.getController();
 			        Scene scene = new Scene(p);
 			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
@@ -87,7 +86,7 @@ public class GUI2Frame extends JFrame {
     		@Override
     		public void run() {
     			//Displays the message asking if the user actually wants to invite the user.
-    			_controller.sendInviteEmails(userInDatabase);
+    		//	_controller.sendInviteEmails(userInDatabase);
     		}
 		});
 	}
@@ -97,7 +96,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.reDisplayKitchen();
+    		//	_controller.reDisplayKitchen();
     		}
 		});
 	}
@@ -107,7 +106,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run(){
-				_controller.displayKitchen(k.getKitchenName());
+		//		_controller.displayKitchen(k.getKitchenName());
 			}
 		});
 	}
@@ -117,7 +116,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.populateSearchIngredients();
+    	//		_controller.populateSearchIngredients();
     		}
 		});
 	}
@@ -126,7 +125,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.populateKitchenSelector();
+    	//		_controller.populateKitchenSelector();
     		}
 		});
 	}
@@ -135,7 +134,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.populateSearchIngredients();
+    	//		_controller.populateSearchIngredients();
     		}
 		});
 	}
@@ -144,7 +143,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.recieveInvite(invitation);
+    	//		_controller.recieveInvite(invitation);
     		}
 		});
 	}

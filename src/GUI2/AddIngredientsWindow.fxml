@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" styleClass="body" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <Pane layoutX="91.0" layoutY="547.0" prefHeight="40.0" prefWidth="119.0" styleClass="smallBackground">
+      <children>
+        <Button layoutX="15.0" layoutY="7.0" mnemonicParsing="false" onAction="#addSelectedListener" text="Add Selected" />
+      </children>
+    </Pane>
+    <Pane layoutX="37.0" layoutY="58.0" prefHeight="479.0" prefWidth="226.0" styleClass="section">
+      <children>
+        <ListView id="Ingredient" fx:id="ingredientList" layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="197.99990000000253" />
+      </children>
+    </Pane>
+    <Label layoutX="34.0" layoutY="32.0" styleClass="sectionHeader" text="My Ingredients" />
+  </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>

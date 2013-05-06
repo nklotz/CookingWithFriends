@@ -13,32 +13,79 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller2">
   <children>
-    <MenuBar layoutX="0.0" layoutY="0.0" prefWidth="1024.0" useSystemMenuBar="false">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Close" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Profile" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <TabPane fx:id="tabPane" disable="false" focusTraversable="true" layoutX="0.0" layoutY="24.0" prefHeight="744.0" prefWidth="1024.0" rotateGraphic="false" side="TOP" tabClosingPolicy="UNAVAILABLE">
+    <TabPane fx:id="tabPane" disable="false" focusTraversable="true" layoutX="0.0" layoutY="0.0" prefHeight="768.0" prefWidth="1024.0" rotateGraphic="false" side="TOP" tabClosingPolicy="UNAVAILABLE">
       <tabs>
+        <Tab text="Profile">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body">
+              <children>
+                <Group id="Group" layoutX="33.0" layoutY="80.0" scaleX="1.0" scaleY="1.0" />
+                <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
+                <ListView id="restrictionsLabel" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
+                <Group id="Group" layoutX="343.0" layoutY="14.0" />
+                <Pane layoutX="47.0" layoutY="125.0" prefHeight="377.0" prefWidth="535.0" styleClass="section">
+                  <children>
+                    <ListView fx:id="allergiesList" focusTraversable="false" layoutX="288.0" layoutY="142.0" prefHeight="121.0" prefWidth="233.0" />
+                    <Group id="Group" layoutX="19.0" layoutY="19.0">
+                      <children>
+                        <Label id="" layoutX="0.0" layoutY="3.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:" />
+                        <TextField fx:id="nameField" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
+                        <Label fx:id="nameLabel" layoutX="76.0" layoutY="3.0" prefWidth="191.0" text="Label" />
+                      </children>
+                    </Group>
+                    <Label layoutX="19.0" layoutY="120.0" text="Dietary Restrictions" />
+                    <Label layoutX="286.0" layoutY="121.0" text="Allergies" />
+                    <Button id="editProfile" fx:id="profileEditor" layoutX="405.0" layoutY="14.0" mnemonicParsing="false" onAction="#EditOrSaveAccountChanges" text="Edit" textFill="WHITE" />
+                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="20.0" layoutY="270.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="21.1328125" prefWidth="232.9998779296875" promptText="Select a Restriction to add it">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <CheckBox fx:id="removeRestriction" alignment="CENTER_LEFT" allowIndeterminate="false" contentDisplay="LEFT" layoutX="20.0" layoutY="296.0" mnemonicParsing="false" onAction="#removeRestrictions" selected="false" text="Remove" textAlignment="LEFT" underline="false" />
+                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="288.0" layoutY="270.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="21.1328125" prefWidth="232.99997792968497" promptText="Select an Allergy to add it">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ComboBox>
+                    <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="288.0" layoutY="296.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
+                    <Group id="Group" layoutX="19.0" layoutY="51.0" visible="true">
+                      <children>
+                        <Label id="" layoutX="0.0" layoutY="3.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="74.9998863769506" text="Location:" />
+                        <TextField fx:id="locationField" editable="true" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
+                        <Label id="nameLabel" fx:id="locationLabel" layoutX="74.0" layoutY="3.0" prefWidth="191.0" text="Label" visible="true" />
+                      </children>
+                    </Group>
+                    <Group id="Group" layoutX="20.0" layoutY="84.0">
+                      <children>
+                        <Label id="" layoutX="0.0" layoutY="1.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="74.9998863769506" text="Email:" />
+                        <Label fx:id="emailLabel" layoutX="69.0" layoutY="0.0" prefWidth="217.0000084472631" text="default" />
+                      </children>
+                    </Group>
+                    <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="142.0" prefHeight="121.0" prefWidth="232.99997792968497" />
+                  </children>
+                </Pane>
+                <Label layoutX="47.0" layoutY="79.0" styleClass="sectionHeader" text="My Profile">
+                  <stylesheets>
+                    <URL value="@style.css" />
+                  </stylesheets>
+                </Label>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
         <Tab text="Home">
           <content>
-            <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="540.0000999999975" prefWidth="1024.0" styleClass="body">
+            <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body">
               <children>
                 <Group id="Group" layoutX="33.0" layoutY="80.0" scaleX="1.0" scaleY="1.0">
                   <children>
@@ -113,21 +160,22 @@
                         <Image url="http://www.musiquelepop.com/mail_envelope_blue_icon.png" backgroundLoading="false" />
                       </image>
                     </ImageView>
-                    <Label fx:id="numberOfInvites" layoutX="23.0" layoutY="4.0" prefHeight="20.999908447265625" prefWidth="12.999900000002526" text="0">
+                    <Label fx:id="numberOfInvites" layoutX="23.0" layoutY="4.0" prefHeight="21.699920654296875" prefWidth="12.999900000002526" text="0">
                       <font>
                         <Font name="Verdana Bold" size="15.0" />
                       </font>
                     </Label>
                   </children>
                 </Group>
-                <Line endX="-100.0" endY="-33.0" layoutX="520.0" layoutY="50.0" startX="-100.0" startY="6.0" />
-                <Label layoutX="488.0" layoutY="20.0" styleClass="infoHeader" text="Welcome &lt;name&gt;!" />
-                <Label layoutX="488.0" layoutY="36.0" prefWidth="280.0" styleClass="infoHeader" text="How's the weather in &lt;location&gt;?" />
-                <ImageView id="chefs-hat-icon" fx:id="chefHat" cache="false" focusTraversable="true" layoutX="438.0" layoutY="20.0" onMouseClicked="#editProfileListener" pickOnBounds="true">
+                <Line endX="-100.0" endY="-33.0" layoutX="517.0" layoutY="50.0" startX="-100.0" startY="6.0" />
+                <Label fx:id="welcome" layoutX="714.0" layoutY="17.0" styleClass="infoHeader" text="Welcome &lt;name&gt;!" textAlignment="RIGHT" />
+                <Label fx:id="weather" layoutX="714.0" layoutY="37.0" prefWidth="310.0" styleClass="infoHeader" text="How's the weather in &lt;location&gt;?" textAlignment="RIGHT" />
+                <ImageView id="chefs-hat-icon" fx:id="chefHat" cache="false" fitHeight="58.00000081786857" fitWidth="57.826377868652344" focusTraversable="true" layoutX="954.0" layoutY="11.0" pickOnBounds="true">
                   <image>
                     <Image url="@chefs-hat-icon.png" preserveRatio="true" smooth="true" />
                   </image>
                 </ImageView>
+                <ListView id="" focusTraversable="false" layoutX="430.0" layoutY="13.0" prefHeight="49.0" prefWidth="254.0" visible="true" />
               </children>
             </AnchorPane>
           </content>
@@ -136,84 +184,9 @@
           <content>
             <AnchorPane id="Content" focusTraversable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body" visible="true">
               <children>
-                <Pane layoutX="401.0" layoutY="26.0" prefHeight="61.0" prefWidth="261.0" styleClass="smallBackground" />
-                <ComboBox id="" fx:id="kitchenSelector" editable="false" layoutX="413.0" layoutY="37.0" prefHeight="38.0" prefWidth="239.0" promptText="Select Kitchen">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Item 1" />
-                      <String fx:value="Item 2" />
-                      <String fx:value="Item 3" />
-                    </FXCollections>
-                  </items>
-                </ComboBox>
-                <Text fill="LIGHTGREY" layoutX="35.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Communal Dietary Preferences" />
-                <Pane layoutX="35.0" layoutY="155.0" prefHeight="200.0" prefWidth="254.0" styleClass="section" />
-                <Text fill="LIGHTGREY" layoutX="319.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Ingredients" />
-                <Pane layoutX="635.0" layoutY="154.0" prefHeight="766.0" prefWidth="559.0" styleClass="section">
+                <Pane layoutX="344.0" layoutY="10.0" prefHeight="66.0" prefWidth="261.0" styleClass="smallBackground">
                   <children>
-                    <Pane layoutX="11.0" layoutY="119.0" prefHeight="307.0" prefWidth="254.00009999999747" styleClass="text">
-                      <children>
-                        <ListView id="eventShoppingList" fx:id="eventMenuList" layoutX="12.0" layoutY="47.0" prefHeight="245.9998779296875" prefWidth="224.0" />
-                        <ToggleButton id="remove" fx:id="eventMenuRemoveButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
-                        <Button id="addIngre" fx:id="eventMenuAddButton" layoutX="182.0" layoutY="14.0" mnemonicParsing="false" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
-                      </children>
-                    </Pane>
-                    <Text layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Menu" />
-                    <Pane layoutX="284.0" layoutY="119.0" prefHeight="307.0" prefWidth="251.171875" styleClass="text">
-                      <children>
-                        <ComboBox id="newIngredient" fx:id="eventShoppingComboBox" editable="true" layoutX="0.0" layoutY="-1.0" minHeight="15.1328125" onAction="#addEventShoppingIngredientListener" onInputMethodTextChanged="#eventShoppingComboListener" onKeyPressed="#eventShoppingComboListener" onKeyReleased="#eventShoppingComboListener" onKeyTyped="#eventShoppingComboListener" prefHeight="18.624900000002526" prefWidth="254.0001220703125" promptText="New Ingredient">
-                          <items>
-                            <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Item 1" />
-                              <String fx:value="Item 2" />
-                              <String fx:value="Item 3" />
-                            </FXCollections>
-                          </items>
-                        </ComboBox>
-                        <ToggleButton id="remove" fx:id="eventShoppingRemoveButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
-                        <Button id="addIngre" fx:id="eventShoppingAddButton" layoutX="183.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingIngredientListener" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
-                      </children>
-                    </Pane>
-                    <Text layoutX="280.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shoppping List" />
-                    <Pane layoutX="14.0" layoutY="463.0" prefHeight="286.0" prefWidth="520.0" styleClass="text">
-                      <children>
-                        <TextArea fx:id="eventCommentWriteField" editable="true" layoutX="14.0" layoutY="181.0" prefHeight="51.0" prefWidth="492.0" promptText="Write something here!" wrapText="true" />
-                        <Button fx:id="eventCommentPostButton" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" prefHeight="26.3125" prefWidth="90.632568359375" text="Post" />
-                        <TextArea fx:id="eventCommentDisplayField" editable="false" layoutX="15.0" layoutY="15.0" prefHeight="145.0" prefWidth="483.9999000000025" promptText="No comments yet..." wrapText="true" />
-                      </children>
-                    </Pane>
-                    <Text layoutX="14.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Comments" />
-                    <ListView fx:id="eventShoppingList" layoutX="297.0" layoutY="177.0" prefHeight="245.9998779296875" prefWidth="224.0" />
-                    <Label id="" fx:id="eventLabel" layoutX="274.0" layoutY="14.0" prefWidth="192.0000084472631" text="Create New Event" />
-                    <Label id="" fx:id="nameEventLabel" layoutX="274.0" layoutY="29.0" prefWidth="53.0000084472631" text="Name:" />
-                    <TextArea id="eventCommentDisplayField" fx:id="createEventField" editable="true" layoutX="327.0" layoutY="28.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
-                    <Button id="addIngre" fx:id="createEventButton" layoutX="482.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#createEventListener" prefHeight="26.10624885559082" prefWidth="62.538857324216224" text="Create" />
-                    <TextArea id="eventCommentDisplayField" fx:id="createDateField" editable="true" layoutX="327.0" layoutY="58.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
-                    <Label id="" layoutX="278.0" layoutY="63.0" prefWidth="45.1248863769506" text="Date:" />
-                  </children>
-                </Pane>
-                <Pane fx:id="inviteBigPane" layoutX="36.0" layoutY="551.0" prefHeight="369.0" prefWidth="254.0" styleClass="section">
-                  <children>
-                    <AnchorPane id="Content" fx:id="invitePane" layoutX="21.0" layoutY="154.0" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                      <children>
-                        <ListView fx:id="kitchenChefList" layoutX="-6.0" layoutY="-139.0" prefHeight="232.0" prefWidth="226.0" />
-                        <Text layoutX="-6.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Invite a Chef:" />
-                        <TextField fx:id="kitchenAddChefField" layoutX="-10.0" layoutY="119.0" prefHeight="35.0" prefWidth="239.0" promptText="Enter chef's email!" />
-                        <Button fx:id="kitchenChefInviteButton" layoutX="129.0" layoutY="173.0" mnemonicParsing="false" onAction="#checkAndSendEmail" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
-                        <Label fx:id="invalidEmailError" layoutX="-9.0" layoutY="157.0" text="Please provide a valid e-mail!" textFill="RED" visible="false">
-                          <font>
-                            <Font size="11.0" />
-                          </font>
-                        </Label>
-                      </children>
-                    </AnchorPane>
-                  </children>
-                </Pane>
-                <Text fill="LIGHTGREY" layoutX="633.0" layoutY="145.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Events" />
-                <Text fill="LIGHTGREY" layoutX="36.0" layoutY="540.0" scaleX="0.9999972212342166" scaleY="0.9999999999711725" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Chefs" />
-                <Pane layoutX="643.0" layoutY="165.0" prefHeight="61.0" prefWidth="261.0" styleClass="text">
-                  <children>
-                    <ComboBox id="" fx:id="eventSelector" editable="false" layoutX="8.0" layoutY="12.0" onAction="#loadEvent" prefHeight="37.9999915527369" prefWidth="245.99997792968497" promptText="Select an Event">
+                    <ComboBox id="" fx:id="kitchenSelector" editable="false" layoutX="11.0" layoutY="9.0" prefHeight="48.0" prefWidth="239.0" promptText="Select Kitchen">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -224,13 +197,15 @@
                     </ComboBox>
                   </children>
                 </Pane>
-                <ListView id="dietPreferencesList" fx:id="kitchenDietList" layoutX="50.0" layoutY="169.0" prefHeight="172.0" prefWidth="225.0" />
-                <Text fill="LIGHTGREY" layoutX="36.0" layoutY="380.0" scaleX="0.9999972212342166" scaleY="0.9999946308726189" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Communal Allergies" />
-                <Pane layoutX="36.0" layoutY="385.0" prefHeight="133.0" prefWidth="254.0" styleClass="section" />
-                <ListView id="" fx:id="kitchenAllergyList" editable="false" layoutX="51.0" layoutY="399.0" prefHeight="105.0" prefWidth="225.0" />
-                <Pane layoutX="319.0" layoutY="155.0" prefHeight="335.0" prefWidth="284.0" styleClass="section">
+                <Pane layoutX="617.0" layoutY="10.0" prefHeight="66.0" prefWidth="119.0" styleClass="smallBackground">
                   <children>
-                    <ComboBox fx:id="kitchenIngredientComboBox" editable="false" layoutX="17.0" layoutY="271.0" onAction="#addIngredientToKichen" prefWidth="250.655517578125" promptText="Select Ingredient from Fridge">
+                    <Button fx:id="leaveKitchenButton" layoutX="9.0" layoutY="5.0" mnemonicParsing="false" onAction="#leaveKitchen" prefWidth="103.55760192871094" text="Leave Kitchen" />
+                    <Button fx:id="newKitchenButton" layoutX="9.0" layoutY="35.0" mnemonicParsing="false" onAction="#newKitchenButtonListener" prefWidth="103.55759511718497" text="Create Kitchen" />
+                  </children>
+                </Pane>
+                <Pane layoutX="92.0" layoutY="318.0" prefHeight="380.0" prefWidth="390.0" styleClass="section" visible="true">
+                  <children>
+                    <ComboBox id="kitchenIngredientComboBox" fx:id="addRecipeEventSelector" editable="false" layoutX="16.0" layoutY="268.0" prefWidth="250.655517578125" promptText="Select Event to add to" visible="true">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -239,34 +214,8 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <Button fx:id="kitchenAddIngredientButton" layoutX="163.0" layoutY="302.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Add Ingredient" />
-                    <ListView fx:id="kitchenIngredientList" layoutX="16.0" layoutY="14.0" prefHeight="246.0" prefWidth="250.655517578125" />
-                  </children>
-                </Pane>
-                <Pane layoutX="683.0" layoutY="26.0" prefHeight="40.0" prefWidth="145.20274353027344" styleClass="smallBackground">
-                  <children>
-                    <Button fx:id="newKitchenButton" layoutX="9.0" layoutY="7.0" mnemonicParsing="false" onAction="#newKitchenButtonListener" prefWidth="129.0" text="Create New Kitchen" />
-                  </children>
-                </Pane>
-                <Pane layoutX="841.0" layoutY="26.0" prefHeight="40.0" prefWidth="145.20274353027344" styleClass="smallBackground">
-                  <children>
-                    <Button fx:id="leaveKitchenButton" layoutX="9.0" layoutY="7.0" mnemonicParsing="false" onAction="#leaveKitchen" prefWidth="128.99998474121094" text="Leave this Kitchen" />
-                  </children>
-                </Pane>
-                <Pane layoutX="319.0" layoutY="534.0" prefHeight="386.0" prefWidth="284.0" styleClass="section" visible="true">
-                  <children>
-                    <ComboBox id="kitchenIngredientComboBox" fx:id="addRecipeEventSelector" editable="false" layoutX="16.0" layoutY="268.0" prefWidth="250.655517578125" promptText="Select Event to add to" visible="false">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
-                    <ListView id="kitchenIngredientList" fx:id="kitchenRecipeList" layoutX="14.0" layoutY="14.0" prefHeight="246.0" prefWidth="254.0001220703125" />
                     <Button id="kitchenAddIngredientButton" fx:id="goToRecipeSearchButton" layoutX="14.0" layoutY="346.0" mnemonicParsing="false" onAction="#goToRecipeTab" prefHeight="26.10624885559082" prefWidth="103.5576171875" text="Search Recipes" />
-                    <Button id="kitchenAddIngredientButton" fx:id="addRecipeToEventButton" layoutX="177.0" layoutY="346.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="91.0" text="Add to Event" visible="false" />
+                    <Button id="kitchenAddIngredientButton" fx:id="addRecipeToEventButton" layoutX="285.0" layoutY="346.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="91.0" text="Add to Event" visible="true" />
                     <CheckBox fx:id="getRecipeChecksButton" layoutX="14.0" layoutY="313.0" mnemonicParsing="false" onAction="#addRtoEMode" text="Add Recipe(s) to Event">
                       <font>
                         <Font size="12.0" />
@@ -274,14 +223,37 @@
                     </CheckBox>
                   </children>
                 </Pane>
-                <Text fill="LIGHTGREY" layoutX="319.0" layoutY="519.0" scaleX="0.9999972212342166" scaleY="0.9999999999711725" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Recipes" />
-                <TextField fx:id="newKitchenNameField" layoutX="805.0" layoutY="84.0" prefWidth="199.9998779296875" promptText="Enter Kitchen Name Here" visible="false" />
-                <Label fx:id="newKitchenLabel" layoutX="683.0" layoutY="87.0" text="What you'll call it:" textFill="WHITE" visible="false" />
-                <Button fx:id="newKitchenCreateButton" layoutX="1019.0" layoutY="82.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" text="Create" visible="false" />
-                <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="805.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false" />
-                <Button fx:id="newKitchenCancelButton" layoutX="1081.0" layoutY="82.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" text="Cancel" visible="false" />
                 <Pane fx:id="kitchenHide" layoutX="14.0" layoutY="130.0" prefHeight="817.8515167236328" prefWidth="1216.0" styleClass="body" visible="false" />
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
+                <Pane layoutX="90.0" layoutY="126.0" prefHeight="154.0" prefWidth="393.0" styleClass="section">
+                  <children>
+                    <Label layoutX="14.0" layoutY="10.0" styleClass="infoHeader" text="Allergies:" />
+                    <Label id="allergiesList" fx:id="communalAllergiesList" layoutX="24.0" layoutY="30.0" text="&lt;allergires list&gt;" />
+                    <Label layoutX="14.0" layoutY="75.0" styleClass="infoHeader" text="Dietary Restrictions:" />
+                    <Label id="dietPreferencesList" fx:id="communalDietPreferencesList" layoutX="26.0" layoutY="95.0" text="&lt;restrictions list&gt;" />
+                    <ListView fx:id="kitchenChefList" layoutX="203.0" layoutY="40.0" prefHeight="96.89382934570312" prefWidth="171.99997792968497" />
+                    <Label layoutX="205.0" layoutY="13.0" prefWidth="49.0" styleClass="infoHeader" text="Chefs" />
+                    <Button layoutX="322.0" layoutY="8.0" mnemonicParsing="false" text="Invite" />
+                  </children>
+                </Pane>
+                <Label layoutX="81.0" layoutY="99.0" styleClass="sectionHeader" text="Kitchen Info" />
+                <Pane layoutX="629.0" layoutY="126.0" prefHeight="572.0000999999975" prefWidth="274.0" styleClass="section">
+                  <children>
+                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" prefHeight="506.999977929685" prefWidth="239.0" />
+                    <Button id="" layoutX="73.0" layoutY="536.0" mnemonicParsing="false" onAction="#addFromMyFridgeListener" prefWidth="128.99997792968497" text="Add from My Fridge" />
+                  </children>
+                </Pane>
+                <AnchorPane id="AnchorPane" fx:id="newKitchenPane" layoutX="759.0" layoutY="15.0" prefHeight="77.0" prefWidth="243.0" visible="false">
+                  <children>
+                    <TextField fx:id="newKitchenNameField" layoutX="47.0" layoutY="0.0" prefWidth="199.9998779296875" promptText="Enter Kitchen Name Here" visible="true" />
+                    <Label fx:id="newKitchenLabel" layoutX="0.0" layoutY="3.0" text="Name:" textFill="WHITE" visible="true" />
+                    <Button fx:id="newKitchenCreateButton" layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
+                    <Button fx:id="newKitchenCancelButton" layoutX="108.0" layoutY="27.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
+                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="true" />
+                  </children>
+                </AnchorPane>
+                <Label layoutX="617.0" layoutY="102.0" styleClass="sectionHeader" text="Ingredients" />
+                <Label layoutX="80.0" layoutY="290.0" styleClass="sectionHeader" text="Recipes" />
               </children>
             </AnchorPane>
           </content>
@@ -291,18 +263,9 @@
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="681.0" styleClass="body">
               <children>
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
-                <Pane layoutX="52.0" layoutY="106.0" prefHeight="584.0" prefWidth="280.0" styleClass="section">
+                <Pane layoutX="34.0" layoutY="100.0" prefHeight="584.0" prefWidth="280.0" styleClass="section">
                   <children>
-                    <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="37.0" minWidth="157.0" prefHeight="433.1399756835963" prefWidth="252.00002207031503" />
-                    <ComboBox id="newIngredient" fx:id="searchAdditionalBox" editable="true" layoutX="17.0" layoutY="596.0" onAction="#addSearchBoxListener" onInputMethodTextChanged="#searchComboListener" onKeyPressed="#searchComboListener" onKeyReleased="#searchComboListener" onKeyTyped="#searchComboListener" prefWidth="303.0" promptText="New Ingredient">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
+                    <Accordion fx:id="ingredientsAccordion" expandedPane="$null" layoutX="14.0" layoutY="32.0" minWidth="157.0" prefHeight="492.1397315429713" prefWidth="252.00002207031503" />
                     <ListView id="fridgeList" fx:id="searchAdditionalList" layoutX="17.0" layoutY="653.0" prefHeight="136.0" prefWidth="303.0">
                       <contextMenu>
                         <ContextMenu>
@@ -312,35 +275,28 @@
                         </ContextMenu>
                       </contextMenu>
                     </ListView>
-                    <Text layoutX="17.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Select a kitchen" />
-                    <Text layoutX="14.0" layoutY="481.0" scaleX="1.0" scaleY="0.9999867837301142" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: italic;&#10;-fx-font-size: 0.9em&#10;" text="Dietary restrictions and allergies for the selected kitchen will be included in your search." textAlignment="LEFT" wrappingWidth="300.0" />
-                    <Text layoutX="14.0" layoutY="591.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Supplemental Ingredients" />
-                    <Button id="addIngre" fx:id="searchAdditionalAdd" layoutX="278.0" layoutY="621.0" mnemonicParsing="false" onMouseClicked="#addSearchBoxListener" text="Add" />
-                    <CheckBox id="removeFridgeIngredient" fx:id="searchAdditionalRemove" layoutX="17.0" layoutY="626.0" mnemonicParsing="false" onAction="#removeIngredients" text="Remove" />
+                    <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Select a kitchen" />
+                    <Text layoutX="17.0" layoutY="540.0" scaleX="1.0" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: italic;&#10;-fx-font-size: 0.9em&#10;" text="Dietary restrictions and allergies for the selected kitchen will be included in your search." textAlignment="LEFT" wrappingWidth="280.0" />
                   </children>
                 </Pane>
-                <Label layoutX="52.0" layoutY="83.0" styleClass="sectionHeader" text="Ingredients" />
-                <Pane layoutX="381.0" layoutY="107.0" prefHeight="77.0" prefWidth="621.0" styleClass="section">
+                <Label layoutX="34.0" layoutY="78.0" styleClass="sectionHeader" text="Ingredients" />
+                <Pane layoutX="367.0" layoutY="101.0" prefHeight="77.0" prefWidth="621.0" styleClass="section">
                   <children>
-                    <Button fx:id="searchButton" layoutX="644.0" layoutY="22.0" mnemonicParsing="false" prefHeight="32.10624885559082" prefWidth="70.0" text="Search" />
+                    <Button fx:id="searchButton" layoutX="509.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#searchButtonListener" prefHeight="32.10624885559082" prefWidth="89.0" text="Search" />
                     <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="470.0" promptText="What are you looking for?" styleClass="null" />
                   </children>
                 </Pane>
-                <Pane layoutX="459.0" layoutY="262.0" prefHeight="660.0" prefWidth="728.0" styleClass="section">
+                <Pane layoutX="367.0" layoutY="232.0" prefHeight="452.0" prefWidth="621.0" styleClass="section">
                   <children>
-                    <ScrollPane id="ScrollPane" layoutX="15.0" layoutY="15.0" prefViewportHeight="631.0" prefViewportWidth="696.0">
-                      <content>
-                        <FlowPane fx:id="resultsFlow" hgap="30.0" prefHeight="631.0" prefWidth="696.0" vgap="30.0">
-                          <padding>
-                            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-                          </padding>
-                        </FlowPane>
-                      </content>
-                    </ScrollPane>
+                    <FlowPane fx:id="resultsFlow" hgap="30.0" layoutX="16.0" layoutY="16.0" prefHeight="422.0" prefWidth="591.0" vgap="30.0">
+                      <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                      </padding>
+                    </FlowPane>
                   </children>
                 </Pane>
-                <Label layoutX="381.0" layoutY="87.0" styleClass="sectionHeader" text="Search" />
-                <Label layoutX="462.0" layoutY="243.0" styleClass="sectionHeader" text="Results" />
+                <Label layoutX="370.0" layoutY="77.0" styleClass="sectionHeader" text="Search" />
+                <Label layoutX="367.0" layoutY="208.0" styleClass="sectionHeader" text="Results" />
                 <Label fx:id="NoSearchResults" layoutX="462.0" layoutY="194.0" prefHeight="49.0" prefWidth="650.0" text="No Search Results :(" textFill="WHITE" visible="false" wrapText="true">
                   <font>
                     <Font name="Shlop" size="13.0" />
