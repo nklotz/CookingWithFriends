@@ -133,4 +133,38 @@
 	-fx-border-width: 10;
 }
 
+.tab-pane *.tab-header-background {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, lightgrey;
+    /*-fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);*/
+}
+
+.eventBackground {
+	-fx-background-color: lightgrey; 
+	-fx-padding: 8;
+}
+
+/*.eventTab {
+    -fx-background-color: Firebrick;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
+    -fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);
+}*/
+
+.eventTab {
+    /* This is how it is done in Button, but the -1 inset caused a white line  */
+    /* to appear beneath the tab, which looks bad, so it's taken out below.    */
+    -fx-background-color: white, /*-fx-tab-border-color, -fx-inner-border,*/ radial-gradient(center 50% 50%, radius 100%, #cd0000, #B22222);
+    /*-fx-background-radius: 5 5 0 0, 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;*/
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.083333em 0.5em 0.083333em 0.5em; /* 1 6 1 6 */
+    -fx-text-fill: lightgray;
+}
+
+.eventTab *.tab-label Text {
+    -fx-effect: dropshadow(two-pass-box , rgba(255, 255, 255, 0.4), 1, 0.0 , 0, 1);
+    -fx-text-fill: white;
+}
+
 		
