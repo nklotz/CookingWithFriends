@@ -74,7 +74,8 @@ import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
 
-public class Controller2 extends AnchorPane implements Initializable {
+
+public class Controller extends AnchorPane implements Initializable {
 
 	private Image xImage = new Image("http://4.bp.blogspot.com/-JgoPXVNn5-U/UU3x1hDVHcI/AAAAAAAAA-E/s2dwrJcapd0/s1600/redx-300x297.jpg", 10, 10, true, true, true);
 	
@@ -860,7 +861,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	    	}
     		}
     	}
-    	loadEvent();
+    	//loadEvent();
     }
     
     public void addSearchBoxListener(){
@@ -1275,20 +1276,28 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	public void loadEvent(){
+		
+		
 		System.out.println("TOP OF LOAD EVENT!!!!!!!!!");
 		if(eventSelector.getValue()!= null){
 			System.out.println("setting current event to " + eventSelector.getValue());
 			_currentEventName = eventSelector.getValue();
 		}
 		else if (_currentEventName != null){
-			eventSelector.setEditable(true);
+			//eventSelector.setEditable(true);
+			System.out.println(eventSelector.getValue());
+			System.out.println("change to " +_currentEventName);
 			eventSelector.setValue(_currentEventName);
-			eventSelector.setEditable(false);
+			System.out.println(eventSelector.getValue());
+
+			//eventSelector.setEditable(false);
 		}
 
 		System.out.println("EDITOR TEXT: " + eventSelector.getEditor().getText());
 		if(eventSelector.getValue()!=null){
 		//if(eventSelector.getEditor().getText().trim().length()!=0){
+			hideEvent.setVisible(false);
+			hideEvent.setDisable(true);
 			populateEventMenu();
 			populateEventShoppingList();
 			displayMessages();
@@ -1320,8 +1329,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			eventSelector.getItems().clear();
 			eventSelector.getItems().addAll(k.getEventNames());
 		}
-		System.out.println("IN POPOULATE EVENT SELECTOR: SETTING SELECTOR TO FIRST ITEM");
-		eventSelector.setValue(eventSelector.getItems().get(0));
+		
 		
 //		eventSelector.setEditable(true);
 //		System.out.println("CURRENT EVENT NAME: " + _currentEventName);
@@ -1381,6 +1389,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
+				System.out.println("I have been clicked! " + kitchenSelector.getValue());
+				
 				//disable the thing that hides everything
 				kitchenHide.setVisible(false);
 				kitchenHide.setDisable(true);
@@ -1388,14 +1398,14 @@ public class Controller2 extends AnchorPane implements Initializable {
 
 				String id = kitchenSelector.getValue();
 				if(id!= null){
-					_currentEventName = null;
-					kitchenSelector.setButtonCell(new ListCell<String>() {
-						private final Label id;
-						{
-							setContentDisplay(ContentDisplay.TEXT_ONLY);
-							id = new Label("balls");
-					    }
-						
+					if(_client.getCurrentKitchen()!= null){
+						if(!_client.getCurrentKitchen().getID().equals(id)){
+							System.out.println(_client.getCurrentKitchen().getID() + " != " + id);
+							System.out.println("SETTING CURRENT EVENT NAME TO NULL");
+							_currentEventName = null;
+						}
+					}
+					kitchenSelector.setButtonCell(new ListCell<String>() {						
 						@Override
 						protected void updateItem(String name, boolean empty) {
 							super.updateItem(name, empty);
@@ -1499,7 +1509,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 		populateEventSelector();
 		System.out.println("ABOVE LOAD EVENT");
 		loadEvent();
-		
 	}
 
 	public void reDisplayKitchen() {
@@ -1546,21 +1555,31 @@ public class Controller2 extends AnchorPane implements Initializable {
 							message += ". To accept this invitation, you must log in and accept.";
 							Sender.send(kitchenAddChefField.getText(), message);
 							//System.out.println("SENT TO: " + message);
+							kitchenAddChefField.setText("");
 						}
 					}
 				}
 				else{
-					PopupWindow pop = new Popup();
-					pop.setX(100);
-					pop.setY(100);
-					pop.setWidth(100);
-					pop.setHeight(100);
-					pop.show(inviteBigPane, 100, 100);
-					pop.setAutoHide(true);
-					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
-					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
+					
+					inviteInvalidUserPane.setVisible(true);
+					yesInviteButton.setVisible(true);
+					noInviteButton.setVisible(true);
+					inviteLabel.setVisible(true);
+					inviteLabel.setText(email + " is not a member of CWF. Would you like to invite"
 							+ " them to join?");
-					invalidEmailError.setVisible(true);
+					
+					
+//					PopupWindow pop = new Popup();
+//					pop.setX(100);
+//					pop.setY(100);
+//					pop.setWidth(100);
+//					pop.setHeight(100);
+//					pop.show(inviteBigPane, 100, 100);
+//					pop.setAutoHide(true);
+//					System.out.println("SHOULD DISPLAY MESSAGE ABOUT NOT BEING IN EMAIL.");
+//					invalidEmailError.setText(email + "\nis not a member of CWF.\nWould you like\nto invite"
+//							+ " them to join?");
+//					invalidEmailError.setVisible(true);
 				}
 			}
 			
@@ -1570,12 +1589,35 @@ public class Controller2 extends AnchorPane implements Initializable {
 				invalidEmailError.setVisible(true);
 			}
 		}
+		//kitchenAddChefField.setText("");
+	}
+	public void yesButtonListener(){
+		String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+				+ "wants to invite you to join Cooking with Friends, the social cooking coordinator.";
+		message += "To accept this invitation, you must log in and accept.";
+		System.out.println("SENDING TO : " + kitchenAddChefField.getText());
+		disableInvitePane();
+		Sender.send(kitchenAddChefField.getText(), message);
+		kitchenAddChefField.setText("");
+		
+	}
+	
+	public void disableInvitePane(){
+		inviteInvalidUserPane.setVisible(false);
+		yesInviteButton.setVisible(false);
+		noInviteButton.setVisible(false);
+		inviteLabel.setVisible(false);
+	}
+	public void noButtonListener(){
+		disableInvitePane();
 		kitchenAddChefField.setText("");
 	}
+
 	public void checkAndSendEmail(){
 		System.out.println("IN CHECK AND SEND EMAIL.");
 		String email = kitchenAddChefField.getText();
 		if(email != null){
+			//Will call sendInviteEmail.
 			_client.userInDatabase(email);
 		}
 	}
@@ -1717,6 +1759,16 @@ public class Controller2 extends AnchorPane implements Initializable {
 		_client.storeAccount(_account);
 		populateInvitations();
 		
+	}
+	
+	public void clearEventPane(){
+		eventMenuList.getItems().clear();
+		eventShoppingList.getItems().clear();
+		eventCommentWriteField.clear();
+		eventCommentDisplayField.clear();
+		newIngredient.setValue(null);
+		hideEvent.setVisible(true);
+		hideEvent.setDisable(false);
 	}
 
 }
