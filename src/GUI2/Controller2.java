@@ -50,8 +50,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -112,6 +115,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Label emailLabel;
     @FXML private AnchorPane kitchenJunk;
     @FXML private Label communalAllergiesList;
+    @FXML private ListView<DraggableIngredient> kitchenUserIngredients;
     
     
     //Local Data
@@ -190,6 +194,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	populateKitchenSelector();
     	
     	populateSearchIngredients();
+    	populateUserIngredientsInKitchen();
     	
     	tabPane.getSelectionModel().select(homeTab);
     	
@@ -464,6 +469,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		_account.removeIngredient(ing);
     		_client.storeAccount(_account, ing);
     		populateSearchIngredients();
+    		populateUserIngredientsInKitchen();
     		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
     		listItems.remove(this);
     	}
@@ -485,8 +491,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 	    }
     	populateUserFridge();
     	populateSearchIngredients();
-    	newIngredient.setValue("");
+    	newIngredient.setValue(null);
     	newIngredient.getItems().clear();
+    	
     }
     
     public void populateUserFridge(){
@@ -506,7 +513,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 	}
     
-    public void addShoppingListListener(Event event) {
+    public void addShoppingListListener() {
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getValue();
@@ -740,6 +747,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			displayKitchen(_client.getCurrentKitchen());
 		}
 	}
+	
 
     public void newKitchenButtonListener(){
     	newKitchenPane.setVisible(true);
@@ -780,6 +788,41 @@ public class Controller2 extends AnchorPane implements Initializable {
 		kitchenHide.setVisible(true);
 		_client.setCurrentKitchen(null);
 		
+	}
+	
+	private class DraggableIngredient extends Text {
+		String _i;
+		DraggableIngredient _self;
+		
+    	public DraggableIngredient(String ingredient) {
+    		super(ingredient);
+    		_i = ingredient;
+    		_self = this;
+
+			this.setOnDragDetected(new EventHandler <MouseEvent>() {
+	            public void handle(MouseEvent event) {
+	                /* drag was detected, start drag-and-drop gesture*/
+	                System.out.println("onDragDetected");
+	                
+	                /* allow any transfer mode */
+	                Dragboard db = _self.startDragAndDrop(TransferMode.ANY);
+	                
+	                /* put a string on dragboard */
+	                ClipboardContent content = new ClipboardContent();
+	                content.putString(_i);
+	                db.setContent(content);
+	                
+	                event.consume();
+	            }
+	        });
+    	}
+    }
+	
+	public void populateUserIngredientsInKitchen(){
+		kitchenUserIngredients.getItems().clear();
+		for(Ingredient i: _account.getIngredients()){
+			kitchenUserIngredients.getItems().add(new DraggableIngredient(i.getName()));
+		}
 	}
     
 	/*
@@ -872,15 +915,16 @@ public class Controller2 extends AnchorPane implements Initializable {
     	tabPane.getSelectionModel().select(recipeSearchTab);
     }
 
-    @FXML void ingredientComboListener(InputEvent event) {
-    }
+
 
     @FXML void leaveKitchen(ActionEvent event) {
     }
 
-    @FXML void shoppingListComboListener(InputEvent event) {
+    @FXML void newKitchenButtonListener(ActionEvent event) {
     }
-    
+
+    @FXML void newKitchenCreateButtonListener(ActionEvent event) {
+    }
     
     
     /*
@@ -1081,6 +1125,54 @@ public class Controller2 extends AnchorPane implements Initializable {
 			});
     	}	
     }
+    
+    /**
+     * COMBO BOX LISTENERS. _-----------------------------------------------
+     */
+    
+    /**
+     * Listener for adding ingredient to shopping list.
+     */
+    public void shoppingListComboListener(){
+    	String text = addShoppingIngredient.getEditor().getText();
+    	if(text != null){
+    		addShoppingIngredient.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+		    		addShoppingIngredient.getItems().clear();
+		    		addShoppingIngredient.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		 addShoppingListListener();
+    	}
+    }
+    
+    public void ingredientComboListener(){
+    	String text = newIngredient.getEditor().getText();
+    	if(text != null){
+    		newIngredient.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+	    	    	newIngredient.getItems().clear();
+	    	    	newIngredient.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		 addShoppingListListener();
+    	}
+    }
+    
     
 
 }
