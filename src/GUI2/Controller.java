@@ -142,6 +142,7 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML private Pane inviteBigPane;
     @FXML private ComboBox<String> searchAdditionalBox;
     @FXML private ListView<SearchAdditionBox> searchAdditionalList;
+    @FXML private Pane hideEvent;
     
     //Local Data
     private Client _client;
@@ -160,15 +161,10 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     private abstract class GuiBox extends GridPane{
-    	//*********************************************************
-    	public void remove() {};
-    	
+    	public void remove() {};	
     	public RemoveButton getRemover(){
     		return null;
-    	}
-    	
-    	
-    	
+    	}    	
     }
     
     private class RemoveButton extends Button{
@@ -1420,7 +1416,6 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void displayKitchen(KitchenName kn){
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
 		//Clearing/hiding new kitchen stuff
@@ -1545,12 +1540,12 @@ public class Controller extends AnchorPane implements Initializable {
 				}
 				else{
 					
-					inviteInvalidUserPane.setVisible(true);
-					yesInviteButton.setVisible(true);
-					noInviteButton.setVisible(true);
-					inviteLabel.setVisible(true);
-					inviteLabel.setText(email + " is not a member of CWF. Would you like to invite"
-							+ " them to join?");
+					//inviteInvalidUserPane.setVisible(true);
+					//yesInviteButton.setVisible(true);
+				//	noInviteButton.setVisible(true);
+					//inviteLabel.setVisible(true);
+				//	inviteLabel.setText(email + " is not a member of CWF. Would you like to invite"
+				//			+ " them to join?");
 					
 					
 //					PopupWindow pop = new Popup();
@@ -1587,10 +1582,10 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void disableInvitePane(){
-		inviteInvalidUserPane.setVisible(false);
-		yesInviteButton.setVisible(false);
-		noInviteButton.setVisible(false);
-		inviteLabel.setVisible(false);
+		//inviteInvalidUserPane.setVisible(false);
+		//yesInviteButton.setVisible(false);
+		//noInviteButton.setVisible(false);
+		//inviteLabel.setVisible(false);
 	}
 	public void noButtonListener(){
 		disableInvitePane();
