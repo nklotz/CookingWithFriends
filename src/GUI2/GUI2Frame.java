@@ -61,7 +61,6 @@ public class GUI2Frame extends JFrame {
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-		    	Pane page;
 				try {
 					URL location = getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
