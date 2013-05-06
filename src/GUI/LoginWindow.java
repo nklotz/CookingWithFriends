@@ -9,6 +9,8 @@ import Email.Sender;
 import client.Client;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +18,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -71,6 +72,7 @@ public class LoginWindow extends JFrame{
     private Scene login() {
     	_newAcct = false;
         GridPane grid = new GridPane();
+        grid.setStyle(Style.BACKGROUND);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -80,19 +82,22 @@ public class LoginWindow extends JFrame{
         grid.add(_actiontarget, 1, 6);
         
         Scene scene = new Scene(grid, 300, 275);
-        scene.getStylesheets().add("src/GUI2/style.css");
+        //scene.getStylesheets().add("src/GUI2/style.css");
         
         Text scenetitle = new Text("Welcome to Cooking with Friends");
-        scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
+        scenetitle.setStyle(Style.LOGIN_HEADER);
+        //scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("E-mail:");
+        Text userName = new Text("E-mail:");
+        userName.setStyle(Style.SECTION_HEADER);
         grid.add(userName, 0, 1);
 
         final TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
-        Label pw = new Label("Password:");
+       	Text pw = new Text("Password:");
+        pw.setStyle(Style.SECTION_HEADER);
         grid.add(pw, 0, 2);
 
         final PasswordField pwBox = new PasswordField();
@@ -100,9 +105,15 @@ public class LoginWindow extends JFrame{
         
         
         Button btn = new Button("Sign in");
+        buttonStyle(btn);
+        //btn.setStyle(Style.BUTTON);
         //btn.getStyleClass().add("button");
         Button newAcct = new Button("Create Account");
+        buttonStyle(newAcct);
+        //newAcct.setStyle(Style.BUTTON);
         Button passBtn = new Button("Forgot Password");
+        buttonStyle(passBtn);
+        //passBtn.setStyle(Style.BUTTON);
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(newAcct);
@@ -120,7 +131,8 @@ public class LoginWindow extends JFrame{
         			_client.changePassword(email, pass);
             		Sender.send(email, message);
         		}
-        		_actiontarget.setFill(Color.BLACK);
+        		_actiontarget.setFill(Color.WHITE
+        				);
         		_actiontarget.setText("We have sent you an email with a new password.");
         	}
         });
@@ -129,7 +141,7 @@ public class LoginWindow extends JFrame{
         	 
             @Override
             public void handle(ActionEvent e) {
-                _actiontarget.setFill(Color.FIREBRICK);
+                _actiontarget.setFill(Color.WHITE);
                 
                 if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
             		_actiontarget.setText("You must input a username and password");
@@ -175,6 +187,7 @@ public class LoginWindow extends JFrame{
     private Scene newAccount(){
     	_newAcct = true;
     	GridPane grid = new GridPane();
+    	grid.setStyle(Style.BACKGROUND);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -186,29 +199,37 @@ public class LoginWindow extends JFrame{
         Scene scene = new Scene(grid, 300, 275);
         
         Text scenetitle = new Text("Create your Account!");
+        scenetitle.setStyle(Style.LOGIN_HEADER);
         scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("Email:");
+        Text userName = new Text("Email:");
+        userName.setStyle(Style.SECTION_HEADER);
         grid.add(userName, 0, 1);
 
         final TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
-        Label pw = new Label("Password:");
+        Text pw = new Text("Password:");
+        pw.setStyle(Style.SECTION_HEADER);
         grid.add(pw, 0, 2);
 
         final PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
         
-        Label pw2 = new Label("Confirm Password:");
+        Text pw2 = new Text("Confirm Password:");
+        pw2.setStyle(Style.SECTION_HEADER);
         grid.add(pw2, 0, 3);
         
         final PasswordField pwBox2 = new PasswordField();
         grid.add(pwBox2, 1, 3);
         
         Button cancel = new Button("Cancel");
+        buttonStyle(cancel);
+        //cancel.setStyle(Style.BUTTON);
         Button newAcct = new Button("Create Account");
+        buttonStyle(newAcct);
+        //newAcct.setStyle(Style.BUTTON);
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(cancel);
@@ -232,7 +253,7 @@ public class LoginWindow extends JFrame{
         	 
             @Override
             public void handle(ActionEvent e) {
-                _actiontarget.setFill(Color.FIREBRICK);
+                _actiontarget.setFill(Color.WHITE);
                 
                 if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
             		_actiontarget.setText("You must input a username and password");
@@ -275,4 +296,21 @@ public class LoginWindow extends JFrame{
     public boolean isNewAccount(){
     	return _newAcct;
     }
+    
+    /**
+     * Taken from:http://stackoverflow.com/questions/13074459/javafx-2-and-css-pseudo-classes-setting-hover-attributes-in-setstyle-method
+     * @param node
+     */
+    private void buttonStyle(Node node) {
+        node.styleProperty().bind(
+          Bindings
+            .when(node.hoverProperty())
+              .then(
+                new SimpleStringProperty(Style.HOVER)
+              )
+              .otherwise(
+                new SimpleStringProperty(Style.BUTTON)
+              )
+        );
+      }
 }
