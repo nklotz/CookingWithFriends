@@ -1278,7 +1278,9 @@ public class Controller extends AnchorPane implements Initializable {
 			//eventSelector.setEditable(false);
 		}
 
-		System.out.println("EDITOR TEXT: " + eventSelector.getEditor().getText());
+		System.out.println("EDITOR Val: " + eventSelector.getValue());
+		System.out.println("EDITOR t: " + eventSelector.getEditor().getText());
+
 		if(eventSelector.getValue()!=null){
 		//if(eventSelector.getEditor().getText().trim().length()!=0){
 			hideEvent.setVisible(false);
@@ -1307,34 +1309,14 @@ public class Controller extends AnchorPane implements Initializable {
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
 		Kitchen k = kitchens.get(_client.getCurrentKitchen());
 		
-		
+		eventSelector.getItems().clear();
 		//If kitchen doesn't equal null.
 		if(k!=null){
 			HashSet<String> names = k.getEventNames();
-			eventSelector.getItems().clear();
 			eventSelector.getItems().addAll(k.getEventNames());
 		}
+		//eventSelector.setValue(null);
 		
-		
-//		eventSelector.setEditable(true);
-//		System.out.println("CURRENT EVENT NAME: " + _currentEventName);
-//		eventSelector.setValue(_currentEventName);
-//
-//		eventSelector.setEditable(false);
-		
-//		if(_currentEventName != null){
-//			eventSelector.setEditable(true);
-//			eventSelector.setValue(_currentEventName);
-//			eventSelector.setEditable(false);
-//			System.out.println("editable? " + eventSelector.isEditable());
-//		}
-//		else{
-//			eventSelector.setEditable(true);
-//			eventSelector.setValue(null);
-//			eventSelector.setEditable(false);
-//			System.out.println("editable? " + eventSelector.isEditable());
-//
-//		}
 	}
 	
 	public void populateKitchenSelector(){
@@ -1388,6 +1370,8 @@ public class Controller extends AnchorPane implements Initializable {
 							System.out.println(_client.getCurrentKitchen().getID() + " != " + id);
 							System.out.println("SETTING CURRENT EVENT NAME TO NULL");
 							_currentEventName = null;
+							clearEventPane();
+							
 						}
 					}
 					kitchenSelector.setButtonCell(new ListCell<String>() {						
@@ -1426,7 +1410,7 @@ public class Controller extends AnchorPane implements Initializable {
 		
 		//Clearing/hiding new kitchen stuff
 		hideNewKitchenStuff();
-		
+		clearEventPane();
 		_client.setCurrentKitchen(kn);
 		
 		//Making sure selector displays correctly
@@ -1719,6 +1703,7 @@ public class Controller extends AnchorPane implements Initializable {
 		eventCommentWriteField.clear();
 		eventCommentDisplayField.clear();
 		newIngredient.setValue(null);
+		//eventSelector.setValue(null);
 		hideEvent.setVisible(true);
 		hideEvent.setDisable(false);
 	}
