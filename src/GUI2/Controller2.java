@@ -10,11 +10,13 @@ import java.util.ResourceBundle;
 import server.AutocorrectEngines;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
+import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import client.Client;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -115,7 +118,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     private String _currentEventName;
     //private KitchenPane _currentKitchenPane;
     private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
-
+    private InviteChefController _inviteChefController;
+    
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
         assert NoSearchResults != null : "fx:id=\"NoSearchResults\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
@@ -730,7 +735,65 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 
 
-    
+	/*
+	 ********************************************************** 
+	 * Invite
+	 **********************************************************
+	 */
+	
+	public void popupInvite(){
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+//				try {
+//					URL location = getClass().getResource("InviteChefWindow.fxml");
+//					FXMLLoader fxmlLoader = new FXMLLoader();
+//					fxmlLoader.setLocation(location);
+//					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+//					Parent p = (Parent) fxmlLoader.load(location.openStream());
+//			        _inviteChefController = (InviteChefController) fxmlLoader.getController();
+//			        Scene scene = new Scene(p);
+//			        _inviteChef
+//			        _panel.setScene(scene);
+//				} catch (IOException e) {
+//					System.out.println("ERROR: IN GUI 2 Frame");
+//					e.printStackTrace();
+//				}
+    	
+    		}
+		});
+	}
+	
+	public void checkAndSendEmail(String email){
+		System.out.println("IN CHECK AND SEND EMAIL.");
+		if(email != null){
+			//Will call sendInviteEmail.
+			_client.userInDatabase(email);
+		}
+	}
+		
+	public void sendInviteEmails(boolean userInDatabase){
+		_inviteChefController.sendInviteEmails(userInDatabase);
+	}
+
+	public void inviteUserToKitchen(String toInvite){
+		if(_client.getKitchens()!=null){
+			Kitchen k = _client.getKitchens().get(_client.getCurrentKitchen());
+			_client.addRequestedKitchenUser(toInvite, _account.getName(), _client.getCurrentKitchen());
+			
+			//instant display update
+			Text t = new Text(toInvite + " (pending)");
+			t.setFont(Font.font("Verdana", FontPosture.ITALIC, 10));
+			t.setFill(Color.GRAY);
+			kitchenChefList.getItems().add(t);
+			
+			String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
+					+ "wants you to join the kitchen, " + k.getName();
+			message += ". To accept this invitation, you must log in and accept.";
+			Sender.send(toInvite, message);
+
+		}
+	}
     
 	
     @FXML void addFromMyFridgeListener(ActionEvent event) {
