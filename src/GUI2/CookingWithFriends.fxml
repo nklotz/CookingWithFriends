@@ -139,7 +139,7 @@
         </Tab>
         <Tab text="Kitchens">
           <content>
-            <AnchorPane id="Content" focusTraversable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body" visible="true">
+            <AnchorPane id="Content" fx:id="EventHide" focusTraversable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body" visible="true">
               <children>
                 <Label layoutX="36.0" layoutY="14.0" prefHeight="84.0" prefWidth="377.0" styleClass="pageHeader" text="Cooking With Friends" />
                 <Pane layoutX="401.0" layoutY="26.0" prefHeight="61.0" prefWidth="261.0" styleClass="smallBackground" />
@@ -176,8 +176,9 @@
                             </FXCollections>
                           </items>
                         </ComboBox>
-                        <ToggleButton id="remove" fx:id="eventShoppingRemoveButton" layoutX="14.0" layoutY="43.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
-                        <Button id="addIngre" fx:id="eventShoppingAddButton" layoutX="183.0" layoutY="43.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingIngredientListener" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
+                        <ToggleButton id="remove" fx:id="eventShoppingRemoveButton" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="73.9296875" styleClass="button" text="Remove" />
+                        <Button id="addIngre" fx:id="eventShoppingAddButton" layoutX="183.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingIngredientListener" prefHeight="18.624855859372474" prefWidth="54.171852929684974" text="Add" />
+                        <ListView fx:id="eventShoppingList" layoutX="14.0" layoutY="64.0" prefHeight="232.0" prefWidth="224.0" />
                       </children>
                     </Pane>
                     <Text layoutX="280.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shopping List" />
@@ -189,13 +190,13 @@
                       </children>
                     </Pane>
                     <Text layoutX="14.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Comments" />
-                    <ListView fx:id="eventShoppingList" layoutX="298.0" layoutY="200.0" prefHeight="211.85137939453125" prefWidth="224.0" />
                     <Label id="" fx:id="eventLabel" layoutX="276.0" layoutY="11.0" prefWidth="192.0000084472631" styleClass="infoHeader" text="Create New Event" />
                     <Label id="" fx:id="nameEventLabel" layoutX="274.0" layoutY="29.0" prefWidth="53.0000084472631" text="Name:" />
                     <TextArea id="eventCommentDisplayField" fx:id="createEventField" editable="true" layoutX="327.0" layoutY="28.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
                     <Button id="addIngre" fx:id="createEventButton" layoutX="489.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#createEventListener" prefHeight="26.106148855593347" prefWidth="62.538857324216224" text="Create" />
                     <TextArea id="eventCommentDisplayField" fx:id="createDateField" editable="true" layoutX="327.0" layoutY="58.0" prefHeight="28.106153759770677" prefWidth="154.5574951171875" promptText="" wrapText="true" />
                     <Label id="" layoutX="278.0" layoutY="63.0" prefWidth="45.1248863769506" text="Date:" />
+                    <Pane fx:id="hideEvent" layoutX="0.0" layoutY="86.0" opacity="0.71" prefHeight="671.8889770507812" prefWidth="559.0" style="-fx-background-color: lightgrey;" visible="true" />
                   </children>
                 </Pane>
                 <Pane fx:id="inviteBigPane" layoutX="36.0" layoutY="548.0" prefHeight="369.0" prefWidth="254.0" styleClass="section">

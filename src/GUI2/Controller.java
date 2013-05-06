@@ -192,6 +192,9 @@ public class Controller extends AnchorPane implements Initializable {
     @FXML
     private Pane inviteBigPane;
     
+    @FXML
+    private Pane hideEvent;
+    
     @FXML ComboBox<String> searchAdditionalBox;
     @FXML ListView<SearchAdditionBox> searchAdditionalList;
     @FXML Pane inviteInvalidUserPane;
@@ -844,7 +847,7 @@ public class Controller extends AnchorPane implements Initializable {
     	    	}
     		}
     	}
-    	loadEvent();
+    	//loadEvent();
     }
     
     
@@ -1262,20 +1265,28 @@ public class Controller extends AnchorPane implements Initializable {
 	}
 	
 	public void loadEvent(){
+		
+		
 		System.out.println("TOP OF LOAD EVENT!!!!!!!!!");
 		if(eventSelector.getValue()!= null){
 			System.out.println("setting current event to " + eventSelector.getValue());
 			_currentEventName = eventSelector.getValue();
 		}
 		else if (_currentEventName != null){
-			eventSelector.setEditable(true);
+			//eventSelector.setEditable(true);
+			System.out.println(eventSelector.getValue());
+			System.out.println("change to " +_currentEventName);
 			eventSelector.setValue(_currentEventName);
-			eventSelector.setEditable(false);
+			System.out.println(eventSelector.getValue());
+
+			//eventSelector.setEditable(false);
 		}
 
 		System.out.println("EDITOR TEXT: " + eventSelector.getEditor().getText());
 		if(eventSelector.getValue()!=null){
 		//if(eventSelector.getEditor().getText().trim().length()!=0){
+			hideEvent.setVisible(false);
+			hideEvent.setDisable(true);
 			populateEventMenu();
 			populateEventShoppingList();
 			displayMessages();
@@ -1307,8 +1318,7 @@ public class Controller extends AnchorPane implements Initializable {
 			eventSelector.getItems().clear();
 			eventSelector.getItems().addAll(k.getEventNames());
 		}
-		System.out.println("IN POPOULATE EVENT SELECTOR: SETTING SELECTOR TO FIRST ITEM");
-		eventSelector.setValue(eventSelector.getItems().get(0));
+		
 		
 //		eventSelector.setEditable(true);
 //		System.out.println("CURRENT EVENT NAME: " + _currentEventName);
@@ -1368,6 +1378,8 @@ public class Controller extends AnchorPane implements Initializable {
 		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
+				System.out.println("I have been clicked! " + kitchenSelector.getValue());
+				
 				//disable the thing that hides everything
 				kitchenHide.setVisible(false);
 				kitchenHide.setDisable(true);
@@ -1375,14 +1387,14 @@ public class Controller extends AnchorPane implements Initializable {
 
 				String id = kitchenSelector.getValue();
 				if(id!= null){
-					_currentEventName = null;
-					kitchenSelector.setButtonCell(new ListCell<String>() {
-						private final Label id;
-						{
-							setContentDisplay(ContentDisplay.TEXT_ONLY);
-							id = new Label("balls");
-					    }
-						
+					if(_client.getCurrentKitchen()!= null){
+						if(!_client.getCurrentKitchen().getID().equals(id)){
+							System.out.println(_client.getCurrentKitchen().getID() + " != " + id);
+							System.out.println("SETTING CURRENT EVENT NAME TO NULL");
+							_currentEventName = null;
+						}
+					}
+					kitchenSelector.setButtonCell(new ListCell<String>() {						
 						@Override
 						protected void updateItem(String name, boolean empty) {
 							super.updateItem(name, empty);
@@ -1486,7 +1498,6 @@ public class Controller extends AnchorPane implements Initializable {
 		populateEventSelector();
 		System.out.println("ABOVE LOAD EVENT");
 		loadEvent();
-		
 	}
 
 	public void reDisplayKitchen() {
@@ -1713,6 +1724,16 @@ public class Controller extends AnchorPane implements Initializable {
 		_client.storeAccount(_account);
 		populateInvitations();
 		
+	}
+	
+	public void clearEventPane(){
+		eventMenuList.getItems().clear();
+		eventShoppingList.getItems().clear();
+		eventCommentWriteField.clear();
+		eventCommentDisplayField.clear();
+		newIngredient.setValue(null);
+		hideEvent.setVisible(true);
+		hideEvent.setDisable(false);
 	}
 
 }
