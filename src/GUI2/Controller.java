@@ -486,27 +486,26 @@ public class Controller extends AnchorPane implements Initializable {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
 //		
-//		URL location = getClass().getResource("EditProfileWindow.fxml");
-//		FXMLLoader fxmlLoader = new FXMLLoader();
-//		fxmlLoader.setLocation(location);
-//		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-//		Popup popup = new Popup();
-//		Parent p;
-//		try {
-//			p = (Parent) fxmlLoader.load(location.openStream());
-//			ProfileController profControl = (ProfileController) fxmlLoader.getController();
-//	        //profControl.setUp(_client, _account, _kitchens, _engines);
-//	        popup.getContent().add(p);
-//	        popup.setAutoFix(true);
-//	        popup.setAutoHide(true);
-//	        popup.show(root, 0, 0);
-//	      //  popup.centerOnScreen();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		URL location = getClass().getResource("EditProfileWindow.fxml");
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(location);
+		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+		Popup popup = new Popup();
+		Parent p;
+		try {
+			p = (Parent) fxmlLoader.load(location.openStream());
+			ProfileController profControl = (ProfileController) fxmlLoader.getController();
+	        //profControl.setUp(_client, _account, _kitchens, _engines);
+	        popup.getContent().add(p);
+	        popup.setAutoFix(true);
+	        popup.setAutoHide(true);
+	        popup.show(root, 0, 0);
+	      //  popup.centerOnScreen();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Stage stage = new Stage();
 	    Parent p = FXMLLoader.load(getClass().getResource("EditProfileWindow.fxml"));
@@ -539,197 +538,197 @@ public class Controller extends AnchorPane implements Initializable {
     /***************************************************************************************
      * Search Page Methods
      */
-    private void setUpSearchTab() {
-    	searchButton.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent e){
-				NoSearchResults.setVisible(false);
-				resultsFlow.getChildren().clear();
-				
-				if (_currentKitchenPane == null) {
-					NoSearchResults.setText("Please select a kitchen");
-					NoSearchResults.setVisible(true);
-					return;
-				}
-					
-				try { //Attempt to query API
-					List<String> dummyList = Collections.emptyList(); 
-					List<String> selectedIngredients = _currentKitchenPane.getSelectedIngredients();
-					List<String> restrictions = _currentKitchenPane.getRestrictions();
-					List<String> allergies = _currentKitchenPane.getAllergies();
-					
-					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummyList, restrictions, allergies);
-					
-					if (results.size() == 0) {
-						System.out.println("no results!!");
-						String message = "Your search didn't yield any results.\n You searched for:  /'" + searchField.getText() + "/'\n";
-						if (selectedIngredients.size() != 0){
-							message += "with required ingredients: ";
-							for (int i = 0; i < selectedIngredients.size(); i++){
-								message += selectedIngredients.get(i);
-								if(i != selectedIngredients.size() - 1){
-									message += ", ";
-								}
-							}
-						}
-						NoSearchResults.setText(message);
-						NoSearchResults.setVisible(true);
-					}
-					else {
-						for (Recipe recipe : results)
-							resultsFlow.getChildren().add(new RecipeBox(recipe));
-					}
-				} catch (IOException ex) {
-					NoSearchResults.setText("Error querying API -- is your internet connection down?");
-					NoSearchResults.setVisible(true);
-				}
-			}
-		});
-    }
-    
-    private class RecipeBox extends VBox {
-    	private Recipe _recipe;
-    	public RecipeBox(Recipe recipe) {
-    		super();
-    		_recipe = recipe;
-    		
-    		this.getStyleClass().add("recipeBox");
-			this.setAlignment(Pos.CENTER);
-			
-			this.setPrefWidth(150);
-			this.setMaxWidth(150);
-			this.setPrefHeight(80);
-			this.setMaxHeight(80);
-			
-    		Label recipeLabel = new Label(recipe.getName());
-    		recipeLabel.setMaxWidth(140);
-    		recipeLabel.setWrapText(true);
-    		this.getChildren().add(recipeLabel);
-    		if (recipe.hasImage()) {
-    			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
-    			ImageView imageV = new ImageView(recipeThumbnail);
-    			imageV.getStyleClass().add("recipeThumbnail");
-    			this.getChildren().add(imageV);
-    		}
-    		
-			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-				@Override
-				public void handle(MouseEvent event) {
-					createPopup(_recipe);					
-				}
-			});
-    	}
-    }
-    
-    private void createPopup(Recipe recipe) {
-    	//TODO: create beautiful popup
-    	System.out.println("TODO: Create this popup (with buttons to add a recipe to any kitchen)");
-       
-    	final Popup popup = new Popup(); 
-        popup.setX(300); 
-        popup.setY(200);
-        popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
-     
-        //popup.show(arg0, arg1, arg2)
-           
-    	//Perhaps do it in scenebuilder?
-	}
-    
-    protected void populateSearchIngredients() {
-    	List<KitchenPane> kitchenPanes = new ArrayList<>();
-        kitchenPanes.add(new KitchenPane("My Fridge",
-        		_account.getIngredients(),
-        		_account.getDietaryRestrictions(), 
-        		_account.getAllergies()
-        		));
-        
-        for (Kitchen kitchen : _kitchens.values()) {
-        	kitchenPanes.add(new KitchenPane(kitchen.getName(),
-        			kitchen.getIngredients(),
-        			kitchen.getDietaryRestrictions(),
-        			kitchen.getAllergies()
-        		));
-        }
-        
-        ingredientsAccordion.getPanes().clear();
-        ingredientsAccordion.getPanes().addAll(kitchenPanes);
-	}
-    
-    private class KitchenPane extends TitledPane {
-    	
-    	private List<CheckBox> _ingredientBoxes;
-    	private KitchenPane _thisPane;
-    	private Set<String> _allergies, _restrictions;
-    	
-    	public KitchenPane(String name, Set<Ingredient> ingredients, Set<String> restrictions, Set<String> allergies) {
-    		super();
-    		_ingredientBoxes = new ArrayList<>();
-    		_thisPane = this;
-    		_allergies = allergies;
-    		_restrictions = restrictions;
-    		
-    		this.setText(name); 	
-    		this.setContent(this.makeIngredientsList(ingredients)); 	
-    		this.expandedProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-					if (arg2) _currentKitchenPane = _thisPane;
-					else _currentKitchenPane = null;
-					
-					System.out.println("Updated open pane: " + _currentKitchenPane);
-				}
-    		});
-    	}
-    	
-    	public List<String> getAllergies() {
-			return new ArrayList<String>(_allergies);
-		}
-
-		public List<String> getRestrictions() {
-			return new ArrayList<String>(_restrictions);
-		}
-
-		public List<String> getSelectedIngredients() {
-			List<String> selectedIngredients = new ArrayList<>();
-			for (CheckBox ingredientBox : _ingredientBoxes) {
-				if (ingredientBox.isSelected()) {
-					selectedIngredients.add(ingredientBox.getText());
-				}
-			}
-			return selectedIngredients;
-		}
-
-    	public ListView<CheckBox> makeIngredientsList(Set<Ingredient> ingredients) {
-    		ListView<CheckBox> ingredientsView = new ListView<>();    		
-    		for (Ingredient ing : ingredients)
-    			_ingredientBoxes.add(new CheckBox(ing.getName()));
-    		CheckBox selectAll = new SelectAllBox(_ingredientBoxes);
-    		ingredientsView.getItems().add(selectAll);
-    		ingredientsView.getItems().addAll(_ingredientBoxes);
-			return ingredientsView;
-    	}
-    }
-    
-    private class SelectAllBox extends CheckBox {
-    	private List<CheckBox> _associatedBoxes;
-    	private CheckBox _allBox;
-    	
-    	public SelectAllBox(List<CheckBox> boxes) {
-    		_associatedBoxes = boxes;
-    		this.setText("Select all");
-    		this.getStyleClass().add("selectAllBox");
-    		_allBox = this;
-    		
-    		this.setOnAction(new EventHandler<ActionEvent>() {
-			    @Override
-			    public void handle(ActionEvent event) {
-			    	for (CheckBox box : _associatedBoxes) {
-		        		box.setSelected(_allBox.isSelected());
-		        	}
-			    }
-			});
-    	}	
-    }
+//    private void setUpSearchTab() {
+//    	searchButton.setOnAction(new EventHandler<ActionEvent>(){
+//			@Override
+//			public void handle(ActionEvent e){
+//				NoSearchResults.setVisible(false);
+//				resultsFlow.getChildren().clear();
+//				
+//				if (_currentKitchenPane == null) {
+//					NoSearchResults.setText("Please select a kitchen");
+//					NoSearchResults.setVisible(true);
+//					return;
+//				}
+//					
+//				try { //Attempt to query API
+//					List<String> dummyList = Collections.emptyList(); 
+//					List<String> selectedIngredients = _currentKitchenPane.getSelectedIngredients();
+//					List<String> restrictions = _currentKitchenPane.getRestrictions();
+//					List<String> allergies = _currentKitchenPane.getAllergies();
+//					
+//					List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummyList, restrictions, allergies);
+//					
+//					if (results.size() == 0) {
+//						System.out.println("no results!!");
+//						String message = "Your search didn't yield any results.\n You searched for:  /'" + searchField.getText() + "/'\n";
+//						if (selectedIngredients.size() != 0){
+//							message += "with required ingredients: ";
+//							for (int i = 0; i < selectedIngredients.size(); i++){
+//								message += selectedIngredients.get(i);
+//								if(i != selectedIngredients.size() - 1){
+//									message += ", ";
+//								}
+//							}
+//						}
+//						NoSearchResults.setText(message);
+//						NoSearchResults.setVisible(true);
+//					}
+//					else {
+//						for (Recipe recipe : results)
+//							resultsFlow.getChildren().add(new RecipeBox(recipe));
+//					}
+//				} catch (IOException ex) {
+//					NoSearchResults.setText("Error querying API -- is your internet connection down?");
+//					NoSearchResults.setVisible(true);
+//				}
+//			}
+//		});
+//    }
+//    
+//    private class RecipeBox extends VBox {
+//    	private Recipe _recipe;
+//    	public RecipeBox(Recipe recipe) {
+//    		super();
+//    		_recipe = recipe;
+//    		
+//    		this.getStyleClass().add("recipeBox");
+//			this.setAlignment(Pos.CENTER);
+//			
+//			this.setPrefWidth(150);
+//			this.setMaxWidth(150);
+//			this.setPrefHeight(80);
+//			this.setMaxHeight(80);
+//			
+//    		Label recipeLabel = new Label(recipe.getName());
+//    		recipeLabel.setMaxWidth(140);
+//    		recipeLabel.setWrapText(true);
+//    		this.getChildren().add(recipeLabel);
+//    		if (recipe.hasImage()) {
+//    			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
+//    			ImageView imageV = new ImageView(recipeThumbnail);
+//    			imageV.getStyleClass().add("recipeThumbnail");
+//    			this.getChildren().add(imageV);
+//    		}
+//    		
+//			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+//				@Override
+//				public void handle(MouseEvent event) {
+//					createPopup(_recipe);					
+//				}
+//			});
+//    	}
+//    }
+//    
+//    private void createPopup(Recipe recipe) {
+//    	//TODO: create beautiful popup
+//    	System.out.println("TODO: Create this popup (with buttons to add a recipe to any kitchen)");
+//       
+//    	final Popup popup = new Popup(); 
+//        popup.setX(300); 
+//        popup.setY(200);
+//        popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
+//     
+//        //popup.show(arg0, arg1, arg2)
+//           
+//    	//Perhaps do it in scenebuilder?
+//	}
+//    
+//    protected void populateSearchIngredients() {
+//    	List<KitchenPane> kitchenPanes = new ArrayList<>();
+//        kitchenPanes.add(new KitchenPane("My Fridge",
+//        		_account.getIngredients(),
+//        		_account.getDietaryRestrictions(), 
+//        		_account.getAllergies()
+//        		));
+//        
+//        for (Kitchen kitchen : _kitchens.values()) {
+//        	kitchenPanes.add(new KitchenPane(kitchen.getName(),
+//        			kitchen.getIngredients(),
+//        			kitchen.getDietaryRestrictions(),
+//        			kitchen.getAllergies()
+//        		));
+//        }
+//        
+//        ingredientsAccordion.getPanes().clear();
+//        ingredientsAccordion.getPanes().addAll(kitchenPanes);
+//	}
+//    
+//    private class KitchenPane extends TitledPane {
+//    	
+//    	private List<CheckBox> _ingredientBoxes;
+//    	private KitchenPane _thisPane;
+//    	private Set<String> _allergies, _restrictions;
+//    	
+//    	public KitchenPane(String name, Set<Ingredient> ingredients, Set<String> restrictions, Set<String> allergies) {
+//    		super();
+//    		_ingredientBoxes = new ArrayList<>();
+//    		_thisPane = this;
+//    		_allergies = allergies;
+//    		_restrictions = restrictions;
+//    		
+//    		this.setText(name); 	
+//    		this.setContent(this.makeIngredientsList(ingredients)); 	
+//    		this.expandedProperty().addListener(new ChangeListener<Boolean>() {
+//				@Override
+//				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+//					if (arg2) _currentKitchenPane = _thisPane;
+//					else _currentKitchenPane = null;
+//					
+//					System.out.println("Updated open pane: " + _currentKitchenPane);
+//				}
+//    		});
+//    	}
+//    	
+//    	public List<String> getAllergies() {
+//			return new ArrayList<String>(_allergies);
+//		}
+//
+//		public List<String> getRestrictions() {
+//			return new ArrayList<String>(_restrictions);
+//		}
+//
+//		public List<String> getSelectedIngredients() {
+//			List<String> selectedIngredients = new ArrayList<>();
+//			for (CheckBox ingredientBox : _ingredientBoxes) {
+//				if (ingredientBox.isSelected()) {
+//					selectedIngredients.add(ingredientBox.getText());
+//				}
+//			}
+//			return selectedIngredients;
+//		}
+//
+//    	public ListView<CheckBox> makeIngredientsList(Set<Ingredient> ingredients) {
+//    		ListView<CheckBox> ingredientsView = new ListView<>();    		
+//    		for (Ingredient ing : ingredients)
+//    			_ingredientBoxes.add(new CheckBox(ing.getName()));
+//    		CheckBox selectAll = new SelectAllBox(_ingredientBoxes);
+//    		ingredientsView.getItems().add(selectAll);
+//    		ingredientsView.getItems().addAll(_ingredientBoxes);
+//			return ingredientsView;
+//    	}
+//    }
+//    
+//    private class SelectAllBox extends CheckBox {
+//    	private List<CheckBox> _associatedBoxes;
+//    	private CheckBox _allBox;
+//    	
+//    	public SelectAllBox(List<CheckBox> boxes) {
+//    		_associatedBoxes = boxes;
+//    		this.setText("Select all");
+//    		this.getStyleClass().add("selectAllBox");
+//    		_allBox = this;
+//    		
+//    		this.setOnAction(new EventHandler<ActionEvent>() {
+//			    @Override
+//			    public void handle(ActionEvent event) {
+//			    	for (CheckBox box : _associatedBoxes) {
+//		        		box.setSelected(_allBox.isSelected());
+//		        	}
+//			    }
+//			});
+//    	}	
+//    }
     
     /****************************************************************************************
      * END Search page methods
@@ -1182,9 +1181,9 @@ public class Controller extends AnchorPane implements Initializable {
 	        
 	}
 	
-	public void goToRecipeTab(){
-		tabPane.getSelectionModel().select(recipeSearchTab);
-	}
+//	public void goToRecipeTab(){
+//		tabPane.getSelectionModel().select(recipeSearchTab);
+//	}
 	
 	public void addRtoEMode(){
 		if (!getRecipeChecksButton.isSelected()){

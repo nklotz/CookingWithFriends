@@ -4,25 +4,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Email.Sender;
-import UserInfo.Kitchen;
+
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
 
 
 public class InviteChefController extends AnchorPane implements Initializable  {
 
-	private Label chefName, invalidEmail;
-	private Button send;
+	@FXML private TextField chefName;
+	@FXML private Label invalidEmail;
+	@FXML private Button send;
 	private Controller2 _controller;
-	private Pane inviteToJoinPane;
+	@FXML private Pane inviteToJoinPane;
 	
 	public void setController(Controller2 controller){
 		_controller = controller;
@@ -40,10 +39,12 @@ public class InviteChefController extends AnchorPane implements Initializable  {
     
     public void hideJoinInvite(){
     	inviteToJoinPane.setVisible(false);
+    	chefName.setDisable(false);
     }
     
     public void displayJoinInvite(){
     	inviteToJoinPane.setVisible(true);
+    	chefName.setDisable(true);
     }
     
     public void sendInviteEmails(boolean userInDatabase){
@@ -82,5 +83,11 @@ public class InviteChefController extends AnchorPane implements Initializable  {
 		hideJoinInvite();
 	}
 	
+	public void yesButtonListener(){
+		_controller.inviteToJoinCWF(chefName.getText());
+		hideJoinInvite();
+		chefName.setText("");
+	}
+
 
 }

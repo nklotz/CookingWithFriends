@@ -85,14 +85,14 @@ public class DBHelper implements DBHelperInterface{
 			e.printStackTrace();
 		}
 		
-		/*storeUsernamePassword("CWF", "cook");
+		storeUsernamePassword("CWF", "cook");
 		MockUser mu = new MockUser();
 		storeAccount(mu.getAccount());
 		for(KitchenName kn: mu.getAccount().getKitchens()){
 			Kitchen k = new Kitchen(kn.getName(), kn.getID());
 			k.addActiveUser(mu.getAccount());
 			storeKitchen(k);
-		} */
+		} 
 		
 	}
 

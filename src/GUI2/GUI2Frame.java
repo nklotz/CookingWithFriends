@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import javax.swing.JFrame;
 
@@ -81,12 +80,12 @@ public class GUI2Frame extends JFrame {
 	}
 	
 	public void sendEmail(final boolean userInDatabase){
-		System.out.println("CALLED UPDATE KITCHEN");
+		System.out.println("CALLED SEND EMAIL");
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
     			//Displays the message asking if the user actually wants to invite the user.
-    		//	_controller.sendInviteEmails(userInDatabase);
+    			_controller.sendInviteEmails(userInDatabase);
     		}
 		});
 	}
@@ -111,16 +110,6 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
-	public void updateSearch(){
-		System.out.println("CALLED UPDATE SEARC");
-		Platform.runLater(new Runnable() {
-    		@Override
-    		public void run() {
-    	//		_controller.populateSearchIngredients();
-    		}
-		});
-	}
-	
 	public void updateKitchenDropDown(){
 		Platform.runLater(new Runnable() {
     		@Override
@@ -134,7 +123,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    	//		_controller.populateSearchIngredients();
+    			_controller.populateSearchIngredients();
     		}
 		});
 	}

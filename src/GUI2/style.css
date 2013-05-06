@@ -35,18 +35,18 @@
 }
 
 .pageHeader {
-	-fx-font: 30px "Comic Sans MS"; 
+	-fx-font: 30px Tahoma; 
 	-fx-text-fill: Floralwhite;
 }
 
 .sectionHeader {
-	-fx-font: 16px "Comic Sans MS"; 
+	-fx-font: 16px Tahoma; 
 	-fx-font-weight: bolder; 
 	-fx-text-fill: lightgray;
 }
 
 .infoHeader {
-	-fx-font: 14px "Comic Sans MS"; 
+	-fx-font: 14px Tahoma; 
 	-fx-font-weight: bold; 
 	-fx-text-fill: black;
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.image.Image;
+
 import UserInfo.Ingredient;
 import UserInfo.Nameable;
 import UserInfo.Recipe;
@@ -36,13 +38,15 @@ public class YummlyRecipe implements Recipe, Nameable {
 	//Additional fields from Yummly recipe query
 	private Map<String, String> attribution;
 	private String[] ingredientLines;
-	//images??
+	private ImageUrl[] images;
+	private String name;
 	private String yield;
 	private String totalTime;
 	private String numberOfServings;
 	private Map<String, String> source;
 	
 	private List<Ingredient> _ingredients;
+	private String _time;
 	
 	
 	public YummlyRecipe() {
@@ -59,7 +63,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public String getName() {
-		return recipeName;
+		return (recipeName == null ? name : recipeName);
 	}
 
 
@@ -71,6 +75,11 @@ public class YummlyRecipe implements Recipe, Nameable {
 			}
 		}
 		return _ingredients;
+	}
+	
+	@Override
+	public List<String> getIngredientStrings() {
+		return Arrays.asList(ingredientLines);
 	}
 
 
@@ -104,7 +113,19 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public String getTime() {
-		return (totalTime == null ? Integer.toString(totalTimeInSeconds) : totalTime);
+		if (totalTime == null) {
+			return Integer.toString(totalTimeInSeconds);
+		} 
+		else {
+			try {
+				Integer timeInSeconds = Integer.parseInt(totalTime);
+				_time = Integer.toString(timeInSeconds / 60) + " minutes";
+			}
+			catch (NumberFormatException ex) {
+				_time = totalTime;
+			}
+			return _time;
+		}
 	}
 
 
@@ -166,7 +187,9 @@ public class YummlyRecipe implements Recipe, Nameable {
 	}
 
 
-	
-
-
+	private class ImageUrl {
+		public String hostedLargeUrl;
+		public String hostedSmallUrl;
+		public String hostedMediumUrl;
+	}
 }
