@@ -35,6 +35,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -832,28 +833,22 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void addSearchBoxListener(){
-    	System.out.println("ADD SEARCH LSITENER!!");
-    	disableRemoves(searchAdditionalList);
+    	//disableRemoves(searchAdditionalList);
     	//searchAdditionalList.getItems().clear();
     	
-    	String ing = searchAdditionalBox.getEditor().getText();
-    	
-    	if(ing!=null && ing.trim().length()!=0){
-    		System.out.println("ADDING: " + ing);
+    	//String ing = searchAdditionalBox.getEditor().getText();
+    	String ing = searchAdditionalBox.getValue();
+    	System.out.println("ADD SEARCH LSITENER!!: " + ing);
+    	if(ing!=null&&ing.trim().length()!=0){
     		_setOfAdditionalSearchIngs.add(ing);
-    		//SearchAdditionBox box = new SearchAdditionBox(ing);
-    		searchAdditionalList.getItems().clear();
-    		ObservableList<SearchAdditionBox> listItems = FXCollections.observableArrayList();  
-    		//searchAdditionalList.setItems(listItems);
-        	for(String i: _setOfAdditionalSearchIngs){
-        		SearchAdditionBox box = new SearchAdditionBox(i);
-        		listItems.add(box);
-        	}
-        	searchAdditionalList.setItems(listItems);
-    	}    	
+    		populateAddSearchBox();	
+    	}
+    		
+    	
     }
     
     public void addIngredientListener(){
+    	//System.out.println("add ingredient listener!: " + newIngredient.getValue());
     	//addFridgeIngredient
     	disableRemoves(fridgeList);
     	System.out.println("was removeFridgebutton is selected: " + removeFridgeIngredient.isSelected());
@@ -915,8 +910,8 @@ public class Controller extends AnchorPane implements Initializable {
     
     public void searchComboListener(){
     	String text = searchAdditionalBox.getEditor().getText();
-
-    	if(searchAdditionalBox.getValue()!=null){
+    	System.out.println("SEARCH COMBO LISTENER: " + text);
+    	if(text!=null){
     		searchAdditionalBox.getItems().clear();
 	    	List<String> suggs = null;
 	    	if(text.trim().length()!=0){
@@ -928,7 +923,7 @@ public class Controller extends AnchorPane implements Initializable {
     	}
     	else{
     		//TODO: WHY DOES THIS WORK FOR SHOPPING BUT NOT INGREDIENTS
-    		addSearchBoxListener();
+    		//addSearchBoxListener();
     	}
     }
     
@@ -1043,7 +1038,6 @@ public class Controller extends AnchorPane implements Initializable {
     }
     
     public void populateEventShoppingList(){
-    	System.out.println("IN POPULATE SHOPPING LIST!!!!!!!!!");
     	ObservableList<EventShoppingListBox> listItems = FXCollections.observableArrayList();  
     	eventShoppingList.getItems().clear();
     	String eventName = eventSelector.getValue();
@@ -1054,13 +1048,28 @@ public class Controller extends AnchorPane implements Initializable {
     		if(k!=null){
     			Event e = k.getEvent(new Event(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
-    				System.out.println("ADDING INGREDIENT: " + i);
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
     	    		eventShoppingList.setItems(listItems);
     	    	}
     		}
     	}
+    }
+    
+    public void populateAddSearchBox(){
+		System.out.println("POPULATING BOX");
+		//SearchAdditionBox box = new SearchAdditionBox(ing);
+		ObservableList<SearchAdditionBox> listItems = FXCollections.observableArrayList(); 
+		searchAdditionalList.setItems(listItems);
+		//searchAdditionalList.setItems(listItems);
+    	for(String i: _setOfAdditionalSearchIngs){
+    		if(i.trim().length()!=0){
+    			SearchAdditionBox box = new SearchAdditionBox(i);
+        		listItems.add(box);
+    		}
+    		
+    	}
+    	searchAdditionalList.setItems(listItems);
     }
     
     public void populateUserFridge(){
@@ -1251,6 +1260,7 @@ public class Controller extends AnchorPane implements Initializable {
 		//if(eventSelector.getEditor().getText().trim().length()!=0){
 			populateEventMenu();
 			populateEventShoppingList();
+			displayMessages();
 		}
 		
 //		if(eventSelector.getValue()== null && _currentEventName !=null){
@@ -1626,6 +1636,48 @@ public class Controller extends AnchorPane implements Initializable {
 				invitationsList.setVisible(true);
 				populateInvitations();
 			}
+		}
+	}
+	
+	public void displayMessages(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if(k!=null){
+    			Event e = k.getEvent(new Event(_currentEventName, null, k));
+    			System.out.println("event: " + e);
+    			System.out.println("messages: " + e.getMessages());
+    			String messages = e.getMessages().toString();
+    			//eventCommentDisplayField.setVisible(false);
+    			eventCommentDisplayField.setText(messages);
+    			eventCommentDisplayField.positionCaret(messages.length());
+    			//eventCommentDisplayField.setVisible(true);
+    			//TODO: see if we can make this look less shitty.
+    		}
+    	}
+	}
+	
+	public void postMessage(){
+		String post = eventCommentWriteField.getText();
+		if (post.length()!=0){
+			eventCommentWriteField.setText("");
+			String pre = "";
+			String mid = "";
+			String email = _account.getID();
+			String id = email.split("@")[0];
+			if (!_account.getName().equals("")){
+				mid = id + " (" + _account.getName() + "): ";
+			} else {
+				mid = id +": ";
+			}
+			if (eventCommentDisplayField.getText().length() != 0){
+				pre = eventCommentDisplayField.getText() + "\n";
+			}
+			eventCommentDisplayField.setText(pre + mid + post);
+			String forServer = mid+post+"\n";
+			System.out.println("trying to add this " + forServer);
+			_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 		}
 	}
 

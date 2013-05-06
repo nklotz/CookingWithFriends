@@ -91,6 +91,7 @@ public class Client extends Thread {
     public void checkPassword(String username, String password) throws IOException{
     	Request userPass;
     	if (_login.isNewAccount()){
+    		System.out.println("NEW ACCOUNT");
     		userPass = new Request(13);
     	} else {
     		userPass = new Request(1);
@@ -222,6 +223,7 @@ public class Client extends Thread {
 	 * 15 = invite User ToKitchen
 	 * 16 = declineInvitation
 	 * 17 = add Ingredient to kitchen Event
+	 * 18 = add Message to kitchen Event
 	 */
 
     public void createNewKitchen(String kitchenName, Account account){
@@ -231,6 +233,15 @@ public class Client extends Thread {
     	send(r);
     }
     
+    public void addMessageToEvent(String eventName, String message, String kitchenId){
+    	System.out.println("sending message request");
+    	Request r = new Request(20);
+    	r.setEventName(eventName);
+    	r.setKitchenID(kitchenId);
+    	System.out.println("messages in event: " + message);
+    	r.setMessages(message);
+    	send(r);
+    }
     
     public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
     	System.out.println("sending event ing request");

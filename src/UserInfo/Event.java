@@ -22,6 +22,7 @@ public class Event implements Serializable {
 	private Kitchen _kitchen;
 	private Set<Recipe> _menu;
 	private Set<Ingredient> _shoppingIng;
+	private StringBuilder _messages = new StringBuilder();
 	
 	public Event(String name, String date, Kitchen kitchen){
 		_name = name;
@@ -89,6 +90,17 @@ public class Event implements Serializable {
 
 	public Kitchen getKitchen(){
 		return _kitchen;
+	}
+	
+	public StringBuilder getMessages(){
+		if (_messages == null){
+			System.out.println("null leaving event");
+		}
+		return _messages;
+	}
+	
+	public void addMessages(String message){
+		_messages.append(message);
 	}
 	
 	@Override
