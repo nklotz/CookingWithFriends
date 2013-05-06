@@ -15,9 +15,6 @@ import javafx.scene.layout.Pane;
 import javax.swing.JFrame;
 
 import server.AutocorrectEngines;
-import API.Wrapper;
-import API.YummlyAPIWrapper;
-import GUI.GUIScene;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -47,38 +44,32 @@ public class GUI2Frame extends JFrame {
 		    }
 		});
 		
-		this.setSize(1280, 980);
+		this.setSize(1024, 768);
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1280, 980);
+    	this.setSize(1024, 768);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(1280, 980));
+    	_panel.setPreferredSize(new java.awt.Dimension(1024, 768));
     	
     	_client = client;
     	_account = account;   	
     	_engines = engines;
-    	_kitchens = kitchens;    	
+    	_kitchens = kitchens;  
     	
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    
 		    	Pane page;
 				try {
-					URL location = getClass().getResource("CookingWithFriends.fxml");
-
+					URL location = getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					fxmlLoader.setLocation(location);
 					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-
 					Parent p = (Parent) fxmlLoader.load(location.openStream());
-					
 			        _controller = (Controller) fxmlLoader.getController();
-
 			        Scene scene = new Scene(p);
-			        
 			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {
