@@ -181,7 +181,7 @@
                         <ListView fx:id="eventShoppingList" layoutX="14.0" layoutY="64.0" prefHeight="232.0" prefWidth="224.0" />
                       </children>
                     </Pane>
-                    <Text layoutX="280.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shoppping List" />
+                    <Text layoutX="280.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infoHeader" text="Shopping List" />
                     <Pane layoutX="14.0" layoutY="463.0" prefHeight="286.0" prefWidth="520.0" styleClass="text">
                       <children>
                         <TextArea fx:id="eventCommentWriteField" editable="true" layoutX="14.0" layoutY="181.0" prefHeight="51.0" prefWidth="492.0" promptText="Write something here!" wrapText="true" />

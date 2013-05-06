@@ -322,6 +322,12 @@ public class KitchenPool {
 	  			e.addShoppingIngredient(request.getIngredient());
 	  			k.addEvent(e);
 	  			break;
+	  		case 20:
+	  			Event messagEvent = k.getEvent(new Event(request.getEventName(), null, k));
+	  			messagEvent.addMessages(request.getNewMessages());
+	  			System.out.println("added messages!");
+	  			k.addEvent(messagEvent);
+	  			break;
   			default: 
   				return;
 		}

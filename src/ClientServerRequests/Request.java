@@ -23,6 +23,7 @@ public class Request implements Serializable {
 	private Ingredient _ingredient;
 	private String _restrictAllergy;
 	private KitchenName _kitchenNameObj;
+	private String _newMessages;
 	
 	
 	/*
@@ -44,6 +45,7 @@ public class Request implements Serializable {
 	 * 16 = declineInvitation
 	 * 17 = add Ingredient to kitchen Event
 	 * 18 = change user password
+	 * 20 = post message
 	 */
 	
 	
@@ -175,6 +177,14 @@ public class Request implements Serializable {
 	
 	public String getRestrictAllergy(){
 		return _restrictAllergy;
+	}
+	
+	public String getNewMessages(){
+		return _newMessages;
+	}
+	
+	public void setMessages(String messages){
+		_newMessages = messages;
 	}
 	
 }
