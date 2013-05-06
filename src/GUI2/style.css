@@ -125,4 +125,12 @@
 	-fx-font-size: 1.6em;
 }
 
+.popupBody {
+	-fx-background-color: Firebrick;
+	-fx-border-color: black;
+    	-fx-border-radius: 10;
+    	-fx-background-radius: 10;
+	-fx-border-width: 10;
+}
+
 		

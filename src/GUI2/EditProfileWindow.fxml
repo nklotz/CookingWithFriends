@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0000999999975" prefWidth="600.0" styleClass="body" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0000999999975" prefWidth="600.0" styleClass="popupBody" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.ProfileController">
   <children>
     <Pane layoutX="33.0" layoutY="49.0" prefHeight="377.0" prefWidth="535.0" styleClass="section">
       <children>

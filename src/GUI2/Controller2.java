@@ -74,8 +74,7 @@ import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
 
-
-public class Controller extends AnchorPane implements Initializable {
+public class Controller2 extends AnchorPane implements Initializable {
 
 	private Image xImage = new Image("http://4.bp.blogspot.com/-JgoPXVNn5-U/UU3x1hDVHcI/AAAAAAAAA-E/s2dwrJcapd0/s1600/redx-300x297.jpg", 10, 10, true, true, true);
 	

@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller">
   <children>
     <MenuBar layoutX="0.0" layoutY="0.0" prefWidth="1024.0" useSystemMenuBar="false">
       <menus>
@@ -123,7 +123,7 @@
                 <Line endX="-100.0" endY="-33.0" layoutX="520.0" layoutY="50.0" startX="-100.0" startY="6.0" />
                 <Label layoutX="488.0" layoutY="20.0" styleClass="infoHeader" text="Welcome &lt;name&gt;!" />
                 <Label layoutX="488.0" layoutY="36.0" prefWidth="280.0" styleClass="infoHeader" text="How's the weather in &lt;location&gt;?" />
-                <ImageView id="chefs-hat-icon" fx:id="chefHat" cache="false" focusTraversable="true" layoutX="438.0" layoutY="20.0" pickOnBounds="true">
+                <ImageView id="chefs-hat-icon" fx:id="chefHat" cache="false" focusTraversable="true" layoutX="438.0" layoutY="20.0" onMouseClicked="#editProfileListener" pickOnBounds="true">
                   <image>
                     <Image url="@chefs-hat-icon.png" preserveRatio="true" smooth="true" />
                   </image>

@@ -44,24 +44,23 @@ public class GUI2Frame extends JFrame {
 		    }
 		});
 		
-		this.setSize(1280, 980);
+		this.setSize(1024, 768);
     	this.setVisible(true);
     	
     	_panel = new JFXPanel();
     	this.add(_panel);
-    	this.setSize(1280, 980);
+    	this.setSize(1024, 768);
     	this.setVisible(true);
-    	_panel.setPreferredSize(new java.awt.Dimension(1280, 980));
+    	_panel.setPreferredSize(new java.awt.Dimension(1024, 768));
     	
     	_client = client;
     	_account = account;   	
     	_engines = engines;
-    	_kitchens = kitchens;    	
+    	_kitchens = kitchens;  
     	
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    
 		    	Pane page;
 				try {
 					URL location = getClass().getResource("CookingWithFriends update.fxml");
