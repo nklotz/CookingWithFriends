@@ -15,9 +15,6 @@ import javafx.scene.layout.Pane;
 import javax.swing.JFrame;
 
 import server.AutocorrectEngines;
-import API.Wrapper;
-import API.YummlyAPIWrapper;
-import GUI.GUIScene;
 import UserInfo.Account;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -67,18 +64,13 @@ public class GUI2Frame extends JFrame {
     
 		    	Pane page;
 				try {
-					URL location = getClass().getResource("CookingWithFriends.fxml");
-
+					URL location = getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					fxmlLoader.setLocation(location);
 					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-
 					Parent p = (Parent) fxmlLoader.load(location.openStream());
-					
 			        _controller = (Controller) fxmlLoader.getController();
-
 			        Scene scene = new Scene(p);
-			        
 			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {

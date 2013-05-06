@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0000999999975" prefWidth="600.0" styleClass="body" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <Pane layoutX="33.0" layoutY="49.0" prefHeight="377.0" prefWidth="535.0" styleClass="section">
+      <children>
+        <ListView id="allergiesList" focusTraversable="false" layoutX="288.0" layoutY="142.0" prefHeight="121.0" prefWidth="233.0" />
+        <Group id="Group" layoutX="19.0" layoutY="19.0">
+          <children>
+            <Label id="" layoutX="0.0" layoutY="3.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:" />
+            <TextField id="nameField" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="true" />
+          </children>
+        </Group>
+        <Label layoutX="19.0" layoutY="120.0" text="Dietary Restrictions" />
+        <Label layoutX="286.0" layoutY="121.0" text="Allergies" />
+        <Button id="editProfile" fx:id="saveChangesButton" layoutX="416.0" layoutY="334.0" mnemonicParsing="false" onAction="#saveAccountChanges" text="Save Changes" textFill="WHITE" />
+        <ComboBox id="newRestriction" editable="false" layoutX="20.0" layoutY="270.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="21.1328125" prefWidth="232.9998779296875" promptText="Select a Restriction to add it">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <CheckBox id="removeRestriction" fx:id="removeRestrction" alignment="CENTER_LEFT" allowIndeterminate="false" contentDisplay="LEFT" layoutX="20.0" layoutY="296.0" mnemonicParsing="false" onAction="#removeRestrictions" selected="false" text="Remove" textAlignment="LEFT" underline="false" />
+        <ComboBox id="newRestriction" editable="false" layoutX="288.0" layoutY="270.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="21.1328125" prefWidth="232.99997792968497" promptText="Select an Allergy to add it">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="288.0" layoutY="296.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
+        <Group id="Group" layoutX="19.0" layoutY="51.0">
+          <children>
+            <Label id="" layoutX="0.0" layoutY="3.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="74.9998863769506" text="Location:" />
+            <TextField id="locationField" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="true" />
+          </children>
+        </Group>
+        <Group id="Group" layoutX="20.0" layoutY="84.0">
+          <children>
+            <Label id="" layoutX="0.0" layoutY="1.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="74.9998863769506" text="Email:" />
+            <Label fx:id="emailLabel" layoutX="69.0" layoutY="0.0" prefWidth="217.0000084472631" text="default" />
+          </children>
+        </Group>
+        <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="142.0" prefHeight="121.0" prefWidth="232.99997792968497" />
+      </children>
+    </Pane>
+    <Label layoutX="30.0" layoutY="24.0" styleClass="sectionHeader" text="My Profile">
+      <stylesheets>
+        <URL value="@style.css" />
+      </stylesheets>
+    </Label>
+  </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>

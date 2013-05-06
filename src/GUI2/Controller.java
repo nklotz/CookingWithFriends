@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.swing.JFrame;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,8 +20,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -48,8 +55,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
 import API.Wrapper;
@@ -69,130 +78,68 @@ public class Controller extends AnchorPane implements Initializable {
 
 	private Image xImage = new Image("http://4.bp.blogspot.com/-JgoPXVNn5-U/UU3x1hDVHcI/AAAAAAAAA-E/s2dwrJcapd0/s1600/redx-300x297.jpg", 10, 10, true, true, true);
 	
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
-    @FXML
-    private Button addFridgeIngredient, editProfile, addRestriction, addAllergy, searchButton;
-    @FXML
-    private CheckBox removeShoppingIngredient, removeFridgeIngredient, removeAllergy, removeRestriction;
-    @FXML
-    private ComboBox<String> addShoppingIngredient;
-    @FXML
-    private ListView<UserIngredientBox> fridgeList;
-    @FXML
-    private ComboBox<String> newIngredient;
-    @FXML
-    private FlowPane recipeFlow;
-    @FXML
-    private ListView<ShoppingIngredientBox> shoppingList;
-    @FXML
-    private Label nameLabel, locationLabel, emailLabel;  
-    @FXML
-    private TextField nameField, locationField, searchField;   
-    @FXML
-    private ToggleButton removeFridge;          
-    @FXML
-    private ComboBox<String> addRestrictionBar, addAllergyBar;    
-    @FXML
-    private ListView<RestrictionBox> restrictionsList;
-    @FXML
-    private ListView<AllergyBox> allergiesList;
-    @FXML
-    private FlowPane resultsFlow;
-    @FXML
-    private Accordion ingredientsAccordion;   
-    @FXML
-    private TextArea eventCommentDisplayField;
-    @FXML
-    private Button eventCommentPostButton;
-    @FXML
-    private TextArea eventCommentWriteField;
-    @FXML
-    private Button eventMenuAddButton;
-    @FXML
-    private ListView<EventMenuBox> eventMenuList; //*********************************************************
-    @FXML
-    private ToggleButton eventMenuRemoveButton;
-    @FXML
-    private ComboBox<String> eventSelector;  //*********************************************************
-    @FXML
-    private Button eventShoppingAddButton;
-    @FXML
-    private ListView<EventShoppingListBox> eventShoppingList; //*********************************************************
-    @FXML
-    private ToggleButton eventShoppingRemoveButton;
-    @FXML
-    private TextField kitchenAddChefField;
-    @FXML
-    private Button kitchenAddIngredientButton;
-    @FXML
-    private Button kitchenChefInviteButton;
-    @FXML
-    private ListView<Text> kitchenChefList;
-    @FXML
-    private ListView<String> kitchenDietList, kitchenAllergyList;
-    @FXML
-    private ComboBox<String> kitchenIngredientComboBox;
-    @FXML
-    private ListView<String> kitchenIngredientList;
-    @FXML
-    private ComboBox<String> kitchenSelector;
-    @FXML
-    private Button newKitchenButton;
-    @FXML
-    private Button leaveKitchenButton;
-    @FXML
-    private Label invalidEmailError;
-    @FXML 
-    private ListView<InvitationBox> invitationsList;
-    @FXML
-    private ImageView envelope;
-    @FXML
-    private Label numberOfInvites;
-    @FXML
-    private Button goToRecipeSearchButton;
-    @FXML
-    private ComboBox<String> addRecipeEventSelector;
-    @FXML
-    private Button addRecipeToEventButton;
-    @FXML
-    private ListView<String> kitchenRecipeList;
-    @FXML
-    private CheckBox getRecipeChecksButton;
-    @FXML
-    private TextField newKitchenNameField;
-    @FXML
-    private Button newKitchenCreateButton;
-    @FXML
-    private Label newKitchenLabel;
-    @FXML
-    private Text newKitchenActionText;
-    @FXML
-    private Button newKitchenCancelButton;
-    @FXML
-    private TextArea createEventField;
-    @FXML
-    private Button createEventButton;
-    @FXML
-    private TextArea createDateField;
-    @FXML
-    private ComboBox<String> eventShoppingComboBox;
-    @FXML
-    private TabPane tabPane;
-    @FXML
-    private Tab recipeSearchTab;
-    @FXML
-    private Pane kitchenHide;
-    @FXML
-    private Label NoSearchResults;
-    
-    @FXML
-    private Pane inviteBigPane;
-    
-    @FXML ComboBox<String> searchAdditionalBox;
-    @FXML ListView<SearchAdditionBox> searchAdditionalList;
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button addFridgeIngredient, editProfile, addRestriction, addAllergy, searchButton;
+    @FXML private CheckBox removeShoppingIngredient, removeFridgeIngredient, removeAllergy, removeRestriction;
+    @FXML private ComboBox<String> addShoppingIngredient;
+    @FXML private ListView<UserIngredientBox> fridgeList;
+    @FXML private ComboBox<String> newIngredient;
+    @FXML private FlowPane recipeFlow;
+    @FXML private ListView<ShoppingIngredientBox> shoppingList;
+    @FXML private Label nameLabel, locationLabel, emailLabel;  
+    @FXML private TextField nameField, locationField, searchField;   
+    @FXML private ToggleButton removeFridge;          
+    @FXML private ComboBox<String> addRestrictionBar, addAllergyBar;    
+    @FXML private ListView<RestrictionBox> restrictionsList;
+    @FXML private ListView<AllergyBox> allergiesList;
+    @FXML private FlowPane resultsFlow;
+    @FXML private Accordion ingredientsAccordion;   
+    @FXML private TextArea eventCommentDisplayField;
+    @FXML private Button eventCommentPostButton;
+    @FXML private TextArea eventCommentWriteField;
+    @FXML private Button eventMenuAddButton;
+    @FXML private ListView<EventMenuBox> eventMenuList; //*********************************************************
+    @FXML private ToggleButton eventMenuRemoveButton;
+    @FXML private ComboBox<String> eventSelector;  //*********************************************************
+    @FXML private Button eventShoppingAddButton;
+    @FXML private ListView<EventShoppingListBox> eventShoppingList; //*********************************************************
+    @FXML private ToggleButton eventShoppingRemoveButton;
+    @FXML private TextField kitchenAddChefField;
+    @FXML private Button kitchenAddIngredientButton;
+    @FXML private Button kitchenChefInviteButton;
+    @FXML private ListView<Text> kitchenChefList;
+    @FXML private ListView<String> kitchenDietList, kitchenAllergyList;
+    @FXML private ComboBox<String> kitchenIngredientComboBox;
+    @FXML private ListView<String> kitchenIngredientList;
+    @FXML private ComboBox<String> kitchenSelector;
+    @FXML private Button newKitchenButton;
+    @FXML private Button leaveKitchenButton;
+    @FXML private Label invalidEmailError;
+    @FXML private ListView<InvitationBox> invitationsList;
+    @FXML private ImageView envelope;
+    @FXML private Label numberOfInvites;
+    @FXML private Button goToRecipeSearchButton;
+    @FXML private ComboBox<String> addRecipeEventSelector;
+    @FXML private Button addRecipeToEventButton;
+    @FXML private ListView<String> kitchenRecipeList;
+    @FXML private CheckBox getRecipeChecksButton;
+    @FXML private TextField newKitchenNameField;
+    @FXML private Button newKitchenCreateButton;
+    @FXML private Label newKitchenLabel;
+    @FXML private Text newKitchenActionText;
+    @FXML private Button newKitchenCancelButton;
+    @FXML private TextArea createEventField;
+    @FXML private Button createEventButton;
+    @FXML private TextArea createDateField;
+    @FXML private ComboBox<String> eventShoppingComboBox;
+    @FXML private TabPane tabPane;
+    @FXML private Tab recipeSearchTab;
+    @FXML private Pane kitchenHide;
+    @FXML private Label NoSearchResults;
+    @FXML private Pane inviteBigPane;
+    @FXML private ComboBox<String> searchAdditionalBox;
+    @FXML private ListView<SearchAdditionBox> searchAdditionalList;
     
     //Local Data
     private Client _client;
@@ -262,7 +209,6 @@ public class Controller extends AnchorPane implements Initializable {
     		return _remove;
     	}
     }
-    
     
     private class EventMenuBox extends GuiBox{
     	protected String _toDisplay;
@@ -499,6 +445,49 @@ public class Controller extends AnchorPane implements Initializable {
     	newIngredient.getItems().addAll(list);
     	//addShoppingIngredient.
     //	initializeAutocorrect();
+    }
+    
+    public void editProfileListener() {
+//        parentJFXPanel = new JFXPanel();
+//        parentFrame.add(parentJFXPanel);
+//        parentPane = new BorderPane();
+//        parentJFXPanel.setScene(new Scene(parentPane));
+//        popup = new Popup();
+//        popup.getContent().add(popupBody);
+//        popup.show(parentPane, 0, 0);
+//        
+//    	URL location = getClass().getResource("EditProfileWindow.fxml");
+//		FXMLLoader fxmlLoader = new FXMLLoader();
+//		fxmlLoader.setLocation(location);
+//		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+//		Parent p = (Parent) fxmlLoader.load(location.openStream());
+//        ProfileController profControl = (ProfileController) fxmlLoader.getController();
+//        Scene scene = new Scene(p);
+//        profControl.setUp(_client, _account, _kitchens, _engines);
+//        _panel.setScene(scene);	
+       
+    	System.out.println("Poping up!");
+        final Stage stage = new Stage();           
+        //Initialize the Stage with type of modal
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Top Stage With Modality");
+       
+        URL location = getClass().getResource("EditProfileWindow.fxml");
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(location);
+		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+		Parent p;
+		try {
+			p = (Parent) fxmlLoader.load(location.openStream());
+			ProfileController profControl = (ProfileController) fxmlLoader.getController();
+	        Scene scene = new Scene(p);
+	        //profControl.setUp(_client, _account, _kitchens, _engines);
+	        stage.setScene(scene);        
+	        stage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
    
     public void createEventListener(){
@@ -842,7 +831,6 @@ public class Controller extends AnchorPane implements Initializable {
     	loadEvent();
     }
     
-    
     public void addSearchBoxListener(){
     	System.out.println("ADD SEARCH LSITENER!!");
     	disableRemoves(searchAdditionalList);
@@ -865,7 +853,6 @@ public class Controller extends AnchorPane implements Initializable {
     	}    	
     }
     
-    
     public void addIngredientListener(){
     	//addFridgeIngredient
     	disableRemoves(fridgeList);
@@ -885,8 +872,7 @@ public class Controller extends AnchorPane implements Initializable {
     	newIngredient.getItems().clear();
     	reDisplayKitchen();
     }
-    
-    
+      
     public void eventShoppingComboListener(){
     	String text = eventShoppingComboBox.getEditor().getText();
     //	if(eventShoppingComboBox.getValue()!=null){
