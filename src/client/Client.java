@@ -227,6 +227,7 @@ public class Client extends Thread {
 	 */
 
     public void createNewKitchen(String kitchenName, Account account){
+    	System.out.println("Creating new kitchen");
     	Request r = new Request(14);
     	r.setKitchenName(kitchenName);
     	r.setAccount(account);

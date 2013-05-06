@@ -650,7 +650,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
 		//Clearing/hiding new kitchen stuff
-		//******************hideNewKitchenStuff();
+		hideNewKitchenStuff();
 		//******************clearEventPane();
 		_client.setCurrentKitchen(kn);
 		kitchenJunk.setDisable(false);
@@ -673,26 +673,34 @@ public class Controller2 extends AnchorPane implements Initializable {
 		});
 		
 		Kitchen k = _client.getKitchens().get(kn);
-		System.out.println("SHOULD DISPLAY KITCHEN: " + k);
-		System.out.println("EVENTS ARE: " + k.getEvents());
-		//******************kitchenDietList.getItems().clear();
-		//******************for(String r: k.getDietaryRestrictions()){
-		//******************	kitchenDietList.getItems().add(r);
-		//******************}
 		
 		
-		communalAllergiesList.setText("No allergies listed for current users");
-		
-		StringBuilder allergies = new StringBuilder("");
-		
+		StringBuilder restricts = new StringBuilder("");
 		boolean first = true;
-		
+		for(String r: k.getDietaryRestrictions()){
+			if(!first){
+				restricts.append(", ");
+			}
+			restricts.append(r);
+			first = false;
+		}		
+		communalDietPreferencesList.setText(restricts.toString());	
+		if(communalDietPreferencesList.getText().length()==0){
+			communalDietPreferencesList.setText("No restrictions listed for current users");
+		}		
+				
+		StringBuilder allergies = new StringBuilder("");
+		first = true;
 		for(String r: k.getAllergies()){
 			if(!first){
 				allergies.append(", ");
 			}
-			
-		//******************	kitchenAllergyList.getItems().add(r);
+			allergies.append(r);
+			first = false;
+		}		
+		communalAllergiesList.setText(allergies.toString());	
+		if(communalAllergiesList.getText().length()==0){
+			communalAllergiesList.setText("No allergies listed for current users");
 		}
 		
 		
@@ -733,7 +741,47 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 	}
 
+    public void newKitchenButtonListener(){
+    	newKitchenPane.setVisible(true);
 
+    }
+    
+    public void hideNewKitchenStuff(){
+    	newKitchenPane.setVisible(false);
+    }
+
+    
+    public void newKitchenCreateButtonListener(){
+    	String name = newKitchenNameField.getText();
+    	
+    	if (name.length() == 0){
+    		newKitchenActionText.setText("Please enter a name.");
+    		newKitchenActionText.setVisible(true);
+    	} else if (_client.getKitchenNameSet().contains(name)){
+    		newKitchenActionText.setText("You've already got a kitchen with that name");
+    		newKitchenActionText.setVisible(true);
+    	} else {
+    		_client.setNewKitchen(name);
+    		_client.createNewKitchen(name, _account);
+    		//hideNewKitchenStuff();
+    	}
+    }
+    
+	public void leaveKitchen(){
+
+		System.out.println("leavvving");
+		hideNewKitchenStuff();
+		kitchenSelector.setValue(null);
+		
+		_client.removeKitchen(_client.getCurrentKitchen());
+
+		_account.removeKitchen(_client.getCurrentKitchen());
+		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
+		kitchenHide.setVisible(true);
+		_client.setCurrentKitchen(null);
+		
+	}
+    
 	/*
 	 ********************************************************** 
 	 * Invite
@@ -824,19 +872,10 @@ public class Controller2 extends AnchorPane implements Initializable {
     	tabPane.getSelectionModel().select(recipeSearchTab);
     }
 
-    @FXML void hideNewKitchenStuff(ActionEvent event) {
-    }
-
     @FXML void ingredientComboListener(InputEvent event) {
     }
 
     @FXML void leaveKitchen(ActionEvent event) {
-    }
-
-    @FXML void newKitchenButtonListener(ActionEvent event) {
-    }
-
-    @FXML void newKitchenCreateButtonListener(ActionEvent event) {
     }
 
     @FXML void shoppingListComboListener(InputEvent event) {

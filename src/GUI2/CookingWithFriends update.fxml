@@ -210,16 +210,16 @@
                 <Pane fx:id="kitchenHide" layoutX="14.0" layoutY="130.0" prefHeight="817.8515167236328" prefWidth="1216.0" styleClass="body" visible="false" />
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Label layoutX="81.0" layoutY="99.0" styleClass="sectionHeader" text="Kitchen Info" />
-                <AnchorPane id="AnchorPane" fx:id="newKitchenPane" layoutX="759.0" layoutY="15.0" prefHeight="77.0" prefWidth="243.0" visible="false">
+                <AnchorPane id="AnchorPane" fx:id="newKitchenPane" layoutX="759.0" layoutY="15.0" prefHeight="77.0" prefWidth="243.0" visible="true">
                   <children>
                     <TextField fx:id="newKitchenNameField" layoutX="47.0" layoutY="0.0" prefWidth="199.9998779296875" promptText="Enter Kitchen Name Here" visible="true" />
                     <Label fx:id="newKitchenLabel" layoutX="0.0" layoutY="3.0" text="Name:" textFill="WHITE" visible="true" />
                     <Button fx:id="newKitchenCreateButton" layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
                     <Button fx:id="newKitchenCancelButton" layoutX="108.0" layoutY="27.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
-                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="true" />
+                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false" />
                   </children>
                 </AnchorPane>
-                <AnchorPane fx:id="kitchenJunk" disable="false" layoutX="34.0" layoutY="51.0" prefHeight="667.0" prefWidth="956.0">
+                <AnchorPane fx:id="kitchenJunk" disable="false" layoutX="34.0" layoutY="76.0" prefHeight="642.0" prefWidth="956.0">
                   <children>
                     <Pane layoutX="668.0" layoutY="72.0" prefHeight="572.0000999999975" prefWidth="274.0" styleClass="section">
                       <children>
@@ -230,9 +230,9 @@
                     <Pane layoutX="47.0" layoutY="72.0" prefHeight="154.0" prefWidth="393.0" styleClass="section">
                       <children>
                         <Label layoutX="14.0" layoutY="10.0" styleClass="infoHeader" text="Allergies:" />
-                        <Label id="allergiesList" fx:id="communalAllergiesList" layoutX="24.0" layoutY="30.0" prefHeight="45.0" prefWidth="157.0" text="&lt;allergires list&gt;" />
+                        <Label id="allergiesList" fx:id="communalAllergiesList" layoutX="24.0" layoutY="26.0" prefHeight="45.0" prefWidth="157.0" text="&lt;allergires list&gt;" wrapText="true" />
                         <Label layoutX="14.0" layoutY="75.0" styleClass="infoHeader" text="Dietary Restrictions:" />
-                        <Label id="dietPreferencesList" fx:id="communalDietPreferencesList" layoutX="26.0" layoutY="95.0" text="&lt;restrictions list&gt;" />
+                        <Label id="dietPreferencesList" fx:id="communalDietPreferencesList" layoutX="24.0" layoutY="97.0" prefHeight="48.0" prefWidth="157.0" text="&lt;restrictions list&gt;" wrapText="true" />
                         <ListView fx:id="kitchenChefList" layoutX="203.0" layoutY="40.0" prefHeight="96.89382934570312" prefWidth="171.99997792968497" />
                         <Label layoutX="205.0" layoutY="13.0" prefWidth="49.0" styleClass="infoHeader" text="Chefs" />
                         <Button layoutX="322.0" layoutY="8.0" mnemonicParsing="false" onAction="#popupInvite" text="Invite" />

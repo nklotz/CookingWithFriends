@@ -105,7 +105,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run(){
-		//		_controller.displayKitchen(k.getKitchenName());
+				_controller.displayKitchen(k.getKitchenName());
 			}
 		});
 	}
@@ -114,7 +114,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    	//		_controller.populateKitchenSelector();
+    			_controller.populateKitchenSelector();
     		}
 		});
 	}
