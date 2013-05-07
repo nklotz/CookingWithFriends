@@ -221,7 +221,6 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert newEventActionText != null : "fx:id=\"newEventActionText\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
        	assert newEventNameField != null : "fx:id=\"newEventNameField\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert eventGridPane != null : "fx:id=\"eventGridPane\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
-        assert newEventTimeSelectorBox != null : "fx:id=\"newEventTimeSelectorBox\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert hour != null : "fx:id=\"hour\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert min != null : "fx:id=\"min\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert amPm != null : "fx:id=\"amPm\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";

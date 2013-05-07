@@ -387,7 +387,7 @@
                                     </HBox>
                                     <HBox id="newEventTimeSelectorBox" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                       <children>
-                                        <ComboBox minWidth="42.0" prefWidth="49.0" promptText="Hr.">
+                                        <ComboBox fx:id="hour" minWidth="42.0" prefWidth="49.0" promptText="Hr.">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
@@ -396,7 +396,7 @@
                                             </FXCollections>
                                           </items>
                                         </ComboBox>
-                                        <ComboBox minWidth="49.0" prefWidth="63.0" promptText="Min.">
+                                        <ComboBox fx:id="min" minWidth="49.0" prefWidth="63.0" promptText="Min.">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
@@ -405,7 +405,7 @@
                                             </FXCollections>
                                           </items>
                                         </ComboBox>
-                                        <ComboBox minWidth="49.0" prefWidth="77.0" promptText="am/pm">
+                                        <ComboBox fx:id="amPm" minWidth="49.0" prefWidth="77.0" promptText="am/pm">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
