@@ -4,6 +4,7 @@
 package UserInfo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,19 +18,29 @@ public class Event implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String _date;
+	private Date _date;
+	private String _time;
 	private String _name;
 	private Kitchen _kitchen;
 	private Set<Recipe> _menu;
 	private Set<Ingredient> _shoppingIng;
 	private StringBuilder _messages = new StringBuilder("");
 	
-	public Event(String name, String date, Kitchen kitchen){
+	public Event(String name, Date date, Kitchen kitchen){
 		_name = name;
 		_date = date;
 		_kitchen = kitchen;
 		_menu = new HashSet<Recipe>();
 		_shoppingIng = new HashSet<Ingredient>();
+	}
+	
+	public Event(String name, Date date, String time, Kitchen kitchen){
+		_name = name;
+		_date = date;
+		_kitchen = kitchen;
+		_menu = new HashSet<Recipe>();
+		_shoppingIng = new HashSet<Ingredient>();
+		_time = time;
 	}
 	
 	public void addShoppingIngredient(Ingredient i){
