@@ -37,52 +37,56 @@ public class RecipeController {
     @FXML private Hyperlink recipeLink;
     @FXML private Label servingsLabel;
 
-    private Recipe _recipe;
+    private Recipe _basicRecipe, _completeRecipe;
     private Account _account;
 	private Client _client;
+	private Controller2 _controller;
 	private HashMap<String, KitchenName> _kitchenIds;
 
-	public void setUp(Recipe recipe, Client client, Account account) {
-		_recipe = recipe;
+	public void setUp(Recipe basicRecipe, Recipe completeRecipe, Client client, Account account, Controller2 controller) {
+		_completeRecipe = completeRecipe;
+		_basicRecipe = basicRecipe;
 		_account = account;
 		_client = client;
+		_controller = controller;
 		
 		_kitchenIds = _client.getKitchenIdMap();
 		populateKitchenSelector();
 		
-		titleLabel.setText(_recipe.getName());
+		titleLabel.setText(_completeRecipe.getName());
 		
 		ObservableList<String> ingredients = FXCollections.observableArrayList();
-		ingredients.addAll(_recipe.getIngredientStrings());
+		ingredients.addAll(_completeRecipe.getIngredientStrings());
 		ingredientsList.setItems(ingredients);
 		
-		if (_recipe.getNumberOfServings() != null)
-			servingsLabel.setText(_recipe.getNumberOfServings());
+		if (_completeRecipe.getNumberOfServings() != null)
+			servingsLabel.setText(_completeRecipe.getNumberOfServings());
 		else
 			servingsHeader.setVisible(false);
 		
-		String time = _recipe.getTime();
+		String time = _completeRecipe.getTime();
 		if (time != null)
 			prepTimeLabel.setText(time);
 		else
 			prepTimeHeader.setVisible(false);
 		
-		recipeLink.setText(_recipe.getSourceName());
+		recipeLink.setText(_completeRecipe.getSourceName());
 		
-		if (_recipe.getImageUrl() != null) {
-			recipeImage.setImage(new Image(_recipe.getImageUrl(), 180, 120, true, true, true));
+		if (_completeRecipe.getImageUrl() != null) {
+			recipeImage.setImage(new Image(_completeRecipe.getImageUrl(), 180, 120, true, true, true));
 		}
 	}
 	
     @FXML
     void addRecipeListener(ActionEvent event) {
     	if (chooseKitchenBox.getValue().equals("My Recipes")) {
-    		_account.addRecipe(_recipe);
+    		_account.addRecipe(_basicRecipe);
+    		_controller.populateUserRecipes();
     		_client.storeAccount(_account);
     	}
     	else {
     		System.out.println("Adding to kitchen: " + chooseKitchenBox.getValue());
-    		_client.addRecipe(chooseKitchenBox.getValue(), _recipe);
+    		_client.addRecipe(chooseKitchenBox.getValue(), _completeRecipe);
     	}
     }
 
@@ -97,7 +101,7 @@ public class RecipeController {
     @FXML
     public void openLink() {
     	try {
-			java.awt.Desktop.getDesktop().browse(new URI(_recipe.getSourceUrl()));
+			java.awt.Desktop.getDesktop().browse(new URI(_completeRecipe.getSourceUrl()));
 		} catch (IOException | URISyntaxException e) {
 			System.out.println("Error opening link.");
 			//TODO: Handle this better
