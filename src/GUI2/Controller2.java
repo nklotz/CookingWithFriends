@@ -173,7 +173,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     private InviteChefController _inviteChefController;
     
     
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
         assert NoSearchResults != null : "fx:id=\"NoSearchResults\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
@@ -703,8 +702,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
     public void populateUserRecipes(){
     	recipeFlow.getChildren().clear();
-    	for(Recipe r: _account.getRecipes()){
-    		recipeFlow.getChildren().add(new RecipeBox(r));
+    	for(Recipe r : _account.getRecipes()){
+    		recipeFlow.getChildren().add(new RecipeBox(r, this));
     	}
     }
 	/*
@@ -1236,7 +1235,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			}
 			else {
 				for (Recipe recipe : results)
-					resultsFlow.getChildren().add(new RecipeBox(recipe));
+					resultsFlow.getChildren().add(new RecipeBox(recipe, this));
 			}
 		} catch (IOException ex) {
 			NoSearchResults.setText("Error querying API -- is your internet connection down?");
@@ -1244,40 +1243,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
     }
     
-    private class RecipeBox extends VBox {
-    	private Recipe _recipe;
-    	public RecipeBox(Recipe recipe) {
-    		super();
-    		_recipe = recipe;
-    		
-    		this.getStyleClass().add("recipeBox");
-			this.setAlignment(Pos.CENTER);
-			this.setPrefWidth(150);
-			this.setMaxWidth(150);
-			this.setPrefHeight(80);
-			this.setMaxHeight(80);
-			
-    		Label recipeLabel = new Label(recipe.getName());
-    		recipeLabel.setMaxWidth(140);
-    		recipeLabel.setWrapText(true);
-    		this.getChildren().add(recipeLabel);
-    		if (recipe.hasThumbnail()) {
-    			Image recipeThumbnail = new Image(recipe.getThumbnailUrl(), 80, 80, true, true, true); 
-    			ImageView imageV = new ImageView(recipeThumbnail);
-    			imageV.getStyleClass().add("recipeThumbnail");
-    			this.getChildren().add(imageV);
-    		}
-    		
-			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-				@Override
-				public void handle(MouseEvent event) {
-					createPopup(_recipe);					
-				}
-			});
-    	}
-    }
-    
-    private void createPopup(Recipe recipe) {
+    public void createPopup(Recipe recipe) {
     	try {
 	    	Recipe completeRecipe = _api.getRecipe(recipe.getID());
 	    	

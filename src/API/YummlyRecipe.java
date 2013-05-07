@@ -20,9 +20,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	private static final long serialVersionUID = 1L;
 	
-	//Indicated whether the recipe info has been read in completely from the API.
-	public boolean isFullRecipe;
-	
 	//Fields from Yummly search query
 	private String id;
 	private String recipeName;
@@ -131,7 +128,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 		if (smallImageUrls != null) {
 			return smallImageUrls[0];
 		}
-		return "";
+		return null;
 	}
 	
 	@Override
@@ -144,7 +141,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 			if (images[0].hostedSmallUrl != null)
 				return images[0].hostedSmallUrl;
 		}
-		return "";
+		return null;
 	}
 	
 	@Override 
