@@ -298,7 +298,7 @@
                                 <Pane layoutX="283.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
                                   <children>
                                     <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="453.6999901367162" prefWidth="225.9998779296875" />
-                                    <CheckBox fx:id="removeKitchenIngredient" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
+                                    <CheckBox id="removeKitchenIngredient" fx:id="removableKitchenIngredient" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
                                   </children>
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
