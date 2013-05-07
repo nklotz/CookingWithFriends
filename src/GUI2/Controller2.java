@@ -198,6 +198,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	
     	populateSearchIngredients();
     	populateInvitations();
+    	populateUserRecipes();
     	
     	tabPane.getSelectionModel().select(homeTab);
     	
@@ -576,6 +577,13 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 	}
     
+	
+    public void populateUserRecipes(){
+    	recipeFlow.getChildren().clear();
+    	for(Recipe r: _account.getRecipes()){
+    		recipeFlow.getChildren().add(new RecipeBox(r));
+    	}
+    }
 	/*
 	 ********************************************************** 
 	 * Kitchen
@@ -741,16 +749,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			kitchenChefList.getItems().add(t);
 		}
 		
-		populateUserRecipes();
-	
 	}
-	
-    public void populateUserRecipes(){
-    	recipeFlow.getChildren().clear();
-    	for(Recipe r: _account.getRecipes()){
-    		recipeFlow.getChildren().add(new RecipeBox(r));
-    	}
-    }
 
 	public void clearKitchenDisplay(){
 		hideNewKitchenStuff();
