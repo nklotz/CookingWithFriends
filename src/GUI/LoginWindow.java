@@ -2,12 +2,6 @@ package GUI;
 
 import java.io.IOException;
 
-import javax.swing.JFrame;
-
-import Email.Sender;
-
-import client.Client;
-
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.*;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -26,8 +21,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.Window;
+
+import javax.swing.JFrame;
+
+import Email.Sender;
+import GUI2.Utils;
+import client.Client;
  
 public class LoginWindow extends JFrame{
 	
@@ -126,13 +125,23 @@ public class LoginWindow extends JFrame{
         	public void handle(ActionEvent e){
         		String email = userTextField.getText().trim();
         		if(email!=null || email.trim().length()==0){
-        			String pass = String.valueOf(generateRandomPassword());
-        			String message = "Your new password is: " + pass;
-        			_client.changePassword(email, pass);
-            		Sender.send(email, message);
+        			if(Utils.isValidEmailStructure(email)){
+        				String pass = String.valueOf(generateRandomPassword());
+            			String message = "Your new password is: " + pass;
+            			_client.changePassword(email, pass);
+                		Sender.send(email, message);
+        			}
+        			else{
+        				_actiontarget.setFill(Color.WHITE);
+                		_actiontarget.setText("You must enter a valid email.");
+        			}
+        			
         		}
-        		_actiontarget.setFill(Color.WHITE
-        				);
+        		else{
+        			_actiontarget.setFill(Color.WHITE);
+            		_actiontarget.setText("You must enter a username.");
+        		}
+        		_actiontarget.setFill(Color.WHITE);
         		_actiontarget.setText("We have sent you an email with a new password.");
         	}
         });
@@ -172,14 +181,7 @@ public class LoginWindow extends JFrame{
         return scene;
     }
     
-    private boolean isValidEmailStructure(String email){
-    	String[] splitAt = email.split("@");
-    	if(splitAt.length==2){
-    		String[] splitDot = email.split("\\.");
-    		return (splitDot.length>1);
-    	}
-    	return false;
-    }
+    
     
     //From: http://javapassgen.blogspot.com/
     public String generateRandomPassword() {
@@ -277,13 +279,13 @@ public class LoginWindow extends JFrame{
                 else if(!pwBox.getText().equals(pwBox2.getText())){
             		_actiontarget.setText("Passwords don't match!");
             	}
-                else if(!isValidPassword(pwBox.getText())){
+                else if(!Utils.isValidPassword(pwBox.getText())){
                 	_actiontarget.setText("Your password must be at least 6 letters, numbers, or digits.");
                 }
             	else{
             		try {
             			_actiontarget.setText("");
-            			if(isValidEmailStructure(userTextField.getText())){
+            			if(Utils.isValidEmailStructure(userTextField.getText())){
             				System.out.println("CHECKING PASSWORD");
             				_client.checkPassword(userTextField.getText(), pwBox.getText());
             			}
@@ -316,17 +318,7 @@ public class LoginWindow extends JFrame{
     	return _newAcct;
     }
     
-    /**
-     * Returns true if the password is of appropriate length.
-     * @param password
-     * @return
-     */
-    public boolean isValidPassword(String password){
-    	if(password.length()<6){
-    		return false;
-    	}
-    	return true;
-    }
+
     /**
      * Taken from:http://stackoverflow.com/questions/13074459/javafx-2-and-css-pseudo-classes-setting-hover-attributes-in-setstyle-method
      * @param node

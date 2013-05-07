@@ -23,6 +23,7 @@ public class RequestReturn implements Serializable {
 	private AutocorrectEngines _info;
 	private Wrapper _wrapper;
 	private boolean _userInDatabase;		//Whether or not the user already exists in the database.
+	private boolean _passwordsMatch;
 	
 	/*
 	 * Types:
@@ -98,5 +99,13 @@ public class RequestReturn implements Serializable {
 
 	public Wrapper getWrapper(){
 		return _wrapper;
+	}
+	
+	public boolean getPasswordsMatch(){
+		return _passwordsMatch;
+	}
+	
+	public void setPasswordMatch(boolean match){
+		_passwordsMatch = match;
 	}
 }

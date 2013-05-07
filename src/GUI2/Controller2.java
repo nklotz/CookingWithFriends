@@ -11,17 +11,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import server.AutocorrectEngines;
-import API.Wrapper;
-import API.YummlyAPIWrapper;
-import Email.Sender;
-import UserInfo.Account;
-import UserInfo.Ingredient;
-import UserInfo.Kitchen;
-import UserInfo.KitchenName;
-import UserInfo.Recipe;
-import client.Client;
-import javafx.scene.input.DragEvent;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +34,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -52,8 +42,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -69,6 +59,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import server.AutocorrectEngines;
+import API.Wrapper;
+import API.YummlyAPIWrapper;
+import Email.Sender;
+import UserInfo.Account;
+import UserInfo.Ingredient;
+import UserInfo.Kitchen;
+import UserInfo.KitchenName;
+import UserInfo.Recipe;
+import client.Client;
 
 public class Controller2 extends AnchorPane implements Initializable {
 
@@ -117,7 +117,17 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private AnchorPane kitchenJunk;
     @FXML private Label communalAllergiesList;
     @FXML private ListView<DraggableIngredient> kitchenUserIngredients;
-    
+    @FXML private Button changePassButton;
+    @FXML private PasswordField oldPassField;
+    @FXML private PasswordField newPassField1;
+    @FXML private PasswordField newPassField2;
+    @FXML private Button savePassButton;
+    @FXML private Button cancelPassButton;
+    @FXML private Pane changePassPane;
+    @FXML private Label oldPassLabel;
+    @FXML private Label newPassLabel1;
+    @FXML private Label newPassLabel2;
+    @FXML private Label changePassErrorLabel;
     
     //Local Data
     private Client _client;
@@ -174,6 +184,7 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert searchField != null : "fx:id=\"searchField\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert shoppingList != null : "fx:id=\"shoppingList\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        
 	}
 	
 	public void setUp(Client client, Account account, Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines){
@@ -445,6 +456,69 @@ public class Controller2 extends AnchorPane implements Initializable {
     		return _remove;
     	}
     }
+	
+		/**
+		 * 
+		 * Change Password info.
+		 *
+		 */
+		public void changePasswordButtonListener(){
+			setPassFieldsVisible(true);
+		}
+		public void cancelPassButtonListener(){
+			setPassFieldsVisible(false);
+		}
+		public void setPassFieldsVisible(boolean display){
+			changePassPane.setVisible(display);
+			oldPassField.setVisible(display);
+			newPassField1.setVisible(display);
+			newPassField2.setVisible(display);
+			savePassButton.setVisible(display);
+			cancelPassButton.setVisible(display);
+			oldPassLabel.setVisible(display);
+			newPassLabel1.setVisible(display);
+			newPassLabel2.setVisible(display);
+		}
+		public void savePassButtonListener(){
+			System.out.println("SAVE PASS");
+			String old = oldPassField.getText();
+			if(old!=null&&old.trim().length()!=0){
+				//Will receive a boolean, which will call the changePass method if true.
+				System.out.println("SHOULD CALL CLIENT PASS MATCH.");
+				_client.passwordMatches(_account.getID(), old);
+			}
+			else{
+				changePassErrorLabel.setText("You must enter a valid old password.");
+				changePassErrorLabel.setVisible(true);
+			}
+			
+		}
+		
+		public void changePassword(boolean matches){
+			System.out.println("SHOULD CHANGE THE PASSWORDS!!!: " + matches);
+			String new1 = newPassField1.getText();
+			String new2 = newPassField2.getText();
+			if(matches){
+				if(new1!=null&&new2!=null&&new1.trim().length()!=0
+						&&new2.trim().length()!=0){
+					if(new1.equals(new2)){
+						_client.changePassword(_account.getID(), new1);
+						setPassFieldsVisible(false);
+					}
+					else{
+						changePassErrorLabel.setText("Your new passwords do not match!");
+						changePassErrorLabel.setVisible(true);
+					}
+					
+				}
+				else{
+					changePassErrorLabel.setText("You must enter something in both fields!");
+					changePassErrorLabel.setVisible(true);
+				}
+			}
+			
+		}
+		
 	
 	/*
 	 ********************************************************** 
