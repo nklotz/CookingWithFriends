@@ -306,11 +306,11 @@ public class LoginWindow extends JFrame{
         return scene;
     }
     
-    public void displayIncorrect(){
+    public void displayIncorrect(String error){
     	if (_newAcct){
     		_actiontarget.setText("User Name unavailable; try another!");
     	} else {
-    		_actiontarget.setText("Incorrect username or password");
+    		_actiontarget.setText(error);
     	}
     }
     

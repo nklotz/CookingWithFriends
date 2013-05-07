@@ -141,7 +141,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    	//		_controller.recieveInvite(invitation);
+    			_controller.recieveInvite(invitation);
     		}
 		});
 	}
