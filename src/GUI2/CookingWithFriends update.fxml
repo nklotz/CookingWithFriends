@@ -71,13 +71,13 @@
                     </Group>
                     <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="210.0" prefHeight="121.0" prefWidth="232.99997792968497" />
                     <Button id="editProfile" fx:id="changePassButton" layoutX="408.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#changePasswordButtonListener" text="Change Password" textFill="WHITE" />
-                    <Pane fx:id="changePassPane" layoutX="191.0" layoutY="49.0" prefHeight="121.0" prefWidth="289.0">
+                    <Pane fx:id="changePassPane" layoutX="250.0" layoutY="46.0" prefHeight="121.0" prefWidth="290.0">
                       <children>
                         <Label id="" fx:id="newPassLabel1" layoutX="0.0" layoutY="39.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="false" />
                         <Label id="" fx:id="newPassLabel2" layoutX="0.0" layoutY="69.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="false" />
                         <Button id="editProfile" fx:id="savePassButton" layoutX="0.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#savePassButtonListener" text="Save" textFill="WHITE" visible="false" />
                         <Button id="editProfile" fx:id="cancelPassButton" layoutX="58.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#cancelPassButtonListener" text="Cancel" textFill="WHITE" visible="false" />
-                        <Label fx:id="changePassErrorLabel" layoutX="145.0" layoutY="86.0" prefHeight="27.1328125" prefWidth="138.00009999999747" text="You must display a valid password." textFill="RED" visible="false" wrapText="true">
+                        <Label fx:id="changePassErrorLabel" layoutX="125.0" layoutY="86.0" prefHeight="34.10626220703125" prefWidth="168.99997792968497" text="You must display a valid password." textFill="RED" visible="false" wrapText="true">
                           <font>
                             <Font size="11.0" />
                           </font>
@@ -87,9 +87,9 @@
                         <PasswordField fx:id="newPassField2" layoutX="110.0" layoutY="65.0" prefWidth="169.0" visible="false" />
                       </children>
                     </Pane>
-                    <Label id="" fx:id="oldPassLabel" layoutX="191.0" layoutY="59.0" prefHeight="18.132720947265625" prefWidth="92.99998637694807" text="Old Password:" textFill="BLACK" visible="false" />
-                    <Label fx:id="emailLabel" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="default" />
-                    <Label fx:id="nameLabel" layoutX="63.0" layoutY="23.0" prefWidth="191.0" text="Label" />
+                    <Label id="" fx:id="oldPassLabel" layoutX="250.0" layoutY="53.0" prefHeight="18.132720947265625" prefWidth="92.99998637694807" text="Old Password:" textFill="BLACK" visible="false" />
+                    <Label fx:id="emailLabel" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="default" visible="false" />
+                    <Label fx:id="nameLabel" layoutX="63.0" layoutY="23.0" prefWidth="191.0" text="Label" visible="false" />
                   </children>
                 </Pane>
                 <Label layoutX="239.0" layoutY="114.0" styleClass="sectionHeader" text="My Profile">
@@ -272,7 +272,7 @@
                         <Button id="kitchenAddIngredientButton" fx:id="addRecipeToEventButton" layoutX="264.0" layoutY="339.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="91.0" text="Add to Event" visible="true" />
                         <CheckBox fx:id="getRecipeChecksButton" layoutX="16.0" layoutY="14.0" mnemonicParsing="false" onAction="#addRtoEMode" text="Add Recipe(s) to Event">
                           <font>
-                            <Font size="12.0" />
+                            <Font size="12.0" fx:id="x1" />
                           </font>
                         </CheckBox>
                       </children>
@@ -492,6 +492,7 @@
                     <Font name="Shlop" size="13.0" />
                   </font>
                 </Label>
+                <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
               </children>
             </AnchorPane>
           </content>

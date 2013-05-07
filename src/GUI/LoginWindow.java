@@ -124,9 +124,12 @@ public class LoginWindow extends JFrame{
         	@Override
         	public void handle(ActionEvent e){
         		String email = userTextField.getText().trim();
+        		if(email.length()>Utils.MAX_FIELD_LEN){
+        			_actiontarget.setText("Your email must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
+        		}
         		if(email!=null || email.trim().length()==0){
         			if(Utils.isValidEmailStructure(email)){
-        				String pass = String.valueOf(generateRandomPassword());
+        				String pass = String.valueOf(Utils.generateRandomPassword());
             			String message = "Your new password is: " + pass;
             			_client.changePassword(email, pass);
                 		Sender.send(email, message);
@@ -151,6 +154,10 @@ public class LoginWindow extends JFrame{
             @Override
             public void handle(ActionEvent e) {
                 _actiontarget.setFill(Color.WHITE);
+                if(userTextField.getText().length()>0)
+                	_actiontarget.setText("Your email must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
+                if(pwBox.getText().length()>Utils.MAX_FIELD_LEN)
+                	_actiontarget.setText("Your password must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
                 
                 if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
             		_actiontarget.setText("You must input a username and password");
@@ -181,25 +188,6 @@ public class LoginWindow extends JFrame{
         return scene;
     }
     
-    
-    
-    //From: http://javapassgen.blogspot.com/
-    public String generateRandomPassword() {
-    	int len=8;
-    	char[] pwd = new char[len];
-    	int c = 'A';
-    	int rand = 0;
-    	for (int i=0; i < 8; i++){
-	    	rand = (int)(Math.random() * 3);
-	    	switch(rand) {
-	    	case 0: c = '0' + (int)(Math.random() * 10); break;
-	    	case 1: c = 'a' + (int)(Math.random() * 26); break;
-	    	case 2: c = 'A' + (int)(Math.random() * 26); break;
-	    	}
-	    	pwd[i] = (char)c;
-    	}
-    	return new String(pwd);
-    }
     
 
     private Scene newAccount(){
@@ -272,7 +260,12 @@ public class LoginWindow extends JFrame{
             @Override
             public void handle(ActionEvent e) {
                 _actiontarget.setFill(Color.WHITE);
-                
+                if(userTextField.getText().length()>Utils.MAX_FIELD_LEN){
+                	_actiontarget.setText("Your email must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
+                }
+                if(pwBox.getText().length()>Utils.MAX_FIELD_LEN){
+                	_actiontarget.setText("Your password must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
+                }
                 if(userTextField.getText().length()==0 || pwBox.getText().length()==0){
             		_actiontarget.setText("You must input a username and password");
             	} 
@@ -280,7 +273,7 @@ public class LoginWindow extends JFrame{
             		_actiontarget.setText("Passwords don't match!");
             	}
                 else if(!Utils.isValidPassword(pwBox.getText())){
-                	_actiontarget.setText("Your password must be at least 6 letters, numbers, or digits.");
+                	_actiontarget.setText("Your password must be between 6 and " + Utils.MAX_FIELD_LEN + " characters long.");
                 }
             	else{
             		try {

@@ -150,6 +150,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Label changePassErrorLabel;
     @FXML private TabPane eventTabPane;
     @FXML private Tab kitchenIngTab;
+
+    @FXML private Label lengthRecipeSearchLabel;
+
     @FXML private GridPane eventGridPane;
     @FXML private Button createEventButton;
     @FXML private Text newEventActionText;
@@ -172,7 +175,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     private KitchenPane _currentKitchenPane;
     private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
     private InviteChefController _inviteChefController;
-    
+   
     
 
 	@Override
@@ -244,7 +247,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     	_kitchens = kitchens;
     	_engines = engines;
     	_api = new YummlyAPIWrapper();
-    	
     	populateUserFridge();
     	populateShoppingList();
     	displayPleasantries();
@@ -516,6 +518,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		 */
 		public void changePasswordButtonListener(){
 			setPassFieldsVisible(true);
+			
 		}
 		public void cancelPassButtonListener(){
 			setPassFieldsVisible(false);
@@ -534,6 +537,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 		public void savePassButtonListener(){
 			System.out.println("SAVE PASS");
 			String old = oldPassField.getText();
+			if(old.length()>Utils.MAX_FIELD_LEN){
+				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setVisible(true);
+			}
 			if(old!=null&&old.trim().length()!=0){
 				//Will receive a boolean, which will call the changePass method if true.
 				System.out.println("SHOULD CALL CLIENT PASS MATCH.");
@@ -550,6 +557,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 			System.out.println("SHOULD CHANGE THE PASSWORDS!!!: " + matches);
 			String new1 = newPassField1.getText();
 			String new2 = newPassField2.getText();
+			if(new1.length()>Utils.MAX_FIELD_LEN || new2.length()>Utils.MAX_FIELD_LEN){
+				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setVisible(true);
+			}
 			if(matches){
 				if(new1!=null&&new2!=null&&new1.trim().length()!=0
 						&&new2.trim().length()!=0){
@@ -1206,7 +1217,12 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML void searchButtonListener(MouseEvent event) {
     	NoSearchResults.setVisible(false);
 		resultsFlow.getChildren().clear();
-		
+		if(searchField.getText().length()>Utils.MAX_FIELD_LEN){
+			lengthRecipeSearchLabel.setVisible(true);
+			lengthRecipeSearchLabel.setText("You may not make a search longer than " + Utils.MAX_FIELD_LEN + " characters long.");
+			return;
+		}
+			
 		if (_currentKitchenPane == null) {
 			NoSearchResults.setText("Please select a kitchen");
 			NoSearchResults.setVisible(true);
