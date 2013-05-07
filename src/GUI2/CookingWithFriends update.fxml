@@ -248,7 +248,7 @@
                         <Button layoutX="322.0" layoutY="8.0" mnemonicParsing="false" onAction="#popupInvite" text="Invite" />
                       </children>
                     </Pane>
-                    <Pane layoutX="-9.0" layoutY="268.0" prefHeight="399.0" prefWidth="390.0" styleClass="section" visible="true">
+                    <Pane layoutX="-9.0" layoutY="268.0" prefHeight="374.0" prefWidth="390.0" styleClass="section" visible="true">
                       <children>
                         <ComboBox id="kitchenIngredientComboBox" fx:id="addRecipeEventSelector" editable="false" layoutX="13.0" layoutY="310.0" prefWidth="250.655517578125" promptText="Select Event to add to" visible="true">
                           <items>
@@ -270,11 +270,15 @@
                     </Pane>
                     <Label layoutX="-6.0" layoutY="247.0" styleClass="sectionHeader" text="Recipes" />
                     <Label layoutX="-10.0" layoutY="14.0" styleClass="sectionHeader" text="Kitchen Info" />
+<<<<<<< Updated upstream
                     <TabPane fx:id="eventTabPane" layoutX="394.0" layoutY="34.0" prefHeight="633.0" prefWidth="582.0" styleClass="section" tabClosingPolicy="UNAVAILABLE">
+=======
+                    <TabPane layoutX="394.0" layoutY="34.0" prefHeight="608.0" prefWidth="582.0" styleClass="tab-header-background" tabClosingPolicy="UNAVAILABLE">
+>>>>>>> Stashed changes
                       <tabs>
                         <Tab fx:id="kitchenIngTab" text="Kitchen Ingredients">
                           <content>
-                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="597.0" prefWidth="582.0" styleClass="body">
+                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="570.0048828125" prefWidth="582.0" styleClass="body">
                               <children>
                                 <Label layoutX="282.0" layoutY="11.0" styleClass="sectionHeader" text="Kitchen Ingredients" />
                                 <Pane layoutX="283.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
@@ -341,6 +345,88 @@
                                     <CheckBox mnemonicParsing="false" text="Remove" />
                                   </children>
                                 </FlowPane>
+                              </children>
+                            </AnchorPane>
+                          </content>
+                        </Tab>
+                        <Tab text="Create New Event">
+                          <content>
+                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="body">
+                              <children>
+                                <Text fill="#bfbfbf" layoutX="143.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="" />
+                                <GridPane id="gridPane" fx:id="eventGridPane" layoutX="95.0" layoutY="130.0" prefHeight="230.0" prefWidth="399.0" styleClass="section">
+                                  <children>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                      <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date   :" />
+                                      </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                      <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Event Name   :" />
+                                      </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Text scaleX="0.9970780252623607" scaleY="1.0201407822986577" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Create a New Event!" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                    <TextField fx:id="newEventNameField" alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="213.0" promptText="Enter a name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                      <font>
+                                        <Font name="System Bold" size="13.0" />
+                                      </font>
+                                    </Text>
+                                    <Button fx:id="createEventButton" alignment="CENTER" mnemonicParsing="false" text="Create Event!" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                      <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time   :" />
+                                      </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                      <children>
+                                        <ComboBox minWidth="42.0" prefWidth="49.0" promptText="Hr.">
+                                          <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                              <String fx:value="Item 1" />
+                                              <String fx:value="Item 2" />
+                                              <String fx:value="Item 3" />
+                                            </FXCollections>
+                                          </items>
+                                        </ComboBox>
+                                        <ComboBox minWidth="49.0" prefWidth="63.0" promptText="Min.">
+                                          <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                              <String fx:value="Item 1" />
+                                              <String fx:value="Item 2" />
+                                              <String fx:value="Item 3" />
+                                            </FXCollections>
+                                          </items>
+                                        </ComboBox>
+                                        <ComboBox minWidth="49.0" prefWidth="77.0" promptText="am/pm">
+                                          <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                              <String fx:value="Item 1" />
+                                              <String fx:value="Item 2" />
+                                              <String fx:value="Item 3" />
+                                            </FXCollections>
+                                          </items>
+                                        </ComboBox>
+                                      </children>
+                                    </HBox>
+                                  </children>
+                                  <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="99.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="6.0" prefWidth="7.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="236.0" minWidth="10.0" prefWidth="229.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="40.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="102.0" minHeight="3.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="102.0" minHeight="3.0" prefHeight="43.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                </GridPane>
                               </children>
                             </AnchorPane>
                           </content>
