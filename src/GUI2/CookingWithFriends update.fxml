@@ -262,7 +262,7 @@
                                 <Label layoutX="282.0" layoutY="11.0" styleClass="sectionHeader" text="Kitchen Ingredients" />
                                 <Pane layoutX="283.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
                                   <children>
-                                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" prefHeight="453.6999901367162" prefWidth="225.9998779296875" />
+                                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="453.6999901367162" prefWidth="225.9998779296875" />
                                     <CheckBox layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
                                   </children>
                                 </Pane>

@@ -21,6 +21,7 @@ import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
+import javafx.scene.input.DragEvent;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -465,6 +466,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     	
     	public void remove(){
+    		System.out.println("removing ingredient " + _toDisplay);
     		Ingredient ing = new Ingredient(_toDisplay);
     		_account.removeIngredient(ing);
     		_client.storeAccount(_account, ing);
@@ -739,6 +741,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 		//******************populateEventSelector();
 		//******************System.out.println("ABOVE LOAD EVENT");
 		//******************oadEvent();
+		
+
 	}
 
 	public void reDisplayKitchen() {
@@ -817,6 +821,31 @@ public class Controller2 extends AnchorPane implements Initializable {
 	        });
     	}
     }
+	
+	@FXML void hoverIngredient(DragEvent event) {
+		System.out.println("HVERRRR");
+		Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        }
+        event.consume();
+    }
+	
+	@FXML void acceptIngredient(DragEvent event){
+		Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasString()) {
+            System.out.println("Dropped: " + db.getString());
+            success = true;
+            _client.addIngredient(_client.getCurrentKitchen().getID(), new Ingredient(db.getString()));
+        }
+        event.setDropCompleted(success);
+        event.consume();
+	}
+	
+	
+	
+	
 	
 	public void populateUserIngredientsInKitchen(){
 		kitchenUserIngredients.getItems().clear();
@@ -913,17 +942,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 
     @FXML void goToRecipeTab(ActionEvent event) {
     	tabPane.getSelectionModel().select(recipeSearchTab);
-    }
-
-
-
-    @FXML void leaveKitchen(ActionEvent event) {
-    }
-
-    @FXML void newKitchenButtonListener(ActionEvent event) {
-    }
-
-    @FXML void newKitchenCreateButtonListener(ActionEvent event) {
     }
     
     

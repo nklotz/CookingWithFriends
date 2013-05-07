@@ -95,7 +95,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    		//	_controller.reDisplayKitchen();
+    			_controller.reDisplayKitchen();
     		}
 		});
 	}
