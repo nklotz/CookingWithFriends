@@ -293,7 +293,7 @@
                                     </ComboBox>
                                   </children>
                                 </Pane>
-                                <Pane layoutX="293.0" layoutY="97.0" prefHeight="210.0" prefWidth="251.0" styleClass="smallBackground">
+                                <Pane layoutX="293.0" layoutY="34.0" prefHeight="273.0" prefWidth="251.0" styleClass="smallBackground">
                                   <children>
                                     <Button layoutX="174.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="66.00009999999747" text="Add" />
                                     <ComboBox editable="true" layoutX="9.0" layoutY="35.0" prefWidth="231.0" promptText="New Ingredient">
@@ -305,7 +305,7 @@
                                         </FXCollections>
                                       </items>
                                     </ComboBox>
-                                    <CheckBox layoutX="11.0" layoutY="14.0" mnemonicParsing="false" text="Remove" />
+                                    <CheckBox layoutX="11.0" layoutY="9.0" mnemonicParsing="false" text="Remove" />
                                     <ListView layoutX="10.0" layoutY="65.0" prefHeight="131.0" prefWidth="229.0" />
                                   </children>
                                 </Pane>
@@ -318,17 +318,12 @@
                                 </Pane>
                                 <Label layoutX="14.0" layoutY="314.0" styleClass="sectionHeader" text="Message Board" />
                                 <Label layoutX="14.0" layoutY="58.0" styleClass="sectionHeader" text="Menu" />
-                                <Label layoutX="293.0" layoutY="70.0" styleClass="sectionHeader" text="Shopping List" />
+                                <Label layoutX="287.0" layoutY="6.0" styleClass="sectionHeader" text="Shopping List" />
                                 <FlowPane layoutX="14.0" layoutY="77.0" prefHeight="230.0" prefWidth="250.655517578125" styleClass="smallBackground">
                                   <children>
                                     <CheckBox mnemonicParsing="false" text="Remove" />
                                   </children>
                                 </FlowPane>
-                                <Label id="" layoutX="265.0" layoutY="8.0" prefWidth="192.0000084472631" styleClass="infoHeader" text="Create New Event" />
-                                <Label id="" layoutX="265.0" layoutY="28.0" prefWidth="53.0000084472631" text="Name:" />
-                                <Label id="" layoutX="265.0" layoutY="44.0" prefWidth="45.1248863769506" text="Date:" />
-                                <TextArea id="eventCommentDisplayField" editable="true" layoutX="312.0" layoutY="29.0" prefHeight="14.0" prefWidth="144.0" promptText="" wrapText="true" />
-                                <TextArea id="eventCommentDisplayField" editable="true" layoutX="312.0" layoutY="48.0" prefHeight="14.0" prefWidth="144.0" promptText="" wrapText="true" />
                               </children>
                             </AnchorPane>
                           </content>
