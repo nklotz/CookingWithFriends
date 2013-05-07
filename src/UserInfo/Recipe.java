@@ -17,8 +17,6 @@ public interface Recipe extends Nameable, Serializable {
 	
 	public String getYield();
 	
-	public String getInstructions();
-	
 	public String getNumberOfServings();
 	
 	public String getID();
@@ -32,5 +30,7 @@ public interface Recipe extends Nameable, Serializable {
 	public boolean hasImage();
 
 	public List<String> getIngredientStrings();
+
+	public String getSourceUrl();
 	
 }
