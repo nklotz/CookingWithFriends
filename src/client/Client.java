@@ -137,7 +137,8 @@ public class Client extends Thread {
 							_id = response.getAccount().getID();
 							System.out.println("SHOULD CREATE NEW GUI");
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
-
+							
+						
 						}
 					} else {
 						_login.displayIncorrect(response.getErrorMessage());
@@ -185,8 +186,11 @@ public class Client extends Thread {
 							//If the user exists, then it is not a valid user.
 							boolean userInDatabase = (response.getUserInDatabase());
 							_gui.sendEmail(userInDatabase);
-
-							
+						}
+						else if(type == 5){
+							System.out.println("PASSWORDS MATCH!!!!!!");
+							boolean passWordsMatch = (response.getPasswordsMatch());
+							_gui.changePasswords(passWordsMatch);
 						}
 					}
 				}
@@ -268,6 +272,13 @@ public class Client extends Thread {
     
     public void userInDatabase(String username){
     	Request r = new Request(19);
+    	r.setUsername(username);
+    	send(r);
+    }
+    
+    public void passwordMatches(String username, String password){
+    	Request r = new Request(21);
+    	r.setPassToCheck(password);
     	r.setUsername(username);
     	send(r);
     }
