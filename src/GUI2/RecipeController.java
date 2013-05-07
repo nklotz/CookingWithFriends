@@ -86,7 +86,7 @@ public class RecipeController {
     	}
     	else {
     		System.out.println("Adding to kitchen: " + chooseKitchenBox.getValue());
-    		_client.addRecipe(chooseKitchenBox.getValue(), _completeRecipe);
+    		_client.addRecipe(chooseKitchenBox.getValue(), _basicRecipe);
     	}
     }
 

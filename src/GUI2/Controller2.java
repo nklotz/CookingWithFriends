@@ -106,7 +106,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ListView<InvitationBox> invitationsList;
     @FXML private ListView<Text> kitchenChefList;
     @FXML private Pane kitchenHide;
-    @FXML private ListView<String> kitchenIngredientList;
+    @FXML private ListView<KitchenIngredientBox> kitchenIngredientList;
     @FXML private ComboBox<String> kitchenSelector;
     @FXML private Button leaveKitchenButton;
     @FXML private ComboBox<String> newIngredient;
@@ -114,7 +114,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Button newKitchenButton, newKitchenCancelButton, newKitchenCreateButton;
     @FXML private TextField newKitchenNameField;
     @FXML private AnchorPane newKitchenPane;
-    @FXML private FlowPane recipeFlow;
+    @FXML private FlowPane recipeFlow, kitchenRecipes;
     @FXML private Tab recipeSearchTab, homeTab;
     @FXML private CheckBox removeFridgeIngredient;
     @FXML private AnchorPane removeIngredientsButton;
@@ -161,8 +161,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ComboBox<String> hour;
     @FXML private ComboBox<String> min;
     @FXML private ComboBox<String> amPm;
+    
+    @FXML private CheckBox removableKitchenIngredient;
     //Date Picker
     private DatePicker eventDatePicker;
+    
 
     
     //Local Data
@@ -327,7 +330,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void EditOrSaveAccountChanges(){
 		System.out.println(profileEditor.getText());
-		if(profileEditor.getText().equals("Edit")){
+		if(profileEditor.getText().equals("Edit Profile")){
 			nameField.setVisible(true);
 			locationField.setVisible(true);
 			nameLabel.setVisible(false);
@@ -346,7 +349,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			_account.setName(nameLabel.getText());
 			_account.setAddress(locationLabel.getText());
 			_client.storeAccount(_account);
-			profileEditor.setText("Edit");
+			profileEditor.setText("Edit Profile");
 		}
 	}
 	
@@ -626,10 +629,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     		if(name.trim().length()!=0){
 	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
 	    		_client.storeAccount(_account);
+	    		populateUserIngredientsInKitchen();
+	        	populateUserFridge();
+	        	populateSearchIngredients();
 	    	}
 	    }
-    	populateUserFridge();
-    	populateSearchIngredients();
     	newIngredient.setValue(null);
     	newIngredient.getItems().clear();
     	
@@ -866,13 +870,18 @@ public class Controller2 extends AnchorPane implements Initializable {
 		HashMap<Ingredient, HashSet<String>> map = k.getIngredientsMap();
 		HashSet<String> toAddAll = new HashSet<String>();
 		for(Ingredient ing: map.keySet()){
+			boolean fromUser = false;
 			String toDisplay = ing.getName() + " (";
 			for(String user: map.get(ing)){
 				toDisplay += " " + user;
+				if(user.equals(_account.getID())){
+					fromUser = true;
+				}
 			}
 			toDisplay += ")";
-				
-			kitchenIngredientList.getItems().add(toDisplay);
+			
+			
+			kitchenIngredientList.getItems().add(new KitchenIngredientBox(ing.getName(), toDisplay, fromUser));
 		}
 		
 		kitchenChefList.getItems().clear();
@@ -886,7 +895,51 @@ public class Controller2 extends AnchorPane implements Initializable {
 			kitchenChefList.getItems().add(t);
 		}
 		
+		kitchenRecipes.getChildren().clear();
+    	//noRecipesPane.setVisible(false);
+    	for(Recipe r: k.getRecipes()){
+    		kitchenRecipes.getChildren().add(new RecipeBox(r));
+    	}
+    	if(recipeFlow.getChildren().size()==0){
+    		kitchenRecipes.setVisible(true);
+    	}
+		
 	}
+	
+	
+	private class KitchenIngredientBox extends GuiBox{
+    	protected String _ing;
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	protected boolean _addedByUser;
+
+    	public KitchenIngredientBox(String ing, String toDisplay, boolean fromUser) {
+    		_ing= ing;
+    		_toDisplay = toDisplay;
+    		_addedByUser = fromUser;
+    	    Label ingred = new Label(_toDisplay);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
+    	}
+    	
+    	public void remove(){
+    		System.out.println("removing ingredient " + _ing);
+    		Ingredient ing = new Ingredient(_ing);
+    		_client.removeIngredient(_client.getCurrentKitchen().getID(), ing);
+    		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    	
+    	public boolean isFromUser(){
+    		return _addedByUser;
+    	}
+    }
 
 	public void clearKitchenDisplay(){
 		hideNewKitchenStuff();
@@ -1271,7 +1324,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	public RecipeBox(Recipe recipe) {
     		super();
     		_recipe = recipe;
-    		
+    	
     		this.getStyleClass().add("recipeBox");
 			this.setAlignment(Pos.CENTER);
 			this.setPrefWidth(150);

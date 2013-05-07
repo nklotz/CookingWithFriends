@@ -275,6 +275,15 @@
                             <Font size="12.0" fx:id="x1" />
                           </font>
                         </CheckBox>
+                        <ScrollPane id="ScrollPane" layoutX="16.0" layoutY="37.0" prefHeight="262.0" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="345.0">
+                          <content>
+                            <FlowPane id="recipeFlow" fx:id="kitchenRecipes" hgap="30.0" prefHeight="254.0" prefWidth="341.0" vgap="30.0">
+                              <padding>
+                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                              </padding>
+                            </FlowPane>
+                          </content>
+                        </ScrollPane>
                       </children>
                     </Pane>
                     <Label layoutX="-6.0" layoutY="247.0" styleClass="sectionHeader" text="Recipes" />
@@ -289,7 +298,7 @@
                                 <Pane layoutX="283.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
                                   <children>
                                     <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="453.6999901367162" prefWidth="225.9998779296875" />
-                                    <CheckBox layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
+                                    <CheckBox fx:id="removeKitchenIngredient" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
                                   </children>
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
