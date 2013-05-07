@@ -236,7 +236,6 @@ public class Controller2 extends AnchorPane implements Initializable {
         //eventDatePicker.getStylesheets().addAll(DatePicker.class.getResource("DatePicker.css").toExternalForm());
         // Add DatePicker to grid
         eventGridPane.add(eventDatePicker, 2, 2);
-        newEventTimeSelectorBox.setSpacing(5);
 	}
 	
 	public void setUp(Client client, Account account, Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines){
