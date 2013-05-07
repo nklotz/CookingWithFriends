@@ -647,9 +647,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 								setText(kitchenIds.get(name).getName());
 							}
 						}
-					});
-					
-					
+					});	
 					displayKitchen(kitchenIds.get(id));
 				}
 			}
@@ -747,7 +745,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
     public void populateUserRecipes(){
     	recipeFlow.getChildren().clear();
-    	for(Recipe r: _account.getRecipes()){
+    	for (Recipe r: _account.getRecipes()){
     		recipeFlow.getChildren().add(new RecipeBox(r));
     	}
     }
@@ -870,10 +868,6 @@ public class Controller2 extends AnchorPane implements Initializable {
         event.setDropCompleted(success);
         event.consume();
 	}
-	
-	
-	
-	
 	
 	public void populateUserIngredientsInKitchen(){
 		kitchenUserIngredients.getItems().clear();
@@ -1143,7 +1137,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 			Parent p = (Parent) fxmlLoader.load(location.openStream());
 			RecipeController recipeControl = (RecipeController) fxmlLoader.getController();
-			recipeControl.setUp(completeRecipe, _client, _account);
+			recipeControl.setUp(recipe, completeRecipe, _client, _account, this);
 			
 			Stage stage = new Stage();
 	        stage.setScene(new Scene(p));
