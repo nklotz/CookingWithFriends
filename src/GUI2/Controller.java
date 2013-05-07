@@ -1647,7 +1647,6 @@ public class Controller extends AnchorPane implements Initializable {
 
 		System.out.println("leavvving");
 		_client.removeKitchen(_client.getCurrentKitchen());
-
 		_account.removeKitchen(_client.getCurrentKitchen());
 		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
 		kitchenSelector.setValue(null);
