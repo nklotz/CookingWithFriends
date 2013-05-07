@@ -26,9 +26,9 @@ public class YummlyRecipe implements Recipe, Nameable {
 	//Fields from Yummly search query
 	private String id;
 	private String recipeName;
-	private double rating;
+	//private double rating;
 	private String[] smallImageUrls;
-	private String sourceDisplayName;
+	//private String sourceDisplayName;
 	private int totalTimeInSeconds;
 	private String[] ingredients;
 	private Map<String, String[]> attributes;
