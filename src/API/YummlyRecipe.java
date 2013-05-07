@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javafx.scene.image.Image;
-
 import UserInfo.Ingredient;
 import UserInfo.Nameable;
 import UserInfo.Recipe;
@@ -88,17 +86,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return yield;
 	}
 
-
-	@Override
-	public String getInstructions() {
-		StringBuilder instructions = new StringBuilder();
-		for (String line : ingredientLines) {
-			instructions.append(line);
-		}
-		return instructions.toString();
-	}
-
-
 	@Override
 	public String getNumberOfServings() {
 		return numberOfServings;
@@ -114,7 +101,9 @@ public class YummlyRecipe implements Recipe, Nameable {
 	@Override
 	public String getTime() {
 		if (totalTime == null) {
-			return Integer.toString(totalTimeInSeconds);
+			if (totalTimeInSeconds != 0)
+				return Integer.toString(totalTimeInSeconds);
+			return null;
 		} 
 		else {
 			try {
@@ -126,6 +115,14 @@ public class YummlyRecipe implements Recipe, Nameable {
 			}
 			return _time;
 		}
+	}
+	
+	@Override 
+	public String getSourceUrl() {
+		if (source.containsKey("sourceRecipeUrl")) {
+			return source.get("sourceRecipeUrl");
+		}
+		return null;
 	}
 
 
@@ -140,8 +137,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
-		// TODO Auto-generated method stub
-		
 		Set<Ingredient> difference = new HashSet<Ingredient>();
 		
 		for(Ingredient i: _ingredients){
@@ -188,8 +183,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 
 	private class ImageUrl {
-		public String hostedLargeUrl;
-		public String hostedSmallUrl;
-		public String hostedMediumUrl;
+		public String hostedLargeUrl, hostedSmallUrl, hostedMediumUrl;
 	}
 }

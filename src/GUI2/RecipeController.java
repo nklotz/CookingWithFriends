@@ -24,20 +24,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
-
 public class RecipeController {
 
     @FXML private ResourceBundle resources;
     @FXML private URL location;
     @FXML private ComboBox<String> chooseKitchenBox;
     @FXML private ListView<String> ingredientsList;
-    @FXML private TextArea instructionsField;
     @FXML private ImageView recipeImage;
     @FXML private Label titleLabel;
-    @FXML private Label prepTimeLabel;
+    @FXML private Label prepTimeLabel, prepTimeHeader, servingsHeader;
     @FXML private Hyperlink recipeLink;
     @FXML private Label servingsLabel;
-
 
     private Recipe _recipe;
     private Controller2 _controller;
@@ -54,7 +51,22 @@ public class RecipeController {
 		ingredients.addAll(_recipe.getIngredientStrings());
 		ingredientsList.setItems(ingredients);
 		
-		instructionsField.setText(_recipe.getInstructions());
+		if (_recipe.getNumberOfServings() != null) {
+			servingsLabel.setText(_recipe.getNumberOfServings());
+		}
+		else {
+			servingsHeader.setVisible(false);
+		}
+		
+		String time = _recipe.getTime();
+		if (time != null) {
+			prepTimeLabel.setText(time);
+		}
+		else {
+			prepTimeHeader.setVisible(false);
+		}
+		
+		recipeLink.setText(_recipe.getSourceUrl());
 	}
 	
     @FXML
@@ -74,7 +86,6 @@ public class RecipeController {
     void initialize() {
         assert chooseKitchenBox != null : "fx:id=\"chooseKitchenBox\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
         assert ingredientsList != null : "fx:id=\"ingredientsList\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
-        assert instructionsField != null : "fx:id=\"instructionsField\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
         assert recipeImage != null : "fx:id=\"recipeImage\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
         assert titleLabel != null : "fx:id=\"titleLabel\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
     }

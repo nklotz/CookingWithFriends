@@ -56,7 +56,7 @@ public class YummlyAPIWrapperTest {
 		String recipeID = "Creamy-Artichoke-Soup-Food-Network";
 		Recipe recipe = _yummly.getRecipe(recipeID);
 		System.out.println("Got recipe: " + recipe);
-		System.out.println("Instructions:\n" + recipe.getInstructions());
+		System.out.println("Ingredients:\n" + recipe.getIngredients());
 	}
 
 }
