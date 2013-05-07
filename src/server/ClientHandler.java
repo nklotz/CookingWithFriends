@@ -182,12 +182,21 @@ public class ClientHandler extends Thread {
 	
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
-			System.out.println("executing task");
-			_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _autocorrect));
+			if(!_pool.isActiveClient(request.getUsername())){
+				System.out.println("executing task");
+				_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _autocorrect));
+			}
+			else{
+				RequestReturn toReturn = new RequestReturn(1);
+				toReturn.setCorrect(false);
+				toReturn.setErrorMessage("User is currently logged in elsewhere");
+				send(toReturn);
+			}
 		}
 		else{
 			RequestReturn toReturn = new RequestReturn(1);
 			toReturn.setCorrect(false);
+			toReturn.setErrorMessage("Incorrect username or password");
 			send(toReturn);
 		}
 	}

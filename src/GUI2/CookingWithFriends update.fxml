@@ -178,7 +178,6 @@
                     <Image url="@chefs-hat-icon.png" preserveRatio="true" smooth="true" />
                   </image>
                 </ImageView>
-                <ListView id="" focusTraversable="false" layoutX="429.0" layoutY="14.0" prefHeight="49.0" prefWidth="314.0" visible="true" />
                 <Label layoutX="34.0" layoutY="91.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
               </children>
             </AnchorPane>
@@ -253,9 +252,9 @@
                     </Pane>
                     <Label layoutX="-6.0" layoutY="247.0" styleClass="sectionHeader" text="Recipes" />
                     <Label layoutX="-10.0" layoutY="14.0" styleClass="sectionHeader" text="Kitchen Info" />
-                    <TabPane layoutX="394.0" layoutY="34.0" prefHeight="633.0" prefWidth="582.0" styleClass="section" tabClosingPolicy="UNAVAILABLE">
+                    <TabPane fx:id="eventTabPane" layoutX="394.0" layoutY="34.0" prefHeight="633.0" prefWidth="582.0" styleClass="section" tabClosingPolicy="UNAVAILABLE">
                       <tabs>
-                        <Tab text="Kitchen Ingredients">
+                        <Tab fx:id="kitchenIngTab" text="Kitchen Ingredients">
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="597.0" prefWidth="582.0" styleClass="body">
                               <children>

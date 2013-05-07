@@ -23,6 +23,7 @@ public class RequestReturn implements Serializable {
 	private AutocorrectEngines _info;
 	private Wrapper _wrapper;
 	private boolean _userInDatabase;		//Whether or not the user already exists in the database.
+	private String _errorMessage;
 	
 	/*
 	 * Types:
@@ -98,5 +99,13 @@ public class RequestReturn implements Serializable {
 
 	public Wrapper getWrapper(){
 		return _wrapper;
+	}
+
+	public void setErrorMessage(String error){
+		_errorMessage = error;
+	}
+	
+	public String getErrorMessage() {
+		return _errorMessage;
 	}
 }

@@ -17,6 +17,7 @@ import API.YummlyAPIWrapper;
 import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Ingredient;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
@@ -83,7 +84,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ListView<UserIngredientBox> fridgeList;
     @FXML private CheckBox getRecipeChecksButton;
     @FXML private Accordion ingredientsAccordion;
-    @FXML private ListView<?> invitationsList;
+    @FXML private ListView<InvitationBox> invitationsList;
     @FXML private ListView<Text> kitchenChefList;
     @FXML private Pane kitchenHide;
     @FXML private ListView<String> kitchenIngredientList;
@@ -117,7 +118,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private AnchorPane kitchenJunk;
     @FXML private Label communalAllergiesList;
     @FXML private ListView<DraggableIngredient> kitchenUserIngredients;
-    
+    @FXML private TabPane eventTabPane;
+    @FXML private Tab kitchenIngTab;
     
     //Local Data
     private Client _client;
@@ -195,7 +197,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	populateKitchenSelector();
     	
     	populateSearchIngredients();
-    	populateUserIngredientsInKitchen();
+    	populateInvitations();
     	
     	tabPane.getSelectionModel().select(homeTab);
     	
@@ -658,6 +660,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 	public void displayKitchen(KitchenName kn){
 		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
+		populateUserIngredientsInKitchen();
+		
 		//Clearing/hiding new kitchen stuff
 		hideNewKitchenStuff();
 		//******************clearEventPane();
@@ -673,7 +677,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 				super.updateItem(name, empty);
 				
 				if (name == null || empty) {
-					setText("why is this null");
+					setText("Select Kitchen");
 				} else {
 					//id.setText(kitchenIds.get(name).getName());
 					setText(currentName);
@@ -736,15 +740,38 @@ public class Controller2 extends AnchorPane implements Initializable {
 			t.setFill(Color.GRAY);
 			kitchenChefList.getItems().add(t);
 		}
-		//******************kitchenAddChefField.setText("");
 		
-		//******************populateEventSelector();
-		//******************System.out.println("ABOVE LOAD EVENT");
-		//******************oadEvent();
-		
-
+		populateUserRecipes();
+	
 	}
+	
+    public void populateUserRecipes(){
+    	recipeFlow.getChildren().clear();
+    	for(Recipe r: _account.getRecipes()){
+    		recipeFlow.getChildren().add(new RecipeBox(r));
+    	}
+    }
 
+	public void clearKitchenDisplay(){
+		hideNewKitchenStuff();
+		kitchenSelector.setValue(null);
+		
+		communalDietPreferencesList.setText("");	
+		communalAllergiesList.setText("");
+		kitchenIngredientList.getItems().clear();
+		kitchenChefList.getItems().clear();
+		kitchenUserIngredients.getItems().clear();
+		
+		//clear recipes
+		//set to kitchen ingredient tab
+    	eventTabPane.getSelectionModel().select(kitchenIngTab);
+
+		
+		kitchenJunk.setDisable(true);
+		
+		
+	}
+	
 	public void reDisplayKitchen() {
 		if(_client.getCurrentKitchen() != null){
 			//System.out.println("I would redisplay");
@@ -759,6 +786,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     }
     
     public void hideNewKitchenStuff(){
+    	newKitchenNameField.setText("");
     	newKitchenPane.setVisible(false);
     }
 
@@ -775,15 +803,15 @@ public class Controller2 extends AnchorPane implements Initializable {
     	} else {
     		_client.setNewKitchen(name);
     		_client.createNewKitchen(name, _account);
-    		//hideNewKitchenStuff();
+    		
+    		hideNewKitchenStuff();
     	}
     }
     
 	public void leaveKitchen(){
 
 		System.out.println("leavvving");
-		hideNewKitchenStuff();
-		kitchenSelector.setValue(null);
+		clearKitchenDisplay();
 		
 		_client.removeKitchen(_client.getCurrentKitchen());
 
@@ -929,16 +957,90 @@ public class Controller2 extends AnchorPane implements Initializable {
 
 		}
 	}
+	
+    private class InvitationBox extends GridPane{
+    	protected Invitation _invite;
+
+    	public InvitationBox(Invitation invite){
+    		_invite = invite;
+
+    		
+    		Label message = new Label(_invite.getMessage());
+
+    		if(message != null){
+	    		Button accept = new Button("Accept");
+	    		accept.setOnAction(new EventHandler<ActionEvent>(){
+	    			@Override
+	    			public void handle(ActionEvent e){
+	    			//	System.out.println("Accept invitatioN!!!");
+	    				
+	    				_account.getInvitions().remove(_invite.getKitchenID());
+	    				_account.getKitchens().add(_invite.getKitchenID());
+	    				_client.storeAccount(_account);
+	    				_client.addActiveKitchenUser(_invite.getKitchenID().getID(), _account);
+	    				populateInvitations();
+	    			}
+	    		});
+	    		
+	    		Button decline = new Button("Decline");
+	    		decline.setOnAction(new EventHandler<ActionEvent>(){
+	    			@Override
+	    			public void handle(ActionEvent e){
+	    			//	System.out.println("REJECT invitatioN!!!");
+	    				
+	    				_account.getInvitions().remove(_invite.getKitchenID());
+	    				_client.storeAccount(_account);
+	    				_client.removeRequestedKitchenUser(_invite.getKitchenID().getID());
+	    				populateInvitations();
+	    			}
+	    		});
+	    		
+	    		this.add(message, 0, 0);
+	    		this.add(accept, 1, 0);
+	    		this.add(decline, 2, 0);
+    		}
+
+    	}
+
+    }
+    
+	public void populateInvitations(){
+		
+		invitationsList.getItems().clear();
+		HashMap<KitchenName, Invitation> invites = _account.getInvitions();
+		numberOfInvites.setText(Integer.toString(invites.size()));
+
+		System.out.println("user has " + invites.size() + " invitations!!!");
+		if(invites.size()==0){
+			invitationsList.setVisible(false);
+		}
+		else{
+			for(KitchenName kn: _account.getInvitions().keySet()){
+				invitationsList.getItems().add(new InvitationBox(invites.get(kn)));
+			}
+		}
+	
+}
+
 
 	
-    @FXML void addFromMyFridgeListener(ActionEvent event) {
-    }
+   // @FXML void addFromMyFridgeListener(ActionEvent event) {
+   // }
 
     @FXML void addRtoEMode(ActionEvent event) {
     }
 
-    @FXML void displayInvitations(MouseEvent event) {
-    }
+	public void displayInvitations(){
+		if(invitationsList.isVisible()){
+				invitationsList.setVisible(false);
+		}
+		else{
+			if(_account.getInvitions().size()!=0){
+				invitationsList.setVisible(true);
+				populateInvitations();
+			}
+		}
+	}
 
     @FXML void goToRecipeTab(ActionEvent event) {
     	tabPane.getSelectionModel().select(recipeSearchTab);
@@ -1191,6 +1293,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     }
     
-    
+	public void recieveInvite(Invitation invitation) {
+		_account.addInvitation(invitation);
+		_client.storeAccount(_account);
+		populateInvitations();
+		
+	}
 
 }

@@ -45,6 +45,7 @@ public class Client extends Thread {
     private KitchenName _currentKitchen;
     private String _id;
     private String _newKitchen = "";
+    private boolean _verified;
 	
     public Client(String hostname, int port) throws IOException {
     	System.out.println("IN CLIENT CONSTRUCTOR");
@@ -109,9 +110,9 @@ public class Client extends Thread {
     	try {
 			RequestReturn response;
 			String input;
-			boolean verified = false;
+			_verified = false;
 			//Wait to receive account verification
-			while (!verified){
+			while (!_verified){
 				//Response will have 
 				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
@@ -126,7 +127,7 @@ public class Client extends Thread {
 							_login.dispose();
 							_login = new LoginWindow(this);
 						} else {
-							verified = true;	//successful login
+							_verified = true;	//successful login
 							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
@@ -139,12 +140,12 @@ public class Client extends Thread {
 
 						}
 					} else {
-						_login.displayIncorrect();
+						_login.displayIncorrect(response.getErrorMessage());
 					}
 					
 				} else {
 					System.out.println("is server disconnected??");
-					//TODO: Server disconnected. What do we do?
+					_login.displayIncorrect("Sorry! The server is down.");
 				}
 			}
 			while(_running){
@@ -196,8 +197,14 @@ public class Client extends Thread {
 			}
 			
     	} catch (Exception e) {
-    		//TODO: Write message to login screen and home screen if server goes down.
-    		e.printStackTrace();
+    		if(!_verified){
+				_login.displayIncorrect("We're sorry but the server is down. Apologies!");
+
+    		}
+    		else{
+    			//TODO: GUI POP UP THAT SERVER IS DOWN
+    			e.printStackTrace();
+    		}
     	}
 
     	

@@ -91,6 +91,8 @@ public class ClientPool {
 	}
 	
 	public boolean isActiveClient(String id){
+		System.out.println("is Active Client!! " + id);
+		System.out.println(_ids);
 		return _ids.containsKey(id);
 	}
 	
