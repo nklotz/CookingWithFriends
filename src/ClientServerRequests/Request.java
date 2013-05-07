@@ -3,7 +3,7 @@ package ClientServerRequests;
 import java.io.Serializable;
 
 import UserInfo.Account;
-import UserInfo.Event;
+import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -17,7 +17,7 @@ public class Request implements Serializable {
 	private int _requestType, _accountChangeType;
 	private Account _account;
 	private Kitchen _kitchen;
-	private Event _kEvent;
+	private KitchenEvent _kEvent;
 	private Recipe _recipe;
 	private Invitation _invite;
 	private Ingredient _ingredient;
@@ -117,11 +117,11 @@ public class Request implements Serializable {
 		return _kUserID;
 	}
 	
-	public void setEvent(Event e){
+	public void setEvent(KitchenEvent e){
 		_kEvent = e;
 	}
 	
-	public Event getEvent(){
+	public KitchenEvent getEvent(){
 		return _kEvent;
 	}
 	

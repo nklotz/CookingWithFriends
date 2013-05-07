@@ -23,6 +23,7 @@ import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
@@ -1019,7 +1020,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     		if(kitchens.get(_client.getCurrentKitchen())!=null){
     			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    			Event event = new Event(name, date, k);
+    			KitchenEvent event = new KitchenEvent(name, date, k);
             	_client.addEvent(k.getID(), event);
             	//populateEventSelector();
             	

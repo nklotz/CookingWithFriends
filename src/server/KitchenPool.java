@@ -7,7 +7,7 @@ import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
 import UserInfo.Account;
-import UserInfo.Event;
+import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Kitchen;
 import UserInfo.KitchenName;
@@ -318,12 +318,12 @@ public class KitchenPool {
 	  			k.removeRequestedUser(request.getUsername());
 	  			break;
 	  		case 17:
-	  			Event e = k.getEvent(new Event(request.getEventName(), null, k));
+	  			KitchenEvent e = k.getEvent(new KitchenEvent(request.getEventName(), null, k));
 	  			e.addShoppingIngredient(request.getIngredient());
 	  			k.addEvent(e);
 	  			break;
 	  		case 20:
-	  			Event messagEvent = k.getEvent(new Event(request.getEventName(), null, k));
+	  			KitchenEvent messagEvent = k.getEvent(new KitchenEvent(request.getEventName(), null, k));
 	  			messagEvent.addMessages(request.getNewMessages());
 	  			System.out.println("added messages!");
 	  			k.addEvent(messagEvent);

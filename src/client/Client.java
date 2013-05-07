@@ -18,7 +18,7 @@ import GUI.GUIFrame;
 import GUI.LoginWindow;
 import GUI2.GUI2Frame;
 import UserInfo.Account;
-import UserInfo.Event;
+import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -298,14 +298,14 @@ public class Client extends Thread {
     	send(r);
     }
     
-    public void addEvent(String id, Event event){
+    public void addEvent(String id, KitchenEvent event){
     	Request r = new Request(5);
     	r.setKitchenID(id);
     	r.setEvent(event);
     	send(r);
     }
     
-    public void removeEvent(String id, Event event){
+    public void removeEvent(String id, KitchenEvent event){
     	Request r = new Request(6);
     	r.setKitchenID(id);
     	r.setEvent(event);
