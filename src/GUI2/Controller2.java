@@ -56,6 +56,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
@@ -161,8 +162,14 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ComboBox<String> hour;
     @FXML private ComboBox<String> min;
     @FXML private ComboBox<String> amPm;
-    
+    @FXML private ComboBox<String> eventSelector;
     @FXML private CheckBox removableKitchenIngredient;
+    @FXML private AnchorPane eventAnchor;
+    @FXML private TextArea eventCommentDisplayField;
+    @FXML private TextArea eventCommentWriteField;
+    @FXML private Button postMessageButton;
+    @FXML private Tab eventTab;
+    @FXML private Tab newEventTab;
     //Date Picker
     private DatePicker eventDatePicker;
     
@@ -229,6 +236,11 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert hour != null : "fx:id=\"hour\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert min != null : "fx:id=\"min\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert amPm != null : "fx:id=\"amPm\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventSelector != null : "fx:id=\"eventSelector\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventAnchor != null : "fx:id=\"eventAnchor\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert postMessageButton != null : "fx:id=\"postMessageButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventTab != null : "fx:id=\"eventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert newEventTab != null : "fx:id=\"newEventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         // Initialize the DatePicker for event
         // Date Picker comes from "http://edu.makery.ch/blog/2013/01/07/javafx-date-picker/" Thanks!
         eventDatePicker = new DatePicker(Locale.ENGLISH);
@@ -237,10 +249,9 @@ public class Controller2 extends AnchorPane implements Initializable {
         eventDatePicker.getCalendarView().todayButtonTextProperty().set("Today");
         eventDatePicker.getCalendarView().setShowWeeks(false);
         eventDatePicker.getStylesheets().add("GUI2/DatePicker.css");
-        //eventDatePicker.getStylesheets().add(DatePicker.class.getResource("DatePicker.css").toExternalForm());
-        //eventDatePicker.getStylesheets().addAll(DatePicker.class.getResource("DatePicker.css").toExternalForm());
         // Add DatePicker to grid
         eventGridPane.add(eventDatePicker, 2, 2);
+        
 	}
 	
 	public void setUp(Client client, Account account, Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines){
@@ -267,6 +278,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     	tabPane.getSelectionModel().select(homeTab);
     	
     	kitchenJunk.setDisable(true);
+    	
+    	//event time populate
+        populateEventTime();
+        populateEventSelector();
+        
 	}
 	
 	public void initializeComboBoxes(){
@@ -901,7 +917,12 @@ public class Controller2 extends AnchorPane implements Initializable {
     	if(recipeFlow.getChildren().size()==0){
     		kitchenRecipes.setVisible(true);
     	}
-		
+    	
+    	populateEventSelector();
+		System.out.println("ABOVE LOAD EVENT");
+		if (_currentEventName != null){
+			loadEvent();
+		}
 	}
 	
 	
@@ -1070,28 +1091,229 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 * Events
 	 * ********************************************************
 	 */
+	public void populateEventTime(){
+		System.out.println("CALLING POPULATE EVENT TIME");
+		hour.getItems().clear();
+		//hour.setItems(null);
+		hour.setValue(null);
+		hour.setButtonCell(new ListCell<String>() {						
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("Hr.");
+				} else {
+					setText(name);
+				}
+			}
+		});
+		hour.getButtonCell().setText("Hr.");
+		hour.getButtonCell().setItem(null);
+		hour.getItems().addAll("1" , "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+		min.getItems().clear();
+		//min.setItems(null);
+		min.setValue(null);
+		min.setButtonCell(new ListCell<String>() {						
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("Min.");
+				} else {
+					setText(name);
+				}
+			}
+		});
+		min.getButtonCell().setText("Min.");
+		min.getButtonCell().setItem(null);
+		min.getItems().addAll("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
+		amPm.getItems().clear();
+		//amPm.setItems(null);
+		amPm.setValue(null);
+		amPm.setButtonCell(new ListCell<String>() {						
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if (name == null || empty) {
+					setText("am/pm");
+				} else {
+					setText(name);
+				}
+			}
+		});
+		amPm.getButtonCell().setItem(null);
+		amPm.getButtonCell().setText("am/pm");
+		amPm.getItems().addAll("am", "pm");
+	}
 	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
+    	System.out.println("name: " + name);
     	Date date = eventDatePicker.getSelectedDate();
+    	Date now = new Date();
+    	boolean validDate = date.after(now);
+    	System.out.println("date: " + date.toString());
     	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
-    	if(name!=null && date!=null && name.trim().length()!= 0 //TODO: what are the combo boxes' default 
+    	System.out.println("time: " + time);
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    	if(name!=null && date!=null && name.trim().length()!= 0 && validDate//TODO: what are the combo boxes' default 
     			&& hour.getValue()!= null && min.getValue() != null && amPm.getValue()!=null){
-    		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    		newEventActionText.setVisible(false);
     		if(kitchens.get(_client.getCurrentKitchen())!=null){
     			Kitchen k = kitchens.get(_client.getCurrentKitchen());
     			KitchenEvent event = new KitchenEvent(name, date, k);
+    			_currentEventName = name;
             	_client.addEvent(k.getID(), event);
             	//populateEventSelector();
-            	
+            	eventTabPane.getSelectionModel().select(eventTab);
     		}
     		
     	} else {
-    		
+    		newEventActionText.setText("");
+    		newEventActionText.setVisible(true);
+    		/*if (k.getEvents().contains(new KitchenEvent(name, date, kitchens.get(_client.getCurrentKitchen()))) { //TODO: This probably won't work
+    			//TODO: do this check outside this else
+    			//TODO: Finish this check
+    		} else*/ 
+    		if (!validDate){
+    			newEventActionText.setText("Can't create an event in the past.");
+    		} else if (hour.getValue() == null || min.getValue() == null || amPm.getValue() == null){
+    			newEventActionText.setText("Invalid time!");
+    		}
+    		else {
+    			newEventActionText.setText("you fucked up!");
+    		}
     	}
     	
    // 	System.out.println("TEXT: " + createEventField.getText());
     }
+	
+	public void loadEvent(){
+		System.out.println("TOP OF LOAD EVENT!!!!!!!!!");
+		if(eventSelector.getValue()!= null){
+			System.out.println("setting current event to " + eventSelector.getValue());
+			_currentEventName = eventSelector.getValue();;
+		}
+		else if (_currentEventName != null){
+			System.out.println(eventSelector.getValue());
+			System.out.println("change to " +_currentEventName);
+			eventSelector.setValue(_currentEventName);
+			System.out.println(eventSelector.getValue());
+		}
+
+		System.out.println("EDITOR Val: " + eventSelector.getValue());
+		System.out.println("EDITOR t: " + eventSelector.getEditor().getText());
+
+		if(eventSelector.getValue()!=null){
+			enableEvents();
+			//populateEventMenu();
+			//populateEventShoppingList();
+			//populateEventSelector();
+			displayMessages();
+		}
+		
+//		if(eventSelector.getValue()== null && _currentEventName !=null){
+//			System.out.println("value was null but current event is " + _currentEventName);
+//			eventSelector.setEditable(true);
+//			eventSelector.setValue(_currentEventName);
+//			eventSelector.setEditable(false);
+//			System.out.println("I WOULD display event: " + _currentEventName);
+//		}
+//		else if(eventSelector.getValue() != null && !eventSelector.getValue().equals("Select an Event")){
+//			System.out.println("setting current event to " + eventSelector.getValue());
+//			_currentEventName = eventSelector.getValue();
+//			populateEventMenu();
+//			populateEventShoppingList();
+//		}
+	}
+	
+	private void disableEvents(){
+		eventAnchor.setDisable(true);
+	}
+	
+	private void enableEvents(){
+		eventAnchor.setDisable(false);
+	}
+	
+	public void eventPageSelected(){
+		if (eventSelector.getValue() == null){
+			disableEvents();
+		} else {
+			enableEvents();
+		}
+	}
+	
+	public void newEventPageSelected(){
+		newEventNameField.setText("");
+		eventDatePicker.setSelectedDate(null);
+		populateEventTime();
+	}
+	
+	public void populateEventSelector(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+		
+		eventSelector.getItems().clear();
+		//If kitchen doesn't equal null.
+		if(k!=null){
+			HashSet<String> names = k.getEventNames();
+			eventSelector.getItems().addAll(k.getEventNames());
+			//DBUG
+			for (String item : eventSelector.getItems()){
+				System.out.println(item);
+			}
+		}
+		//eventSelector.setValue(null);
+		
+	}
+	
+	public void displayMessages(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if(k!=null){
+    			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
+    			if (e != null){
+    				System.out.println("event: " + e);
+    				System.out.println("messages: " + e.getMessages());
+    				String messages = e.getMessages().toString();
+    				//eventCommentDisplayField.setVisible(false);
+    				eventCommentDisplayField.setText(messages);
+    				System.out.println("about to move caret");
+    				eventCommentDisplayField.positionCaret(messages.length());
+    				//eventCommentDisplayField.setVisible(true);
+    				//TODO: see if we can make this look less shitty.
+    			}
+    		}
+    	}
+	}
+	
+	public void postMessage(){
+		String post = eventCommentWriteField.getText();
+		if (post.length()!=0){
+			eventCommentWriteField.setText("");
+			String pre = "";
+			String mid = "";
+			String email = _account.getID();
+			String id = email.split("@")[0];
+			if (!_account.getName().equals("")){
+				mid = id + " (" + _account.getName() + "): ";
+			} else {
+				mid = id +": ";
+			}
+			if (eventCommentDisplayField.getText().length() != 0){
+				pre = eventCommentDisplayField.getText() + "\n";
+			}
+			eventCommentDisplayField.setText(pre + mid + post);
+			String forServer = mid+post+"\n";
+			System.out.println("trying to add this " + forServer);
+			_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
+		}
+	}
     
 	/*
 	 ********************************************************** 
