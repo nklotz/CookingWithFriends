@@ -36,7 +36,7 @@ public class MockRecipe implements Recipe, Serializable {
 		return null;
 	}
 
-	@Override
+	
 	public String getInstructions() {
 		// TODO Auto-generated method stub
 		return null;
@@ -80,6 +80,36 @@ public class MockRecipe implements Recipe, Serializable {
 	@Override
 	public boolean hasImage() {
 		return false;
+	}
+
+	@Override
+	public List<String> getIngredientStrings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSourceName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSourceUrl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasThumbnail() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getThumbnailUrl() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

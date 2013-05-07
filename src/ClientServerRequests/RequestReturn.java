@@ -25,7 +25,10 @@ public class RequestReturn implements Serializable {
 	private boolean _userInDatabase;		//Whether or not the user already exists in the database.
 	private boolean _passwordsMatch;
 	private String _errorMessage;
+<<<<<<< HEAD
 
+=======
+>>>>>>> d189930d17b45ee6cc8f99b75bb69c8e0049c790
 	
 	/*
 	 * Types:
@@ -102,7 +105,10 @@ public class RequestReturn implements Serializable {
 	public Wrapper getWrapper(){
 		return _wrapper;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> d189930d17b45ee6cc8f99b75bb69c8e0049c790
 	
 	public boolean getPasswordsMatch(){
 		return _passwordsMatch;

@@ -19,7 +19,7 @@ public class Kitchen implements Serializable, Nameable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashSet<Event> _events = new HashSet<Event>();
+	private HashSet<KitchenEvent> _events = new HashSet<KitchenEvent>();
 	private Set<Recipe> _recipes = new HashSet<Recipe>();
 	private HashMap<Ingredient, HashSet<String>> _ingToUsers = new HashMap<Ingredient, HashSet<String>>();
 	
@@ -46,8 +46,8 @@ public class Kitchen implements Serializable, Nameable{
 	 * @param eventName
 	 * @return
 	 */
-	public Event getEvent(Event event){
-		for(Event e: _events){
+	public KitchenEvent getEvent(KitchenEvent event){
+		for(KitchenEvent e: _events){
 		//	System.out.println("comparing " + event + " and " + e);
 		//	System.out.println("comparing k: " + event.getKitchen().hashCode() + " n: " + event.getName().hashCode() + " to k: " + e.getKitchen().getID()+ " n: " + event.getName().hashCode());
 			if(e.equals(event))
@@ -199,7 +199,7 @@ public class Kitchen implements Serializable, Nameable{
 		return _id;
 	}
 	
-	public HashSet<Event> getEvents(){
+	public HashSet<KitchenEvent> getEvents(){
 		return _events; 
 	}
 	
@@ -209,7 +209,7 @@ public class Kitchen implements Serializable, Nameable{
 	 */
 	public HashSet<String> getEventNames(){
 		HashSet<String> names = new HashSet<String>();
-		for(Event e: _events){
+		for(KitchenEvent e: _events){
 			names.add(e.getName());
 		}
 		return names;
@@ -219,7 +219,7 @@ public class Kitchen implements Serializable, Nameable{
 	 * Adds an event to the kitchen.
 	 * @param e Event e to add to kitchen.
 	 */
-	public void addEvent(Event e){
+	public void addEvent(KitchenEvent e){
 		_events.add(e);
 	}
 	
@@ -227,7 +227,7 @@ public class Kitchen implements Serializable, Nameable{
 	 * Removes an event from the kitchen.
 	 * @param e Event to remove from kitchen.
 	 */
-	public void removeEvent(Event e){
+	public void removeEvent(KitchenEvent e){
 		_events.remove(e);
 	}
 	

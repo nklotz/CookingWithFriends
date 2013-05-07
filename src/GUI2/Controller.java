@@ -66,7 +66,7 @@ import API.Wrapper;
 import API.YummlyAPIWrapper;
 import Email.Sender;
 import UserInfo.Account;
-import UserInfo.Event;
+import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
@@ -523,7 +523,7 @@ public class Controller extends AnchorPane implements Initializable {
     		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     		if(kitchens.get(_client.getCurrentKitchen())!=null){
     			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    			Event event = new Event(name, date, k);
+    			KitchenEvent event = new KitchenEvent(name, date, k);
             	_client.addEvent(k.getID(), event);
             	//populateEventSelector();
             	
@@ -1040,6 +1040,7 @@ public class Controller extends AnchorPane implements Initializable {
     
     
     public void populateEventMenu(){
+    	
     	ObservableList<EventMenuBox> listItems = FXCollections.observableArrayList();  
     	eventMenuList.getItems().clear();
     	String eventName = eventSelector.getValue();
@@ -1050,7 +1051,7 @@ public class Controller extends AnchorPane implements Initializable {
 
     		
     		if(k!=null){
-    			Event e = k.getEvent(new Event(eventName, null, k));
+    			KitchenEvent e = k.getEvent(new KitchenEvent(eventName, null, k));
 
     			
     			for(Recipe r: e.getMenuRecipes()){
@@ -1071,7 +1072,7 @@ public class Controller extends AnchorPane implements Initializable {
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
     		if(k!=null){
-    			Event e = k.getEvent(new Event(eventName, null, k));
+    			KitchenEvent e = k.getEvent(new KitchenEvent(eventName, null, k));
     			for(Ingredient i: e.getShoppingIngredients()){
     				EventShoppingListBox b = new EventShoppingListBox(i.getName());
     	    		listItems.add(b);
@@ -1695,7 +1696,7 @@ public class Controller extends AnchorPane implements Initializable {
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
     		if(k!=null){
-    			Event e = k.getEvent(new Event(_currentEventName, null, k));
+    			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
     			System.out.println("event: " + e);
     			System.out.println("messages: " + e.getMessages());
     			String messages = e.getMessages().toString();

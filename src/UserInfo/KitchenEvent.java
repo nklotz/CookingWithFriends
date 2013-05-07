@@ -12,7 +12,7 @@ import java.util.Set;
  * @author hacheson
  * This class represents an event: contains a date, name, and list of user.
  */
-public class Event implements Serializable {
+public class KitchenEvent implements Serializable {
 
 	/**
 	 * 
@@ -26,7 +26,7 @@ public class Event implements Serializable {
 	private Set<Ingredient> _shoppingIng;
 	private StringBuilder _messages = new StringBuilder("");
 	
-	public Event(String name, Date date, Kitchen kitchen){
+	public KitchenEvent(String name, Date date, Kitchen kitchen){
 		_name = name;
 		_date = date;
 		_kitchen = kitchen;
@@ -34,7 +34,7 @@ public class Event implements Serializable {
 		_shoppingIng = new HashSet<Ingredient>();
 	}
 	
-	public Event(String name, Date date, String time, Kitchen kitchen){
+	public KitchenEvent(String name, Date date, String time, Kitchen kitchen){
 		_name = name;
 		_date = date;
 		_kitchen = kitchen;
@@ -83,7 +83,7 @@ public class Event implements Serializable {
 	 * Sets this event's date.
 	 * @param date String date to set.
 	 */
-	public void setDate(String date){
+	public void setDate(Date date){
 		_date = date;
 	}
 	
@@ -91,7 +91,7 @@ public class Event implements Serializable {
 	 * Returns this event's date.
 	 * @return String date to return.
 	 */
-	public String getDate(){
+	public Date getDate(){
 		return _date;
 	}
 	
@@ -135,7 +135,7 @@ public class Event implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Event other = (Event) obj;
+		KitchenEvent other = (KitchenEvent) obj;
 		if (_kitchen == null) {
 			if (other._kitchen != null)
 				return false;
