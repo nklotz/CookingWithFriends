@@ -1,5 +1,6 @@
 package API;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -153,6 +154,14 @@ public class YummlyRecipe implements Recipe, Nameable {
 		}
 		return null;
 	}
+	
+	@Override 
+	public String getSourceName() {
+		if (source.containsKey("sourceDisplayName")) {
+			return source.get("sourceDisplayName");
+		}
+		return null;
+	}
 
 	@Override
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
@@ -194,7 +203,8 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return true;
 	}
 
-	private class ImageUrls {
+	private class ImageUrls implements Serializable {
+		private static final long serialVersionUID = 1L;
 		public String hostedLargeUrl, hostedSmallUrl, hostedMediumUrl;
 	}
 }

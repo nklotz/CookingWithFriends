@@ -19,7 +19,7 @@
     </Pane>
     <Pane layoutX="325.0" layoutY="52.0" prefHeight="425.0" prefWidth="290.0" styleClass="section">
       <children>
-        <ListView fx:id="ingredientsList" layoutX="12.0" layoutY="14.0" prefHeight="397.0" prefWidth="263.0" />
+        <ListView fx:id="ingredientsList" layoutX="12.0" layoutY="14.0" mouseTransparent="false" orientation="VERTICAL" prefHeight="397.0" prefWidth="263.0" />
       </children>
     </Pane>
     <Label id="titleLabel" layoutX="325.0" layoutY="28.0" styleClass="sectionHeader" text="Ingredients" />
@@ -34,9 +34,9 @@
       </children>
     </Pane>
     <Label id="" layoutX="33.0" layoutY="253.0" styleClass="sectionHeader" text="Details" />
-    <Pane layoutX="151.0" layoutY="517.0" prefHeight="40.0" prefWidth="349.0" styleClass="smallBackground">
+    <Pane layoutX="151.0" layoutY="510.0" prefHeight="40.0" prefWidth="349.0" styleClass="smallBackground">
       <children>
-        <ComboBox fx:id="chooseKitchenBox" editable="false" layoutX="14.0" layoutY="9.0" prefWidth="200.0" promptText="Choose Kitchen">
+        <ComboBox fx:id="chooseKitchenBox" cache="false" disable="false" editable="false" focusTraversable="true" layoutX="14.0" layoutY="9.0" mouseTransparent="false" pickOnBounds="false" prefWidth="200.0" promptText="Choose Kitchen" visible="true">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
