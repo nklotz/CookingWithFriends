@@ -23,6 +23,7 @@ import UserInfo.Account;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
@@ -105,7 +106,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ListView<InvitationBox> invitationsList;
     @FXML private ListView<Text> kitchenChefList;
     @FXML private Pane kitchenHide;
-    @FXML private ListView<String> kitchenIngredientList;
+    @FXML private ListView<KitchenIngredientBox> kitchenIngredientList;
     @FXML private ComboBox<String> kitchenSelector;
     @FXML private Button leaveKitchenButton;
     @FXML private ComboBox<String> newIngredient;
@@ -113,7 +114,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Button newKitchenButton, newKitchenCancelButton, newKitchenCreateButton;
     @FXML private TextField newKitchenNameField;
     @FXML private AnchorPane newKitchenPane;
-    @FXML private FlowPane recipeFlow;
+    @FXML private FlowPane recipeFlow, kitchenRecipes;
     @FXML private Tab recipeSearchTab, homeTab;
     @FXML private CheckBox removeFridgeIngredient;
     @FXML private AnchorPane removeIngredientsButton;
@@ -142,13 +143,16 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private PasswordField newPassField2;
     @FXML private Button savePassButton;
     @FXML private Button cancelPassButton;
-    @FXML private Pane changePassPane;
+    @FXML private Pane changePassPane, noRecipesPane;
     @FXML private Label oldPassLabel;
     @FXML private Label newPassLabel1;
     @FXML private Label newPassLabel2;
     @FXML private Label changePassErrorLabel;
     @FXML private TabPane eventTabPane;
     @FXML private Tab kitchenIngTab;
+
+    @FXML private Label lengthRecipeSearchLabel;
+
     @FXML private GridPane eventGridPane;
     @FXML private Button createEventButton;
     @FXML private Text newEventActionText;
@@ -157,8 +161,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ComboBox<String> hour;
     @FXML private ComboBox<String> min;
     @FXML private ComboBox<String> amPm;
+    
+    @FXML private CheckBox removableKitchenIngredient;
     //Date Picker
     private DatePicker eventDatePicker;
+    
 
     
     //Local Data
@@ -171,7 +178,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     private KitchenPane _currentKitchenPane;
     private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
     private InviteChefController _inviteChefController;
-    
+   
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -219,7 +226,6 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert newEventActionText != null : "fx:id=\"newEventActionText\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
        	assert newEventNameField != null : "fx:id=\"newEventNameField\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert eventGridPane != null : "fx:id=\"eventGridPane\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
-        assert newEventTimeSelectorBox != null : "fx:id=\"newEventTimeSelectorBox\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert hour != null : "fx:id=\"hour\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert min != null : "fx:id=\"min\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert amPm != null : "fx:id=\"amPm\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
@@ -243,7 +249,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     	_kitchens = kitchens;
     	_engines = engines;
     	_api = new YummlyAPIWrapper();
-    	
     	populateUserFridge();
     	populateShoppingList();
     	displayPleasantries();
@@ -324,7 +329,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void EditOrSaveAccountChanges(){
 		System.out.println(profileEditor.getText());
-		if(profileEditor.getText().equals("Edit")){
+		if(profileEditor.getText().equals("Edit Profile")){
 			nameField.setVisible(true);
 			locationField.setVisible(true);
 			nameLabel.setVisible(false);
@@ -343,7 +348,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			_account.setName(nameLabel.getText());
 			_account.setAddress(locationLabel.getText());
 			_client.storeAccount(_account);
-			profileEditor.setText("Edit");
+			profileEditor.setText("Edit Profile");
 		}
 	}
 	
@@ -515,6 +520,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		 */
 		public void changePasswordButtonListener(){
 			setPassFieldsVisible(true);
+			
 		}
 		public void cancelPassButtonListener(){
 			setPassFieldsVisible(false);
@@ -533,6 +539,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 		public void savePassButtonListener(){
 			System.out.println("SAVE PASS");
 			String old = oldPassField.getText();
+			if(old.length()>Utils.MAX_FIELD_LEN){
+				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setVisible(true);
+			}
 			if(old!=null&&old.trim().length()!=0){
 				//Will receive a boolean, which will call the changePass method if true.
 				System.out.println("SHOULD CALL CLIENT PASS MATCH.");
@@ -549,6 +559,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 			System.out.println("SHOULD CHANGE THE PASSWORDS!!!: " + matches);
 			String new1 = newPassField1.getText();
 			String new2 = newPassField2.getText();
+			if(new1.length()>Utils.MAX_FIELD_LEN || new2.length()>Utils.MAX_FIELD_LEN){
+				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setVisible(true);
+			}
 			if(matches){
 				if(new1!=null&&new2!=null&&new1.trim().length()!=0
 						&&new2.trim().length()!=0){
@@ -614,10 +628,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     		if(name.trim().length()!=0){
 	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
 	    		_client.storeAccount(_account);
+	    		populateUserIngredientsInKitchen();
+	        	populateUserFridge();
+	        	populateSearchIngredients();
 	    	}
 	    }
-    	populateUserFridge();
-    	populateSearchIngredients();
     	newIngredient.setValue(null);
     	newIngredient.getItems().clear();
     	
@@ -705,7 +720,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     	for(Recipe r : _account.getRecipes()){
     		recipeFlow.getChildren().add(new RecipeBox(r, this));
     	}
+    	if(recipeFlow.getChildren().size()==0){
+    		noRecipesPane.setVisible(true);
+    	}
     }
+    
 	/*
 	 ********************************************************** 
 	 * Kitchen
@@ -849,13 +868,18 @@ public class Controller2 extends AnchorPane implements Initializable {
 		HashMap<Ingredient, HashSet<String>> map = k.getIngredientsMap();
 		HashSet<String> toAddAll = new HashSet<String>();
 		for(Ingredient ing: map.keySet()){
+			boolean fromUser = false;
 			String toDisplay = ing.getName() + " (";
 			for(String user: map.get(ing)){
 				toDisplay += " " + user;
+				if(user.equals(_account.getID())){
+					fromUser = true;
+				}
 			}
 			toDisplay += ")";
-				
-			kitchenIngredientList.getItems().add(toDisplay);
+			
+			
+			kitchenIngredientList.getItems().add(new KitchenIngredientBox(ing.getName(), toDisplay, fromUser));
 		}
 		
 		kitchenChefList.getItems().clear();
@@ -869,7 +893,51 @@ public class Controller2 extends AnchorPane implements Initializable {
 			kitchenChefList.getItems().add(t);
 		}
 		
+		kitchenRecipes.getChildren().clear();
+    	//noRecipesPane.setVisible(false);
+    	for(Recipe r: k.getRecipes()){
+    		kitchenRecipes.getChildren().add(new RecipeBox(r, this));
+    	}
+    	if(recipeFlow.getChildren().size()==0){
+    		kitchenRecipes.setVisible(true);
+    	}
+		
 	}
+	
+	
+	private class KitchenIngredientBox extends GuiBox{
+    	protected String _ing;
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+    	protected boolean _addedByUser;
+
+    	public KitchenIngredientBox(String ing, String toDisplay, boolean fromUser) {
+    		_ing= ing;
+    		_toDisplay = toDisplay;
+    		_addedByUser = fromUser;
+    	    Label ingred = new Label(_toDisplay);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
+    	}
+    	
+    	public void remove(){
+    		System.out.println("removing ingredient " + _ing);
+    		Ingredient ing = new Ingredient(_ing);
+    		_client.removeIngredient(_client.getCurrentKitchen().getID(), ing);
+    		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    	
+    	public boolean isFromUser(){
+    		return _addedByUser;
+    	}
+    }
 
 	public void clearKitchenDisplay(){
 		hideNewKitchenStuff();
@@ -1012,7 +1080,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     		if(kitchens.get(_client.getCurrentKitchen())!=null){
     			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    			Event event = new Event(name, date, k);
+    			KitchenEvent event = new KitchenEvent(name, date, k);
             	_client.addEvent(k.getID(), event);
             	//populateEventSelector();
             	
@@ -1186,7 +1254,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 
     @FXML void goToRecipeTab(ActionEvent event) {
-    	tabPane.getSelectionModel().select(recipeSearchTab);
+    	//tabPane.getSelectionModel().select(recipeSearchTab);
+    	//TODO: THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     
     
@@ -1199,7 +1268,12 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML void searchButtonListener(MouseEvent event) {
     	NoSearchResults.setVisible(false);
 		resultsFlow.getChildren().clear();
-		
+		if(searchField.getText().length()>Utils.MAX_FIELD_LEN){
+			lengthRecipeSearchLabel.setVisible(true);
+			lengthRecipeSearchLabel.setText("You may not make a search longer than " + Utils.MAX_FIELD_LEN + " characters long.");
+			return;
+		}
+			
 		if (_currentKitchenPane == null) {
 			NoSearchResults.setText("Please select a kitchen");
 			NoSearchResults.setVisible(true);

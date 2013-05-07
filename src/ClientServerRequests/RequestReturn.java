@@ -102,7 +102,6 @@ public class RequestReturn implements Serializable {
 		return _wrapper;
 	}
 
-	
 	public boolean getPasswordsMatch(){
 		return _passwordsMatch;
 	}
