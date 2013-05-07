@@ -138,7 +138,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private PasswordField newPassField2;
     @FXML private Button savePassButton;
     @FXML private Button cancelPassButton;
-    @FXML private Pane changePassPane;
+    @FXML private Pane changePassPane, noRecipesPane;
     @FXML private Label oldPassLabel;
     @FXML private Label newPassLabel1;
     @FXML private Label newPassLabel2;
@@ -670,10 +670,15 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
     public void populateUserRecipes(){
     	recipeFlow.getChildren().clear();
+    	noRecipesPane.setVisible(false);
     	for(Recipe r: _account.getRecipes()){
     		recipeFlow.getChildren().add(new RecipeBox(r));
     	}
+    	if(recipeFlow.getChildren().size()==0){
+    		noRecipesPane.setVisible(true);
+    	}
     }
+    
 	/*
 	 ********************************************************** 
 	 * Kitchen
@@ -1132,7 +1137,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 
     @FXML void goToRecipeTab(ActionEvent event) {
-    	tabPane.getSelectionModel().select(recipeSearchTab);
+    	//tabPane.getSelectionModel().select(recipeSearchTab);
+    	//TODO: THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     
     

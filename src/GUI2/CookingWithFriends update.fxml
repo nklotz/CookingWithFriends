@@ -197,6 +197,15 @@
                   </image>
                 </ImageView>
                 <Label layoutX="34.0" layoutY="91.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
+                <Pane fx:id="noRecipesPane" layoutX="319.0" layoutY="155.0" prefHeight="200.0" prefWidth="386.0">
+                  <children>
+                    <Label fx:id="NoRecipesError" layoutX="90.0" layoutY="29.0" onMouseClicked="#goToRecipeTab" prefHeight="142.0" prefWidth="207.0" text="You don't have any recipes! Click here to search for some using your ingredients!" textAlignment="CENTER" textFill="#909090" underline="true" wrapText="true">
+                      <font>
+                        <Font name="System Bold" size="20.0" />
+                      </font>
+                    </Label>
+                  </children>
+                </Pane>
               </children>
             </AnchorPane>
           </content>
