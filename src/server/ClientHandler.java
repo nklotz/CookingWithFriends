@@ -119,6 +119,10 @@ public class ClientHandler extends Thread {
 								System.out.println("CASE 19 USER IN DATABASE");
 								userInDatabase(request);
 								break;
+							case 21:
+								System.out.println("IN CLIENT HANDLER 21");
+								passwordsMatch(request);
+								
 							default:
 								updateKitchen(request);
 								break;
@@ -249,6 +253,13 @@ public class ClientHandler extends Thread {
 		send(req);
 	}
 	
+	public void passwordsMatch(Request request){
+		System.out.println("PASSING PASS MATCH IN SERVER");
+		boolean passwordsMatch = _helper.passwordsMatch(request.getUsername(), request.getPassToCheck());
+		RequestReturn req = new RequestReturn(5);
+		req.setPasswordMatch(passwordsMatch);
+		send(req);
+	}
 	
     private static String toString( Serializable o ) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

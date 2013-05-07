@@ -13,6 +13,7 @@ public class AccountRequest implements Runnable {
 	private KitchenPool _activeKitchens;
 	private AutocorrectEngines _autocorrect;
 	
+	
 	public AccountRequest(ClientHandler ch, String accountID, DBHelper helper, KitchenPool kitchens, AutocorrectEngines autocorrect){
 		_ch = ch;
 		_ID = accountID;
@@ -28,6 +29,7 @@ public class AccountRequest implements Runnable {
 		toReturn.setAccount(_helper.getAccount(_ID));
 		System.out.println("accoutn request: " + toReturn.getAccount());
 		toReturn.setAPIInfo(_autocorrect);
+		//toReturn.setPass(_helper.getPassword(toReturn.getAccount().getID()));
 		if(toReturn.getAccount()!= null){
 			_activeKitchens.addAccount(toReturn.getAccount());
 			toReturn.setKitchenMap(_activeKitchens.getAllUserKitchens(_ID));

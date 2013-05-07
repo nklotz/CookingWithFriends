@@ -1040,6 +1040,7 @@ public class Controller extends AnchorPane implements Initializable {
     
     
     public void populateEventMenu(){
+    	
     	ObservableList<EventMenuBox> listItems = FXCollections.observableArrayList();  
     	eventMenuList.getItems().clear();
     	String eventName = eventSelector.getValue();

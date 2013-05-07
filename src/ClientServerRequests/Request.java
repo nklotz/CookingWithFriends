@@ -24,6 +24,7 @@ public class Request implements Serializable {
 	private String _restrictAllergy;
 	private KitchenName _kitchenNameObj;
 	private String _newMessages;
+	private String _passToCheck;
 	
 	
 	/*
@@ -45,7 +46,9 @@ public class Request implements Serializable {
 	 * 16 = declineInvitation
 	 * 17 = add Ingredient to kitchen Event
 	 * 18 = change user password
+	 * 19 = user in database
 	 * 20 = post message
+	 * 21 = check password
 	 */
 	
 	
@@ -185,6 +188,14 @@ public class Request implements Serializable {
 	
 	public void setMessages(String messages){
 		_newMessages = messages;
+	}
+	
+	public void setPassToCheck(String passToCheck){
+		_passToCheck = passToCheck;
+	}
+	
+	public String getPassToCheck(){
+		return _passToCheck;
 	}
 	
 }

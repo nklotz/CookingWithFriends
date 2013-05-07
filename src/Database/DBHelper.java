@@ -85,16 +85,9 @@ public class DBHelper implements DBHelperInterface{
 			e.printStackTrace();
 		}
 		
-		storeUsernamePassword("CWF", "cook");
-		MockUser mu = new MockUser();
-		storeAccount(mu.getAccount());
-		for(KitchenName kn: mu.getAccount().getKitchens()){
-			Kitchen k = new Kitchen(kn.getName(), kn.getID());
-			k.addActiveUser(mu.getAccount());
-			storeKitchen(k);
-		} 
-		
 	}
+	
+	
 
 	@Override
 	public Account getAccount(String username) {
@@ -165,6 +158,8 @@ public class DBHelper implements DBHelperInterface{
 		}
 	}
 	
+
+	
 	/**
 	 * Changes the username to generate a random password.
 	 * @param username
@@ -208,19 +203,26 @@ public class DBHelper implements DBHelperInterface{
 		else{
 			return false;
 		}
-//		DBCursor cursor = userPassCollection_.find(searchQuery);
-//		//Username doesn't exist in database.
-//		if(!cursor.hasNext()){
-//			return false;
-//		}
-//		else{
-//			//System.out.println("next: " + cursor.next());
-//			String storedPassword = cursor.next().get("password").toString();
-//			return check(password, storedPassword);
-//		}
-		//encode the password that you're given and check if it matches.
+		
 	}
 	
+	/**
+	 * Checks whether the given password matches the given password
+	 * already stored in the db.
+	 * @param username
+	 * @param unEncryptedPass
+	 * @return
+	 */
+	public boolean passwordsMatch(String username, String passToCheck){
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("username", username);
+		if(inDatabase(username)){
+			DBCursor cursor = userPassCollection_.find(searchQuery);
+			String storedPassword = cursor.next().get("password").toString();
+			return check(passToCheck, storedPassword);
+		}
+		return false;
+	}
 	
 	/** Checks whether given plaintext password corresponds 
     to a stored salted hash of the password. */

@@ -100,6 +100,15 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	public void changePasswords(final boolean matches){
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.changePassword(matches);
+    		}
+		});
+	}
+	
 	//TODO: Make sure this jives.
 	public void displayNewKitchen(final Kitchen k){
 		Platform.runLater(new Runnable() {
