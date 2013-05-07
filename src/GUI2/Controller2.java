@@ -1117,8 +1117,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     		recipeLabel.setMaxWidth(140);
     		recipeLabel.setWrapText(true);
     		this.getChildren().add(recipeLabel);
-    		if (recipe.hasImage()) {
-    			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
+    		if (recipe.hasThumbnail()) {
+    			Image recipeThumbnail = new Image(recipe.getThumbnailUrl(), 80, 80, true, true, true); 
     			ImageView imageV = new ImageView(recipeThumbnail);
     			imageV.getStyleClass().add("recipeThumbnail");
     			this.getChildren().add(imageV);
@@ -1134,8 +1134,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     }
     
     private void createPopup(Recipe recipe) {
-    	System.out.println("TODO: Create this popup (with buttons to add a recipe to any kitchen)");
-    
     	try {
 	    	Recipe completeRecipe = _api.getRecipe(recipe.getID());
 	    	
@@ -1145,7 +1143,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 			Parent p = (Parent) fxmlLoader.load(location.openStream());
 			RecipeController recipeControl = (RecipeController) fxmlLoader.getController();
-			recipeControl.setUp(completeRecipe, _client, this);
+			recipeControl.setUp(completeRecipe, _client, _account);
 			
 			Stage stage = new Stage();
 	        stage.setScene(new Scene(p));
@@ -1160,15 +1158,16 @@ public class Controller2 extends AnchorPane implements Initializable {
     
     public void populateSearchIngredients() {
     	List<KitchenPane> kitchenPanes = new ArrayList<>();
-        kitchenPanes.add(new KitchenPane("My Fridge", _account.getIngredients(), _account.getDietaryRestrictions(), _account.getAllergies()));
-        
+    	_currentKitchenPane = new KitchenPane("My Fridge", _account.getIngredients(), _account.getDietaryRestrictions(), _account.getAllergies());
+        kitchenPanes.add(_currentKitchenPane);
+                
         for (Kitchen kitchen : _kitchens.values())
         	kitchenPanes.add(new KitchenPane(kitchen.getName(), kitchen.getIngredients(), kitchen.getDietaryRestrictions(), kitchen.getAllergies()));
       
         ingredientsAccordion.getPanes().clear();
         ingredientsAccordion.getPanes().addAll(kitchenPanes);
         ingredientsAccordion.setExpandedPane(kitchenPanes.get(0));
-        _currentKitchenPane = kitchenPanes.get(0);
+        //_currentKitchenPane = ingredientsAccordion.getExpandedPane();
 	}
     
     private class KitchenPane extends TitledPane {
@@ -1246,6 +1245,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}	
     }
     
+    
     /**
      * COMBO BOX LISTENERS. _-----------------------------------------------
      */
@@ -1292,6 +1292,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     		 addShoppingListListener();
     	}
     }
+
+	
     
 	public void recieveInvite(Invitation invitation) {
 		_account.addInvitation(invitation);
