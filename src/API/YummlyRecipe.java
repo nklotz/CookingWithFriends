@@ -36,7 +36,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 	//Additional fields from Yummly recipe query
 	private Map<String, String> attribution;
 	private String[] ingredientLines;
-	private ImageUrl[] images;
+	private ImageUrls[] images;
 	private String name;
 	private String yield;
 	private String totalTime;
@@ -91,12 +91,10 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return numberOfServings;
 	}
 
-
 	@Override
 	public String getID() {
 		return id;
 	}
-
 
 	@Override
 	public String getTime() {
@@ -117,6 +115,37 @@ public class YummlyRecipe implements Recipe, Nameable {
 		}
 	}
 	
+	@Override
+	public boolean hasImage() {
+		return (images.length > 0);
+	}
+	
+	@Override
+	public boolean hasThumbnail() {
+		return (smallImageUrls.length > 0);
+	}
+	
+	@Override
+	public String getThumbnailUrl() {
+		if (smallImageUrls != null) {
+			return smallImageUrls[0];
+		}
+		return "";
+	}
+	
+	@Override
+	public String getImageUrl() {
+		if (images != null) {
+			if (images[0].hostedLargeUrl != null) 
+				return images[0].hostedLargeUrl;
+			if (images[0].hostedMediumUrl != null)
+				return images[0].hostedMediumUrl;
+			if (images[0].hostedSmallUrl != null)
+				return images[0].hostedSmallUrl;
+		}
+		return "";
+	}
+	
 	@Override 
 	public String getSourceUrl() {
 		if (source.containsKey("sourceRecipeUrl")) {
@@ -124,16 +153,6 @@ public class YummlyRecipe implements Recipe, Nameable {
 		}
 		return null;
 	}
-
-
-	@Override
-	public String getImageUrl() {
-		if (smallImageUrls != null) {
-			return smallImageUrls[0];
-		}
-		return "";
-	}
-
 
 	@Override
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
@@ -175,14 +194,7 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return true;
 	}
 
-
-	@Override
-	public boolean hasImage() {
-		return (smallImageUrls.length > 0);
-	}
-
-
-	private class ImageUrl {
+	private class ImageUrls {
 		public String hostedLargeUrl, hostedSmallUrl, hostedMediumUrl;
 	}
 }

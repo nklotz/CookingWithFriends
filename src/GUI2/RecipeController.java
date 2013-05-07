@@ -1,5 +1,8 @@
 package GUI2;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -21,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
@@ -51,26 +55,27 @@ public class RecipeController {
 		ingredients.addAll(_recipe.getIngredientStrings());
 		ingredientsList.setItems(ingredients);
 		
-		if (_recipe.getNumberOfServings() != null) {
+		if (_recipe.getNumberOfServings() != null)
 			servingsLabel.setText(_recipe.getNumberOfServings());
-		}
-		else {
+		else
 			servingsHeader.setVisible(false);
-		}
 		
 		String time = _recipe.getTime();
-		if (time != null) {
+		if (time != null)
 			prepTimeLabel.setText(time);
-		}
-		else {
+		else
 			prepTimeHeader.setVisible(false);
-		}
 		
 		recipeLink.setText(_recipe.getSourceUrl());
+		
+		if (_recipe.getImageUrl() != null) {
+			recipeImage.setImage(new Image(_recipe.getImageUrl(), 180, 120, true, true, true));
+		}
 	}
 	
     @FXML
     void addRecipeListener(ActionEvent event) {
+    	//	TODO: ALL OF THIS NONSENSE
     	if (chooseKitchenBox.getValue().equals("My Recipes")) {
     		
     	}
@@ -88,6 +93,16 @@ public class RecipeController {
         assert ingredientsList != null : "fx:id=\"ingredientsList\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
         assert recipeImage != null : "fx:id=\"recipeImage\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
         assert titleLabel != null : "fx:id=\"titleLabel\" was not injected: check your FXML file 'RecipeWindow.fxml'.";
+    }
+    
+    @FXML
+    public void openLink() {
+    	try {
+			java.awt.Desktop.getDesktop().browse(new URI(_recipe.getSourceUrl()));
+		} catch (IOException | URISyntaxException e) {
+			System.out.println("Error opening link.");
+		}
+
     }
     
 	public void populateKitchenSelector(){

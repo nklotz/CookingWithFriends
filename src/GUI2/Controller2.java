@@ -997,8 +997,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     		recipeLabel.setMaxWidth(140);
     		recipeLabel.setWrapText(true);
     		this.getChildren().add(recipeLabel);
-    		if (recipe.hasImage()) {
-    			Image recipeThumbnail = new Image(recipe.getImageUrl(), 80, 80, true, true, true); 
+    		if (recipe.hasThumbnail()) {
+    			Image recipeThumbnail = new Image(recipe.getThumbnailUrl(), 80, 80, true, true, true); 
     			ImageView imageV = new ImageView(recipeThumbnail);
     			imageV.getStyleClass().add("recipeThumbnail");
     			this.getChildren().add(imageV);

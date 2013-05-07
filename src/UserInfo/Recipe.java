@@ -23,14 +23,17 @@ public interface Recipe extends Nameable, Serializable {
 	
 	public String getTime();
 	
-	public String getImageUrl();
-	
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge);
-
-	public boolean hasImage();
 
 	public List<String> getIngredientStrings();
 
 	public String getSourceUrl();
 	
+	public boolean hasImage();
+	
+	public String getImageUrl();
+
+	public boolean hasThumbnail();
+	
+	public String getThumbnailUrl();
 }
