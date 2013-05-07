@@ -270,11 +270,7 @@
                     </Pane>
                     <Label layoutX="-6.0" layoutY="247.0" styleClass="sectionHeader" text="Recipes" />
                     <Label layoutX="-10.0" layoutY="14.0" styleClass="sectionHeader" text="Kitchen Info" />
-<<<<<<< Updated upstream
-                    <TabPane fx:id="eventTabPane" layoutX="394.0" layoutY="34.0" prefHeight="633.0" prefWidth="582.0" styleClass="section" tabClosingPolicy="UNAVAILABLE">
-=======
                     <TabPane layoutX="394.0" layoutY="34.0" prefHeight="608.0" prefWidth="582.0" styleClass="tab-header-background" tabClosingPolicy="UNAVAILABLE">
->>>>>>> Stashed changes
                       <tabs>
                         <Tab fx:id="kitchenIngTab" text="Kitchen Ingredients">
                           <content>
