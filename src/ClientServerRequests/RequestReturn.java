@@ -23,11 +23,9 @@ public class RequestReturn implements Serializable {
 	private AutocorrectEngines _info;
 	private Wrapper _wrapper;
 	private boolean _userInDatabase;		//Whether or not the user already exists in the database.
-<<<<<<< HEAD
 	private boolean _passwordsMatch;
-=======
 	private String _errorMessage;
->>>>>>> 4e5ea73f6e2083b515a467c3951e870bab0b5662
+
 	
 	/*
 	 * Types:
@@ -41,7 +39,7 @@ public class RequestReturn implements Serializable {
 		_type = type;
 	}
 	
-	public int getType(){
+	public int getType(){src/ClientServerRequests/RequestReturn.java
 		return _type;
 	}
 	
@@ -104,7 +102,7 @@ public class RequestReturn implements Serializable {
 	public Wrapper getWrapper(){
 		return _wrapper;
 	}
-<<<<<<< HEAD
+
 	
 	public boolean getPasswordsMatch(){
 		return _passwordsMatch;
@@ -112,7 +110,7 @@ public class RequestReturn implements Serializable {
 	
 	public void setPasswordMatch(boolean match){
 		_passwordsMatch = match;
-=======
+	}
 
 	public void setErrorMessage(String error){
 		_errorMessage = error;
@@ -120,6 +118,5 @@ public class RequestReturn implements Serializable {
 	
 	public String getErrorMessage() {
 		return _errorMessage;
->>>>>>> 4e5ea73f6e2083b515a467c3951e870bab0b5662
 	}
 }
