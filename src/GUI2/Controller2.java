@@ -650,7 +650,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	
     }
     
-    public void populateUserFridge(){
+    public void populateUserFridge() {
     	ObservableList<UserIngredientBox> listItems = FXCollections.observableArrayList();  
     	fridgeList.setItems(listItems);
     	for(Ingredient i: _account.getIngredients()){
@@ -671,7 +671,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getValue();
-    	if(name.length()>Utils.MAX_COMBO_LEN){
+    	if(name != null && name.length()>Utils.MAX_COMBO_LEN){
     		shoppingListActionLabel.setVisible(true);
     		return;
     	}
@@ -748,6 +748,37 @@ public class Controller2 extends AnchorPane implements Initializable {
     	if(recipeFlow.getChildren().size()==0){
     		noRecipesPane.setVisible(true);
     	}
+    }
+    
+    @FXML
+    public void wentShopping(ActionEvent event) {
+    	for (Ingredient i: _account.getShoppingList()) {
+    		_account.removeShoppingIngredient(i);
+    		_account.addIngredient(i);
+    	}    	
+    	populateShoppingList();
+    	populateUserFridge();
+    }
+    
+    @FXML
+    public void textShoppingList(ActionEvent event) {
+    	try {
+			URL location = getClass().getResource("SMSWindow.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			Parent p = (Parent) fxmlLoader.load(location.openStream());
+	        SMSController smsController = (SMSController) fxmlLoader.getController();
+	        Stage stage = new Stage();
+	        stage.setScene(new Scene(p));
+	        stage.setTitle("Text Shopping List");
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        smsController.setUp(stage, new ArrayList<Ingredient>(_account.getShoppingList()));
+		    stage.show();
+		} catch (IOException e) {
+			System.out.println("ERROR: IN GUI 2 Frame");
+			e.printStackTrace();
+		}
     }
     
 	/*
@@ -1426,7 +1457,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
     			if (e != null){
 					for (Recipe recipe : e.getMenuRecipes()){
-						eventRecipes.getChildren().add(new RecipeBox(recipe, this));
+						eventRecipes.getChildren().add(new RecipeBox(recipe, this, k, e, _client));
 					}
     			}
     		}
