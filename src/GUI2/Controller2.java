@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -170,6 +171,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Button postMessageButton;
     @FXML private Tab eventTab;
     @FXML private Tab newEventTab;
+    @FXML private GridPane timeDateGrid;
+    @FXML private Text eventTime;
+    @FXML private Text eventDate;
+    @FXML private Button deleteEventButton;
+    @FXML private Button editEventButton;
     //Date Picker
     private DatePicker eventDatePicker;
     
@@ -241,6 +247,11 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert postMessageButton != null : "fx:id=\"postMessageButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert eventTab != null : "fx:id=\"eventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert newEventTab != null : "fx:id=\"newEventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert timeDateGrid != null : "fx:id=\"timeDateGrid\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventTime != null : "fx:id=\"eventTime\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventDate != null : "fx:id=\"eventDate\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert deleteEventButton != null : "fx:id=\"deleteEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editEventButton != null : "fx:id=\"editEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         // Initialize the DatePicker for event
         // Date Picker comes from "http://edu.makery.ch/blog/2013/01/07/javafx-date-picker/" Thanks!
         eventDatePicker = new DatePicker(Locale.ENGLISH);
@@ -1153,8 +1164,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     	String name = newEventNameField.getText();
     	System.out.println("name: " + name);
     	Date date = eventDatePicker.getSelectedDate();
-    	Date now = new Date();
-    	boolean validDate = date.after(now);
+    	//getting yesterday
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.DATE, -1);
+    	Date yesterday = cal.getTime();
+    	boolean validDate = date.after(yesterday);
     	System.out.println("date: " + date.toString());
     	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
     	System.out.println("time: " + time);
