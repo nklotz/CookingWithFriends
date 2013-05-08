@@ -42,6 +42,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -78,6 +79,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -260,29 +262,34 @@ public class Controller2 extends AnchorPane implements Initializable {
     	_kitchens = kitchens;
     	_engines = engines;
     	_api = new YummlyAPIWrapper();
-    	populateUserFridge();
-    	populateShoppingList();
-    	displayPleasantries();
     	
+    	// Set up Profile tab
     	nameLabel.setText(_account.getName());
     	locationLabel.setText(_account.getAddress());
     	emailLabel.setText(_account.getID());
     	
+    	// Set up Home tab
+    	populateUserFridge();
+    	populateUserRecipes();
+    	populateShoppingList();
+    	displayPleasantries();
+    	
+    	// Set up Kitchen tab
     	initializeComboBoxes();
     	populateKitchenSelector();
-    	
-    	populateSearchIngredients();
     	populateInvitations();
-    	populateUserRecipes();
-    	
-    	tabPane.getSelectionModel().select(homeTab);
-    	
-    	kitchenJunk.setDisable(true);
-    	
-    	//event time populate
         populateEventTime();
         populateEventSelector();
-        
+    	
+    	// Set up Search tab
+    	setUpSearchPage();
+    	populateSearchIngredients();
+
+    	// Select
+    	tabPane.getSelectionModel().select(homeTab);
+    	
+    	//kitchenJunk.setDisable(true);
+  
 	}
 	
 	public void initializeComboBoxes(){
@@ -306,17 +313,19 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 * ALL PURPOSE
 	 **********************************************************
 	 */
-    private abstract class GuiBox extends GridPane{
+    private abstract class GuiBox extends GridPane {
+    	public GuiBox() {
+    		this.setHgap(5);
+    	}
     	public void remove() {};	
-    	public RemoveButton getRemover(){
+    	public RemoveButton getRemover() {
     		return null;
     	}    	
     }
     
     private class RemoveButton extends Button{
     	public RemoveButton(final GuiBox parent){
-    		this.setText("X");
-    		this.setFont(Font.font("Verdana", FontWeight.BLACK,13));
+    		this.setText("-");
     		this.setOnAction(new EventHandler<ActionEvent>() {
     			@Override
                 public void handle(ActionEvent e) {
@@ -333,8 +342,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	public void displayPleasantries(){
-        welcome.setText("Welcome " + _account.getName());
-        weather.setText("How's the weather in " + _account.getAddress());
+        welcome.setText("Welcome " + _account.getName() + "!");
+        weather.setText("How's the weather in " + _account.getAddress() + "?");
     }
 	
 	/*
@@ -364,6 +373,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			_account.setName(nameLabel.getText());
 			_account.setAddress(locationLabel.getText());
 			_client.storeAccount(_account);
+			this.displayPleasantries();
 			profileEditor.setText("Edit Profile");
 		}
 	}
@@ -483,6 +493,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	    protected RemoveButton _remove;
 	
     	public RestrictionBox(String display){
+    		super();
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
@@ -508,6 +519,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	protected RemoveButton _remove;
 
     	public AllergyBox(String display){
+    		super();
     		_toDisplay = display;
     	    Label all = new Label(display);
     	    this.add(all, 1, 0);
@@ -612,6 +624,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	protected RemoveButton _remove;
 
     	public UserIngredientBox(String display) {
+    		super();
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
@@ -691,6 +704,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	protected RemoveButton _remove;
     	
     	public ShoppingIngredientBox(String display){
+    		super();
     		_toDisplay = display;
     	    Label ingred = new Label(display);
     	    this.add(ingred, 1, 0);
@@ -732,7 +746,12 @@ public class Controller2 extends AnchorPane implements Initializable {
     
 	
     public void populateUserRecipes(){
-    	recipeFlow.getChildren().clear();
+    	if (_account.getRecipes().size() != 0) {
+    		noRecipesPane.setVisible(false);
+    	} 
+    	else {
+    		noRecipesPane.setVisible(true);
+    	}
     	for(Recipe r : _account.getRecipes()){
     		recipeFlow.getChildren().add(new RecipeBox(r, this));
     	}
@@ -748,7 +767,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 */
 
 	public void populateKitchenSelector(){
-		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
 		final HashMap<String,KitchenName> kitchenIds = _client.getKitchenIdMap();
 		kitchenSelector.getItems().clear();
 		kitchenSelector.getItems().addAll(kitchenIds.keySet());
@@ -933,6 +951,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	protected boolean _addedByUser;
 
     	public KitchenIngredientBox(String ing, String toDisplay, boolean fromUser) {
+    		super();
     		_ing= ing;
     		_toDisplay = toDisplay;
     		_addedByUser = fromUser;
@@ -1487,6 +1506,23 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 **********************************************************
 	 */
     
+    public void setUpSearchPage() {
+    	ingredientsAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+            @Override 
+            public void changed(ObservableValue<? extends TitledPane> property, final TitledPane oldPane, final TitledPane newPane) {
+            	if (oldPane != null) 
+            		oldPane.setCollapsible(true);
+            	if (newPane != null) {
+            		Platform.runLater(new Runnable() { 
+            			@Override public void run() { 
+            				newPane.setCollapsible(false); 
+            		 	}
+            		});
+            	}
+            }
+        });
+    }
+    
     @FXML void searchButtonListener(MouseEvent event) {
     	NoSearchResults.setVisible(false);
 		resultsFlow.getChildren().clear();
@@ -1505,15 +1541,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 		try { //Attempt to query API
 			List<String> dummyList = Collections.emptyList(); 
 			List<String> selectedIngredients = _currentKitchenPane.getSelectedIngredients();
-			List<String> restrictions = _currentKitchenPane.getRestrictions();
-			List<String> allergies = _currentKitchenPane.getAllergies();
-			
-			System.out.println("Searching for: " + searchField.getText());
-			System.out.println("Ingredients: " + selectedIngredients.toString());
-			System.out.println("Restrictions: " + restrictions.toString());
-			System.out.println("Allergies: " + allergies.toString());
-			
-			List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), selectedIngredients, dummyList, restrictions, allergies);
+						
+			List<? extends Recipe> results = _api.searchRecipes(searchField.getText(), _currentKitchenPane.getSelectedIngredients(), 
+					dummyList, _currentKitchenPane.getRestrictions(), _currentKitchenPane.getAllergies());
 			
 			if (results.size() == 0) {
 				System.out.println("no results!!");
@@ -1555,7 +1585,22 @@ public class Controller2 extends AnchorPane implements Initializable {
 	        stage.setScene(new Scene(p));
 	        stage.setTitle("View Recipe");
 	        stage.initModality(Modality.APPLICATION_MODAL);
+	        //stage.sizeToScene();
+		    //stage.centerOnScreen();
 		    stage.show();		
+		    
+//			Popup popup = new Popup();
+//	        popup.getContent().add(p);
+//	        popup.setAutoFix(true);
+//	        popup.setAutoHide(true);
+//	        popup.setHideOnEscape(true);
+//	        popup.show(root, 0, 0);
+//	        popup.sizeToScene();
+//	        popup.centerOnScreen();	
+//          Point2D center = Utils.getCenter(this.get);
+//          popup.show(mainClass.getOptionsStage(),
+//                    center.getX() - popup.getWidth() / 2,
+//                    center.getY() - popup.getHeight() / 2);      
     	} catch (IOException ex) {
     		NoSearchResults.setText("Error querying API -- is your internet connection down?");
 			NoSearchResults.setVisible(true);
@@ -1564,8 +1609,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     
     public void populateSearchIngredients() {
     	List<KitchenPane> kitchenPanes = new ArrayList<>();
-    	_currentKitchenPane = new KitchenPane("My Fridge", _account.getIngredients(), _account.getDietaryRestrictions(), _account.getAllergies());
-        kitchenPanes.add(_currentKitchenPane);
+        kitchenPanes.add(new KitchenPane("My Fridge", _account.getIngredients(), _account.getDietaryRestrictions(), _account.getAllergies()));
                 
         for (Kitchen kitchen : _kitchens.values())
         	kitchenPanes.add(new KitchenPane(kitchen.getName(), kitchen.getIngredients(), kitchen.getDietaryRestrictions(), kitchen.getAllergies()));
@@ -1573,7 +1617,7 @@ public class Controller2 extends AnchorPane implements Initializable {
         ingredientsAccordion.getPanes().clear();
         ingredientsAccordion.getPanes().addAll(kitchenPanes);
         ingredientsAccordion.setExpandedPane(kitchenPanes.get(0));
-        //_currentKitchenPane = ingredientsAccordion.getExpandedPane();
+        _currentKitchenPane = kitchenPanes.get(0);
 	}
     
     /**
@@ -1612,10 +1656,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		this.expandedProperty().addListener(new ChangeListener<Boolean>() {
 				@Override
 				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-					if (arg2) 
-						_currentKitchenPane = _thisPane;
-					else 
-						_currentKitchenPane = null;
+					if (arg2) _currentKitchenPane = _thisPane;
 				}
     		});
     	}
