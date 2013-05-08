@@ -32,7 +32,6 @@ public class GUI2Frame extends JFrame {
 	
 	public GUI2Frame(Client client, Account account, final Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines) {
 		super("Cooking with Friends!");
-		System.out.println("CONSTRUCTING GUI2FRAME");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -42,15 +41,13 @@ public class GUI2Frame extends JFrame {
 				_client.close();
 		    }
 		});
-		
-		this.setSize(1024, 768);
-    	this.setVisible(true);
-    	
+			
     	_panel = new JFXPanel();
-    	this.add(_panel);
-    	this.setSize(1024, 768);
-    	this.setVisible(true);
     	_panel.setPreferredSize(new java.awt.Dimension(1024, 768));
+    	
+    	this.add(_panel);
+    	this.setVisible(true);
+    	this.pack();
     	
     	_client = client;
     	_account = account;   	
@@ -132,7 +129,7 @@ public class GUI2Frame extends JFrame {
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    			_controller.populateSearchIngredients();
+    			_controller.refreshSearchAccordion();
     		}
 		});
 	}
