@@ -12,18 +12,18 @@
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="650.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.RecipeController">
   <children>
     <Label fx:id="titleLabel" layoutX="33.0" layoutY="15.0" prefHeight="52.0" prefWidth="250.0" styleClass="sectionHeader" text="Recipe Title" wrapText="true" />
-    <Pane layoutX="60.0" layoutY="76.0" prefHeight="148.0" prefWidth="209.0" styleClass="section">
+    <Pane layoutX="34.0" layoutY="76.0" prefHeight="148.0" prefWidth="209.0" styleClass="section">
       <children>
         <ImageView fx:id="recipeImage" fitHeight="120.0" fitWidth="180.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="false" styleClass="recipeThumbnail" />
       </children>
     </Pane>
-    <Pane layoutX="325.0" layoutY="52.0" prefHeight="425.0" prefWidth="290.0" styleClass="section">
+    <Pane layoutX="283.0" layoutY="52.0" prefHeight="425.0" prefWidth="332.0" styleClass="section">
       <children>
-        <ListView fx:id="ingredientsList" layoutX="12.0" layoutY="14.0" mouseTransparent="false" orientation="VERTICAL" prefHeight="397.0" prefWidth="263.0" />
+        <ListView fx:id="ingredientsList" layoutX="12.0" layoutY="14.0" mouseTransparent="false" orientation="VERTICAL" prefHeight="397.0" prefWidth="306.0" />
       </children>
     </Pane>
-    <Label id="titleLabel" layoutX="325.0" layoutY="28.0" styleClass="sectionHeader" text="Ingredients" />
-    <Pane layoutX="33.0" layoutY="277.0" prefHeight="200.0" prefWidth="263.0" styleClass="section">
+    <Label id="titleLabel" layoutX="283.0" layoutY="28.0" styleClass="sectionHeader" text="Ingredients" />
+    <Pane layoutX="34.0" layoutY="277.0" prefHeight="200.0" prefWidth="209.0" styleClass="section">
       <children>
         <Label fx:id="servingsHeader" layoutX="14.0" layoutY="14.0" styleClass="infoHeader" text="Servings" />
         <Label fx:id="prepTimeHeader" layoutX="14.0" layoutY="61.0" styleClass="infoHeader" text="Prep Time" />
@@ -34,7 +34,7 @@
       </children>
     </Pane>
     <Label id="" layoutX="33.0" layoutY="253.0" styleClass="sectionHeader" text="Details" />
-    <Pane layoutX="151.0" layoutY="510.0" prefHeight="40.0" prefWidth="349.0" styleClass="smallBackground">
+    <Pane layoutX="165.0" layoutY="510.0" prefHeight="40.0" prefWidth="320.0" styleClass="smallBackground">
       <children>
         <ComboBox fx:id="chooseKitchenBox" cache="false" disable="false" editable="false" focusTraversable="true" layoutX="14.0" layoutY="9.0" mouseTransparent="false" pickOnBounds="false" prefWidth="200.0" promptText="Choose Kitchen" visible="true">
           <items>
@@ -45,7 +45,7 @@
             </FXCollections>
           </items>
         </ComboBox>
-        <Button layoutX="258.0" layoutY="7.0" mnemonicParsing="false" onAction="#addRecipeListener" text="Add Recipe" />
+        <Button layoutX="229.0" layoutY="7.0" mnemonicParsing="false" onAction="#addRecipeListener" text="Add Recipe" />
       </children>
     </Pane>
   </children>

@@ -163,9 +163,14 @@ public class DBHelper implements DBHelperInterface{
 	/**
 	 * Changes the username to generate a random password.
 	 * @param username
+	 * @return Password to return so client can display it.
 	 */
-	public void changePassword(String username, String password){
-		storeUsernamePassword(username, password);
+	public String changePassword(String username){
+		System.out.println("IN DB CHANGE PASSWORD!!!!");
+		String pass = generateRandomPassword();
+		System.out.println("CHANGING TO: " + pass);
+		storeUsernamePassword(username, pass);
+		return pass;
 	}
 	
 	public void storeUsernamePassword(String username, String password){
@@ -390,4 +395,23 @@ public class DBHelper implements DBHelperInterface{
 		//Imports all of this so it doesn't conflict with the other Base64 import above.
         return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
     }
+	
+	//From: http://javapassgen.blogspot.com/
+    public static String generateRandomPassword() {
+    	int len=8;
+    	char[] pwd = new char[len];
+    	int c = 'A';
+    	int rand = 0;
+    	for (int i=0; i < 8; i++){
+	    	rand = (int)(Math.random() * 3);
+	    	switch(rand) {
+	    	case 0: c = '0' + (int)(Math.random() * 10); break;
+	    	case 1: c = 'a' + (int)(Math.random() * 26); break;
+	    	case 2: c = 'A' + (int)(Math.random() * 26); break;
+	    	}
+	    	pwd[i] = (char)c;
+    	}
+    	return new String(pwd);
+    }
+    
 }
