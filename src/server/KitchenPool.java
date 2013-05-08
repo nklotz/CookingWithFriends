@@ -3,6 +3,8 @@ package server;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javafx.event.Event;
+
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
 import Database.DBHelper;
@@ -291,6 +293,7 @@ public class KitchenPool {
 				k.removeActiveUser(request.getKitchenUserID());
 				break;
 		  	case 5: //add event to kitchen
+		  		k.removeEvent(new KitchenEvent(request.getEvent().getName(), null, null, k));
 		  		k.addEvent(request.getEvent());
 		  		break;
 		  	case 6: //remove event from kitchen

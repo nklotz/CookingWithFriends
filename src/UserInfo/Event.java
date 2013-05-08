@@ -83,7 +83,7 @@ public class Event implements Serializable {
 	 * Sets this event's date.
 	 * @param date String date to set.
 	 */
-	public void setDate(String date){
+	public void setDate(Date date){
 		_date = date;
 	}
 	
@@ -91,7 +91,7 @@ public class Event implements Serializable {
 	 * Returns this event's date.
 	 * @return String date to return.
 	 */
-	public String getDate(){
+	public Date getDate(){
 		return _date;
 	}
 	

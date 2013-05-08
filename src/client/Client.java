@@ -141,6 +141,8 @@ public class Client extends Thread {
 						
 						}
 					} else {
+						System.out.println("SHOULD DISPLAY: " + response.getErrorMessage());
+						
 						_login.displayIncorrect(response.getErrorMessage());
 					}
 					
@@ -299,6 +301,8 @@ public class Client extends Thread {
     }
     
     public void addEvent(String id, KitchenEvent event){
+    	System.out.println("We are ADDING AN EVENT");
+    	System.out.println("eeeeeee " + event.toString());
     	Request r = new Request(5);
     	r.setKitchenID(id);
     	r.setEvent(event);
@@ -408,6 +412,13 @@ public class Client extends Thread {
     	Request r = new Request(18);
     	r.setUsername(email);
     	r.setPasword(password);
+    	send(r);
+    }
+    
+    public void updatePassword(String email){
+    	System.out.println("CLIENT IN UPDATE PASSWORD.");
+    	Request r = new Request(22);
+    	r.setUsername(email);
     	send(r);
     }
     
