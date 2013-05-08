@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,23 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-
-
-import server.AutocorrectEngines;
-import API.Wrapper;
-import API.YummlyAPIWrapper;
-import Email.Sender;
-import UserInfo.Account;
-import UserInfo.Ingredient;
-import UserInfo.Invitation;
-import UserInfo.Kitchen;
-import UserInfo.KitchenEvent;
-import UserInfo.KitchenName;
-import UserInfo.Recipe;
-import client.Client;
-import eu.schudt.javafx.controls.calendar.DatePicker;
-import javafx.scene.input.DragEvent;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -60,7 +44,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -72,7 +55,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -88,10 +70,13 @@ import API.YummlyAPIWrapper;
 import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Ingredient;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
+import eu.schudt.javafx.controls.calendar.DatePicker;
 
 public class Controller2 extends AnchorPane implements Initializable {
 
@@ -172,6 +157,13 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Button postMessageButton;
     @FXML private Tab eventTab;
     @FXML private Tab newEventTab;
+    @FXML private GridPane timeDateGrid;
+    @FXML private Text eventTime;
+    @FXML private Text eventDate;
+    @FXML private Button deleteEventButton;
+    @FXML private Button editEventButton;
+    @FXML private Label addIngredientActionLabel;
+    @FXML private Label shoppingListActionLabel;
     //Date Picker
     private DatePicker eventDatePicker;
     
@@ -243,6 +235,11 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert postMessageButton != null : "fx:id=\"postMessageButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert eventTab != null : "fx:id=\"eventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert newEventTab != null : "fx:id=\"newEventTab\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert timeDateGrid != null : "fx:id=\"timeDateGrid\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventTime != null : "fx:id=\"eventTime\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventDate != null : "fx:id=\"eventDate\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert deleteEventButton != null : "fx:id=\"deleteEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editEventButton != null : "fx:id=\"editEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         // Initialize the DatePicker for event
         // Date Picker comes from "http://edu.makery.ch/blog/2013/01/07/javafx-date-picker/" Thanks!
         eventDatePicker = new DatePicker(Locale.ENGLISH);
@@ -353,6 +350,14 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 */
 	
 	public void EditOrSaveAccountChanges(){
+		if(locationField.getText().length()>Utils.MAX_FIELD_LEN || 
+				nameField.getText().length()>Utils.MAX_FIELD_LEN){
+			changePassErrorLabel.setText("You may not enter a field" +
+					" greater than " + Utils.MAX_FIELD_LEN + " chars.");
+			changePassErrorLabel.setVisible(true);
+			return;
+		}
+		
 		System.out.println(profileEditor.getText());
 		if(profileEditor.getText().equals("Edit Profile")){
 			nameField.setVisible(true);
@@ -568,7 +573,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			System.out.println("SAVE PASS");
 			String old = oldPassField.getText();
 			if(old.length()>Utils.MAX_FIELD_LEN){
-				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setText("You may not enter a password greater than " + Utils.MAX_FIELD_LEN + " chars.");
 				changePassErrorLabel.setVisible(true);
 			}
 			if(old!=null&&old.trim().length()!=0){
@@ -588,7 +593,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			String new1 = newPassField1.getText();
 			String new2 = newPassField2.getText();
 			if(new1.length()>Utils.MAX_FIELD_LEN || new2.length()>Utils.MAX_FIELD_LEN){
-				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setText("You may not enter a password greater than " + Utils.MAX_FIELD_LEN + " chars.");
 				changePassErrorLabel.setVisible(true);
 			}
 			if(matches){
@@ -650,9 +655,14 @@ public class Controller2 extends AnchorPane implements Initializable {
     }
     
     public void addIngredientListener(Event event) {
+    	addIngredientActionLabel.setVisible(false);
     	disableRemoves(fridgeList);
     	removeFridgeIngredient.setSelected(false);
     	String name = newIngredient.getValue();
+    	if(name.length()>Utils.MAX_COMBO_LEN){
+    		addIngredientActionLabel.setVisible(true);
+    		return;
+    	}
 	    if(name!=null){
     		if(name.trim().length()!=0){
 	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
@@ -662,7 +672,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	        	populateSearchIngredients();
 	    	}
 	    }
-    	newIngredient.setValue(null);
+    	//newIngredient.setValue(null);
     	newIngredient.getItems().clear();
     	
     }
@@ -688,6 +698,10 @@ public class Controller2 extends AnchorPane implements Initializable {
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getValue();
+    	if(name.length()>Utils.MAX_COMBO_LEN){
+    		shoppingListActionLabel.setVisible(true);
+    		return;
+    	}
     	if(name!=null){
     		if(name.trim().length()!=0){
     			_account.addShoppingIngredient(new Ingredient(name.toLowerCase().trim()));
@@ -1020,7 +1034,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     
     public void newKitchenCreateButtonListener(){
     	String name = newKitchenNameField.getText();
-    	
+    	if(name.length()>Utils.MAX_FIELD_LEN){
+    		newKitchenActionText.setText("Name too long.");
+    		newKitchenActionText.setVisible(true);
+    		return;
+    	}
     	if (name.length() == 0){
     		newKitchenActionText.setText("Please enter a name.");
     		newKitchenActionText.setVisible(true);
@@ -1170,10 +1188,18 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
+    	if(name.length()>Utils.MAX_FIELD_LEN){
+    		newEventActionText.setText("Name too long.");
+    		newEventActionText.setVisible(true);
+    		return;
+    	}
     	System.out.println("name: " + name);
     	Date date = eventDatePicker.getSelectedDate();
-    	Date now = new Date();
-    	boolean validDate = date.after(now);
+    	//getting yesterday
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.DATE, -1);
+    	Date yesterday = cal.getTime();
+    	boolean validDate = date.after(yesterday);
     	System.out.println("date: " + date.toString());
     	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
     	System.out.println("time: " + time);

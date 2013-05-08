@@ -202,6 +202,8 @@
                     <Button layoutX="68.0" layoutY="257.0" mnemonicParsing="false" onAction="#goToRecipeTab" text="Search for some!" />
                   </children>
                 </Pane>
+                <Label id="addIngredientActionLagel" fx:id="addIngredientActionLabel" layoutX="138.0" layoutY="93.0" prefWidth="172.0" text="Name too long." textFill="WHITE" visible="false" />
+                <Label fx:id="shoppingListActionLabel" layoutX="866.0" layoutY="91.0" prefWidth="114.0" text="Name too long." textFill="WHITE" visible="false" />
               </children>
             </AnchorPane>
           </content>
@@ -237,7 +239,11 @@
                     <Label fx:id="newKitchenLabel" layoutX="0.0" layoutY="3.0" text="Name:" textFill="WHITE" visible="true" />
                     <Button fx:id="newKitchenCreateButton" layoutX="182.0" layoutY="33.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
                     <Button fx:id="newKitchenCancelButton" layoutX="106.0" layoutY="33.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
-                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false" />
+                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false">
+                      <font>
+                        <Font size="9.0" />
+                      </font>
+                    </Text>
                   </children>
                 </AnchorPane>
                 <AnchorPane fx:id="kitchenJunk" disable="false" layoutX="34.0" layoutY="76.0" prefHeight="642.0" prefWidth="977.826416015625">
