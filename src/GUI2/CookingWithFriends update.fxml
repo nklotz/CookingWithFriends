@@ -17,7 +17,7 @@
   <children>
     <TabPane fx:id="tabPane" disable="false" focusTraversable="true" layoutX="0.0" layoutY="0.0" prefHeight="768.0" prefWidth="1024.0" rotateGraphic="false" side="TOP" tabClosingPolicy="UNAVAILABLE">
       <tabs>
-        <Tab text="Profile">
+        <Tab fx:id="profileTab" text="Profile">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body">
               <children>
