@@ -1,8 +1,8 @@
 package GUI2;
 
 public class Utils {
-	 public static final int MAX_FIELD_LEN = 10;
-	 public static final int MAX_COMBO_LEN = 10;
+	 public static final int MAX_FIELD_LEN = 100;
+	 public static final int MAX_COMBO_LEN = 100;
     /**
      * Returns true if the password is of appropriate length.
      * @param password

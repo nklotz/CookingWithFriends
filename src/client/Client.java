@@ -301,6 +301,8 @@ public class Client extends Thread {
     }
     
     public void addEvent(String id, KitchenEvent event){
+    	System.out.println("We are ADDING AN EVENT");
+    	System.out.println("eeeeeee " + event.toString());
     	Request r = new Request(5);
     	r.setKitchenID(id);
     	r.setEvent(event);
