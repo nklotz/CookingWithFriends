@@ -109,7 +109,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private TextField newKitchenNameField;
     @FXML private AnchorPane newKitchenPane;
     @FXML private FlowPane recipeFlow, kitchenRecipes, eventRecipes;
-    @FXML private Tab recipeSearchTab, homeTab;
+    @FXML private Tab recipeSearchTab, homeTab, profileTab;
     @FXML private CheckBox removeFridgeIngredient;
     @FXML private AnchorPane removeIngredientsButton;
     @FXML private CheckBox removeShoppingIngredient;
@@ -252,7 +252,12 @@ public class Controller2 extends AnchorPane implements Initializable {
     	populateSearchIngredients();
 
     	// Select
-    	tabPane.getSelectionModel().select(homeTab);
+    	if(_account.getAddress().equals("") || _account.getName().equals("")){
+    		tabPane.getSelectionModel().select(profileTab);
+    	}
+    	else{
+    		tabPane.getSelectionModel().select(homeTab);
+    	}
 	}
 	
 	public void initializeComboBoxes(){
@@ -1090,7 +1095,6 @@ public class Controller2 extends AnchorPane implements Initializable {
     }
 	
 	@FXML void hoverIngredient(DragEvent event) {
-		System.out.println("HVERRRR");
 		Dragboard db = event.getDragboard();
         if (db.hasString()) {
             event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -1106,8 +1110,7 @@ public class Controller2 extends AnchorPane implements Initializable {
             success = true;
             _client.addIngredient(_client.getCurrentKitchen().getID(), new Ingredient(db.getString()));
         }
-        event.setDropCompleted(success);
-        event.consume();
+
 	}
 	
 	@FXML void acceptRecipe(DragEvent event){
@@ -1123,8 +1126,7 @@ public class Controller2 extends AnchorPane implements Initializable {
             e.addRecipe(r);
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
-        event.setDropCompleted(success);
-        event.consume();
+
 	}
 	
 	public void populateUserIngredientsInKitchen(){
