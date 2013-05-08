@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.ProfileController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="610.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.ProfileController">
   <children>
-    <Pane layoutX="33.0" layoutY="49.0" prefHeight="377.0" prefWidth="535.0" styleClass="section">
+    <Pane layoutX="38.0" layoutY="49.0" prefHeight="377.0" prefWidth="535.0" styleClass="section">
       <children>
         <ListView id="allergiesList" focusTraversable="false" layoutX="288.0" layoutY="142.0" prefHeight="121.0" prefWidth="233.0" />
         <Group id="Group" layoutX="19.0" layoutY="19.0">
@@ -58,7 +58,7 @@
         <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="142.0" prefHeight="121.0" prefWidth="232.99997792968497" />
       </children>
     </Pane>
-    <Label layoutX="30.0" layoutY="24.0" styleClass="sectionHeader" text="My Profile">
+    <Label layoutX="35.0" layoutY="24.0" styleClass="sectionHeader" text="My Profile">
       <stylesheets>
         <URL value="@style.css" />
       </stylesheets>

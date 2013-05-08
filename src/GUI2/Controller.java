@@ -501,6 +501,8 @@ public class Controller extends AnchorPane implements Initializable {
 	        popup.setAutoFix(true);
 	        popup.setAutoHide(true);
 	        popup.show(root, 0, 0);
+	        popup.sizeToScene();
+	        popup.centerOnScreen();
 	      //  popup.centerOnScreen();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

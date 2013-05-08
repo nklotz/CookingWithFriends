@@ -3,6 +3,7 @@ package GUI2;
 import UserInfo.Recipe;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,7 +34,7 @@ public class RecipeBox extends VBox {
 		
 		if (recipe.hasThumbnail()) {
 			Image recipeThumbnail = new Image(recipe.getThumbnailUrl(), 100, 0, true, true, true); 
-			if (recipeThumbnail.getHeight() < 60) {
+			if (recipeThumbnail.getHeight() < 50) {
 				ImageView imageView = new ImageView(recipeThumbnail);
 				imageView.getStyleClass().add("recipeThumbnail");
 				this.getChildren().add(imageView);
@@ -46,10 +47,14 @@ public class RecipeBox extends VBox {
 		recipeLabel.setWrapText(true);
 		this.getChildren().add(recipeLabel);
 		
+//		Button removeButton = new Button("X");
+//		this.getChildren()
+//		this.getChildren().add()
+			
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				_controller.createPopup(_recipe);					
+				_controller.createPopup(_recipe);
 			}
 		});
 	}

@@ -8,9 +8,9 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="386.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.InviteChefController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="432.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.InviteChefController">
   <children>
-    <Pane layoutX="19.0" layoutY="129.0" prefHeight="96.0" prefWidth="348.0" styleClass="section">
+    <Pane layoutX="42.0" layoutY="131.0" prefHeight="96.0" prefWidth="348.0" styleClass="section">
       <children>
         <TextField id="kitchenAddChefField" fx:id="chefName" disable="false" layoutX="14.0" layoutY="31.0" onKeyPressed="#hideInvalidEmail" onKeyReleased="#hideInvalidEmail" onKeyTyped="#hideInvalidEmail" prefHeight="35.0" prefWidth="314.0" promptText="Enter chef's email!" />
         <Label id="invalidEmailError" layoutX="57.0" layoutY="73.0" text="Please provide a valid e-mail!" textFill="RED" visible="false">
@@ -25,13 +25,13 @@
         </Label>
       </children>
     </Pane>
-    <Label layoutX="21.0" layoutY="106.0" styleClass="sectionHeader" text="Invite a Chef" />
-    <Pane layoutX="134.0" layoutY="240.0" prefHeight="42.0" prefWidth="121.0" styleClass="smallBackground">
+    <Label layoutX="44.0" layoutY="108.0" styleClass="sectionHeader" text="Invite a Chef" />
+    <Pane layoutX="157.0" layoutY="242.0" prefHeight="42.0" prefWidth="121.0" styleClass="smallBackground">
       <children>
         <Button id="kitchenChefInviteButton" layoutX="15.0" layoutY="8.0" mnemonicParsing="false" onAction="#checkAndSendEmail" prefHeight="26.3125" prefWidth="90.632568359375" text="Send Invite" />
       </children>
     </Pane>
-    <Pane fx:id="inviteToJoinPane" layoutX="16.0" layoutY="14.0" prefHeight="63.0" prefWidth="355.0" styleClass="section" visible="false">
+    <Pane fx:id="inviteToJoinPane" layoutX="39.0" layoutY="16.0" prefHeight="63.0" prefWidth="355.0" styleClass="section" visible="false">
       <children>
         <Label layoutX="7.0" layoutY="3.0" prefHeight="58.0000084472631" prefWidth="295.0" text="The requested email is not an Cooking with Friends user. Would you like to invite them?" visible="true" wrapText="true" />
         <Button fx:id="yes" layoutX="304.0" layoutY="6.0" mnemonicParsing="false" onAction="#yesButtonListener" text="Yes" />
