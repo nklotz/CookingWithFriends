@@ -239,8 +239,8 @@
                   <children>
                     <TextField fx:id="newKitchenNameField" layoutX="47.0" layoutY="0.0" prefWidth="199.9998779296875" promptText="Enter Kitchen Name Here" visible="true" />
                     <Label fx:id="newKitchenLabel" layoutX="0.0" layoutY="3.0" text="Name:" textFill="WHITE" visible="true" />
-                    <Button fx:id="newKitchenCreateButton" layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
-                    <Button fx:id="newKitchenCancelButton" layoutX="108.0" layoutY="27.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
+                    <Button fx:id="newKitchenCreateButton" layoutX="182.0" layoutY="33.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
+                    <Button fx:id="newKitchenCancelButton" layoutX="106.0" layoutY="33.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
                     <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false" />
                   </children>
                 </AnchorPane>
@@ -457,7 +457,7 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab fx:id="recipeSearchTab" text="Recipe Search">
+        <Tab fx:id="recipeSearchTab" onSelectionChanged="#searchSelectionChanged" text="Recipe Search">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="681.0" styleClass="body">
               <children>

@@ -1475,9 +1475,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 	}
 
-    @FXML void goToRecipeTab(ActionEvent event) {
-    	//tabPane.getSelectionModel().select(recipeSearchTab);
-    	//TODO: THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @FXML void goToRecipeTab(MouseEvent event) {
+    	System.out.println("Going to recipes tab");
+    	tabPane.getSelectionModel().select(recipeSearchTab);
     }
     
     
@@ -1574,6 +1574,25 @@ public class Controller2 extends AnchorPane implements Initializable {
         ingredientsAccordion.getPanes().addAll(kitchenPanes);
         ingredientsAccordion.setExpandedPane(kitchenPanes.get(0));
         //_currentKitchenPane = ingredientsAccordion.getExpandedPane();
+	}
+    
+    /**
+     * Called when the recipe search pane is selected/deselected.
+     * If unselected, the recipe search tab is refreshed.
+     * @param event
+     */
+    @FXML
+    public void searchSelectionChanged(Event event) {
+    	if (!recipeSearchTab.isSelected())
+    		populateSearchIngredients();
+    }
+    
+    /**
+     * Called when a kitchen is passed back to client -- doesn't update search ingredient list.
+     */
+    public void refreshSearchAccordion() {
+    	if (!recipeSearchTab.isSelected())
+    		populateSearchIngredients();		
 	}
     
     private class KitchenPane extends TitledPane {
