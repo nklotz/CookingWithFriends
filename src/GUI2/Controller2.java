@@ -309,6 +309,11 @@ public class Controller2 extends AnchorPane implements Initializable {
         weather.setText("How's the weather in " + _account.getAddress() + "?");
     }
 	
+	public void enablePleasantries(boolean enable){
+		welcome.setVisible(enable);
+		weather.setVisible(enable);
+	}
+	
 	/*
 	 ********************************************************** 
 	 * Profile
@@ -738,7 +743,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		noRecipesPane.setVisible(true);
     	}
     	for(Recipe r : _account.getRecipes()){
-    		recipeFlow.getChildren().add(new RecipeBox(r, this));
+    		recipeFlow.getChildren().add(new RecipeBox(r, this, _account, _client));
     	}
     	if(recipeFlow.getChildren().size()==0){
     		noRecipesPane.setVisible(true);
@@ -924,7 +929,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		kitchenRecipes.getChildren().clear();
     	//noRecipesPane.setVisible(false);
     	for(Recipe r: k.getRecipes()){
-    		kitchenRecipes.getChildren().add(new RecipeBox(r, this));
+    		kitchenRecipes.getChildren().add(new RecipeBox(r, this, k, _client));
     	}
     	if(recipeFlow.getChildren().size()==0){
     		kitchenRecipes.setVisible(true);
@@ -1502,7 +1507,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 					System.out.println("ERROR: IN GUI 2 Frame");
 					e.printStackTrace();
 				}
-    	
     		}
 		});
 	}
@@ -1604,6 +1608,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		System.out.println("user has " + invites.size() + " invitations!!!");
 		if(invites.size()==0){
 			invitationsList.setVisible(false);
+			enablePleasantries(true);
 		}
 		else{
 			for(KitchenName kn: _account.getInvitions().keySet()){
@@ -1624,17 +1629,18 @@ public class Controller2 extends AnchorPane implements Initializable {
 	public void displayInvitations(){
 		if(invitationsList.isVisible()){
 				invitationsList.setVisible(false);
+				enablePleasantries(true);
 		}
 		else{
 			if(_account.getInvitions().size()!=0){
 				invitationsList.setVisible(true);
+				enablePleasantries(false);
 				populateInvitations();
 			}
 		}
 	}
 
-    @FXML void goToRecipeTab(MouseEvent event) {
-    	System.out.println("Going to recipes tab");
+    @FXML void goToRecipeTab(ActionEvent event) {
     	tabPane.getSelectionModel().select(recipeSearchTab);
     }
     

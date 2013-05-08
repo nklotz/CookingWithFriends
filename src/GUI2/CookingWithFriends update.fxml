@@ -162,7 +162,7 @@
                   <children>
                     <ScrollPane id="ScrollPane" layoutX="16.0" layoutY="15.0" prefViewportHeight="540.0" prefViewportWidth="246.0">
                       <content>
-                        <FlowPane fx:id="recipeFlow" hgap="30.0" prefHeight="540.0" prefWidth="246.0" vgap="30.0">
+                        <FlowPane fx:id="recipeFlow" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" orientation="VERTICAL" prefHeight="540.0" prefWidth="246.0" rowValignment="TOP" vgap="30.0">
                           <padding>
                             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                           </padding>
