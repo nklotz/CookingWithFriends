@@ -295,13 +295,8 @@ public class LoginWindow extends JFrame {
     }
     
     public void displayIncorrect(String error){
-    	if (_newAcct){
-    		_actiontarget.setText("User Name unavailable; try another!");
-    		_actiontarget.setFill(Color.WHITE);
-    	} else {
     		_actiontarget.setText(error);
     		_actiontarget.setFill(Color.WHITE);
-    	}
     }
     
     public boolean isNewAccount(){
