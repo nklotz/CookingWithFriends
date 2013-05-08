@@ -343,6 +343,11 @@ public class Controller2 extends AnchorPane implements Initializable {
         weather.setText("How's the weather in " + _account.getAddress() + "?");
     }
 	
+	public void enablePleasantries(boolean enable){
+		welcome.setVisible(enable);
+		weather.setVisible(enable);
+	}
+	
 	/*
 	 ********************************************************** 
 	 * Profile
@@ -1494,6 +1499,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		System.out.println("user has " + invites.size() + " invitations!!!");
 		if(invites.size()==0){
 			invitationsList.setVisible(false);
+			enablePleasantries(true);
 		}
 		else{
 			for(KitchenName kn: _account.getInvitions().keySet()){
@@ -1514,10 +1520,12 @@ public class Controller2 extends AnchorPane implements Initializable {
 	public void displayInvitations(){
 		if(invitationsList.isVisible()){
 				invitationsList.setVisible(false);
+				enablePleasantries(true);
 		}
 		else{
 			if(_account.getInvitions().size()!=0){
 				invitationsList.setVisible(true);
+				enablePleasantries(false);
 				populateInvitations();
 			}
 		}
