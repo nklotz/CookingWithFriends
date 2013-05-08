@@ -23,6 +23,7 @@ import ClientServerRequests.StoreAccountRequest;
 import ClientServerRequests.StoreKitchenRequest;
 import ClientServerRequests.UpdateKitchenRequest;
 import Database.DBHelper;
+import Email.Sender;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
@@ -111,9 +112,9 @@ public class ClientHandler extends Thread {
 								invite(request);
 								break;
 							//CHANGE THE PASSWORD.
-							case 18:
-								changePassword(request);
-								break;
+//							case 18:
+//								changePassword(request);
+//								break;
 							//IS VALID USER NAME.	
 							case 19:
 								System.out.println("CASE 19 USER IN DATABASE");
@@ -122,6 +123,10 @@ public class ClientHandler extends Thread {
 							case 21:
 								System.out.println("IN CLIENT HANDLER 21");
 								passwordsMatch(request);
+							case 22:
+								System.out.println("CASE 22: updating password");
+								updatePassword(request);
+								break;
 								
 							default:
 								updateKitchen(request);
@@ -205,9 +210,31 @@ public class ClientHandler extends Thread {
 		}
 	}
 
-	private void changePassword(Request request){
-		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
-		_helper.changePassword(request.getUsername(), request.getPassword());
+//	private void changePassword(Request request){
+//		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
+//		_helper.changePassword(request.getUsername(), request.getPassword());
+//	}
+	
+	private void updatePassword(Request request){
+		
+		System.out.println("SERVER UPDATING PASS");
+		RequestReturn req = new RequestReturn(1);
+	    req.setCorrect(false);
+		if(_helper.inDatabase(request.getUsername())){
+			System.out.println("IS A VALID ACCOUNT");
+			String pass = _helper.changePassword(request.getUsername());
+			String message = "Your new password is: " + pass;
+			Sender.send(request.getUsername(), message);
+		    String error = "We have sent you an email containing your new password.";
+		    req.setErrorMessage(error);
+		}
+		else{
+			System.out.println("NOT A VALID ACCOUNT");
+			String error = "That is not a valid account. You must create an account.";
+			req.setErrorMessage(error);
+		}
+		send(req);
+		
 	}
 	
 	public void getKitchen(Request request){
@@ -244,7 +271,6 @@ public class ClientHandler extends Thread {
 	}
 	
 	public void userInDatabase(Request request){
-		
 		boolean inDB = _helper.inDatabase(request.getUsername());
 		System.out.println("USER IN DATABASE CLIENT HANDLER: " + inDB);
 		//If it's a unique user ie if it's not already in the data base.

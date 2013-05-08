@@ -129,10 +129,11 @@ public class LoginWindow extends JFrame{
         		}
         		if(email!=null || email.trim().length()==0){
         			if(Utils.isValidEmailStructure(email)){
-        				String pass = String.valueOf(Utils.generateRandomPassword());
-            			String message = "Your new password is: " + pass;
-            			_client.changePassword(email, pass);
-                		Sender.send(email, message);
+        				//String pass = String.valueOf(Utils.generateRandomPassword());
+        				_client.updatePassword(email);
+            			//String message = "Your new password is: " + pass;
+            			//_client.changePassword(email, pass);
+                		//Sender.send(email, message);
         			}
         			else{
         				_actiontarget.setFill(Color.WHITE);
@@ -144,8 +145,8 @@ public class LoginWindow extends JFrame{
         			_actiontarget.setFill(Color.WHITE);
             		_actiontarget.setText("You must enter a username.");
         		}
-        		_actiontarget.setFill(Color.WHITE);
-        		_actiontarget.setText("We have sent you an email with a new password.");
+        		//_actiontarget.setFill(Color.WHITE);
+        		//_actiontarget.setText("We have sent you an email with a new password.");
         	}
         });
 
@@ -302,8 +303,10 @@ public class LoginWindow extends JFrame{
     public void displayIncorrect(String error){
     	if (_newAcct){
     		_actiontarget.setText("User Name unavailable; try another!");
+    		_actiontarget.setFill(Color.WHITE);
     	} else {
     		_actiontarget.setText(error);
+    		_actiontarget.setFill(Color.WHITE);
     	}
     }
     
