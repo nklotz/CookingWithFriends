@@ -14,22 +14,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-
-import server.AutocorrectEngines;
-import API.Wrapper;
-import API.YummlyAPIWrapper;
-import Email.Sender;
-import UserInfo.Account;
-import UserInfo.Ingredient;
-import UserInfo.Invitation;
-import UserInfo.Kitchen;
-import UserInfo.KitchenEvent;
-import UserInfo.KitchenName;
-import UserInfo.Recipe;
-import client.Client;
-import eu.schudt.javafx.controls.calendar.DatePicker;
-import javafx.scene.input.DragEvent;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -42,7 +26,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -59,7 +42,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -71,7 +53,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -86,10 +67,13 @@ import API.YummlyAPIWrapper;
 import Email.Sender;
 import UserInfo.Account;
 import UserInfo.Ingredient;
+import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
+import eu.schudt.javafx.controls.calendar.DatePicker;
 
 public class Controller2 extends AnchorPane implements Initializable {
 
@@ -344,6 +328,13 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 */
 	
 	public void EditOrSaveAccountChanges(){
+		if(locationField.getText().length()>Utils.MAX_FIELD_LEN || 
+				nameField.getText().length()>Utils.MAX_FIELD_LEN){
+			changePassErrorLabel.setText("You may not enter a name or location" +
+					"greater than " + Utils.MAX_FIELD_LEN + " characters long.");
+			changePassErrorLabel.setVisible(true);
+		}
+		
 		System.out.println(profileEditor.getText());
 		if(profileEditor.getText().equals("Edit Profile")){
 			nameField.setVisible(true);
