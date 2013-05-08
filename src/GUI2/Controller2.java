@@ -1,6 +1,11 @@
 package GUI2;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +86,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
+import sun.misc.BASE64Decoder;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
 import Email.Sender;
@@ -115,7 +121,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Button newKitchenButton, newKitchenCancelButton, newKitchenCreateButton;
     @FXML private TextField newKitchenNameField;
     @FXML private AnchorPane newKitchenPane;
-    @FXML private FlowPane recipeFlow, kitchenRecipes;
+    @FXML private FlowPane recipeFlow, kitchenRecipes, eventRecipes;
     @FXML private Tab recipeSearchTab, homeTab;
     @FXML private CheckBox removeFridgeIngredient;
     @FXML private AnchorPane removeIngredientsButton;
@@ -163,7 +169,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ComboBox<String> min;
     @FXML private ComboBox<String> amPm;
     @FXML private ComboBox<String> eventSelector;
-    @FXML private CheckBox removableKitchenIngredient;
+    @FXML private CheckBox removeKitchenIngredients;
     @FXML private AnchorPane eventAnchor;
     @FXML private TextArea eventCommentDisplayField;
     @FXML private TextArea eventCommentWriteField;
@@ -885,17 +891,26 @@ public class Controller2 extends AnchorPane implements Initializable {
 		HashSet<String> toAddAll = new HashSet<String>();
 		for(Ingredient ing: map.keySet()){
 			boolean fromUser = false;
+			first = true;
 			String toDisplay = ing.getName() + " (";
 			for(String user: map.get(ing)){
-				toDisplay += " " + user;
+				if(!first){
+					toDisplay += ", ";
+				}
+				toDisplay += user.split("@")[0];
 				if(user.equals(_account.getID())){
 					fromUser = true;
 				}
+				first =false;
 			}
 			toDisplay += ")";
 			
 			
 			kitchenIngredientList.getItems().add(new KitchenIngredientBox(ing.getName(), toDisplay, fromUser));
+		}
+		
+		if(removeKitchenIngredients.isSelected()){
+			removeKitchenIngredients();
 		}
 		
 		kitchenChefList.getItems().clear();
@@ -1030,6 +1045,15 @@ public class Controller2 extends AnchorPane implements Initializable {
 		
 	}
 	
+	public void removeKitchenIngredients(){
+		for(KitchenIngredientBox s: kitchenIngredientList.getItems()){
+			if(s.isFromUser()){
+				RemoveButton rButton = s.getRemover();
+				rButton.setVisible(!rButton.isVisible());
+			}
+		}
+	}
+	
 	private class DraggableIngredient extends Text {
 		String _i;
 		DraggableIngredient _self;
@@ -1074,6 +1098,23 @@ public class Controller2 extends AnchorPane implements Initializable {
             System.out.println("Dropped: " + db.getString());
             success = true;
             _client.addIngredient(_client.getCurrentKitchen().getID(), new Ingredient(db.getString()));
+        }
+        event.setDropCompleted(success);
+        event.consume();
+	}
+	
+	@FXML void acceptRecipe(DragEvent event){
+		Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasString()) {
+            System.out.println("Dropped: " + db.getString());
+            success = true;
+            Recipe r  = getRecipeBoxFromString(db.getString()); 
+            System.out.println(r);
+            
+            KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
+            e.addRecipe(r);
+            _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
         event.setDropCompleted(success);
         event.consume();
@@ -1209,11 +1250,13 @@ public class Controller2 extends AnchorPane implements Initializable {
 
 		if(eventSelector.getValue()!=null){
 			enableEvents();
-			//populateEventMenu();
+			populateEventMenu();
 			//populateEventShoppingList();
 			//populateEventSelector();
 			displayMessages();
 		}
+		
+		
 		
 //		if(eventSelector.getValue()== null && _currentEventName !=null){
 //			System.out.println("value was null but current event is " + _currentEventName);
@@ -1268,6 +1311,22 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 		//eventSelector.setValue(null);
 		
+	}
+	
+	public void populateEventMenu(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		 
+    	if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if(k!=null){
+    			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
+    			if (e != null){
+					for (Recipe recipe : e.getMenuRecipes()){
+							resultsFlow.getChildren().add(new RecipeBox(recipe, this));
+					}
+    			}
+    		}
+    	}
 	}
 	
 	public void displayMessages(){
@@ -1707,5 +1766,37 @@ public class Controller2 extends AnchorPane implements Initializable {
 		populateInvitations();
 		
 	}
+	
+	public static String getRecipeBoxString(RecipeBox rb) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(rb);
+	        oos.close();
+		} catch (IOException e) {
+			System.out.println("ERROR: Could not make serializable object." + e.getMessage());
+		}
+		//Imports all of this so it doesn't conflict with the other Base64 import above.
+        return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
+    }
+	
+    private static Recipe getRecipeBoxFromString( String s ) {
+    	try{
+    		BASE64Decoder decoder = new BASE64Decoder();
+        	byte [] data = decoder.decodeBuffer( s );
+            ObjectInputStream ois = new ObjectInputStream( 
+                                            new ByteArrayInputStream(  data ) );
+            Recipe o  =  (Recipe) ois.readObject();
+            ois.close();
+            return o;
+    	} catch(IOException  e){
+    		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
+    		return null;
+    	} catch(ClassNotFoundException e){
+    		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
+    		return null;
+    	}
+    }
 
 }

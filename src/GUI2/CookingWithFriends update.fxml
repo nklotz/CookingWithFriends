@@ -297,8 +297,8 @@
                                 <Label layoutX="308.0" layoutY="11.0" styleClass="sectionHeader" text="Kitchen Ingredients" />
                                 <Pane layoutX="308.0" layoutY="34.0" prefHeight="526.0" prefWidth="250.655517578125" styleClass="section">
                                   <children>
-                                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="23.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="453.6999901367162" prefWidth="225.9998779296875" />
-                                    <CheckBox id="removeKitchenIngredient" fx:id="removableKitchenIngredient" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" text="Remove" />
+                                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="21.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="455.4032066894506" prefWidth="225.99977792969003" />
+                                    <CheckBox id="removeKitchenIngredient" fx:id="removeKitchenIngredients" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" onAction="#removeKitchenIngredients" text="Remove" />
                                   </children>
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
@@ -331,7 +331,7 @@
                                 <AnchorPane fx:id="eventAnchor" layoutX="7.0" layoutY="75.0" prefHeight="495.0" prefWidth="563.0">
                                   <children>
                                     <Label layoutX="6.0" layoutY="241.0" styleClass="sectionHeader" text="Message Board" />
-                                    <FlowPane layoutX="7.0" layoutY="5.0" prefHeight="230.0" prefWidth="250.655517578125" styleClass="smallBackground">
+                                    <FlowPane fx:id="eventRecipes" layoutX="7.0" layoutY="5.0" onDragExited="#acceptRecipe" onDragOver="#hoverIngredient" prefHeight="230.0" prefWidth="250.655517578125" styleClass="smallBackground">
                                       <children>
                                         <CheckBox mnemonicParsing="false" text="Remove" />
                                       </children>
