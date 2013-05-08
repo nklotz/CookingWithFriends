@@ -656,6 +656,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	    		populateUserIngredientsInKitchen();
 	        	populateUserFridge();
 	        	populateSearchIngredients();
+	        	newIngredient.getEditor().setText("");
 	    	}
 	    }
     	//newIngredient.setValue(null);
@@ -693,6 +694,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     			_account.addShoppingIngredient(new Ingredient(name.toLowerCase().trim()));
     			_client.storeAccount(_account);
     			populateShoppingList();
+    			addShoppingIngredient.getEditor().setText("");
+    			
     		}
     		addShoppingIngredient.setValue("");
     		addShoppingIngredient.getItems().clear();
@@ -1713,6 +1716,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
 
 	    	    if(suggs!=null){
+	    	    	addShoppingIngredient.show();
 		    		addShoppingIngredient.getItems().clear();
 		    		addShoppingIngredient.getItems().addAll(suggs);
 		    	}
@@ -1733,6 +1737,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
 
 	    	    if(suggs!=null){
+	    	    	newIngredient.show();
 	    	    	newIngredient.getItems().clear();
 	    	    	newIngredient.getItems().addAll(suggs);
 		    	}

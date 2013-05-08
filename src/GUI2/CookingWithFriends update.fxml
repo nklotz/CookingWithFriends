@@ -207,7 +207,7 @@
                   </children>
                 </Pane>
                 <Label id="addIngredientActionLagel" fx:id="addIngredientActionLabel" layoutX="138.0" layoutY="93.0" prefWidth="172.0" text="Name too long." textFill="WHITE" visible="false" />
-                <Label fx:id="shoppingListActionLabel" layoutX="866.0" layoutY="91.0" prefWidth="114.0" text="Name too long." textFill="WHITE" visible="false" />
+                <Label fx:id="shoppingListActionLabel" layoutX="866.0" layoutY="91.0" prefWidth="114.0" text="Name too long." textFill="WHITE" />
               </children>
             </AnchorPane>
           </content>
