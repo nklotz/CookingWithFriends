@@ -176,8 +176,19 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Text eventDate;
     @FXML private Button deleteEventButton;
     @FXML private Button editEventButton;
+    @FXML private GridPane editEventGrid;
+    @FXML private Pane editPane;
+    @FXML private Button cancelEditButton;
+    @FXML private Button saveEditButton;
+    @FXML private ComboBox<String> editHour;
+    @FXML private ComboBox<String> editMin;
+    @FXML private ComboBox<String> editAmPm;
+    @FXML private Text eventNameEdit;
+    @FXML private Text editEventActionText;
+    
     //Date Picker
     private DatePicker eventDatePicker;
+    private DatePicker editDatePicker;
     
 
     
@@ -191,6 +202,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     private KitchenPane _currentKitchenPane;
     private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
     private InviteChefController _inviteChefController;
+    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
    
     
 	@Override
@@ -252,16 +264,33 @@ public class Controller2 extends AnchorPane implements Initializable {
         assert eventDate != null : "fx:id=\"eventDate\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert deleteEventButton != null : "fx:id=\"deleteEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         assert editEventButton != null : "fx:id=\"editEventButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editEventGrid != null : "fx:id=\"editEventGrid\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editPane != null : "fx:id=\"editPane\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert cancelEditButton != null : "fx:id=\"cancelEditButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert saveEditButton != null : "fx:id=\"saveEditButton\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editHour != null : "fx:id=\"editHour\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editMin != null : "fx:id=\"editMin\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editAmPm != null : "fx:id=\"editAmPm\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert eventNameEdit != null : "fx:id=\"editNameEdit\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
+        assert editEventActionText != null : "fx:id=\"editNameEdit\" was not injected: check your FXML file 'CookingWithFriends update.fxml'.";
         // Initialize the DatePicker for event
         // Date Picker comes from "http://edu.makery.ch/blog/2013/01/07/javafx-date-picker/" Thanks!
         eventDatePicker = new DatePicker(Locale.ENGLISH);
         eventDatePicker.setPromptText("Select a date");
-        eventDatePicker.setDateFormat(new SimpleDateFormat("EEE, MMM d, yyyy"));
+        eventDatePicker.setDateFormat(new SimpleDateFormat("MM/dd/yyyy"));
         eventDatePicker.getCalendarView().todayButtonTextProperty().set("Today");
         eventDatePicker.getCalendarView().setShowWeeks(false);
         eventDatePicker.getStylesheets().add("GUI2/DatePicker.css");
+        
+        editDatePicker = new DatePicker(Locale.ENGLISH);
+        editDatePicker.setPromptText("Select a date");
+        editDatePicker.setDateFormat(new SimpleDateFormat("MM/dd/yyyy"));
+        editDatePicker.getCalendarView().todayButtonTextProperty().set("Today");
+        editDatePicker.getCalendarView().setShowWeeks(false);
+        editDatePicker.getStylesheets().add("GUI2/DatePicker.css");
         // Add DatePicker to grid
         eventGridPane.add(eventDatePicker, 2, 2);
+        editEventGrid.add(editDatePicker, 0, 0);
         
 	}
 	
@@ -291,7 +320,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     	kitchenJunk.setDisable(true);
     	
     	//event time populate
-        populateEventTime();
+        populateNewEventTime();
         populateEventSelector();
         
 	}
@@ -647,7 +676,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     }
     
-    public void addIngredientListener(Event event) {
+    public void addIngredientListener() {
+    	KitchenEvent event = getCurrentEvent();
     	disableRemoves(fridgeList);
     	removeFridgeIngredient.setSelected(false);
     	String name = newIngredient.getValue();
@@ -1102,12 +1132,20 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 * Events
 	 * ********************************************************
 	 */
-	public void populateEventTime(){
+	public void populateNewEventTime(){
+		populateEventTime(hour,min,amPm);
+	}
+	
+	public void populateEditEventTime(){
+		populateEventTime(editHour,editMin,editAmPm);
+	}
+	
+	public void populateEventTime(ComboBox<String> a, ComboBox<String> b, ComboBox<String> c){
 		System.out.println("CALLING POPULATE EVENT TIME");
-		hour.getItems().clear();
+		a.getItems().clear();
 		//hour.setItems(null);
-		hour.setValue(null);
-		hour.setButtonCell(new ListCell<String>() {						
+		a.setValue(null);
+		a.setButtonCell(new ListCell<String>() {						
 			@Override
 			protected void updateItem(String name, boolean empty) {
 				super.updateItem(name, empty);
@@ -1119,13 +1157,13 @@ public class Controller2 extends AnchorPane implements Initializable {
 				}
 			}
 		});
-		hour.getButtonCell().setText("Hr.");
-		hour.getButtonCell().setItem(null);
-		hour.getItems().addAll("1" , "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-		min.getItems().clear();
+		a.getButtonCell().setText("Hr.");
+		a.getButtonCell().setItem(null);
+		a.getItems().addAll("1" , "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+		b.getItems().clear();
 		//min.setItems(null);
-		min.setValue(null);
-		min.setButtonCell(new ListCell<String>() {						
+		b.setValue(null);
+		b.setButtonCell(new ListCell<String>() {						
 			@Override
 			protected void updateItem(String name, boolean empty) {
 				super.updateItem(name, empty);
@@ -1137,13 +1175,13 @@ public class Controller2 extends AnchorPane implements Initializable {
 				}
 			}
 		});
-		min.getButtonCell().setText("Min.");
-		min.getButtonCell().setItem(null);
-		min.getItems().addAll("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
-		amPm.getItems().clear();
+		b.getButtonCell().setText("Min.");
+		b.getButtonCell().setItem(null);
+		b.getItems().addAll("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
+		c.getItems().clear();
 		//amPm.setItems(null);
-		amPm.setValue(null);
-		amPm.setButtonCell(new ListCell<String>() {						
+		c.setValue(null);
+		c.setButtonCell(new ListCell<String>() {						
 			@Override
 			protected void updateItem(String name, boolean empty) {
 				super.updateItem(name, empty);
@@ -1155,9 +1193,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 				}
 			}
 		});
-		amPm.getButtonCell().setItem(null);
-		amPm.getButtonCell().setText("am/pm");
-		amPm.getItems().addAll("am", "pm");
+		c.getButtonCell().setItem(null);
+		c.getButtonCell().setText("am/pm");
+		c.getItems().addAll("am", "pm");
 	}
 	
 	public void createEventListener(){
@@ -1178,7 +1216,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     		newEventActionText.setVisible(false);
     		if(kitchens.get(_client.getCurrentKitchen())!=null){
     			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-    			KitchenEvent event = new KitchenEvent(name, date, k);
+    			KitchenEvent event = new KitchenEvent(name, date,time, k);
     			_currentEventName = name;
             	_client.addEvent(k.getID(), event);
             	//populateEventSelector();
@@ -1221,7 +1259,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 		System.out.println("EDITOR Val: " + eventSelector.getValue());
 		System.out.println("EDITOR t: " + eventSelector.getEditor().getText());
 
-		if(eventSelector.getValue()!=null){
+		if(eventSelector.getValue()!=null || _currentEventName != null){
+			displayEventInfo();
 			enableEvents();
 			//populateEventMenu();
 			//populateEventShoppingList();
@@ -1246,10 +1285,36 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	private void disableEvents(){
 		eventAnchor.setDisable(true);
+		editEventButton.setVisible(false);
+		deleteEventButton.setVisible(false);
+		eventDate.setVisible(false);
+		eventTime.setVisible(false);
 	}
 	
 	private void enableEvents(){
 		eventAnchor.setDisable(false);
+		editEventButton.setVisible(true);
+		deleteEventButton.setVisible(true);
+		eventDate.setVisible(true);
+		eventTime.setVisible(true);
+	}
+	
+	private KitchenEvent getCurrentEvent(){
+		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+		if(kitchens!=null){
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+			if(k!=null){
+				KitchenEvent event = k.getEvent(new KitchenEvent(_currentEventName, null, null, k));
+				return event;
+			}
+		}
+		return null;
+	}
+	
+	private void displayEventInfo(){
+		KitchenEvent event = getCurrentEvent();
+		eventDate.setText(sdf.format(event.getDate()));
+		eventTime.setText(event.getTime());
 	}
 	
 	public void eventPageSelected(){
@@ -1258,12 +1323,66 @@ public class Controller2 extends AnchorPane implements Initializable {
 		} else {
 			enableEvents();
 		}
+		editPane.setVisible(false);
 	}
 	
 	public void newEventPageSelected(){
 		newEventNameField.setText("");
 		eventDatePicker.setSelectedDate(null);
-		populateEventTime();
+		populateNewEventTime();
+	}
+	
+	public void editEventListener(){
+		disableEvents();
+		populateEditEventTime();
+		eventNameEdit.setText(getCurrentEvent().getName());
+		editPane.setVisible(true);
+		
+	}
+	
+	public void saveEventEdits(){
+    	Date date = editDatePicker.getSelectedDate();
+    	//getting yesterday
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.DATE, -1);
+    	Date yesterday = cal.getTime();
+    	boolean validDate = date.after(yesterday);
+    	System.out.println("date: " + date.toString());
+    	String time = editHour.getValue() + ":" + editMin.getValue() + " " + editAmPm.getValue();
+    	System.out.println("time: " + time);
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    	if(date!=null && validDate//TODO: what are the combo boxes' default 
+    			&& editHour.getValue()!= null && editMin.getValue() != null && editAmPm.getValue()!=null){
+    		editEventActionText.setVisible(false);
+    		if(kitchens.get(_client.getCurrentKitchen())!=null){
+    			Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    			KitchenEvent event = getCurrentEvent();
+    			event.setDate(date);
+    			event.setTime(time);
+            	_client.addEvent(k.getID(), event);
+            	//eventTabPane.getSelectionModel().select(eventTab);
+            	cancelEditListener();
+            	System.out.println(_currentEventName);
+    		}
+    		
+    	} else {
+    		editEventActionText.setText("");
+    		editEventActionText.setVisible(true);
+    		/*if (k.getEvents().contains(new KitchenEvent(name, date, kitchens.get(_client.getCurrentKitchen()))) { //TODO: This probably won't work
+    			//TODO: do this check outside this else
+    			//TODO: Finish this check
+    		} else*/ 
+    		if (!validDate){
+    			editEventActionText.setText("Can't create an event in the past.");
+    		} else if (hour.getValue() == null || min.getValue() == null || amPm.getValue() == null){
+    			editEventActionText.setText("Invalid time!");
+    		}
+    	}
+	}
+	
+	public void cancelEditListener(){
+		enableEvents();
+		editPane.setVisible(false);
 	}
 	
 	public void populateEventSelector(){

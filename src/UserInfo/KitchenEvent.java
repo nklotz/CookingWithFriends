@@ -111,18 +111,24 @@ public class KitchenEvent implements Serializable {
 		_messages.append(message);
 	}
 	
+	public String getTime() {
+		return _time;
+	}
+	
+	public void setTime(String time){
+		_time = time;
+	}
+	
 	@Override
 	public String toString() {
 		return "Event [_date=" + _date + ", _name=" + _name + ", _kitchen="
-				+ _kitchen + "_shoppingList=" + _shoppingIng + "_recipes=" + _menu+ "]";
+				+ _kitchen.getName() + "_shoppingList=" + _shoppingIng + "_recipes=" + _menu+ "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((_kitchen == null) ? 0 : _kitchen.hashCode());
 		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
 		return result;
 	}
@@ -136,11 +142,6 @@ public class KitchenEvent implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		KitchenEvent other = (KitchenEvent) obj;
-		if (_kitchen == null) {
-			if (other._kitchen != null)
-				return false;
-		} else if (!_kitchen.equals(other._kitchen))
-			return false;
 		if (_name == null) {
 			if (other._name != null)
 				return false;
@@ -148,7 +149,5 @@ public class KitchenEvent implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 	
 }
