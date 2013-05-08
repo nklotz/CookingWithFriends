@@ -136,7 +136,7 @@
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Pane layoutX="714.0" layoutY="114.0" prefHeight="569.0" prefWidth="280.0" styleClass="section">
                   <children>
-                    <ListView fx:id="shoppingList" layoutX="16.0" layoutY="69.0" prefHeight="484.00483867186995" prefWidth="246.00002207031503">
+                    <ListView fx:id="shoppingList" layoutX="16.0" layoutY="69.0" prefHeight="457.0049386718674" prefWidth="246.00002207031503">
                       <contextMenu>
                         <ContextMenu>
                           <items>
@@ -156,6 +156,8 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
+                    <Button layoutX="158.0" layoutY="534.0" mnemonicParsing="false" onAction="#wentShopping" text="I Went Shopping" />
+                    <Button layoutX="16.0" layoutY="534.0" mnemonicParsing="false" onAction="#textShoppingList" text="Text Me My List" />
                   </children>
                 </Pane>
                 <Pane layoutX="379.0" layoutY="114.0" prefHeight="569.0" prefWidth="280.0" styleClass="section">

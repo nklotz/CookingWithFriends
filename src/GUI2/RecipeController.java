@@ -79,6 +79,9 @@ public class RecipeController {
 	
     @FXML
     void addRecipeListener(ActionEvent event) {
+    	if (chooseKitchenBox.getValue().equals("Choose Kitchen")) {
+    		return;
+    	}
     	if (chooseKitchenBox.getValue().equals("My Recipes")) {
     		_account.addRecipe(_basicRecipe);
     		_controller.populateUserRecipes();
