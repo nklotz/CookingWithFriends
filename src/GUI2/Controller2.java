@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -160,6 +159,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Text eventDate;
     @FXML private Button deleteEventButton;
     @FXML private Button editEventButton;
+    @FXML private Label addIngredientActionLabel;
+    @FXML private Label shoppingListActionLabel;
     //Date Picker
     private DatePicker eventDatePicker;
     
@@ -341,9 +342,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 	public void EditOrSaveAccountChanges(){
 		if(locationField.getText().length()>Utils.MAX_FIELD_LEN || 
 				nameField.getText().length()>Utils.MAX_FIELD_LEN){
-			changePassErrorLabel.setText("You may not enter a name or location" +
-					"greater than " + Utils.MAX_FIELD_LEN + " characters long.");
+			changePassErrorLabel.setText("You may not enter a field" +
+					" greater than " + Utils.MAX_FIELD_LEN + " chars.");
 			changePassErrorLabel.setVisible(true);
+			return;
 		}
 		
 		System.out.println(profileEditor.getText());
@@ -558,7 +560,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			System.out.println("SAVE PASS");
 			String old = oldPassField.getText();
 			if(old.length()>Utils.MAX_FIELD_LEN){
-				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setText("You may not enter a password greater than " + Utils.MAX_FIELD_LEN + " chars.");
 				changePassErrorLabel.setVisible(true);
 			}
 			if(old!=null&&old.trim().length()!=0){
@@ -578,7 +580,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 			String new1 = newPassField1.getText();
 			String new2 = newPassField2.getText();
 			if(new1.length()>Utils.MAX_FIELD_LEN || new2.length()>Utils.MAX_FIELD_LEN){
-				changePassErrorLabel.setText("You may not enter a password greater than 50 chars.");
+				changePassErrorLabel.setText("You may not enter a password greater than " + Utils.MAX_FIELD_LEN + " chars.");
 				changePassErrorLabel.setVisible(true);
 			}
 			if(matches){
@@ -639,9 +641,14 @@ public class Controller2 extends AnchorPane implements Initializable {
     }
     
     public void addIngredientListener(Event event) {
+    	addIngredientActionLabel.setVisible(false);
     	disableRemoves(fridgeList);
     	removeFridgeIngredient.setSelected(false);
     	String name = newIngredient.getValue();
+    	if(name.length()>Utils.MAX_COMBO_LEN){
+    		addIngredientActionLabel.setVisible(true);
+    		return;
+    	}
 	    if(name!=null){
     		if(name.trim().length()!=0){
 	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
@@ -651,7 +658,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 	        	populateSearchIngredients();
 	    	}
 	    }
-    	newIngredient.setValue(null);
+    	//newIngredient.setValue(null);
     	newIngredient.getItems().clear();
     	
     }
@@ -677,6 +684,10 @@ public class Controller2 extends AnchorPane implements Initializable {
     	disableRemoves(shoppingList);
     	removeShoppingIngredient.setSelected(false);
     	String name = addShoppingIngredient.getValue();
+    	if(name.length()>Utils.MAX_COMBO_LEN){
+    		shoppingListActionLabel.setVisible(true);
+    		return;
+    	}
     	if(name!=null){
     		if(name.trim().length()!=0){
     			_account.addShoppingIngredient(new Ingredient(name.toLowerCase().trim()));
@@ -1003,7 +1014,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     
     public void newKitchenCreateButtonListener(){
     	String name = newKitchenNameField.getText();
-    	
+    	if(name.length()>Utils.MAX_FIELD_LEN){
+    		newKitchenActionText.setText("Name too long.");
+    		newKitchenActionText.setVisible(true);
+    		return;
+    	}
     	if (name.length() == 0){
     		newKitchenActionText.setText("Please enter a name.");
     		newKitchenActionText.setVisible(true);
@@ -1153,6 +1168,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
+    	if(name.length()>Utils.MAX_FIELD_LEN){
+    		newEventActionText.setText("Name too long.");
+    		newEventActionText.setVisible(true);
+    		return;
+    	}
     	System.out.println("name: " + name);
     	Date date = eventDatePicker.getSelectedDate();
     	//getting yesterday
