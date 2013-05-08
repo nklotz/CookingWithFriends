@@ -158,7 +158,16 @@ public class DBHelper implements DBHelperInterface{
 		}
 	}
 	
-
+	/**
+	 * Changes the username to generate a random password.
+	 * @param username
+	 * @return Password to return so client can display it.
+	 */
+	public String changePasswordGivenPassword(String username, String pass){
+		System.out.println("CHANGING TO: " + pass);
+		storeUsernamePassword(username, pass);
+		return pass;
+	}
 	
 	/**
 	 * Changes the username to generate a random password.

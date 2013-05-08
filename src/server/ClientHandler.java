@@ -210,11 +210,20 @@ public class ClientHandler extends Thread {
 		}
 	}
 
-//	private void changePassword(Request request){
-//		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
-//		_helper.changePassword(request.getUsername(), request.getPassword());
-//	}
+	/**
+	 * 
+	 * @param request
+	 */
+	private void changePassword(Request request){
+		System.out.println("CHANGING PASSWORD");
+		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
+		_helper.changePasswordGivenPassword(request.getUsername(), request.getPassword());
+	}
 	
+	/**
+	 * This is when the database generates a new password, ie when the user forgets their password.
+	 * @param request
+	 */
 	private void updatePassword(Request request){
 		
 		System.out.println("SERVER UPDATING PASS");
