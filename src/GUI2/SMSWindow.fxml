@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="432.0" styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.SMSController">
+  <children>
+    <Pane layoutX="42.0" layoutY="131.0" prefHeight="96.0" prefWidth="348.0" styleClass="section">
+      <children>
+        <TextField id="kitchenAddChefField" fx:id="sendNumber" disable="false" layoutX="14.0" layoutY="31.0" onKeyPressed="#hideInvalidNumber" onKeyReleased="#hideInvalidNumber" onKeyTyped="#hideInvalidNumber" prefHeight="35.0" prefWidth="314.0" promptText="Enter your number!" text="" />
+        <Label id="invalidEmail" fx:id="invalidPhone" layoutX="15.0" layoutY="74.0" text="Please enter a valid phone number." textFill="#cc0000" visible="false">
+          <font>
+            <Font name="System Bold" size="13.0" />
+          </font>
+        </Label>
+      </children>
+    </Pane>
+    <Label layoutX="44.0" layoutY="108.0" prefHeight="22.999908447265625" styleClass="sectionHeader" text="Text Shopping List" />
+    <Pane layoutX="173.0" layoutY="242.0" prefHeight="42.0" prefWidth="86.0" styleClass="smallBackground">
+      <children>
+        <Button id="kitchenChefInviteButton" layoutX="12.0" layoutY="8.0" mnemonicParsing="false" onAction="#sendSMS" prefHeight="26.3125" prefWidth="62.632568359375" text="Text Me" />
+      </children>
+    </Pane>
+  </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>

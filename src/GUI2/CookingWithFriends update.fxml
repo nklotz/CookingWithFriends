@@ -136,7 +136,7 @@
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
                 <Pane layoutX="714.0" layoutY="114.0" prefHeight="569.0" prefWidth="280.0" styleClass="section">
                   <children>
-                    <ListView fx:id="shoppingList" layoutX="16.0" layoutY="69.0" prefHeight="484.00483867186995" prefWidth="246.00002207031503">
+                    <ListView fx:id="shoppingList" layoutX="16.0" layoutY="69.0" prefHeight="457.0049386718674" prefWidth="246.00002207031503">
                       <contextMenu>
                         <ContextMenu>
                           <items>
@@ -156,13 +156,15 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
+                    <Button layoutX="158.0" layoutY="534.0" mnemonicParsing="false" onAction="#wentShopping" text="I Went Shopping" />
+                    <Button layoutX="16.0" layoutY="534.0" mnemonicParsing="false" onAction="#textShoppingList" text="Text Me My List" />
                   </children>
                 </Pane>
                 <Pane layoutX="379.0" layoutY="114.0" prefHeight="569.0" prefWidth="280.0" styleClass="section">
                   <children>
                     <ScrollPane id="ScrollPane" layoutX="16.0" layoutY="15.0" prefViewportHeight="540.0" prefViewportWidth="246.0">
                       <content>
-                        <FlowPane fx:id="recipeFlow" hgap="30.0" prefHeight="540.0" prefWidth="246.0" vgap="30.0">
+                        <FlowPane fx:id="recipeFlow" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" orientation="VERTICAL" prefHeight="540.0" prefWidth="246.0" rowValignment="TOP" vgap="30.0">
                           <padding>
                             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                           </padding>
@@ -203,7 +205,7 @@
                   </children>
                 </Pane>
                 <Label id="addIngredientActionLagel" fx:id="addIngredientActionLabel" layoutX="138.0" layoutY="93.0" prefWidth="172.0" text="Name too long." textFill="WHITE" visible="false" />
-                <Label fx:id="shoppingListActionLabel" layoutX="866.0" layoutY="91.0" prefWidth="114.0" text="Name too long." textFill="WHITE" />
+                <Label fx:id="shoppingListActionLabel" layoutX="866.0" layoutY="91.0" prefWidth="114.0" text="Name too long." textFill="WHITE" visible="false" />
               </children>
             </AnchorPane>
           </content>
@@ -273,7 +275,7 @@
                         <Button id="kitchenAddIngredientButton" fx:id="addRecipeToEventButton" layoutX="281.0" layoutY="318.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="91.0" text="Add to Event" visible="true" />
                         <ScrollPane id="ScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="285.0" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="358.0">
                           <content>
-                            <FlowPane id="recipeFlow" fx:id="kitchenRecipes" hgap="30.0" prefHeight="277.0" prefWidth="347.0" vgap="30.0">
+                            <FlowPane id="recipeFlow" fx:id="kitchenRecipes" hgap="30.0" onDragOver="#hoverIngredient" prefHeight="277.0" prefWidth="347.0" vgap="30.0">
                               <padding>
                                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                               </padding>
@@ -293,8 +295,8 @@
                                 <Label layoutX="308.0" layoutY="11.0" styleClass="sectionHeader" text="Kitchen Ingredients" />
                                 <Pane layoutX="308.0" layoutY="34.0" prefHeight="526.0" prefWidth="250.655517578125" styleClass="section">
                                   <children>
-                                    <ListView fx:id="kitchenIngredientList" layoutX="11.0" layoutY="14.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="468.0000389648412" prefWidth="225.9998779296875" />
-                                    <CheckBox fx:id="removeKitchenIngredient" layoutX="18.0" layoutY="496.0" mnemonicParsing="false" text="Remove" />
+                                    <ListView fx:id="kitchenIngredientList" layoutX="18.0" layoutY="21.0" onDragDropped="#acceptIngredient" onDragOver="#hoverIngredient" prefHeight="455.4032066894506" prefWidth="225.99977792969003" />
+                                    <CheckBox id="removeKitchenIngredient" fx:id="removeKitchenIngredients" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" onAction="#removeKitchenIngredients" text="Remove" />
                                   </children>
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
@@ -326,20 +328,14 @@
                                 </Pane>
                                 <AnchorPane fx:id="eventAnchor" layoutX="7.0" layoutY="76.0" prefHeight="495.0" prefWidth="563.0" visible="true">
                                   <children>
-                                    <Label layoutX="9.0" layoutY="300.0" styleClass="sectionHeader" text="Message Board" />
-                                    <FlowPane layoutX="7.0" layoutY="18.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="smallBackground">
-                                      <children>
-                                        <CheckBox mnemonicParsing="false" text="Remove" />
-                                      </children>
-                                    </FlowPane>
-                                    <Pane layoutX="7.0" layoutY="319.0" prefHeight="170.0" prefWidth="530.0" styleClass="smallBackground">
+                                    <Pane layoutX="7.0" layoutY="319.0" prefHeight="170.0" prefWidth="529.9999000000025" styleClass="section">
                                       <children>
                                         <TextArea fx:id="eventCommentDisplayField" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="89.0" prefWidth="497.0" promptText="No posts yet..." wrapText="true" />
                                         <TextArea fx:id="eventCommentWriteField" layoutX="14.0" layoutY="112.0" prefHeight="40.0" prefWidth="418.0" promptText="Write something here..." wrapText="true" />
                                         <Button fx:id="postMessageButton" layoutX="445.0" layoutY="119.0" minHeight="21.69999885559082" mnemonicParsing="false" onAction="#postMessage" prefHeight="26.10624885559082" prefWidth="66.00009999999747" text="Post" />
                                       </children>
                                     </Pane>
-                                    <Pane layoutX="281.0" layoutY="18.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="smallBackground">
+                                    <Pane layoutX="281.0" layoutY="16.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="section">
                                       <children>
                                         <Button layoutX="178.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
                                         <ComboBox editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
@@ -355,11 +351,25 @@
                                         <ListView layoutX="9.0" layoutY="68.0" prefHeight="131.0" prefWidth="229.0" />
                                       </children>
                                     </Pane>
-                                    <Label layoutX="9.0" layoutY="-5.0" styleClass="sectionHeader" text="Menu" />
-                                    <Label layoutX="282.0" layoutY="-5.0" styleClass="sectionHeader" text="Shopping List" />
+                                    <Label layoutX="9.0" layoutY="-7.0" styleClass="sectionHeader" text="Menu" />
+                                    <Label layoutX="282.0" layoutY="-7.0" styleClass="sectionHeader" text="Shopping List" />
+                                    <Pane layoutX="6.0" layoutY="15.0" prefHeight="277.0" prefWidth="261.0" styleClass="section">
+                                      <children>
+                                        <ScrollPane layoutX="11.0" layoutY="12.0" prefHeight="256.1061706542969" prefWidth="239.00009999999747">
+                                          <content>
+                                            <FlowPane fx:id="eventRecipes" hgap="20.0" onDragExited="#acceptRecipe" onDragOver="#hoverIngredient" prefHeight="253.0" prefWidth="232.0" vgap="20.0">
+                                              <padding>
+                                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                              </padding>
+                                            </FlowPane>
+                                          </content>
+                                        </ScrollPane>
+                                      </children>
+                                    </Pane>
+                                    <Label layoutX="12.0" layoutY="298.0" styleClass="sectionHeader" text="Message Board" />
                                   </children>
                                 </AnchorPane>
-                                <Pane fx:id="editPane" layoutX="106.0" layoutY="177.0" prefHeight="215.0" prefWidth="345.0" styleClass="section" visible="true">
+                                <Pane fx:id="editPane" layoutX="106.0" layoutY="177.0" prefHeight="215.0" prefWidth="345.0" styleClass="section" visible="false">
                                   <children>
                                     <GridPane fx:id="editEventGrid" layoutX="112.0" layoutY="88.0" prefHeight="53.0" prefWidth="207.0" visible="true">
                                       <children>

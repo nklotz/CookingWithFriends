@@ -24,11 +24,10 @@ import javafx.scene.text.Text;
 
 import javax.swing.JFrame;
 
-import Email.Sender;
 import GUI2.Utils;
 import client.Client;
  
-public class LoginWindow extends JFrame{
+public class LoginWindow extends JFrame {
 	
 	private Client _client;
 	private Text _actiontarget;
@@ -51,7 +50,7 @@ public class LoginWindow extends JFrame{
     	Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
-    		loadLogin();
+    			loadLogin();
     		}
     	});
     }
@@ -85,7 +84,6 @@ public class LoginWindow extends JFrame{
         
         Text scenetitle = new Text("Welcome to Cooking with Friends");
         scenetitle.setStyle(Style.LOGIN_HEADER);
-        //scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
         Text userName = new Text("E-mail:");
@@ -105,14 +103,10 @@ public class LoginWindow extends JFrame{
         
         Button btn = new Button("Sign in");
         buttonStyle(btn);
-        //btn.setStyle(Style.BUTTON);
-        //btn.getStyleClass().add("button");
         Button newAcct = new Button("Create Account");
         buttonStyle(newAcct);
-        //newAcct.setStyle(Style.BUTTON);
         Button passBtn = new Button("Forgot Password");
         buttonStyle(passBtn);
-        //passBtn.setStyle(Style.BUTTON);
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(newAcct);
@@ -301,13 +295,8 @@ public class LoginWindow extends JFrame{
     }
     
     public void displayIncorrect(String error){
-    	if (_newAcct){
-    		_actiontarget.setText("User Name unavailable; try another!");
-    		_actiontarget.setFill(Color.WHITE);
-    	} else {
     		_actiontarget.setText(error);
     		_actiontarget.setFill(Color.WHITE);
-    	}
     }
     
     public boolean isNewAccount(){

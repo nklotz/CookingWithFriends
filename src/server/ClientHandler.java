@@ -256,7 +256,7 @@ public class ClientHandler extends Thread {
 	}
 	
 	public void createNewUser(Request request){
-		_taskPool.execute(new NewAccountRequest(this, request, _helper));
+		_taskPool.execute(new NewAccountRequest(this, request, _helper, _autocorrect, _activeKitchens));
 	}
 	
 	private void createNewKitchen(Request request) {
