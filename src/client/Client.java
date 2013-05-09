@@ -11,17 +11,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import server.AutocorrectEngines;
-import API.Wrapper;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
-import GUI.GUIFrame;
 import GUI.LoginWindow;
 import GUI2.GUI2Frame;
 import UserInfo.Account;
-import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 

@@ -46,7 +46,7 @@
 }
 
 .infoHeader {
-	-fx-font: 14px Tahoma; 
+	-fx-font: 12px Tahoma; 
 	-fx-font-weight: bold; 
 	-fx-text-fill: black;
 }

@@ -314,8 +314,15 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	public void displayPleasantries(){
-        welcome.setText("Welcome " + _account.getName() + "!");
-        weather.setText("How's the weather in " + _account.getAddress() + "?");
+		if(_account.getName().trim().length()==0||_account.getName().trim().length()==0){
+			welcome.setText("Welcome! Update your profile by clicking on the profile tab.");
+			weather.setText("");
+		}
+		else{
+	        welcome.setText("Welcome " + _account.getName() + "!");
+	        weather.setText("How's the weather in " + _account.getAddress() + "?");
+		}
+
     }
 	
 	public void enablePleasantries(boolean enable){
@@ -580,8 +587,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 				if(new1!=null&&new2!=null&&new1.trim().length()!=0
 						&&new2.trim().length()!=0){
 					if(new1.equals(new2)){
+						System.out.println("SHOULD CHANGE THE PASSWORD: IN CONTROLLER");
 						_client.changePassword(_account.getID(), new1);
 						setPassFieldsVisible(false);
+						changePassErrorLabel.setText("Password change successful.");
+						changePassErrorLabel.setVisible(true);
 					}
 					else{
 						changePassErrorLabel.setText("Your new passwords do not match!");
@@ -1720,9 +1730,22 @@ public class Controller2 extends AnchorPane implements Initializable {
 		_inviteChefController.sendInviteEmails(userInDatabase);
 	}
 
-	public void inviteUserToKitchen(String toInvite){
+	/**
+	 * Returns a string message that longin controller will display.
+	 * @param toInvite
+	 * @return
+	 */
+	public String inviteUserToKitchen(String toInvite){
 		if(_client.getKitchens()!=null){
+			
 			Kitchen k = _client.getKitchens().get(_client.getCurrentKitchen());
+			if(k.getActiveUsers().contains(toInvite)){
+				return "User is already in the kitchen.";
+			}
+			if(k.getRequestedUsers().contains(toInvite)){
+				
+				return "User has already been invited.";
+			}
 			_client.addRequestedKitchenUser(toInvite, _account.getName(), _client.getCurrentKitchen());
 			
 			//instant display update
@@ -1735,8 +1758,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 					+ "wants you to join the kitchen, " + k.getName();
 			message += ". To accept this invitation, you must log in and accept.";
 			Sender.send(toInvite, message);
+			return "Message sent to user.";
 
 		}
+		return "";
 	}
 	
     private class InvitationBox extends GridPane{

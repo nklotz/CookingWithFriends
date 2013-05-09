@@ -38,6 +38,7 @@
         <Button fx:id="no" layoutX="306.0" layoutY="35.0" mnemonicParsing="false" onAction="#hideJoinInvite" text="No" />
       </children>
     </Pane>
+    <Label fx:id="inviteErrorLabel" layoutX="130.0" layoutY="316.0" prefWidth="173.0" text="User already in kitchen." textAlignment="CENTER" textFill="WHITE" visible="true" />
   </children>
   <stylesheets>
     <URL value="@style.css" />
