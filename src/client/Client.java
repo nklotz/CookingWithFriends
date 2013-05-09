@@ -47,7 +47,7 @@ public class Client extends Thread {
     private boolean _verified;
 	
     public Client(String hostname, int port) throws IOException {
-    	System.out.println("IN CLIENT CONSTRUCTOR");
+    	///System.out.println("IN CLIENT CONSTRUCTOR");
         try {
             _kkSocket = new Socket(hostname, port);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
@@ -73,7 +73,7 @@ public class Client extends Thread {
      */
     public void send(Object o){
     	try{
-    		System.out.println("SENDING: " + o);
+    		//System.out.println("SENDING: " + o);
     		_out.writeObject(o);
         	_out.flush();
         	_out.reset();
@@ -91,14 +91,14 @@ public class Client extends Thread {
     public void checkPassword(String username, String password) throws IOException{
     	Request userPass;
     	if (_login.isNewAccount()){
-    		System.out.println("NEW ACCOUNT");
+    		//System.out.println("NEW ACCOUNT");
     		userPass = new Request(13);
     	} else {
     		userPass = new Request(1);
     	}
     	userPass.setUsername(username);
     	userPass.setPasword(password);
-    	System.out.println("about to send " + username + " x " + password);
+    	//System.out.println("about to send " + username + " x " + password);
     	send(userPass);
     }
 
@@ -115,14 +115,14 @@ public class Client extends Thread {
 				//Response will have 
 				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
-				System.out.println("received  password response");
+				//System.out.println("received  password response");
 				if (response != null){
 					int type = response.getType();
-					System.out.println("got response");
+					//System.out.println("got response");
 					assert(type == 1);
 					if (response.getCorrect()){
 						if (_login.isNewAccount()){
-							System.out.println("read as new account");
+							//System.out.println("read as new account");
 							_login.dispose();
 							_login = new LoginWindow(this);
 						} else {

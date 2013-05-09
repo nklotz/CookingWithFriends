@@ -81,6 +81,9 @@ public class RecipeController {
     @FXML
     void addRecipeListener(ActionEvent event) {
     	recipeAddedLabel.setVisible(false);
+    	if(chooseKitchenBox.getValue()==null){
+    		return;
+    	}
     	if (chooseKitchenBox.getValue().equals("Choose Kitchen")) {
     		return;
     	}
