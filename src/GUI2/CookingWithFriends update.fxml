@@ -103,7 +103,7 @@
         </Tab>
         <Tab fx:id="homeTab" text="Home">
           <content>
-            <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body">
+            <AnchorPane id="Content" fx:id="removeIngredientsButton" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body" visible="true">
               <children>
                 <Group id="Group" layoutX="33.0" layoutY="80.0" scaleX="1.0" scaleY="1.0">
                   <children>
@@ -175,7 +175,6 @@
                 </Pane>
                 <Label layoutX="379.0" layoutY="93.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Recipes" />
                 <Label layoutX="714.0" layoutY="91.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Shopping List" />
-                <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
                 <Group id="Group" layoutX="343.0" layoutY="14.0">
                   <children>
                     <ImageView fx:id="envelope" fitHeight="39.999996185302734" fitWidth="57.99935805761338" layoutX="11.0" layoutY="1.0" onMouseClicked="#displayInvitations" pickOnBounds="true" preserveRatio="true" smooth="true">
@@ -188,6 +187,7 @@
                         <Font name="Verdana Bold" size="15.0" />
                       </font>
                     </Label>
+                    <ListView id="restrictionsLabel" fx:id="invitationsList" focusTraversable="false" layoutX="72.0" layoutY="1.0" prefHeight="40.0" prefWidth="588.6666259765625" visible="false" />
                   </children>
                 </Group>
                 <Line endX="-100.0" endY="-33.0" layoutX="443.0" layoutY="50.0" startX="-100.0" startY="6.0" />
@@ -337,8 +337,8 @@
                                     </Pane>
                                     <Pane layoutX="281.0" layoutY="16.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="section">
                                       <children>
-                                        <Button layoutX="178.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
-                                        <ComboBox editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
+                                        <Button fx:id="addIngToEvent" layoutX="178.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingListListener" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
+                                        <ComboBox fx:id="eventIng" editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
@@ -347,8 +347,8 @@
                                             </FXCollections>
                                           </items>
                                         </ComboBox>
-                                        <CheckBox layoutX="11.0" layoutY="13.0" mnemonicParsing="false" text="Remove" />
-                                        <ListView layoutX="9.0" layoutY="68.0" prefHeight="131.0" prefWidth="229.0" />
+                                        <CheckBox id="dIngToEvent" fx:id="removeIngFromEvent" layoutX="11.0" layoutY="13.0" mnemonicParsing="false" onAction="#removeEventShoppingIngredient" text="Remove" />
+                                        <ListView fx:id="eventShoppingList" layoutX="9.0" layoutY="66.0" prefHeight="189.0001220703125" prefWidth="229.0" />
                                       </children>
                                     </Pane>
                                     <Label layoutX="9.0" layoutY="-7.0" styleClass="sectionHeader" text="Menu" />

@@ -186,14 +186,17 @@ public class KitchenPool {
 	 * active users
 	 */
 	public void addNewKitchen(Kitchen kitchen){
-		System.out.println("add new kitchen!!");
+		System.out.println("add newly created kitchen to pool!!!");
+		
 		_idToKitchen.put(kitchen.getID(), kitchen);
-		for(String u: kitchen.getActiveUsers()){
-			if(_userToKitchens.containsKey(u)){
-				_userToKitchens.get(u).add(kitchen.getKitchenName());
+		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
+
+		for(String s: kitchen.getActiveUsers()){
+			if(_userToKitchens.containsKey(s)){
+				_userToKitchens.get(s).add(kitchen.getKitchenName());
 			}
 		}
-		_kIDtoUsers.put(kitchen.getKitchenName(),  kitchen.getActiveUsers());
+		_helper.storeKitchen(kitchen);
 	}
 	
 	/**
@@ -318,7 +321,9 @@ public class KitchenPool {
 	  			break;
 	  		case 16:
 	  			System.out.println("CASE 16");
+	  			System.out.println(k);
 	  			k.removeRequestedUser(request.getUsername());
+	  			System.out.println(k);
 	  			break;
 	  		case 17:
 	  			KitchenEvent e = k.getEvent(new KitchenEvent(request.getEventName(), null, k));

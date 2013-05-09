@@ -142,5 +142,14 @@ public class GUI2Frame extends JFrame {
     		}
 		});
 	}
+
+	public void passNewKitchen(final Kitchen k) {
+		Platform.runLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			_controller.addNewKitchenToAccount(k);
+    		}
+		});
+	}
 	
 }
