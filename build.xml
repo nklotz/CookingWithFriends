@@ -79,24 +79,4 @@
     <delete dir="${app.derived}"/>
   </target>
 
-  <target name="system_test" depends="compile,jar">
-    <exec executable="python">
-	    <arg value="/course/cs032/bin/tester.py"/>
-      <arg value="-t10.0"/>
-      <arg value="-aTime:"/>
-      <arg value="/course/cs032/data/suites/bacon-student.xml"/>
-      <arg value="bin/bacon"/>
-    </exec>
-  </target>
-
-  <target name="system_test_eddie" depends="compile,jar">
-    <exec executable="python">
-	    <arg value="/course/cs032/bin/tester.py"/>
-      <arg value="-t120.0"/>
-      <arg value="-aTime:"/>
-      <arg value="bacon-eddie.xml"/>
-      <arg value="bin/bacon"/>
-    </exec>
-  </target>
-
 </project>

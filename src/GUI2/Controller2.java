@@ -81,7 +81,7 @@ import UserInfo.Recipe;
 import client.Client;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 
-public class Controller2 extends AnchorPane implements Initializable {
+public class Controller2 implements Initializable {
 
     @FXML private ResourceBundle resources;
     @FXML private URL location;

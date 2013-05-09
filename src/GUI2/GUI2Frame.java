@@ -37,7 +37,6 @@ public class GUI2Frame extends JFrame {
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	System.out.println("CLOSEEEINGING WINDOWNNNNNNNNNN");
 				_client.close();
 		    }
 		});
@@ -59,17 +58,17 @@ public class GUI2Frame extends JFrame {
     		@Override
     		public void run() {
 				try {
-					URL location = getClass().getResource("CookingWithFriends update.fxml");
+					URL location = this.getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					fxmlLoader.setLocation(location);
 					fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-					Parent p = (Parent) fxmlLoader.load(location.openStream());
+					Parent p = (Parent) fxmlLoader.load();
 			        _controller = (Controller2) fxmlLoader.getController();
 			        Scene scene = new Scene(p);
 			        _controller.setUp(_client, _account, _kitchens, _engines);
 			        _panel.setScene(scene);
 				} catch (IOException e) {
-					System.out.println("ERROR: IN GUI 2 Frame");
+					System.out.println("ERROR: Failed to create javafx panel.");
 					e.printStackTrace();
 				}
     	
@@ -78,7 +77,6 @@ public class GUI2Frame extends JFrame {
 	}
 	
 	public void sendEmail(final boolean userInDatabase){
-		System.out.println("CALLED SEND EMAIL");
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
@@ -89,7 +87,6 @@ public class GUI2Frame extends JFrame {
 	}
 	
 	public void updateKitchen(){
-		System.out.println("CALLED UPDATE KITCHEN");
 		Platform.runLater(new Runnable() {
     		@Override
     		public void run() {
