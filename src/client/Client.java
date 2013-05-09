@@ -164,6 +164,7 @@ public class Client extends Thread {
 							_kitchenNames.add(k.getKitchenName().getName());
 							_gui.updateKitchenDropDown();
 							_gui.refreshSearchAccordian();
+							System.out.println("well I'm here");
 							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
 								System.out.println("got Kitchen: " + k.getName());
 								if(_currentKitchen != null){

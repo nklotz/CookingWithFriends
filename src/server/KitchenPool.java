@@ -297,7 +297,10 @@ public class KitchenPool {
 		  		k.addEvent(request.getEvent());
 		  		break;
 		  	case 6: //remove event from kitchen
-		  		k.removeEvent(request.getEvent());
+		  		System.out.println("well I am running it and about to remove it");
+		  		System.out.println("what the fuck is null? is it k: " + k + " ...is it request: " + request);
+		  		System.out.println("...is it request event: " + request.getEvent());
+		  		k.removeEvent(new KitchenEvent(request.getEvent().getName(), null, null, k));
 		  		break;
 		  	case 7: //add recipe to kitchen
 		  		k.addRecipe(request.getRecipe());
