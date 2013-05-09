@@ -21,27 +21,19 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="708.0000999999975" prefWidth="1024.0" styleClass="body">
               <children>
-                <Group id="Group" layoutX="33.0" layoutY="80.0" scaleX="1.0" scaleY="1.0" />
                 <Label layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="336.0000999999975" styleClass="pageHeader" text="Cooking With Friends" />
-                <ListView id="restrictionsLabel" focusTraversable="false" layoutX="432.0" layoutY="21.0" prefHeight="49.0" prefWidth="786.6666259765625" visible="false" />
-                <Group id="Group" layoutX="343.0" layoutY="14.0" />
-                <Pane layoutX="239.0" layoutY="141.0" prefHeight="434.0" prefWidth="546.0" styleClass="section">
+                <Pane layoutX="632.0" layoutY="119.0" prefHeight="533.0" prefWidth="308.0" styleClass="section">
                   <children>
-                    <ListView fx:id="allergiesList" focusTraversable="false" layoutX="288.0" layoutY="210.0" prefHeight="121.0" prefWidth="233.0" />
-                    <Group id="Group" layoutX="19.0" layoutY="19.0">
-                      <children>
-                        <Label id="" layoutX="0.0" layoutY="3.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:">
-                          <font>
-                            <Font size="12.0" fx:id="x1" />
-                          </font>
-                        </Label>
-                        <TextField fx:id="nameField" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
-                      </children>
-                    </Group>
-                    <Label layoutX="20.0" layoutY="185.0" text="Dietary Restrictions" />
-                    <Label layoutX="287.0" layoutY="186.0" text="Allergies" />
-                    <Button id="editProfile" fx:id="profileEditor" layoutX="14.0" layoutY="112.0" mnemonicParsing="false" onAction="#EditOrSaveAccountChanges" text="Edit Profile" textFill="WHITE" />
-                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="20.0" layoutY="339.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="21.1328125" prefWidth="232.9998779296875" promptText="Select a Restriction to add it">
+                    <ListView fx:id="allergiesList" focusTraversable="false" layoutX="39.0" layoutY="371.0" prefHeight="98.0" prefWidth="233.0" />
+                    <Label id="" layoutX="19.0" layoutY="25.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:">
+                      <font>
+                        <Font size="12.0" fx:id="x1" />
+                      </font>
+                    </Label>
+                    <TextField fx:id="nameField" layoutX="88.0" layoutY="22.0" prefWidth="200.0" visible="false" />
+                    <Label layoutX="32.0" layoutY="169.0" text="Dietary Restrictions" />
+                    <Button id="editProfile" fx:id="profileEditor" layoutX="19.0" layoutY="110.0" mnemonicParsing="false" onAction="#EditOrSaveAccountChanges" text="Edit Profile" textFill="WHITE" />
+                    <ComboBox id="newRestriction" fx:id="addRestrictionBar" editable="false" layoutX="39.0" layoutY="292.0" minHeight="15.5999755859375" onAction="#addRestrictionListListener" onInputMethodTextChanged="#restrictionComboListener" onKeyPressed="#restrictionComboListener" onKeyReleased="#restrictionComboListener" onKeyTyped="#restrictionComboListener" prefHeight="21.1328125" prefWidth="232.9998779296875" promptText="Select a Restriction to add it">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -50,8 +42,8 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <CheckBox fx:id="removeRestriction" alignment="CENTER_LEFT" allowIndeterminate="false" contentDisplay="LEFT" layoutX="20.0" layoutY="367.0" mnemonicParsing="false" onAction="#removeRestrictions" selected="false" text="Remove" textAlignment="LEFT" underline="false" />
-                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="288.0" layoutY="339.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="21.1328125" prefWidth="232.99997792968497" promptText="Select an Allergy to add it">
+                    <CheckBox fx:id="removeRestriction" alignment="CENTER_LEFT" allowIndeterminate="false" contentDisplay="LEFT" layoutX="41.0" layoutY="317.0" mnemonicParsing="false" onAction="#removeRestrictions" selected="false" text="Remove" textAlignment="LEFT" underline="false" />
+                    <ComboBox id="newRestriction" fx:id="addAllergyBar" editable="false" layoutX="38.0" layoutY="471.0" minHeight="15.5999755859375" onAction="#addAllergyListener" onInputMethodTextChanged="#ingredientComboListener" onKeyPressed="#ingredientComboListener" onKeyReleased="#ingredientComboListener" onKeyTyped="#ingredientComboListener" prefHeight="21.1328125" prefWidth="232.99997792968497" promptText="Select an Allergy to add it">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -60,50 +52,83 @@
                         </FXCollections>
                       </items>
                     </ComboBox>
-                    <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="288.0" layoutY="367.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
-                    <Group id="Group" layoutX="19.0" layoutY="51.0" visible="true">
-                      <children>
-                        <Label id="" font="$x1" layoutX="0.0" layoutY="3.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="61.99998637694807" text="Location:" />
-                        <TextField fx:id="locationField" editable="true" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
-                        <Label id="nameLabel" fx:id="locationLabel" font="$x1" layoutX="74.0" layoutY="3.0" prefWidth="191.0" text="Label" visible="true" wrapText="true" />
-                      </children>
-                    </Group>
-                    <Group id="Group" layoutX="20.0" layoutY="84.0">
-                      <children>
-                        <Label id="" font="$x1" layoutX="0.0" layoutY="1.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="43.00023051757307" text="Email:" />
-                      </children>
-                    </Group>
-                    <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="210.0" prefHeight="121.0" prefWidth="232.99997792968497" />
-                    <Button id="editProfile" fx:id="changePassButton" layoutX="14.0" layoutY="142.0" mnemonicParsing="false" onMouseClicked="#changePasswordButtonListener" text="Change Password" textFill="WHITE" />
-                    <Pane fx:id="changePassPane" layoutX="250.0" layoutY="35.0" prefHeight="121.0" prefWidth="290.0">
-                      <children>
-                        <Label id="" fx:id="oldPassLabel" layoutX="14.0" layoutY="5.0" prefHeight="18.132720947265625" prefWidth="92.99998637694807" text="Old Password:" textFill="BLACK" visible="false" />
-                        <Label id="" fx:id="newPassLabel1" layoutX="9.0" layoutY="37.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="false" />
-                        <Label id="" fx:id="newPassLabel2" layoutX="9.0" layoutY="67.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="false" />
-                        <Button id="editProfile" fx:id="savePassButton" layoutX="0.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#savePassButtonListener" text="Save" textFill="WHITE" visible="false" />
-                        <Button id="editProfile" fx:id="cancelPassButton" layoutX="58.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#cancelPassButtonListener" text="Cancel" textFill="WHITE" visible="false" />
-                        <Label fx:id="changePassErrorLabel" layoutX="125.0" layoutY="86.0" prefHeight="34.10626220703125" prefWidth="168.99997792968497" text="You must display a valid password." textFill="RED" visible="false" wrapText="true">
-                          <font>
-                            <Font size="11.0" />
-                          </font>
-                        </Label>
-                        <PasswordField fx:id="oldPassField" layoutX="110.0" layoutY="3.0" prefWidth="169.0" visible="false" />
-                        <PasswordField fx:id="newPassField1" layoutX="110.0" layoutY="35.0" prefWidth="169.0" visible="false" />
-                        <PasswordField fx:id="newPassField2" layoutX="110.0" layoutY="65.0" prefWidth="169.0" visible="false" />
-                      </children>
-                    </Pane>
-                    <Label fx:id="emailLabel" font="$x1" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="" wrapText="true" />
-                    <Label fx:id="nameLabel" font="$x1" layoutX="71.0" layoutY="22.0" prefWidth="191.0" text="Label" wrapText="true" />
+                    <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="40.0" layoutY="496.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
+                    <Label id="" font="$x1" layoutX="19.0" layoutY="55.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="61.99998637694807" text="Location:" />
+                    <TextField fx:id="locationField" editable="true" layoutX="88.0" layoutY="51.0" prefWidth="200.0" visible="false" />
+                    <Label id="nameLabel" fx:id="locationLabel" font="$x1" layoutX="93.0" layoutY="55.0" prefWidth="191.0" text="Label" visible="true" wrapText="true" />
+                    <Label id="" font="$x1" layoutX="20.0" layoutY="84.0" minHeight="13.1328125" prefHeight="13.132912499997474" prefWidth="43.0001305175756" text="Email:" />
+                    <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="39.0" layoutY="189.0" prefHeight="98.00009999999747" prefWidth="232.99997792968497" />
+                    <Button id="editProfile" fx:id="changePassButton" layoutX="115.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#changePasswordButtonListener" text="Change Password" textFill="WHITE" />
+                    <Label fx:id="nameLabel" font="$x1" layoutX="93.0" layoutY="27.0" prefWidth="191.0" text="Label" wrapText="true" />
+                    <Label layoutX="32.0" layoutY="350.0" text="Allergies" />
+                    <Label fx:id="emailLabel" layoutX="93.0" layoutY="80.0" text="Label" />
                   </children>
                 </Pane>
-                <Label layoutX="239.0" layoutY="114.0" styleClass="sectionHeader" text="My Profile">
+                <Label layoutX="629.0" layoutY="95.0" styleClass="sectionHeader" text="My Profile">
                   <stylesheets>
                     <URL value="@style.css" />
                   </stylesheets>
                 </Label>
+                <Pane layoutX="86.0" layoutY="123.0" prefHeight="525.0" prefWidth="412.0" styleClass="section">
+                  <children>
+                    <Label layoutX="0.0" layoutY="-25.0" styleClass="sectionHeader" text="About" />
+                    <Label layoutX="58.0" layoutY="14.0" prefHeight="39.0" prefWidth="302.0" text="Welcome to Cooking with Friends, the social cooking coordinater." textAlignment="CENTER" wrapText="true">
+                      <font>
+                        <Font name="System Bold Italic" size="13.0" fx:id="x2_x0" />
+                      </font>
+                    </Label>
+                    <Pane layoutX="34.0" layoutY="74.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
+                      <children>
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Home" />
+                        <Label layoutX="22.0" layoutY="36.0" text="- Store your personal ingredients" />
+                        <Label layoutX="22.0" layoutY="58.0" text="- Keep track of your favorite recipes" />
+                        <Label layoutX="22.0" layoutY="81.0" text="- Manage your shopping list" />
+                      </children>
+                    </Pane>
+                    <Pane layoutX="34.0" layoutY="223.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
+                      <children>
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Kitchens" />
+                        <Label layoutX="22.0" layoutY="37.0" prefHeight="15.1328125" prefWidth="302.0" text="- Join a kitchen with the friends you cook with" wrapText="true" />
+                        <Label layoutX="22.0" layoutY="62.0" text="- Keep track of group ingredients" />
+                        <Label layoutX="23.0" layoutY="84.0" text="- Create events with menus and shopping lists" wrapText="true" />
+                      </children>
+                    </Pane>
+                    <Pane layoutX="34.0" layoutY="367.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
+                      <children>
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Recipe Search" />
+                        <Label layoutX="22.0" layoutY="29.0" prefHeight="33.0" prefWidth="302.0" text="- Search based on any kitchen's ingredients" wrapText="true" />
+                        <Label layoutX="23.0" layoutY="59.0" prefHeight="39.0" prefWidth="287.0" text="- Add results to a kitchen or your personal recipe list" wrapText="true" />
+                      </children>
+                    </Pane>
+                  </children>
+                  <stylesheets>
+                    <URL value="file:/gpfs/main/home/jschear/course/cs032/CookingWithFriends/src/GUI2/style.css" />
+                  </stylesheets>
+                </Pane>
+                <Pane fx:id="changePassPane" layoutX="608.0" layoutY="86.0" prefHeight="184.0" prefWidth="348.0" styleClass="section" visible="false">
+                  <children>
+                    <Label id="" fx:id="oldPassLabel" layoutX="34.0" layoutY="41.0" prefHeight="20.1328125" prefWidth="92.9998863769506" text="Old Password:" textFill="BLACK" visible="true" />
+                    <Label id="" fx:id="newPassLabel1" layoutX="34.0" layoutY="72.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="true" />
+                    <Label id="" fx:id="newPassLabel2" layoutX="33.0" layoutY="102.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="true" />
+                    <Button id="editProfile" fx:id="savePassButton" layoutX="33.0" layoutY="129.0" mnemonicParsing="false" onMouseClicked="#savePassButtonListener" text="Save" textFill="WHITE" visible="true" />
+                    <Button id="editProfile" fx:id="cancelPassButton" layoutX="87.0" layoutY="129.0" mnemonicParsing="false" onMouseClicked="#cancelPassButtonListener" text="Cancel" textFill="WHITE" visible="true" />
+                    <Label fx:id="changePassErrorLabel" layoutX="158.0" layoutY="124.0" prefHeight="34.10626220703125" prefWidth="168.99997792968497" text="Your old password is incorrect." textFill="RED" visible="true" wrapText="true">
+                      <font>
+                        <Font size="11.0" />
+                      </font>
+                    </Label>
+                    <PasswordField fx:id="oldPassField" layoutX="143.0" layoutY="39.0" prefWidth="169.0" visible="true" />
+                    <PasswordField fx:id="newPassField1" layoutX="143.0" layoutY="69.0" prefWidth="169.0" visible="true" />
+                    <PasswordField fx:id="newPassField2" layoutX="143.0" layoutY="100.0" prefWidth="169.0" visible="true" />
+                    <Label layoutX="16.0" layoutY="14.0" styleClass="infoHeader" text="Change Password" />
+                  </children>
+                </Pane>
               </children>
             </AnchorPane>
           </content>
+          <tooltip>
+            <Tooltip text="Edit your Profile" />
+          </tooltip>
         </Tab>
         <Tab fx:id="homeTab" text="Home">
           <content>
@@ -213,6 +238,9 @@
               </children>
             </AnchorPane>
           </content>
+          <tooltip>
+            <Tooltip text="Store your personal ingredients, recipes, and shopping list" />
+          </tooltip>
         </Tab>
         <Tab text="Kitchens">
           <content>
@@ -523,6 +551,9 @@
               </children>
             </AnchorPane>
           </content>
+          <tooltip>
+            <Tooltip text="Pool your ingredients with friends and organize events" />
+          </tooltip>
         </Tab>
         <Tab fx:id="recipeSearchTab" onSelectionChanged="#searchSelectionChanged" text="Recipe Search">
           <content>
@@ -575,17 +606,20 @@
                 <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
                 <Pane fx:id="searchPromptPane" layoutX="412.0" layoutY="262.0" prefHeight="392.0" prefWidth="549.0">
                   <children>
-                    <Label layoutX="14.0" layoutY="14.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingrients." textFill="GREY" wrapText="true">
+                    <Label layoutX="7.0" layoutY="35.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingredients." textAlignment="CENTER" textFill="GREY" wrapText="true">
                       <font>
                         <Font name="System Italic" size="25.0" fx:id="x3" />
                       </font>
                     </Label>
-                    <Label font="$x3" layoutX="14.0" layoutY="147.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textFill="GREY" wrapText="true" />
+                    <Label font="$x3" layoutX="7.0" layoutY="168.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textAlignment="CENTER" textFill="GREY" wrapText="true" />
                   </children>
                 </Pane>
               </children>
             </AnchorPane>
           </content>
+          <tooltip>
+            <Tooltip text="Search for recipes based on one of your kitchen's ingredients" />
+          </tooltip>
         </Tab>
       </tabs>
     </TabPane>
