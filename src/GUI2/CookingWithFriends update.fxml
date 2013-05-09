@@ -74,12 +74,12 @@
                     <Label layoutX="0.0" layoutY="-25.0" styleClass="sectionHeader" text="About" />
                     <Label layoutX="58.0" layoutY="14.0" prefHeight="39.0" prefWidth="302.0" text="Welcome to Cooking with Friends, the social cooking coordinater." textAlignment="CENTER" wrapText="true">
                       <font>
-                        <Font name="System Bold Italic" size="13.0" fx:id="x2" />
+                        <Font name="System Bold Italic" size="13.0" fx:id="x2_x0" />
                       </font>
                     </Label>
                     <Pane layoutX="34.0" layoutY="74.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
                       <children>
-                        <Label font="$x2" layoutX="14.0" layoutY="14.0" text="Home" />
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Home" />
                         <Label layoutX="22.0" layoutY="36.0" text="- Store your personal ingredients" />
                         <Label layoutX="22.0" layoutY="58.0" text="- Keep track of your favorite recipes" />
                         <Label layoutX="22.0" layoutY="81.0" text="- Manage your shopping list" />
@@ -87,7 +87,7 @@
                     </Pane>
                     <Pane layoutX="34.0" layoutY="223.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
                       <children>
-                        <Label font="$x2" layoutX="14.0" layoutY="14.0" text="Kitchens" />
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Kitchens" />
                         <Label layoutX="22.0" layoutY="37.0" prefHeight="15.1328125" prefWidth="302.0" text="- Join a kitchen with the friends you cook with" wrapText="true" />
                         <Label layoutX="22.0" layoutY="62.0" text="- Keep track of group ingredients" />
                         <Label layoutX="23.0" layoutY="84.0" text="- Create events with menus and shopping lists" wrapText="true" />
@@ -95,7 +95,7 @@
                     </Pane>
                     <Pane layoutX="34.0" layoutY="367.0" prefHeight="113.0" prefWidth="345.0" styleClass="smallBackground">
                       <children>
-                        <Label font="$x2" layoutX="14.0" layoutY="14.0" text="Recipe Search" />
+                        <Label font="$x2_x0" layoutX="14.0" layoutY="14.0" text="Recipe Search" />
                         <Label layoutX="22.0" layoutY="29.0" prefHeight="33.0" prefWidth="302.0" text="- Search based on any kitchen's ingredients" wrapText="true" />
                         <Label layoutX="23.0" layoutY="59.0" prefHeight="39.0" prefWidth="287.0" text="- Add results to a kitchen or your personal recipe list" wrapText="true" />
                       </children>
@@ -606,12 +606,12 @@
                 <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
                 <Pane fx:id="searchPromptPane" layoutX="412.0" layoutY="262.0" prefHeight="392.0" prefWidth="549.0">
                   <children>
-                    <Label layoutX="14.0" layoutY="14.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingrients." textFill="GREY" wrapText="true">
+                    <Label layoutX="7.0" layoutY="35.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingredients." textAlignment="CENTER" textFill="GREY" wrapText="true">
                       <font>
                         <Font name="System Italic" size="25.0" fx:id="x3" />
                       </font>
                     </Label>
-                    <Label font="$x3" layoutX="14.0" layoutY="147.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textFill="GREY" wrapText="true" />
+                    <Label font="$x3" layoutX="7.0" layoutY="168.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textAlignment="CENTER" textFill="GREY" wrapText="true" />
                   </children>
                 </Pane>
               </children>
