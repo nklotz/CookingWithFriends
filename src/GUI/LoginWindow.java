@@ -201,7 +201,6 @@ public class LoginWindow extends JFrame {
         
         Text scenetitle = new Text("Create your Account!");
         scenetitle.setStyle(Style.LOGIN_HEADER);
-        scenetitle.setFont(Font.font("Comic Sans", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
         Text userName = new Text("Email:");

@@ -241,14 +241,14 @@
                     <Label fx:id="newKitchenLabel" layoutX="0.0" layoutY="3.0" text="Name:" textFill="WHITE" visible="true" />
                     <Button fx:id="newKitchenCreateButton" layoutX="182.0" layoutY="33.0" mnemonicParsing="false" onAction="#newKitchenCreateButtonListener" prefWidth="63.0" text="Create" visible="true" />
                     <Button fx:id="newKitchenCancelButton" layoutX="106.0" layoutY="33.0" mnemonicParsing="false" onAction="#hideNewKitchenStuff" prefWidth="63.0" text="Cancel" visible="true" />
-                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="86.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false">
+                    <Text fx:id="newKitchenActionText" fill="WHITE" layoutX="1.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuthin Yet" visible="false">
                       <font>
                         <Font size="9.0" />
                       </font>
                     </Text>
                   </children>
                 </AnchorPane>
-                <AnchorPane fx:id="kitchenJunk" disable="false" layoutX="34.0" layoutY="76.0" prefHeight="642.0" prefWidth="977.826416015625">
+                <AnchorPane fx:id="kitchenJunk" disable="false" layoutX="34.0" layoutY="80.0" prefHeight="642.0" prefWidth="977.826416015625">
                   <children>
                     <Pane layoutX="-9.0" layoutY="34.0" prefHeight="194.0" prefWidth="390.0" styleClass="section">
                       <children>
@@ -315,7 +315,7 @@
                               <children>
                                 <Pane fx:id="selectEventPanel" layoutX="18.0" layoutY="7.0" prefHeight="40.0" prefWidth="239.0" styleClass="smallBackground">
                                   <children>
-                                    <ComboBox id="" fx:id="eventSelector" editable="false" layoutX="11.0" layoutY="9.0" onAction="#loadEvent" prefHeight="21.70001220703125" prefWidth="216.0" promptText="Select Event">
+                                    <ComboBox id="" fx:id="eventSelector" editable="false" layoutX="12.0" layoutY="9.0" onAction="#loadEvent" prefHeight="21.70001220703125" prefWidth="216.0" promptText="Select Event">
                                       <items>
                                         <FXCollections fx:factory="observableArrayList">
                                           <String fx:value="Item 1" />
@@ -425,7 +425,7 @@
                                 <Text id="eventTime" fx:id="eventDate" fill="WHITE" layoutX="270.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event date&gt;" visible="false" />
                                 <Text fx:id="eventTime" fill="WHITE" layoutX="270.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event time&gt;" visible="false" />
                                 <Button id="Edit" fx:id="editEventButton" disable="false" layoutX="465.0" layoutY="9.0" mnemonicParsing="false" onAction="#editEventListener" prefWidth="91.0" text="Edit Event" />
-                                <Button fx:id="deleteEventButton" layoutX="466.0" layoutY="41.0" mnemonicParsing="false" prefWidth="91.0" text="Delete Event" />
+                                <Button fx:id="deleteEventButton" layoutX="466.0" layoutY="41.0" mnemonicParsing="false" onAction="#deleteEvent" prefWidth="91.0" text="Delete Event" />
                               </children>
                             </AnchorPane>
                           </content>

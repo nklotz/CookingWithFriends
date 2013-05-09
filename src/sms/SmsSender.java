@@ -27,10 +27,10 @@ public class SmsSender {
         smsParams.put("To", toNumber); 
         smsParams.put("From", "+12403983670");
         
-        String body = new String();
+        String body = "Your Cooking with Friends Shopping List:";
         for (Ingredient ingredient : _shoppingList) {
-        	body += ingredient.getName();
         	body += '\n';
+        	body += ingredient.getName();
         }
         smsParams.put("Body", body);
         Sms sms = smsFactory.create(smsParams);

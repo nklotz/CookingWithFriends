@@ -1,0 +1,4 @@
+#!/bin/sh
+BINDIR=`dirname $0`
+export CLASSPATH=$($BINDIR/jars lib):derived/cwfClient.jar
+$JAVA_HOME/bin/java client.Main "$@"
