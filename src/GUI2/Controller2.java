@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,8 +31,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -63,10 +61,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -1184,16 +1180,27 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	@FXML void acceptRecipe(DragEvent event){
+		System.out.println("IN ACCEPT RECIPE");
 		Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            System.out.println("Dropped: " + db.getString());
+            System.out.println("RECIPE Dropped: " + db.getString());
             success = true;
             Recipe r  = getRecipeBoxFromString(db.getString()); 
             System.out.println(r);
             
+            HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
             KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
             e.addRecipe(r);
+            Set<Ingredient> diff = r.getIngredientDifference(k.getIngredients());
+            System.out.println("ABOVE ADDING ING");
+            for(Ingredient i: diff){
+            	System.out.println("ADDING INGREDIENT");
+            	e.addShoppingIngredient(i);
+            }
+            System.out.println("EVENT SHOPPING IS NOW: " + e.getShoppingIngredients());
+            populateEventShoppingList();
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
 

@@ -34,9 +34,9 @@
       </children>
     </Pane>
     <Label id="" layoutX="33.0" layoutY="253.0" styleClass="sectionHeader" text="Details" />
-    <Pane layoutX="165.0" layoutY="510.0" prefHeight="40.0" prefWidth="320.0" styleClass="smallBackground">
+    <Pane layoutX="165.0" layoutY="499.0" prefHeight="40.0" prefWidth="320.0" styleClass="smallBackground">
       <children>
-        <ComboBox fx:id="chooseKitchenBox" cache="false" disable="false" editable="false" focusTraversable="true" layoutX="14.0" layoutY="9.0" mouseTransparent="false" pickOnBounds="false" prefWidth="200.0" promptText="Choose Kitchen" visible="true">
+        <ComboBox fx:id="chooseKitchenBox" cache="false" disable="false" editable="false" focusTraversable="true" layoutX="14.0" layoutY="9.0" mouseTransparent="false" onAction="#removeRecipeLabel" pickOnBounds="false" prefWidth="200.0" promptText="Choose Kitchen" visible="true">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
@@ -48,6 +48,7 @@
         <Button layoutX="229.0" layoutY="7.0" mnemonicParsing="false" onAction="#addRecipeListener" text="Add Recipe" />
       </children>
     </Pane>
+    <Label fx:id="recipeAddedLabel" layoutX="220.0" layoutY="550.0" prefWidth="228.0" text="Recipe added successfully!" textFill="WHITE" visible="false" />
   </children>
   <stylesheets>
     <URL value="@style.css" />
