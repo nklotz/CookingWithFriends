@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import server.AutocorrectEngines;
@@ -287,6 +288,8 @@ public class Client extends Thread {
     	send(r);
     }
     
+    
+    
     public void addActiveKitchenUser(String id, Account account){
     	Request r = new Request(3);
     	r.setKitchenID(id);
@@ -336,6 +339,14 @@ public class Client extends Thread {
     	Request r = new Request(9);
     	r.setKitchenID(id);
     	r.setIngredient(ing);
+    	r.setUsername(_id);
+    	send(r);
+    }
+    
+    public void addIngredientList(String id, Set<Ingredient> ings){
+    	Request r = new Request(34);
+    	r.setKitchenID(id);
+    	r.setIngredientList(ings);
     	r.setUsername(_id);
     	send(r);
     }

@@ -1,6 +1,8 @@
 package ClientServerRequests;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 import UserInfo.Account;
 import UserInfo.KitchenEvent;
@@ -29,6 +31,7 @@ public class Request implements Serializable {
 	private KitchenName _kitchenNameObj;
 	private String _newMessages;
 	private String _passToCheck;
+	private Set<Ingredient> _ingList;
 	
 	
 	/*
@@ -53,6 +56,7 @@ public class Request implements Serializable {
 	 * 19 = user in database
 	 * 20 = post message
 	 * 21 = check password
+	 * 34 = add ingredient list
 	 */
 	
 	
@@ -107,6 +111,14 @@ public class Request implements Serializable {
 	
 	public KitchenName getKitchenNameObj(){
 		return _kitchenNameObj;
+	}
+	
+	public void setIngredientList(Set<Ingredient> ing){
+		_ingList = ing;
+	}
+	
+	public Set<Ingredient> getIngredientList(){
+		return _ingList;
 	}
 	
 	public void setIngredient(Ingredient ing){

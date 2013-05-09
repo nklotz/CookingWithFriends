@@ -339,6 +339,11 @@ public class KitchenPool {
 	  			System.out.println("added messages!");
 	  			k.addEvent(messagEvent);
 	  			break;
+	  		case 34:
+	  			for(Ingredient i: request.getIngredientList()){
+	  				k.addIngredient(request.getUsername(), i);
+	  			}
+	  			break;
   			default: 
   				return;
 		}
