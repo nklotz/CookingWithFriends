@@ -36,7 +36,8 @@ public class RecipeController {
     @FXML private Label prepTimeLabel, prepTimeHeader, servingsHeader;
     @FXML private Hyperlink recipeLink;
     @FXML private Label servingsLabel;
-
+    @FXML private Label recipeAddedLabel;
+    
     private Recipe _basicRecipe, _completeRecipe;
     private Account _account;
 	private Client _client;
@@ -79,6 +80,7 @@ public class RecipeController {
 	
     @FXML
     void addRecipeListener(ActionEvent event) {
+    	recipeAddedLabel.setVisible(false);
     	if (chooseKitchenBox.getValue().equals("Choose Kitchen")) {
     		return;
     	}
@@ -86,10 +88,16 @@ public class RecipeController {
     		_account.addRecipe(_basicRecipe);
     		_controller.populateUserRecipes();
     		_client.storeAccount(_account);
+    		recipeAddedLabel.setVisible(true);
     	}
     	else {
     		_client.addRecipe(chooseKitchenBox.getValue(), _basicRecipe);
+    		recipeAddedLabel.setVisible(true);
     	}
+    }
+    public void removeRecipeLabel(){
+    	System.out.println("REMOVE HEREEE!!!");
+    	recipeAddedLabel.setVisible(false);
     }
 
     @FXML

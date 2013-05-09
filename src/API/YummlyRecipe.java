@@ -162,11 +162,13 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
+		System.out.println("GET INGREDIENT DIFFERENCE");
 		Set<Ingredient> difference = new HashSet<Ingredient>();
 		
-		for(Ingredient i: _ingredients){
-			if(!fridge.contains(i)){
-				difference.add(i);
+		for(String i: ingredients) {
+			System.out.println("INGRE: " + i);
+			if(!fridge.contains(i)) {
+				difference.add(new Ingredient(i));
 			}
 		}
 		

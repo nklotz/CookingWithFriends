@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,8 +31,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -63,10 +61,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -95,13 +91,14 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private ComboBox<String> addShoppingIngredient;
     @FXML private ImageView envelope;
     @FXML private ListView<UserIngredientBox> fridgeList;
+    @FXML private ListView<EventIngredientBox> eventShoppingList;
     //@FXML private CheckBox getRecipeChecksButton;
     @FXML private Accordion ingredientsAccordion;
     @FXML private ListView<InvitationBox> invitationsList;
     @FXML private ListView<Text> kitchenChefList;
     @FXML private Pane kitchenHide;
     @FXML private ListView<KitchenIngredientBox> kitchenIngredientList;
-    @FXML private ComboBox<String> kitchenSelector;
+    @FXML private ComboBox<String> kitchenSelector, eventIng;
     @FXML private Button leaveKitchenButton;
     @FXML private ComboBox<String> newIngredient;
     @FXML private Text newKitchenActionText;
@@ -110,7 +107,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private AnchorPane newKitchenPane;
     @FXML private FlowPane recipeFlow, kitchenRecipes, eventRecipes;
     @FXML private Tab recipeSearchTab, homeTab, profileTab;
-    @FXML private CheckBox removeFridgeIngredient;
+    @FXML private CheckBox removeFridgeIngredient, removeIngFromEvent; 
     @FXML private AnchorPane removeIngredientsButton;
     @FXML private CheckBox removeShoppingIngredient;
     @FXML private FlowPane resultsFlow;
@@ -179,6 +176,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Text editEventActionText;
     @FXML private Label addIngredientActionLabel;
     @FXML private Label shoppingListActionLabel;
+    @FXML private Label passChangeSuccessfulLabel;
     //Date Picker
     private DatePicker eventDatePicker;
     private DatePicker editDatePicker;
@@ -197,6 +195,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     private HashSet<String> _setOfAdditionalSearchIngs = new HashSet<String>();//Set of additional ingredients for search.
     private InviteChefController _inviteChefController;
     private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    private HashMap<String,KitchenName> _kitchenIds;
+    private boolean _kitchenSelectorDisplay = false;
    
     
 	@Override
@@ -311,8 +311,15 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	public void displayPleasantries(){
-        welcome.setText("Welcome " + _account.getName() + "!");
-        weather.setText("How's the weather in " + _account.getAddress() + "?");
+		if(_account.getName().trim().length()==0||_account.getName().trim().length()==0){
+			welcome.setText("Welcome! Update your profile by clicking on the profile tab.");
+			weather.setText("");
+		}
+		else{
+	        welcome.setText("Welcome " + _account.getName() + "!");
+	        weather.setText("How's the weather in " + _account.getAddress() + "?");
+		}
+
     }
 	
 	public void enablePleasantries(boolean enable){
@@ -569,7 +576,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 				if(new1!=null&&new2!=null&&new1.trim().length()!=0
 						&&new2.trim().length()!=0){
 					if(new1.equals(new2)){
+						System.out.println("SHOULD CHANGE THE PASSWORD: IN CONTROLLER");
 						_client.changePassword(_account.getID(), new1);
+						passChangeSuccessfulLabel.setText("Password change successful.");
+						passChangeSuccessfulLabel.setVisible(true);
 						setPassFieldsVisible(false);
 					}
 					else{
@@ -582,6 +592,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 					changePassErrorLabel.setText("You must enter something in both fields!");
 					changePassErrorLabel.setVisible(true);
 				}
+			}
+			else{
+				changePassErrorLabel.setText("You did not enter a valid old password.");
+				changePassErrorLabel.setVisible(true);
 			}
 			
 		}
@@ -629,11 +643,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     	disableRemoves(fridgeList);
     	removeFridgeIngredient.setSelected(false);
     	String name = newIngredient.getValue();
-    	if(name.length()>Utils.MAX_COMBO_LEN){
-    		addIngredientActionLabel.setVisible(true);
-    		return;
-    	}
 	    if(name!=null){
+	    	if(name.length()>Utils.MAX_COMBO_LEN){
+	    		addIngredientActionLabel.setVisible(true);
+	    		return;
+	    	}
     		if(name.trim().length()!=0){
 	    		_account.addIngredient(new Ingredient(name.toLowerCase().trim()));
 	    		_client.storeAccount(_account);
@@ -785,12 +799,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 	 */
 
 	public void populateKitchenSelector(){
-		final HashMap<String,KitchenName> kitchenIds = _client.getKitchenIdMap();
+		System.out.println("POPULATE");
+		_kitchenIds = _client.getKitchenIdMap();
+
 		kitchenSelector.getItems().clear();
-		kitchenSelector.getItems().addAll(kitchenIds.keySet());
-		/*for(String k : kitchenIds.keySet()){
-			kitchenSelector.getItems().add(k);
-		}*/
+		kitchenSelector.getItems().addAll(_kitchenIds.keySet());
 		kitchenSelector.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(final ListView<String> name) {
@@ -804,12 +817,14 @@ public class Controller2 extends AnchorPane implements Initializable {
 					@Override
 					protected void updateItem(String name, boolean empty) {
 						super.updateItem(name, empty);
-						
+					
 						if (name == null || empty) {
 							setText("Select Kitchen");
+							super.updateItem("Select Kitchen", empty);
 						} else {
-							//id.setText(kitchenIds.get(name).getName());
-							setText(kitchenIds.get(name).getName());
+							System.out.println(_kitchenIds);
+							setText(_kitchenIds.get(name).getName());
+							
 						}
 					}
 				};
@@ -822,9 +837,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 				System.out.println("I have been clicked! " + kitchenSelector.getValue());
 				
 				//disable the pane that hides everything
-				kitchenHide.setVisible(false);
-				kitchenHide.setDisable(true);
+				kitchenJunk.setDisable(false);
 				
+	
 				String id = kitchenSelector.getValue();
 				if(id!= null){
 					if(_client.getCurrentKitchen()!= null){
@@ -841,19 +856,27 @@ public class Controller2 extends AnchorPane implements Initializable {
 						protected void updateItem(String name, boolean empty) {
 							super.updateItem(name, empty);
 							
+							System.out.println("updataesetButtonCell");
+							System.out.println(name ==null);
+							System.out.println(empty);
+							System.out.println(!_kitchenSelectorDisplay);
 							if (name == null || empty) {
 								setText("Select Kitchen");
 							} else {
-								//id.setText(kitchenIds.get(name).getName());
-								setText(kitchenIds.get(name).getName());
+								System.out.println("nameeee ? " + name);
+								System.out.println("kitchen nmae ? " + _kitchenIds.get(name));
+								setText(_kitchenIds.get(name).getName());
 							}
 						}
 					});	
-					displayKitchen(kitchenIds.get(id));
+					displayKitchen(_kitchenIds.get(id));
 				}
 			}
 		});
-		
+		if(kitchenSelector.getValue()==null && _client.getCurrentKitchen()== null){
+			kitchenJunk.setDisable(true);
+		}
+		_kitchenSelectorDisplay = true;
 	}
 	
 	public void displayKitchen(KitchenName kn){
@@ -1014,8 +1037,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 
 	public void clearKitchenDisplay(){
 		hideNewKitchenStuff();
-		kitchenSelector.setValue(null);
-		
 		communalDietPreferencesList.setText("");	
 		communalAllergiesList.setText("");
 		kitchenIngredientList.getItems().clear();
@@ -1026,10 +1047,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 		//set to kitchen ingredient tab
     	eventTabPane.getSelectionModel().select(kitchenIngTab);
 
-		
+		//kitchenSelector.getSelectionModel().select(0);
+    	kitchenSelector.setValue(null);
 		kitchenJunk.setDisable(true);
-		
-		
+		_kitchenSelectorDisplay = false;
+
 	}
 	
 	public void reDisplayKitchen() {
@@ -1078,17 +1100,18 @@ public class Controller2 extends AnchorPane implements Initializable {
     
 	public void leaveKitchen(){
 
-		System.out.println("leavvving");
-		clearKitchenDisplay();
-		_currentEventName = null;
-		eventSelector.setValue(null);
-		_client.removeKitchen(_client.getCurrentKitchen());
-
-		_account.removeKitchen(_client.getCurrentKitchen());
-		_client.storeAccount(_account, _client.getCurrentKitchen().getID());
-		kitchenHide.setVisible(true);
-		_client.setCurrentKitchen(null);
-		
+		if(kitchenSelector.getValue()!=null){
+			System.out.println("leavvving");
+			clearKitchenDisplay();
+			_currentEventName = null;
+			eventSelector.setValue(null);
+			_client.removeKitchen(_client.getCurrentKitchen());
+	
+			_account.removeKitchen(_client.getCurrentKitchen());
+			_client.storeAccount(_account, _client.getCurrentKitchen().getID());
+			kitchenHide.setVisible(true);
+			_client.setCurrentKitchen(null);
+		}
 	}
 	
 	public void removeKitchenIngredients(){
@@ -1148,16 +1171,27 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	@FXML void acceptRecipe(DragEvent event){
+		System.out.println("IN ACCEPT RECIPE");
 		Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            System.out.println("Dropped: " + db.getString());
+            System.out.println("RECIPE Dropped: " + db.getString());
             success = true;
             Recipe r  = getRecipeBoxFromString(db.getString()); 
             System.out.println(r);
             
+            HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
             KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
             e.addRecipe(r);
+            Set<Ingredient> diff = r.getIngredientDifference(k.getIngredients());
+            System.out.println("ABOVE ADDING ING");
+            for(Ingredient i: diff){
+            	System.out.println("ADDING INGREDIENT");
+            	e.addShoppingIngredient(i);
+            }
+            System.out.println("EVENT SHOPPING IS NOW: " + e.getShoppingIngredients());
+            populateEventShoppingList();
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
 
@@ -1241,62 +1275,89 @@ public class Controller2 extends AnchorPane implements Initializable {
 		c.getItems().addAll("am", "pm");
 	}
 	
+	public void removeEventShoppingIngredient(){		
+		for(EventIngredientBox s: eventShoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(!rButton.isVisible());
+		}
+	}
+	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
-    	if(name.length()>Utils.MAX_FIELD_LEN){
-    		newEventActionText.setText("Name too long.");
-    		newEventActionText.setVisible(true);
-    		return;
-    	}
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     	boolean validDate = false;
-    	System.out.println("name: " + name);
-    	Date date = eventDatePicker.getSelectedDate();
-    	if(name!=null && date!=null && name.trim().length()!= 0
+    	boolean validName = false;
+    	if(kitchens.get(_client.getCurrentKitchen())!=null && name!=null && eventDatePicker.getSelectedDate() !=null && name.trim().length()!= 0
     			&& hour.getValue()!= null && min.getValue() != null && amPm.getValue()!=null){
-	    	//getting yesterday
-	    	Calendar cal = Calendar.getInstance();
-	    	cal.add(Calendar.DATE, -1);
-	    	Date yesterday = cal.getTime();
-	    	validDate = date.after(yesterday);
-	    	if (validDate){
-		    	System.out.println("date: " + date.toString());
-		    	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
-		    	System.out.println("time: " + time);
-		    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
-		    	System.out.println("at the first wall");
-	    		newEventActionText.setVisible(false);
-	    		if(kitchens.get(_client.getCurrentKitchen())!=null){
-	    			System.out.println("past the first wall");
-	    			System.out.println("kitchens: " + kitchens.get(_client.getCurrentKitchen()));
-	    			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-	    			System.out.println("this is the kitchen: " + k);
-	    			KitchenEvent event = new KitchenEvent(name,date,time,k);
-	    			_currentEventName = name;
-	            	_client.addEvent(k.getID(), event);
-	            	System.out.println("sent event");
-	            	//populateEventSelector();
-	            	eventTabPane.getSelectionModel().select(eventTab);
-	    		}
+    		//Name
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if (k.getEvents().contains(new KitchenEvent(name, null, null, k))){
+    			newEventActionText.setText("You already have an event by that name.");
+    			return;
+    		} else {
+    			validName = true;
+    		}
+	    	if(name.length()>Utils.MAX_FIELD_LEN){
+	    		newEventActionText.setText("Name too long.");
+	    		newEventActionText.setVisible(true);
+	    		return;
 	    	}
-    		
+	    	//Date
+	    	Date date = eventDatePicker.getSelectedDate();
+		    //getting yesterday
+		    Calendar cal = Calendar.getInstance();
+		    cal.add(Calendar.DATE, -1);
+		    Date yesterday = cal.getTime();
+		    validDate = date.after(yesterday);
+		    if (validDate){
+			   	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
+		    	newEventActionText.setVisible(false);
+	    		KitchenEvent event = new KitchenEvent(name,date,time,k);
+	    		_currentEventName = name;
+	           	_client.addEvent(k.getID(), event);
+	           	eventTabPane.getSelectionModel().select(eventTab);
+		    } else {
+		    	newEventActionText.setText("Can't make an event in the past.");
+		    }
     	} else {
-    		newEventActionText.setText("");
+    		newEventActionText.setText("Please complete all fields");
     		newEventActionText.setVisible(true);
-    		/*if (k.getEvents().contains(new KitchenEvent(name, date, kitchens.get(_client.getCurrentKitchen()))) { //TODO: This probably won't work
-    			//TODO: do this check outside this else
-    			//TODO: Finish this check
-    		} else*/ 
-    		if (!validDate){
-    			newEventActionText.setText("Can't create an event in the past.");
-    		} else if (hour.getValue() == null || min.getValue() == null || amPm.getValue() == null){
-    			newEventActionText.setText("Invalid time!");
-    		}
-    		else {
-    			newEventActionText.setText("you fucked up!");
-    		}
     	}
     	
    // 	System.out.println("TEXT: " + createEventField.getText());
+    }
+	
+    public void addEventShoppingListListener() {
+    	disableRemoves(eventShoppingList);
+    	removeIngFromEvent.setSelected(false);
+    	String name = eventIng.getValue();
+    	if(name != null && name.length()>Utils.MAX_COMBO_LEN){
+    		//TODO: HANNAH this for event shipping shoppingListActionLabel.setVisible(true);
+    		return;
+    	}
+    	if(name!=null){
+    		if(name.trim().length()!=0){
+    			
+    			KitchenEvent e = getCurrentEvent();
+    			e.addShoppingIngredient(new Ingredient(name.toLowerCase()));
+    			_client.addEvent(_client.getCurrentKitchen().getID(), e);
+    			populateEventShoppingList();
+    			eventIng.getEditor().setText("");
+    			
+    		}
+    		eventIng.setValue("");
+    		eventIng.getItems().clear();
+    	}
+    }
+    
+    public void populateEventShoppingList(){
+    	ObservableList<EventIngredientBox> listItems = FXCollections.observableArrayList();  
+    	eventShoppingList.setItems(listItems);
+    	for(Ingredient i: getCurrentEvent().getShoppingIngredients()){
+    		EventIngredientBox box = new EventIngredientBox(i.getName());
+    		listItems.add(box);
+    	}
+    	eventShoppingList.setItems(listItems);
     }
 	
 	public void loadEvent(){
@@ -1311,27 +1372,12 @@ public class Controller2 extends AnchorPane implements Initializable {
 			displayEventInfo();
 			enableEvents();
 			populateEventMenu();
-			//populateEventShoppingList();
+			populateEventShoppingList();
+			//populateEventSelector();
 			displayMessages();
 		} else {
 			disableEvents();
 		}
-		
-		
-		
-//		if(eventSelector.getValue()== null && _currentEventName !=null){
-//			System.out.println("value was null but current event is " + _currentEventName);
-//			eventSelector.setEditable(true);
-//			eventSelector.setValue(_currentEventName);
-//			eventSelector.setEditable(false);
-//			System.out.println("I WOULD display event: " + _currentEventName);
-//		}
-//		else if(eventSelector.getValue() != null && !eventSelector.getValue().equals("Select an Event")){
-//			System.out.println("setting current event to " + eventSelector.getValue());
-//			_currentEventName = eventSelector.getValue();
-//			populateEventMenu();
-//			populateEventShoppingList();
-//		}
 	}
 	
 	private void disableEvents(){
@@ -1360,6 +1406,37 @@ public class Controller2 extends AnchorPane implements Initializable {
 		eventDate.setVisible(true);
 		eventTime.setVisible(true);
 	}
+	
+	private class EventIngredientBox extends GuiBox{
+    	protected String _toDisplay;
+    	protected RemoveButton _remove;
+
+    	public EventIngredientBox(String display) {
+    		super();
+    		_toDisplay = display;
+    	    Label ingred = new Label(display);
+    	    this.add(ingred, 1, 0);
+    	    _remove = new RemoveButton(this);
+    	    _remove.setVisible(false);
+    	    this.add(_remove, 0, 0);
+    	}
+    	
+    	public void remove(){
+    		System.out.println("removing ingredient " + _toDisplay);
+    		Ingredient ing = new Ingredient(_toDisplay);
+    		
+    		KitchenEvent e = getCurrentEvent();
+    		e.removeShoppingIngredient(new Ingredient(_toDisplay));
+    		_client.addEvent(_client.getCurrentKitchen().getID(), e);
+    		
+    		ObservableList<EventIngredientBox> listItems = eventShoppingList.getItems();
+    		listItems.remove(this);
+    	}
+    	
+    	public RemoveButton getRemover(){
+    		return _remove;
+    	}
+    }
 	
 	private KitchenEvent getCurrentEvent(){
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
@@ -1403,6 +1480,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		populateEditEventTime();
 		_newTimeShouldDisplay = true;
 		eventNameEdit.setText(getCurrentEvent().getName());
+		editDatePicker.setSelectedDate(getCurrentEvent().getDate());
 		editPane.setVisible(true);
 		
 	}
@@ -1626,9 +1704,22 @@ public class Controller2 extends AnchorPane implements Initializable {
 		_inviteChefController.sendInviteEmails(userInDatabase);
 	}
 
-	public void inviteUserToKitchen(String toInvite){
+	/**
+	 * Returns a string message that longin controller will display.
+	 * @param toInvite
+	 * @return
+	 */
+	public String inviteUserToKitchen(String toInvite){
 		if(_client.getKitchens()!=null){
+			
 			Kitchen k = _client.getKitchens().get(_client.getCurrentKitchen());
+			if(k.getActiveUsers().contains(toInvite)){
+				return "User is already in the kitchen.";
+			}
+			if(k.getRequestedUsers().contains(toInvite)){
+				
+				return "User has already been invited.";
+			}
 			_client.addRequestedKitchenUser(toInvite, _account.getName(), _client.getCurrentKitchen());
 			
 			//instant display update
@@ -1641,8 +1732,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 					+ "wants you to join the kitchen, " + k.getName();
 			message += ". To accept this invitation, you must log in and accept.";
 			Sender.send(toInvite, message);
+			return "Message sent to user.";
 
 		}
+		return "";
 	}
 	
     private class InvitationBox extends GridPane{
@@ -1997,7 +2090,27 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     }
 
-	
+	public void eventIngredientComboListener(){
+		String text = eventIng.getEditor().getText();
+		System.out.println("EVENT COMBO: " + text);
+    	if(text != null){
+    		eventIng.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+	    	    	eventIng.show();
+	    	    	eventIng.getItems().clear();
+	    	    	eventIng.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		addEventShoppingListListener();
+    	}
+	}
     
 	public void recieveInvite(Invitation invitation) {
 		_account.addInvitation(invitation);
@@ -2036,6 +2149,11 @@ public class Controller2 extends AnchorPane implements Initializable {
     		System.out.println("ERROR: Could not convert from object string: " + e.getMessage());
     		return null;
     	}
+    }
+    
+    public void addNewKitchenToAccount(Kitchen k){
+    	_account.addKitchen(k.getKitchenName());
+    	_client.storeAccount(_account);
     }
 
 }

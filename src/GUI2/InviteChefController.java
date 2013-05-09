@@ -22,6 +22,7 @@ public class InviteChefController extends AnchorPane implements Initializable  {
 	@FXML private Button send;
 	private Controller2 _controller;
 	@FXML private Pane inviteToJoinPane;
+    @FXML private Label inviteErrorLabel;
 	
 	public void setController(Controller2 controller){
 		_controller = controller;
@@ -48,12 +49,15 @@ public class InviteChefController extends AnchorPane implements Initializable  {
     }
     
     public void sendInviteEmails(boolean userInDatabase){
+    	inviteErrorLabel.setVisible(false);
 		String email = chefName.getText();
 		if(email != null){
-			if(isValidEmail(email)){
+			if(Utils.isValidEmailStructure(email)){
 				if(userInDatabase){
 					chefName.setText("");
-					_controller.inviteUserToKitchen(email);
+					String m = _controller.inviteUserToKitchen(email);
+					inviteErrorLabel.setText(m);
+					inviteErrorLabel.setVisible(true);
 				}
 				else{
 					displayJoinInvite();
@@ -64,19 +68,7 @@ public class InviteChefController extends AnchorPane implements Initializable  {
 			}
 		}
 	}
-    
-	public boolean isValidEmail(String email){
-		if(email.trim().length()!=0){
-			String[] atSplit = email.split("\\@");
-			if(atSplit.length==2){
-				String[] dotSplit = atSplit[1].split("\\.");
-				if(dotSplit.length>1){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+
 	
 	public void hideInvalidEmail(){
 		invalidEmail.setVisible(false);

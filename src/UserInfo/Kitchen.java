@@ -95,7 +95,10 @@ public class Kitchen implements Serializable, Nameable{
 	
 	public void removeRequestedUser(String user){
 		System.out.println("removing requested User!");
+		System.out.println(_requestedUsers);
+		System.out.println(user);
 		_requestedUsers.remove(user);
+		System.out.println(_requestedUsers);
 	}
 	
 	public HashSet<String> getActiveUsers(){
@@ -256,7 +259,7 @@ public class Kitchen implements Serializable, Nameable{
 
 	@Override
 	public String toString() {
-		return "Kitchen [_users=" + _activeUsers + ", _events=" + _events
+		return "Kitchen [_users=" + _activeUsers + ", requested " + _requestedUsers + ", _events=" + _events
 				+ ", _recipes=" + _recipes + ", _id=" + _id + ", _ingredients" + _ingToUsers.keySet() + ", _restrictions=" + _dietRestricts + ", _allergies" + _allergies+"]";
 	}
 	

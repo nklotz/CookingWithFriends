@@ -11,17 +11,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import server.AutocorrectEngines;
-import API.Wrapper;
 import ClientServerRequests.Request;
 import ClientServerRequests.RequestReturn;
-import GUI.GUIFrame;
 import GUI.LoginWindow;
 import GUI2.GUI2Frame;
 import UserInfo.Account;
-import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 
@@ -161,6 +159,7 @@ public class Client extends Thread {
 							System.out.println("got new kitchen: " + k.getName());
 							_kitchens.put(k.getKitchenName(), k);
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
+							System.out.println(_kitchenIdToName);
 							_kitchenNames.add(k.getKitchenName().getName());
 							_gui.updateKitchenDropDown();
 							_gui.refreshSearchAccordian();
@@ -170,9 +169,11 @@ public class Client extends Thread {
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
 										System.out.println("new kitchen is gui's current!!!");
-										_gui.updateKitchen();
+										_gui.updateKitchen(); 
 									} else if (k.getKitchenName().getName().equals(_newKitchen)){
 										System.out.println("this is the new kitchen");
+										System.out.println(_kitchenIdToName);
+										_gui.passNewKitchen(k);
 										_gui.displayNewKitchen(k);
 									} //TODO: this is ugly as shit. Better way to do it? I'm too tired to think.
 								} else if (k.getKitchenName().getName().equals(_newKitchen)){
@@ -359,7 +360,7 @@ public class Client extends Thread {
     public void removeRequestedKitchenUser(String id){
     	Request r = new Request(16);
     	r.setKitchenID(id);
-    	r.setKitchenUserID(_id);
+    	r.setUsername(_id);
     	send(r);
     }
     
