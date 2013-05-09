@@ -29,6 +29,10 @@ import client.Client;
  
 public class LoginWindow extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Client _client;
 	private Text _actiontarget;
 	private final JFXPanel _panel;

@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SuggestionGenerator implements Generator, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String text_;
 	private boolean isLED_;
 	private boolean isPrefix_;

@@ -11,6 +11,10 @@ import java.util.ArrayList;
  */
 public class SerializableTest implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _a;
 	private ArrayList<String> _b;
 	public SerializableTest(){

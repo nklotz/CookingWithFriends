@@ -227,7 +227,7 @@
                   <children>
                     <Label fx:id="NoRecipesError" layoutX="20.0" layoutY="141.0" prefHeight="142.0" prefWidth="207.0" text="You don't have any recipes." textAlignment="CENTER" textFill="#909090" underline="false" wrapText="true">
                       <font>
-                        <Font name="System Italic" size="20.0" />
+                        <Font name="System Italic" size="20.0" fx:id="x2" />
                       </font>
                     </Label>
                     <Button layoutX="68.0" layoutY="257.0" mnemonicParsing="false" onAction="#goToRecipeTab" text="Search for some!" />
@@ -295,17 +295,7 @@
                     </Pane>
                     <Pane layoutX="-9.0" layoutY="268.0" prefHeight="360.0" prefWidth="390.0" styleClass="section" visible="true">
                       <children>
-                        <ComboBox id="kitchenIngredientComboBox" fx:id="addRecipeEventSelector" editable="false" layoutX="17.0" layoutY="320.0" prefWidth="250.655517578125" promptText="Select Event to add to" visible="true">
-                          <items>
-                            <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Item 1" />
-                              <String fx:value="Item 2" />
-                              <String fx:value="Item 3" />
-                            </FXCollections>
-                          </items>
-                        </ComboBox>
-                        <Button id="kitchenAddIngredientButton" fx:id="addRecipeToEventButton" layoutX="281.0" layoutY="318.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="91.0" text="Add to Event" visible="true" />
-                        <ScrollPane id="ScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="285.0" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="358.0">
+                        <ScrollPane id="ScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="332.0" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="358.0">
                           <content>
                             <FlowPane id="recipeFlow" fx:id="kitchenRecipes" hgap="30.0" onDragOver="#hoverIngredient" prefHeight="277.0" prefWidth="347.0" vgap="30.0">
                               <padding>
@@ -333,7 +323,8 @@
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
                                   <children>
-                                    <ListView id="kitchenIngredientList" fx:id="kitchenUserIngredients" layoutX="19.0" layoutY="14.0" prefHeight="497.0000168945262" prefWidth="223.9998779296875" />
+                                    <ListView id="kitchenIngredientList" fx:id="kitchenUserIngredients" layoutX="19.0" layoutY="14.0" prefHeight="468.00011689452367" prefWidth="223.9998779296875" />
+                                    <Button id="newKitchenButton" layoutX="64.0" layoutY="491.0" mnemonicParsing="false" onAction="#addAllIngredientsToKitchen" prefWidth="122.99997792968497" text="Add All to Kitchen" />
                                   </children>
                                 </Pane>
                                 <Label layoutX="14.0" layoutY="11.0" styleClass="sectionHeader" text="My Ingredients" />
@@ -370,7 +361,7 @@
                                     <Pane layoutX="281.0" layoutY="16.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="section">
                                       <children>
                                         <Button fx:id="addIngToEvent" layoutX="178.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingListListener" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
-                                        <ComboBox fx:id="eventIng" editable="true" layoutX="9.0" layoutY="38.0" onAction="#addEventShoppingListListener" onInputMethodTextChanged="#eventIngredientComboListener" onKeyPressed="#eventIngredientComboListener" onKeyReleased="#eventIngredientComboListener" onKeyTyped="#eventIngredientComboListener" prefWidth="231.0" promptText="">
+                                        <ComboBox fx:id="eventIng" editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
@@ -454,6 +445,15 @@
                                     <Text fx:id="editEventActionText" fill="FIREBRICK" layoutX="92.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;warning&gt;" visible="false" />
                                   </children>
                                 </Pane>
+                                <Pane fx:id="noEventRecipePane" layoutX="34.0" layoutY="114.0" prefHeight="234.0" prefWidth="215.0" visible="false">
+                                  <children>
+                                    <Label layoutX="29.0" layoutY="20.0" prefHeight="194.0" prefWidth="156.99990000000253" text="Click and drag a recipe from kitchen recipes to add it to the event. Ingredients not included in kitchen ingredients will be added to the event shopping list." textAlignment="LEFT" textFill="#606060" wrapText="true">
+                                      <font>
+                                        <Font name="System Bold Italic" size="15.0" />
+                                      </font>
+                                    </Label>
+                                  </children>
+                                </Pane>
                                 <Text id="eventTime" fx:id="eventDate" fill="WHITE" layoutX="270.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event date&gt;" visible="false" />
                                 <Text fx:id="eventTime" fill="WHITE" layoutX="270.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event time&gt;" visible="false" />
                                 <Button id="Edit" fx:id="editEventButton" disable="false" layoutX="465.0" layoutY="9.0" mnemonicParsing="false" onAction="#editEventListener" prefWidth="91.0" text="Edit Event" />
@@ -482,6 +482,11 @@
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Text scaleX="0.9970780252623607" scaleY="1.0201407822986577" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Create a New Event!" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                     <TextField fx:id="newEventNameField" alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="213.0" promptText="Enter a name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                      <font>
+                                        <Font name="System Bold" size="13.0" />
+                                      </font>
+                                    </Text>
                                     <Button fx:id="createEventButton" alignment="CENTER" mnemonicParsing="false" onAction="#createEventListener" text="Create Event!" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                                       <children>
@@ -519,11 +524,6 @@
                                         </ComboBox>
                                       </children>
                                     </HBox>
-                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="5">
-                                      <font>
-                                        <Font name="System Bold" size="13.0" />
-                                      </font>
-                                    </Text>
                                   </children>
                                   <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="99.0" />
@@ -604,6 +604,16 @@
                   </font>
                 </Label>
                 <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
+                <Pane fx:id="searchPromptPane" layoutX="412.0" layoutY="262.0" prefHeight="392.0" prefWidth="549.0">
+                  <children>
+                    <Label layoutX="14.0" layoutY="14.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingrients." textFill="GREY" wrapText="true">
+                      <font>
+                        <Font name="System Italic" size="25.0" fx:id="x3" />
+                      </font>
+                    </Label>
+                    <Label font="$x3" layoutX="14.0" layoutY="147.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textFill="GREY" wrapText="true" />
+                  </children>
+                </Pane>
               </children>
             </AnchorPane>
           </content>
