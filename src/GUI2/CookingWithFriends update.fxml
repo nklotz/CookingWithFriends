@@ -94,6 +94,7 @@
                     </Pane>
                     <Label fx:id="emailLabel" font="$x1" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="" wrapText="true" />
                     <Label fx:id="nameLabel" font="$x1" layoutX="71.0" layoutY="22.0" prefWidth="191.0" text="Label" wrapText="true" />
+                    <Label fx:id="passChangeSuccessfulLabel" layoutX="316.0" layoutY="18.0" text="Password change successful!" textFill="RED" visible="false" />
                   </children>
                 </Pane>
                 <Label layoutX="239.0" layoutY="114.0" styleClass="sectionHeader" text="My Profile">
@@ -342,7 +343,7 @@
                                     <Pane layoutX="281.0" layoutY="16.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="section">
                                       <children>
                                         <Button fx:id="addIngToEvent" layoutX="178.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#addEventShoppingListListener" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
-                                        <ComboBox fx:id="eventIng" editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
+                                        <ComboBox fx:id="eventIng" editable="true" layoutX="9.0" layoutY="38.0" onAction="#addEventShoppingListListener" onInputMethodTextChanged="#eventIngredientComboListener" onKeyPressed="#eventIngredientComboListener" onKeyReleased="#eventIngredientComboListener" onKeyTyped="#eventIngredientComboListener" prefWidth="231.0" promptText="">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />

@@ -180,6 +180,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Text editEventActionText;
     @FXML private Label addIngredientActionLabel;
     @FXML private Label shoppingListActionLabel;
+    @FXML private Label passChangeSuccessfulLabel;
     //Date Picker
     private DatePicker eventDatePicker;
     private DatePicker editDatePicker;
@@ -589,9 +590,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 					if(new1.equals(new2)){
 						System.out.println("SHOULD CHANGE THE PASSWORD: IN CONTROLLER");
 						_client.changePassword(_account.getID(), new1);
+						passChangeSuccessfulLabel.setText("Password change successful.");
+						passChangeSuccessfulLabel.setVisible(true);
 						setPassFieldsVisible(false);
-						changePassErrorLabel.setText("Password change successful.");
-						changePassErrorLabel.setVisible(true);
 					}
 					else{
 						changePassErrorLabel.setText("Your new passwords do not match!");
@@ -603,6 +604,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 					changePassErrorLabel.setText("You must enter something in both fields!");
 					changePassErrorLabel.setVisible(true);
 				}
+			}
+			else{
+				changePassErrorLabel.setText("You did not enter a valid old password.");
+				changePassErrorLabel.setVisible(true);
 			}
 			
 		}
@@ -2117,7 +2122,27 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     }
 
-	
+	public void eventIngredientComboListener(){
+		String text = eventIng.getEditor().getText();
+		System.out.println("EVENT COMBO: " + text);
+    	if(text != null){
+    		eventIng.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+	    	    	eventIng.show();
+	    	    	eventIng.getItems().clear();
+	    	    	eventIng.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		addEventShoppingListListener();
+    	}
+	}
     
 	public void recieveInvite(Invitation invitation) {
 		_account.addInvitation(invitation);
