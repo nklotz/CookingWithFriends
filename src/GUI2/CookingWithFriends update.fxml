@@ -295,7 +295,8 @@
                                 </Pane>
                                 <Pane layoutX="14.0" layoutY="33.0" prefHeight="526.0" prefWidth="261.0" styleClass="section">
                                   <children>
-                                    <ListView id="kitchenIngredientList" fx:id="kitchenUserIngredients" layoutX="19.0" layoutY="14.0" prefHeight="497.0000168945262" prefWidth="223.9998779296875" />
+                                    <ListView id="kitchenIngredientList" fx:id="kitchenUserIngredients" layoutX="19.0" layoutY="14.0" prefHeight="468.00011689452367" prefWidth="223.9998779296875" />
+                                    <Button id="newKitchenButton" layoutX="64.0" layoutY="491.0" mnemonicParsing="false" onAction="#addAllIngredientsToKitchen" prefWidth="122.99997792968497" text="Add All to Kitchen" />
                                   </children>
                                 </Pane>
                                 <Label layoutX="14.0" layoutY="11.0" styleClass="sectionHeader" text="My Ingredients" />

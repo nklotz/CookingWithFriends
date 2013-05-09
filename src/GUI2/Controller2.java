@@ -775,12 +775,20 @@ public class Controller2 extends AnchorPane implements Initializable {
     
     @FXML
     public void wentShopping(ActionEvent event) {
+    	HashSet<Ingredient> ings = new HashSet<Ingredient>();
+    	
     	for (Ingredient i: _account.getShoppingList()) {
+    		ings.add(i);
+    	}  
+    	
+    	for (Ingredient i: ings) {
     		_account.removeShoppingIngredient(i);
     		_account.addIngredient(i);
-    	}    	
+    	} 
+    	
     	populateShoppingList();
     	populateUserFridge();
+    	_client.storeAccount(_account);
     }
     
     @FXML
@@ -1134,6 +1142,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 			}
 		}
 	}
+	
+	public void addAllIngredientsToKitchen(){
+		_client.addIngredientList(_client.getCurrentKitchen().getID(), _account.getIngredients());
+	}
+	
 	
 	private class DraggableIngredient extends Text {
 		String _i;
