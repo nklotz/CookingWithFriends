@@ -991,14 +991,29 @@ public class Controller2 implements Initializable {
 			kitchenChefList.getItems().add(t);
 		}
 		
-		kitchenRecipes.getChildren().clear();
-    	//noRecipesPane.setVisible(false);
-    	for(Recipe r: k.getRecipes()){
-    		kitchenRecipes.getChildren().add(new RecipeBox(r, this, k, _client));
+		
+		List<RecipeBox> rboxes = new ArrayList<>();
+		for (Recipe r: k.getRecipes()) {
+			rboxes.add(new RecipeBox(r, this, k, _client));
     	}
-    	if(recipeFlow.getChildren().size()==0){
+		kitchenRecipes.getChildren().retainAll(rboxes);
+		for (RecipeBox rbox : rboxes) {
+			if (!kitchenRecipes.getChildren().contains(rbox)) {
+				kitchenRecipes.getChildren().add(rbox);
+			}
+		}
+		if(recipeFlow.getChildren().size()==0){
     		kitchenRecipes.setVisible(true);
     	}
+		
+		//kitchenRecipes.getChildren().clear();
+    	//noRecipesPane.setVisible(false);
+//    	for(Recipe r: k.getRecipes()){
+//    		kitchenRecipes.getChildren().add(new RecipeBox(r, this, k, _client));
+//    	}
+//    	if(recipeFlow.getChildren().size()==0){
+//    		kitchenRecipes.setVisible(true);
+//    	}
     	
     	if (_currentEventName == null){
     		_eventSelectorShouldDisplay = false;
@@ -1606,17 +1621,32 @@ public class Controller2 implements Initializable {
 	
 	public void populateEventMenu(){
 		HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
-		eventRecipes.getChildren().clear();
+		//eventRecipes.getChildren().clear();
     	if(kitchens!=null){
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
     		if(k!=null){
     			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
     			if (e != null){
     				noEventRecipePane.setVisible(true);
-					for (Recipe recipe : e.getMenuRecipes()){
-						noEventRecipePane.setVisible(false);
-						eventRecipes.getChildren().add(new RecipeBox(recipe, this, k, e, _client));
-					}
+    				
+    				List<RecipeBox> rboxes = new ArrayList<>();
+    				if (e.getMenuRecipes().size() != 0) {
+    					noEventRecipePane.setVisible(false);
+    				}
+    				for (Recipe r: e.getMenuRecipes()) {
+    					rboxes.add(new RecipeBox(r, this, k, e, _client));
+    		    	}
+    				eventRecipes.getChildren().retainAll(rboxes);
+    				for (RecipeBox rbox : rboxes) {
+    					if (!eventRecipes.getChildren().contains(rbox)) {
+    						eventRecipes.getChildren().add(rbox);
+    					}
+    				}
+    				
+//					for (Recipe recipe : e.getMenuRecipes()){
+//						noEventRecipePane.setVisible(false);
+//						eventRecipes.getChildren().add(new RecipeBox(recipe, this, k, e, _client));
+//					}
     			}
     		}
     	}

@@ -32,6 +32,34 @@ import org.apache.commons.codec.binary.Base64;
 
 public class RecipeBox extends VBox{
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_recipe == null) ? 0 : _recipe.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RecipeBox other = (RecipeBox) obj;
+		if (_recipe == null) {
+			if (other._recipe != null)
+				return false;
+		} else if (!_recipe.equals(other._recipe))
+			return false;
+		return true;
+	}
+
+
+
+
 	private Recipe _recipe;
     private Controller2 _controller;
     private RecipeBox _this;

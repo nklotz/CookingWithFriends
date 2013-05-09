@@ -441,7 +441,7 @@
                                 </Pane>
                                 <Pane fx:id="noEventRecipePane" layoutX="34.0" layoutY="114.0" prefHeight="234.0" prefWidth="215.0" visible="false">
                                   <children>
-                                    <Label layoutX="29.0" layoutY="20.0" prefHeight="194.0" prefWidth="156.99990000000253" text="Click and drag a recipe from kitchen recipes to add it to the event. Ingredients not included in kitchen ingredients will be added to the event shopping list." textAlignment="LEFT" textFill="#606060" wrapText="true">
+                                    <Label layoutX="29.0" layoutY="20.0" prefHeight="194.0" prefWidth="156.99990000000253" text="Click and drag a recipe from kitchen recipes to add it to the event. Ingredients not included in kitchen ingredients will be added to the event shopping list." textAlignment="CENTER" textFill="#606060" visible="true" wrapText="true">
                                       <font>
                                         <Font name="System Bold Italic" size="15.0" />
                                       </font>
