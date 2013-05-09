@@ -238,6 +238,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     	nameLabel.setText(_account.getName());
     	locationLabel.setText(_account.getAddress());
     	emailLabel.setText(_account.getID());
+    	populateRestrictions();
+    	populateAllergies();
+    	
     	
     	// Set up Home tab
     	populateUserFridge();
@@ -569,7 +572,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 		
 		public void changePassword(boolean matches){
-			System.out.println("SHOULD CHANGE THE PASSWORDS!!!: " + matches);
+			passChangeSuccessfulLabel.setVisible(false);
 			String new1 = newPassField1.getText();
 			String new2 = newPassField2.getText();
 			if(new1.length()>Utils.MAX_FIELD_LEN || new2.length()>Utils.MAX_FIELD_LEN){
@@ -580,9 +583,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 				if(new1!=null&&new2!=null&&new1.trim().length()!=0
 						&&new2.trim().length()!=0){
 					if(new1.equals(new2)){
-						System.out.println("SHOULD CHANGE THE PASSWORD: IN CONTROLLER");
 						_client.changePassword(_account.getID(), new1);
-						passChangeSuccessfulLabel.setText("Password change successful.");
+						passChangeSuccessfulLabel.setText("Password change successful");
 						passChangeSuccessfulLabel.setVisible(true);
 						setPassFieldsVisible(false);
 					}
@@ -1397,6 +1399,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 			}
 		} else {
 			disableEvents();
+		}
+
+		for(EventIngredientBox s: eventShoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(removeIngFromEvent.isSelected());
 		}
 	}
 	
