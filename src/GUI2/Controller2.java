@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -66,7 +68,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
-import sun.misc.BASE64Decoder;
 import API.Wrapper;
 import API.YummlyAPIWrapper;
 import Email.Sender;
@@ -2141,13 +2142,16 @@ public class Controller2 extends AnchorPane implements Initializable {
 			System.out.println("ERROR: Could not make serializable object." + e.getMessage());
 		}
 		//Imports all of this so it doesn't conflict with the other Base64 import above.
-        return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
+		Base64 encoder = new Base64();
+        return new String(encoder.encode(baos.toByteArray()));
     }
 	
     private static Recipe getRecipeBoxFromString( String s ) {
     	try{
-    		BASE64Decoder decoder = new BASE64Decoder();
-        	byte [] data = decoder.decodeBuffer( s );
+    		//BASE64Decoder decoder = new BASE64Decoder();
+    		Base64 decoder = new Base64();
+    		//byte [] data = decoder.decodeBuffer( s );
+        	byte [] data = decoder.decode( s );
             ObjectInputStream ois = new ObjectInputStream( 
                                             new ByteArrayInputStream(  data ) );
             Recipe o  =  (Recipe) ois.readObject();

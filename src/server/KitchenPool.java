@@ -116,7 +116,7 @@ public class KitchenPool {
 		HashSet<Ingredient> iToRemove = new HashSet<Ingredient>();
 		
 		for(Ingredient i: imap.keySet()){
-			HashSet users = imap.get(i);
+			HashSet<String> users = imap.get(i);
 			if(users.contains(userID)){
 				iToRemove.add(i);
 			}
@@ -132,7 +132,7 @@ public class KitchenPool {
 		HashSet<String> dToRemove = new HashSet<String>();
 
 		for(String d: dmap.keySet()){
-			HashSet users = dmap.get(d);
+			HashSet<String> users = dmap.get(d);
 			if(users.contains(userID)){
 				dToRemove.add(d);
 			}
@@ -147,7 +147,7 @@ public class KitchenPool {
 		HashSet<String> aToRemove = new HashSet<String>();
 
 		for(String a: amap.keySet()){
-			HashSet users = amap.get(a);
+			HashSet<String> users = amap.get(a);
 			if(users.contains(userID)){
 				aToRemove.add(a);
 			}

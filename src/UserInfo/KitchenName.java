@@ -11,6 +11,10 @@ import java.io.Serializable;
  */
 public class KitchenName implements Nameable, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _id;
 	private String _name;
 	

@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class TrieNode implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean isTerminal_;
 	private String word_;
 	private HashMap<Character, TrieNode> children_;

@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SuggestionRanker implements Ranker, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashMap<String, Integer> unigrams_;
 	private HashMap<String, HashMap<String, Integer>> bigrams_;
 	private String text_;

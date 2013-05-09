@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trie implements WordStructure, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TrieNode root_;
 	
 	/**

@@ -20,7 +20,9 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-import sun.misc.BASE64Decoder;
+
+//import sun.misc.BASE64Decoder;
+
 import Test.MockUser;
 import UserInfo.Account;
 import UserInfo.Kitchen;
@@ -369,8 +371,9 @@ public class DBHelper implements DBHelperInterface{
 	  /** Read the object from Base64 string. */
     private static Object getObjectFromString( String s ) {
     	try{
-    		BASE64Decoder decoder = new BASE64Decoder();
-        	byte [] data = decoder.decodeBuffer( s );
+    		//BASE64Decoder decoder = new BASE64Decoder();
+    		Base64 decoder = new Base64();
+        	byte [] data = decoder.decode( s );
             ObjectInputStream ois = new ObjectInputStream( 
                                             new ByteArrayInputStream(  data ) );
             Object o  = ois.readObject();
@@ -402,7 +405,9 @@ public class DBHelper implements DBHelperInterface{
 			System.out.println("ERROR: Could not make serializable object." + e.getMessage());
 		}
 		//Imports all of this so it doesn't conflict with the other Base64 import above.
-        return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
+        //return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
+		Base64 encoder = new Base64();
+        return new String(encoder.encode(baos.toByteArray()));
     }
 	
 	//From: http://javapassgen.blogspot.com/

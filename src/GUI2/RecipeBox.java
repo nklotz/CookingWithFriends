@@ -28,6 +28,7 @@ import UserInfo.Kitchen;
 import UserInfo.KitchenEvent;
 import UserInfo.Recipe;
 import client.Client;
+import org.apache.commons.codec.binary.Base64;
 
 public class RecipeBox extends VBox{
 	
@@ -77,7 +78,7 @@ public class RecipeBox extends VBox{
                 /* put a string on dragboard */
                 ClipboardContent content = new ClipboardContent();
 
-                content.putString(_self.getString(_recipe));
+                content.putString(RecipeBox.getString(_recipe));
                 System.out.println("has string: " + db.hasString());
                 db.setContent(content);          
                 event.consume();
@@ -190,7 +191,8 @@ public class RecipeBox extends VBox{
 			System.out.println("ERROR: Could not make serializable object." + e.getMessage());
 		}
 		//Imports all of this so it doesn't conflict with the other Base64 import above.
-        return new String(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.encode(baos.toByteArray()));
+		Base64 encoder = new Base64();
+        return new String(encoder.encode(baos.toByteArray()));
     }
 
 

@@ -8,6 +8,10 @@ import UserInfo.Recipe;
 
 public class MockRecipe implements Recipe {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _name, _imageURL;
 	List<Ingredient> _ingredients;
 

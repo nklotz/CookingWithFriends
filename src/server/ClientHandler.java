@@ -11,6 +11,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 
+import org.apache.commons.codec.binary.Base64;
+
 import API.Wrapper;
 import ClientServerRequests.AccountRequest;
 import ClientServerRequests.InvitationRequest;
@@ -25,7 +27,7 @@ import ClientServerRequests.UpdateKitchenRequest;
 import Database.DBHelper;
 import Email.Sender;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * Encapsulate IO for the given client.
@@ -303,7 +305,8 @@ public class ClientHandler extends Thread {
         ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject(o);
         oos.close();
-        return new String( Base64.encode( baos.toByteArray() ) );
+        Base64 encoder = new Base64();
+        return new String(encoder.encode( baos.toByteArray() ) );
     }
 	
 	public String getID(){

@@ -13,6 +13,10 @@ import UserInfo.Recipe;
 public class Request implements Serializable {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String _kUserID, _username, _password, _kID, _kName, _eventName;
 	private int _requestType, _accountChangeType;
 	private Account _account;

@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.codec.binary.Base64;
 
 import API.Wrapper;
 import API.WrapperDictionary;
@@ -16,7 +17,7 @@ import API.YummlyAPIWrapper;
 import API.YummlyWrapperDictionary;
 import Database.DBHelper;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Server {
 
@@ -102,6 +103,9 @@ public class Server {
         ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject( o );
         oos.close();
-        return new String( Base64.encode( baos.toByteArray() ) );
+        Base64 encoder = new Base64();
+        return new String(encoder.encode(baos.toByteArray()));
+        //return new String( Base64.encode( baos.toByteArray() ) );
+        //return new String( Base64.encode( baos.toByteArray() ) );
     }
 }
