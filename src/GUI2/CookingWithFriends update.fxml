@@ -94,11 +94,6 @@
                     </Pane>
                     <Label fx:id="emailLabel" font="$x1" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="" wrapText="true" />
                     <Label fx:id="nameLabel" font="$x1" layoutX="71.0" layoutY="22.0" prefWidth="191.0" text="Label" wrapText="true" />
-                    <Label fx:id="noNameLocationLabel" layoutX="109.0" layoutY="117.0" prefWidth="398.0000999999975" text="&lt;-- Click here to fill in your name and location!" textFill="RED">
-                      <font>
-                        <Font name="System Bold" size="13.0" fx:id="x2" />
-                      </font>
-                    </Label>
                   </children>
                 </Pane>
                 <Label layoutX="239.0" layoutY="114.0" styleClass="sectionHeader" text="My Profile">
@@ -207,7 +202,7 @@
                   <children>
                     <Label fx:id="NoRecipesError" layoutX="20.0" layoutY="141.0" prefHeight="142.0" prefWidth="207.0" text="You don't have any recipes." textAlignment="CENTER" textFill="#909090" underline="false" wrapText="true">
                       <font>
-                        <Font name="System Italic" size="20.0" fx:id="x3" />
+                        <Font name="System Italic" size="20.0" fx:id="x2" />
                       </font>
                     </Label>
                     <Button layoutX="68.0" layoutY="257.0" mnemonicParsing="false" onAction="#goToRecipeTab" text="Search for some!" />
@@ -261,7 +256,7 @@
                   <children>
                     <Pane layoutX="-9.0" layoutY="34.0" prefHeight="194.0" prefWidth="390.0" styleClass="section">
                       <children>
-                        <Label layoutX="14.0" layoutY="10.0" styleClass="infoHeader" text="Allergies:" textOverrun="ELLIPSIS" underline="false" />
+                        <Label layoutX="14.0" layoutY="10.0" styleClass="infoHeader" text="Allergies:" />
                         <Label id="allergiesList" fx:id="communalAllergiesList" alignment="TOP_LEFT" layoutX="24.0" layoutY="28.0" prefHeight="45.0" prefWidth="157.0" text="" wrapText="true" />
                         <Label layoutX="14.0" layoutY="77.0" styleClass="infoHeader" text="Dietary Restrictions:" />
                         <Label id="dietPreferencesList" fx:id="communalDietPreferencesList" alignment="TOP_LEFT" layoutX="24.0" layoutY="97.0" prefHeight="48.0" prefWidth="157.0" text="" wrapText="true" />
@@ -272,7 +267,7 @@
                     </Pane>
                     <Pane layoutX="-9.0" layoutY="268.0" prefHeight="360.0" prefWidth="390.0" styleClass="section" visible="true">
                       <children>
-                        <ScrollPane id="ScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="315.1397705078125" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="358.0">
+                        <ScrollPane id="ScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="332.0" prefViewportHeight="540.0" prefViewportWidth="246.0" prefWidth="358.0">
                           <content>
                             <FlowPane id="recipeFlow" fx:id="kitchenRecipes" hgap="30.0" onDragOver="#hoverIngredient" prefHeight="277.0" prefWidth="347.0" vgap="30.0">
                               <padding>
@@ -281,7 +276,6 @@
                             </FlowPane>
                           </content>
                         </ScrollPane>
-                        <Text layoutX="6.0" layoutY="340.0" pickOnBounds="true" scaleX="0.931798363255215" scaleY="1.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: italic;&#10;-fx-font-size: 0.9em&#10;" text="Click and drag a recipe into an event's menu to add that recipe to the event." textAlignment="LEFT" wrappingWidth="280.0" />
                       </children>
                     </Pane>
                     <Label layoutX="-6.0" layoutY="247.0" styleClass="sectionHeader" text="Recipes" />
@@ -367,15 +361,6 @@
                                       </children>
                                     </Pane>
                                     <Label layoutX="12.0" layoutY="298.0" styleClass="sectionHeader" text="Message Board" />
-                                    <Pane fx:id="noEventRecipePane" layoutX="37.0" layoutY="54.0" prefHeight="200.0" prefWidth="200.0" visible="false">
-                                      <children>
-                                        <Label layoutX="19.0" layoutY="14.0" prefHeight="175.0" prefWidth="172.0" text="To add a recipe to your even menu, drag from kitchen recipes list. Ingredients not listed in your kitchen ingredients will be added to your even shopping list." textFill="#606060" visible="true" wrapText="true">
-                                          <font>
-                                            <Font name="System Bold Italic" size="15.0" />
-                                          </font>
-                                        </Label>
-                                      </children>
-                                    </Pane>
                                   </children>
                                 </AnchorPane>
                                 <Pane fx:id="editPane" layoutX="106.0" layoutY="177.0" prefHeight="215.0" prefWidth="345.0" styleClass="section" visible="false">
@@ -431,6 +416,15 @@
                                     <Text fx:id="editEventActionText" fill="FIREBRICK" layoutX="92.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;warning&gt;" visible="false" />
                                   </children>
                                 </Pane>
+                                <Pane fx:id="noEventRecipePane" layoutX="34.0" layoutY="114.0" prefHeight="234.0" prefWidth="215.0" visible="false">
+                                  <children>
+                                    <Label layoutX="29.0" layoutY="20.0" prefHeight="194.0" prefWidth="156.99990000000253" text="Click and drag a recipe from kitchen recipes to add it to the event. Ingredients not included in kitchen ingredients will be added to the event shopping list." textAlignment="LEFT" textFill="#606060" wrapText="true">
+                                      <font>
+                                        <Font name="System Bold Italic" size="15.0" />
+                                      </font>
+                                    </Label>
+                                  </children>
+                                </Pane>
                                 <Text id="eventTime" fx:id="eventDate" fill="WHITE" layoutX="270.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event date&gt;" visible="false" />
                                 <Text fx:id="eventTime" fill="WHITE" layoutX="270.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="&lt;event time&gt;" visible="false" />
                                 <Button id="Edit" fx:id="editEventButton" disable="false" layoutX="465.0" layoutY="9.0" mnemonicParsing="false" onAction="#editEventListener" prefWidth="91.0" text="Edit Event" />
@@ -459,7 +453,11 @@
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Text scaleX="0.9970780252623607" scaleY="1.0201407822986577" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Create a New Event!" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                     <TextField fx:id="newEventNameField" alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="213.0" promptText="Enter a name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" font="$x2" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                      <font>
+                                        <Font name="System Bold" size="13.0" />
+                                      </font>
+                                    </Text>
                                     <Button fx:id="createEventButton" alignment="CENTER" mnemonicParsing="false" onAction="#createEventListener" text="Create Event!" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                                       <children>
@@ -568,20 +566,20 @@
                 </Pane>
                 <Label layoutX="370.0" layoutY="77.0" styleClass="sectionHeader" text="Search" />
                 <Label layoutX="367.0" layoutY="208.0" styleClass="sectionHeader" text="Results" />
-                <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
-                <Label fx:id="NoSearchResults" layoutX="558.0" layoutY="46.0" prefHeight="32.0" prefWidth="244.0" text="No Search Results." textFill="WHITE" visible="false">
+                <Label fx:id="NoSearchResults" layoutX="482.0" layoutY="182.0" prefHeight="40.858642578125" prefWidth="506.0" text="No Search Results :(" textFill="WHITE" visible="false" wrapText="true">
                   <font>
-                    <Font size="20.0" />
+                    <Font name="Shlop" size="13.0" />
                   </font>
                 </Label>
-                <Pane fx:id="searchPromptPane" layoutX="397.0" layoutY="258.0" prefHeight="400.0" prefWidth="565.0">
+                <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
+                <Pane fx:id="searchPromptPane" layoutX="412.0" layoutY="262.0" prefHeight="392.0" prefWidth="549.0">
                   <children>
-                    <Label font="$x3" layoutX="14.0" layoutY="14.0" prefHeight="60.1328125" prefWidth="537.0" text="Select ingredients from 'My Ingredients' or from a kitchen to find recipes containing those events." textAlignment="CENTER" wrapText="true">
-                      <textFill>
-                        <Color blue="0.624" green="0.624" red="0.624" fx:id="x4" />
-                      </textFill>
+                    <Label layoutX="14.0" layoutY="14.0" prefHeight="149.1328125" prefWidth="521.0" text="Select ingredients from 'My Fridge' or from one of your kitchens to find recipes including those ingrients." textFill="GREY" wrapText="true">
+                      <font>
+                        <Font name="System Italic" size="25.0" fx:id="x3" />
+                      </font>
                     </Label>
-                    <Label font="$x3" layoutX="14.0" layoutY="116.0" prefHeight="87.1328125" prefWidth="537.0" text="Type in the search bar for the type of recipe you're looking for or leave blank for all recipes containing selected ingredients" textAlignment="CENTER" textFill="$x4" wrapText="true" />
+                    <Label font="$x3" layoutX="14.0" layoutY="147.0" prefHeight="183.1328125" prefWidth="507.0" text="Use the search bar to search for other ingredients or types of food e.g. 'Thai' or 'burgers'" textFill="GREY" wrapText="true" />
                   </children>
                 </Pane>
               </children>

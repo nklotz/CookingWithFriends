@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,8 +31,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -63,10 +61,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import server.AutocorrectEngines;
@@ -181,7 +177,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Label addIngredientActionLabel;
     @FXML private Label shoppingListActionLabel;
     @FXML private Pane noEventRecipePane;
-    
+
+    @FXML private Label passChangeSuccessfulLabel;
+
     //Date Picker
     private DatePicker eventDatePicker;
     private DatePicker editDatePicker;
@@ -591,9 +589,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 					if(new1.equals(new2)){
 						System.out.println("SHOULD CHANGE THE PASSWORD: IN CONTROLLER");
 						_client.changePassword(_account.getID(), new1);
+						passChangeSuccessfulLabel.setText("Password change successful.");
+						passChangeSuccessfulLabel.setVisible(true);
 						setPassFieldsVisible(false);
-						changePassErrorLabel.setText("Password change successful.");
-						changePassErrorLabel.setVisible(true);
 					}
 					else{
 						changePassErrorLabel.setText("Your new passwords do not match!");
@@ -605,6 +603,10 @@ public class Controller2 extends AnchorPane implements Initializable {
 					changePassErrorLabel.setText("You must enter something in both fields!");
 					changePassErrorLabel.setVisible(true);
 				}
+			}
+			else{
+				changePassErrorLabel.setText("You did not enter a valid old password.");
+				changePassErrorLabel.setVisible(true);
 			}
 			
 		}
@@ -1181,19 +1183,28 @@ public class Controller2 extends AnchorPane implements Initializable {
 	}
 	
 	@FXML void acceptRecipe(DragEvent event){
+		System.out.println("IN ACCEPT RECIPE");
 		Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            System.out.println("Dropped: " + db.getString());
+            System.out.println("RECIPE Dropped: " + db.getString());
             success = true;
             Recipe r  = getRecipeBoxFromString(db.getString()); 
             System.out.println(r);
             
+            HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
             KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
             e.addRecipe(r);
-            
-            
-            
+            Set<Ingredient> diff = r.getIngredientDifference(k.getIngredients());
+            System.out.println("ABOVE ADDING ING");
+            for(Ingredient i: diff){
+            	System.out.println("ADDING INGREDIENT");
+            	e.addShoppingIngredient(i);
+            }
+            System.out.println("EVENT SHOPPING IS NOW: " + e.getShoppingIngredients());
+            populateEventShoppingList();
+
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
 
@@ -1286,57 +1297,44 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
-    	if(name.length()>Utils.MAX_FIELD_LEN){
-    		newEventActionText.setText("Name too long.");
-    		newEventActionText.setVisible(true);
-    		return;
-    	}
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     	boolean validDate = false;
-    	System.out.println("name: " + name);
-    	Date date = eventDatePicker.getSelectedDate();
-    	if(name!=null && date!=null && name.trim().length()!= 0
+    	boolean validName = false;
+    	if(kitchens.get(_client.getCurrentKitchen())!=null && name!=null && eventDatePicker.getSelectedDate() !=null && name.trim().length()!= 0
     			&& hour.getValue()!= null && min.getValue() != null && amPm.getValue()!=null){
-	    	//getting yesterday
-	    	Calendar cal = Calendar.getInstance();
-	    	cal.add(Calendar.DATE, -1);
-	    	Date yesterday = cal.getTime();
-	    	validDate = date.after(yesterday);
-	    	if (validDate){
-		    	System.out.println("date: " + date.toString());
-		    	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
-		    	System.out.println("time: " + time);
-		    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
-		    	System.out.println("at the first wall");
-	    		newEventActionText.setVisible(false);
-	    		if(kitchens.get(_client.getCurrentKitchen())!=null){
-	    			System.out.println("past the first wall");
-	    			System.out.println("kitchens: " + kitchens.get(_client.getCurrentKitchen()));
-	    			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-	    			System.out.println("this is the kitchen: " + k);
-	    			KitchenEvent event = new KitchenEvent(name,date,time,k);
-	    			_currentEventName = name;
-	            	_client.addEvent(k.getID(), event);
-	            	System.out.println("sent event");
-	            	//populateEventSelector();
-	            	eventTabPane.getSelectionModel().select(eventTab);
-	    		}
+    		//Name
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if (k.getEvents().contains(new KitchenEvent(name, null, null, k))){
+    			newEventActionText.setText("You already have an event by that name.");
+    			return;
+    		} else {
+    			validName = true;
+    		}
+	    	if(name.length()>Utils.MAX_FIELD_LEN){
+	    		newEventActionText.setText("Name too long.");
+	    		newEventActionText.setVisible(true);
+	    		return;
 	    	}
-    		
+	    	//Date
+	    	Date date = eventDatePicker.getSelectedDate();
+		    //getting yesterday
+		    Calendar cal = Calendar.getInstance();
+		    cal.add(Calendar.DATE, -1);
+		    Date yesterday = cal.getTime();
+		    validDate = date.after(yesterday);
+		    if (validDate){
+			   	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
+		    	newEventActionText.setVisible(false);
+	    		KitchenEvent event = new KitchenEvent(name,date,time,k);
+	    		_currentEventName = name;
+	           	_client.addEvent(k.getID(), event);
+	           	eventTabPane.getSelectionModel().select(eventTab);
+		    } else {
+		    	newEventActionText.setText("Can't make an event in the past.");
+		    }
     	} else {
-    		newEventActionText.setText("");
+    		newEventActionText.setText("Please complete all fields");
     		newEventActionText.setVisible(true);
-    		/*if (k.getEvents().contains(new KitchenEvent(name, date, kitchens.get(_client.getCurrentKitchen()))) { //TODO: This probably won't work
-    			//TODO: do this check outside this else
-    			//TODO: Finish this check
-    		} else*/ 
-    		if (!validDate){
-    			newEventActionText.setText("Can't create an event in the past.");
-    		} else if (hour.getValue() == null || min.getValue() == null || amPm.getValue() == null){
-    			newEventActionText.setText("Invalid time!");
-    		}
-    		else {
-    			newEventActionText.setText("you fucked up!");
-    		}
     	}
     	
    // 	System.out.println("TEXT: " + createEventField.getText());
@@ -1395,22 +1393,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 		} else {
 			disableEvents();
 		}
-		
-		
-		
-//		if(eventSelector.getValue()== null && _currentEventName !=null){
-//			System.out.println("value was null but current event is " + _currentEventName);
-//			eventSelector.setEditable(true);
-//			eventSelector.setValue(_currentEventName);
-//			eventSelector.setEditable(false);
-//			System.out.println("I WOULD display event: " + _currentEventName);
-//		}
-//		else if(eventSelector.getValue() != null && !eventSelector.getValue().equals("Select an Event")){
-//			System.out.println("setting current event to " + eventSelector.getValue());
-//			_currentEventName = eventSelector.getValue();
-//			populateEventMenu();
-//			populateEventShoppingList();
-//		}
 	}
 	
 	private void disableEvents(){
@@ -1424,6 +1406,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		eventRecipes.getChildren().clear();
 		eventShoppingList.getItems().clear();
 		eventRecipes.getChildren().clear();
+		noEventRecipePane.setVisible(false);
 		
 	}
 	
@@ -1516,6 +1499,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		populateEditEventTime();
 		_newTimeShouldDisplay = true;
 		eventNameEdit.setText(getCurrentEvent().getName());
+		editDatePicker.setSelectedDate(getCurrentEvent().getDate());
 		editPane.setVisible(true);
 		
 	}
@@ -1784,6 +1768,8 @@ public class Controller2 extends AnchorPane implements Initializable {
 
     		
     		Label message = new Label(_invite.getMessage());
+    		message.setPrefWidth(400);
+    		message.setWrapText(true);
 
     		if(message != null){
 	    		Button accept = new Button("Accept");
@@ -2120,7 +2106,27 @@ public class Controller2 extends AnchorPane implements Initializable {
     	}
     }
 
-	
+	public void eventIngredientComboListener(){
+		String text = eventIng.getEditor().getText();
+		System.out.println("EVENT COMBO: " + text);
+    	if(text != null){
+    		eventIng.getItems().clear();
+    		List<String> suggs = null;
+    		if(text.trim().length()!=0){
+    			System.out.println("TEXT: " + text);
+	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
+
+	    	    if(suggs!=null){
+	    	    	eventIng.show();
+	    	    	eventIng.getItems().clear();
+	    	    	eventIng.getItems().addAll(suggs);
+		    	}
+    		}
+    	}
+    	else{
+    		addEventShoppingListListener();
+    	}
+	}
     
 	public void recieveInvite(Invitation invitation) {
 		_account.addInvitation(invitation);
