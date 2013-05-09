@@ -1054,7 +1054,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		kitchenIngredientList.getItems().clear();
 		kitchenChefList.getItems().clear();
 		kitchenUserIngredients.getItems().clear();
-		
+		kitchenRecipes.getChildren().clear();
 		//clear recipes
 		//set to kitchen ingredient tab
     	eventTabPane.getSelectionModel().select(kitchenIngTab);
