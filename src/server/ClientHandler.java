@@ -112,9 +112,10 @@ public class ClientHandler extends Thread {
 								invite(request);
 								break;
 							//CHANGE THE PASSWORD.
-//							case 18:
-//								changePassword(request);
-//								break;
+							case 18:
+								System.out.println("IN CASE 18");
+								changePassword(request);
+								break;
 							//IS VALID USER NAME.	
 							case 19:
 								System.out.println("CASE 19 USER IN DATABASE");
@@ -123,6 +124,7 @@ public class ClientHandler extends Thread {
 							case 21:
 								System.out.println("IN CLIENT HANDLER 21");
 								passwordsMatch(request);
+								break;
 							case 22:
 								System.out.println("CASE 22: updating password");
 								updatePassword(request);
@@ -225,7 +227,7 @@ public class ClientHandler extends Thread {
 	 * @param request
 	 */
 	private void updatePassword(Request request){
-		
+	
 		System.out.println("SERVER UPDATING PASS");
 		RequestReturn req = new RequestReturn(1);
 	    req.setCorrect(false);

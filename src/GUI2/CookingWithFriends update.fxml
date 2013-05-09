@@ -30,7 +30,11 @@
                     <ListView fx:id="allergiesList" focusTraversable="false" layoutX="288.0" layoutY="210.0" prefHeight="121.0" prefWidth="233.0" />
                     <Group id="Group" layoutX="19.0" layoutY="19.0">
                       <children>
-                        <Label id="" layoutX="0.0" layoutY="3.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:" />
+                        <Label id="" layoutX="0.0" layoutY="3.0" prefHeight="18.132720947265625" prefWidth="43.00010844726057" text="Name:">
+                          <font>
+                            <Font size="12.0" fx:id="x1" />
+                          </font>
+                        </Label>
                         <TextField fx:id="nameField" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
                       </children>
                     </Group>
@@ -59,19 +63,19 @@
                     <CheckBox id="removeRestriction" fx:id="removeAllergy" layoutX="288.0" layoutY="367.0" mnemonicParsing="false" onAction="#removeAllergies" text="Remove" />
                     <Group id="Group" layoutX="19.0" layoutY="51.0" visible="true">
                       <children>
-                        <Label id="" layoutX="0.0" layoutY="3.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="61.99998637694807" text="Location:" />
+                        <Label id="" font="$x1" layoutX="0.0" layoutY="3.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="61.99998637694807" text="Location:" />
                         <TextField fx:id="locationField" editable="true" layoutX="69.0" layoutY="0.0" prefWidth="200.0" visible="false" />
-                        <Label id="nameLabel" fx:id="locationLabel" layoutX="74.0" layoutY="3.0" prefWidth="191.0" text="Label" visible="true" />
+                        <Label id="nameLabel" fx:id="locationLabel" font="$x1" layoutX="74.0" layoutY="3.0" prefWidth="191.0" text="Label" visible="true" wrapText="true" />
                       </children>
                     </Group>
                     <Group id="Group" layoutX="20.0" layoutY="84.0">
                       <children>
-                        <Label id="" layoutX="0.0" layoutY="1.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="43.0001305175756" text="Email:" />
+                        <Label id="" font="$x1" layoutX="0.0" layoutY="1.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="43.00023051757307" text="Email:" />
                       </children>
                     </Group>
                     <ListView id="restrictionsLabel" fx:id="restrictionsList" focusTraversable="false" layoutX="20.0" layoutY="210.0" prefHeight="121.0" prefWidth="232.99997792968497" />
                     <Button id="editProfile" fx:id="changePassButton" layoutX="14.0" layoutY="142.0" mnemonicParsing="false" onMouseClicked="#changePasswordButtonListener" text="Change Password" textFill="WHITE" />
-                    <Pane fx:id="changePassPane" layoutX="250.0" layoutY="46.0" prefHeight="121.0" prefWidth="290.0">
+                    <Pane fx:id="changePassPane" layoutX="250.0" layoutY="35.0" prefHeight="121.0" prefWidth="290.0">
                       <children>
                         <Label id="" fx:id="oldPassLabel" layoutX="14.0" layoutY="5.0" prefHeight="18.132720947265625" prefWidth="92.99998637694807" text="Old Password:" textFill="BLACK" visible="false" />
                         <Label id="" fx:id="newPassLabel1" layoutX="9.0" layoutY="37.0" minHeight="13.1328125" prefHeight="13.1328125" prefWidth="104.0000084472631" text="New Password:" visible="false" />
@@ -88,8 +92,8 @@
                         <PasswordField fx:id="newPassField2" layoutX="110.0" layoutY="65.0" prefWidth="169.0" visible="false" />
                       </children>
                     </Pane>
-                    <Label fx:id="emailLabel" layoutX="93.0" layoutY="85.0" prefWidth="191.0000084472631" text="default" />
-                    <Label fx:id="nameLabel" layoutX="92.0" layoutY="23.0" prefWidth="191.0" text="Label" />
+                    <Label fx:id="emailLabel" font="$x1" layoutX="63.0" layoutY="85.0" prefWidth="191.0000084472631" text="" wrapText="true" />
+                    <Label fx:id="nameLabel" font="$x1" layoutX="71.0" layoutY="22.0" prefWidth="191.0" text="Label" wrapText="true" />
                   </children>
                 </Pane>
                 <Label layoutX="239.0" layoutY="114.0" styleClass="sectionHeader" text="My Profile">
@@ -147,7 +151,7 @@
                     </ListView>
                     <Button layoutX="223.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#addShoppingListListener" text="Add" />
                     <CheckBox fx:id="removeShoppingIngredient" layoutX="16.0" layoutY="41.0" mnemonicParsing="false" onAction="#removeShoppingIngredient" text="Remove" />
-                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="12.0" layoutY="11.0" onAction="#addShoppingListListener" onInputMethodTextChanged="#shoppingListComboListener" onKeyPressed="#shoppingListComboListener" onKeyReleased="#shoppingListComboListener" onKeyTyped="#shoppingListComboListener" prefWidth="254.0" promptText="" visible="true">
+                    <ComboBox fx:id="addShoppingIngredient" disable="false" editable="true" focusTraversable="true" layoutX="13.0" layoutY="11.0" onAction="#addShoppingListListener" onInputMethodTextChanged="#shoppingListComboListener" onKeyPressed="#shoppingListComboListener" onKeyReleased="#shoppingListComboListener" onKeyTyped="#shoppingListComboListener" prefWidth="254.0" promptText="" visible="true">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="Item 1" />
@@ -191,8 +195,8 @@
                   </children>
                 </Group>
                 <Line endX="-100.0" endY="-33.0" layoutX="443.0" layoutY="50.0" startX="-100.0" startY="6.0" />
-                <Label fx:id="welcome" alignment="TOP_RIGHT" layoutX="659.0" layoutY="20.0" prefWidth="335.0" styleClass="infoHeader" text="Welcome &lt;name&gt;!" textAlignment="RIGHT" />
-                <Label fx:id="weather" alignment="TOP_RIGHT" layoutX="659.0" layoutY="37.0" prefHeight="40.0" prefWidth="335.0" styleClass="infoHeader" text="How's the weather in &lt;location&gt;?" textAlignment="RIGHT" />
+                <Label fx:id="welcome" alignment="TOP_RIGHT" layoutX="791.0" layoutY="19.0" prefWidth="203.0" styleClass="infoHeader" text="Welcome &lt;name&gt;!" textAlignment="CENTER" wrapText="true" />
+                <Label fx:id="weather" alignment="TOP_RIGHT" layoutX="787.0" layoutY="37.0" prefHeight="15.600006103515625" prefWidth="207.0" styleClass="infoHeader" text="How's the weather in &lt;location&gt;?" textAlignment="CENTER" />
                 <Label layoutX="34.0" layoutY="91.0" prefHeight="18.999908447265625" styleClass="sectionHeader" text="My Fridge" />
                 <Pane fx:id="noRecipesPane" layoutX="395.0" layoutY="130.0" prefHeight="542.0" prefWidth="246.0">
                   <children>
@@ -338,7 +342,7 @@
                                     <Pane layoutX="281.0" layoutY="16.0" prefHeight="276.1061706542969" prefWidth="251.0" styleClass="section">
                                       <children>
                                         <Button layoutX="178.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.10624885559082" prefWidth="62.999977929684974" text="Add" />
-                                        <ComboBox editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
+                                        <ComboBox id="eventShoppingListComboBox" editable="true" layoutX="9.0" layoutY="38.0" prefWidth="231.0" promptText="New Ingredient">
                                           <items>
                                             <FXCollections fx:factory="observableArrayList">
                                               <String fx:value="Item 1" />
@@ -568,11 +572,7 @@
                     <Font name="Shlop" size="13.0" />
                   </font>
                 </Label>
-                <Label fx:id="lengthRecipeSearchLabel" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false">
-                  <font>
-                    <Font size="12.0" fx:id="x1" />
-                  </font>
-                </Label>
+                <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
               </children>
             </AnchorPane>
           </content>
