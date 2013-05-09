@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 BINDIR=`dirname $0`
-export CLASSPATH=$($BINDIR/jars lib):derived/cwfClient.jar
-$JAVA_HOME/bin/java client.Main "$@"
+export CLASSPATH="$($BINDIR/jars lib):derived/CookingWithFriends.jar"
+$JAVA_HOME/bin/java "client.Main" "$@"
