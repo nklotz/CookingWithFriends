@@ -238,6 +238,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     	nameLabel.setText(_account.getName());
     	locationLabel.setText(_account.getAddress());
     	emailLabel.setText(_account.getID());
+    	populateRestrictions();
+    	populateAllergies();
+    	
     	
     	// Set up Home tab
     	populateUserFridge();
