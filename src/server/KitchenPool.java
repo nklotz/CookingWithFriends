@@ -2,6 +2,7 @@ package server;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javafx.event.Event;
 
@@ -28,25 +29,23 @@ import UserInfo.KitchenName;
 
 public class KitchenPool {
 
-	HashMap<KitchenName, HashSet<String>> _kIDtoUsers;
-	HashMap<String, HashSet<KitchenName>>_userToKitchens ;
-	HashMap<String, Kitchen> _idToKitchen;
+	ConcurrentHashMap<KitchenName, HashSet<String>> _kIDtoUsers;
+	ConcurrentHashMap<String, HashSet<KitchenName>>_userToKitchens ;
+	ConcurrentHashMap<String, Kitchen> _idToKitchen;
 	DBHelper _helper;
 	ClientPool _clients;
 	
 	public KitchenPool(DBHelper helper, ClientPool clients){
-		_kIDtoUsers = new HashMap<KitchenName, HashSet<String>>();
-		_userToKitchens = new HashMap<String, HashSet<KitchenName>>();
-		_idToKitchen = new HashMap<String, Kitchen>();
+		_kIDtoUsers = new ConcurrentHashMap<KitchenName, HashSet<String>>();
+		_userToKitchens = new ConcurrentHashMap<String, HashSet<KitchenName>>();
+		_idToKitchen = new ConcurrentHashMap<String, Kitchen>();
 		_helper = helper;
 		_clients = clients;
 	}
 	
 	public void removeUserIngredient(String userID, Ingredient ing){
-		System.out.println("systimatically removing " + ing.getName() + " from ktichens belonging to " + userID);
 		for(KitchenName kn: _userToKitchens.get(userID)){
-			Kitchen k = _idToKitchen.get(kn.getID());
-			
+			Kitchen k = _idToKitchen.get(kn.getID());	
 			k.removeIngredient(userID, ing);
 			updateKitchenReferences(k);
 			broadCastKitchen(k);
@@ -108,8 +107,6 @@ public class KitchenPool {
 		//removing a user from a kitchen
 		Kitchen k = _idToKitchen.get(kID);
 		
-		System.out.println("before: "+ k);
-		
 		//remove ingredients that user contributed
 		HashMap<Ingredient, HashSet<String>> imap = k.getIngredientsMap();
 		
@@ -161,7 +158,6 @@ public class KitchenPool {
 			
 		_userToKitchens.get(userID).remove(k.getKitchenName());
 
-		System.out.println("after: "+ k);
 		updateKitchenReferences(k);
 		broadCastKitchen(k);
 		
@@ -177,7 +173,6 @@ public class KitchenPool {
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
 		
 		KitchenName n = new KitchenName(kitchen.getName(), kitchen.getID());
-
 
 	}
 	
@@ -317,10 +312,6 @@ public class KitchenPool {
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	  			System.out.println("CASE 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
-	  			break;
-	  		case 15:
-	  			System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this should be handled by invite");
-	  			//k.addRequestedUser(request.getUsername());
 	  			break;
 	  		case 16:
 	  			System.out.println("CASE 16");
