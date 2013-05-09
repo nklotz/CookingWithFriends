@@ -455,11 +455,6 @@
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Text scaleX="0.9970780252623607" scaleY="1.0201407822986577" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sectionHeader" text="Create a New Event!" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                     <TextField fx:id="newEventNameField" alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="213.0" promptText="Enter a name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                                      <font>
-                                        <Font name="System Bold" size="13.0" />
-                                      </font>
-                                    </Text>
                                     <Button fx:id="createEventButton" alignment="CENTER" mnemonicParsing="false" onAction="#createEventListener" text="Create Event!" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                                       <children>
@@ -497,6 +492,11 @@
                                         </ComboBox>
                                       </children>
                                     </HBox>
+                                    <Text id="eventActionText" fx:id="newEventActionText" fill="FIREBRICK" strokeType="OUTSIDE" strokeWidth="0.0" text="You fucked up!" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                                      <font>
+                                        <Font name="System Bold" size="13.0" />
+                                      </font>
+                                    </Text>
                                   </children>
                                   <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="99.0" />

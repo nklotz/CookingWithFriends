@@ -1293,57 +1293,44 @@ public class Controller2 extends AnchorPane implements Initializable {
 	
 	public void createEventListener(){
     	String name = newEventNameField.getText();
-    	if(name.length()>Utils.MAX_FIELD_LEN){
-    		newEventActionText.setText("Name too long.");
-    		newEventActionText.setVisible(true);
-    		return;
-    	}
+    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     	boolean validDate = false;
-    	System.out.println("name: " + name);
-    	Date date = eventDatePicker.getSelectedDate();
-    	if(name!=null && date!=null && name.trim().length()!= 0
+    	boolean validName = false;
+    	if(kitchens.get(_client.getCurrentKitchen())!=null && name!=null && eventDatePicker.getSelectedDate() !=null && name.trim().length()!= 0
     			&& hour.getValue()!= null && min.getValue() != null && amPm.getValue()!=null){
-	    	//getting yesterday
-	    	Calendar cal = Calendar.getInstance();
-	    	cal.add(Calendar.DATE, -1);
-	    	Date yesterday = cal.getTime();
-	    	validDate = date.after(yesterday);
-	    	if (validDate){
-		    	System.out.println("date: " + date.toString());
-		    	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
-		    	System.out.println("time: " + time);
-		    	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
-		    	System.out.println("at the first wall");
-	    		newEventActionText.setVisible(false);
-	    		if(kitchens.get(_client.getCurrentKitchen())!=null){
-	    			System.out.println("past the first wall");
-	    			System.out.println("kitchens: " + kitchens.get(_client.getCurrentKitchen()));
-	    			Kitchen k = kitchens.get(_client.getCurrentKitchen());
-	    			System.out.println("this is the kitchen: " + k);
-	    			KitchenEvent event = new KitchenEvent(name,date,time,k);
-	    			_currentEventName = name;
-	            	_client.addEvent(k.getID(), event);
-	            	System.out.println("sent event");
-	            	//populateEventSelector();
-	            	eventTabPane.getSelectionModel().select(eventTab);
-	    		}
+    		//Name
+    		Kitchen k = kitchens.get(_client.getCurrentKitchen());
+    		if (k.getEvents().contains(new KitchenEvent(name, null, null, k))){
+    			newEventActionText.setText("You already have an event by that name.");
+    			return;
+    		} else {
+    			validName = true;
+    		}
+	    	if(name.length()>Utils.MAX_FIELD_LEN){
+	    		newEventActionText.setText("Name too long.");
+	    		newEventActionText.setVisible(true);
+	    		return;
 	    	}
-    		
+	    	//Date
+	    	Date date = eventDatePicker.getSelectedDate();
+		    //getting yesterday
+		    Calendar cal = Calendar.getInstance();
+		    cal.add(Calendar.DATE, -1);
+		    Date yesterday = cal.getTime();
+		    validDate = date.after(yesterday);
+		    if (validDate){
+			   	String time = hour.getValue() + ":" + min.getValue() + " " + amPm.getValue();
+		    	newEventActionText.setVisible(false);
+	    		KitchenEvent event = new KitchenEvent(name,date,time,k);
+	    		_currentEventName = name;
+	           	_client.addEvent(k.getID(), event);
+	           	eventTabPane.getSelectionModel().select(eventTab);
+		    } else {
+		    	newEventActionText.setText("Can't make an event in the past.");
+		    }
     	} else {
-    		newEventActionText.setText("");
+    		newEventActionText.setText("Please complete all fields");
     		newEventActionText.setVisible(true);
-    		/*if (k.getEvents().contains(new KitchenEvent(name, date, kitchens.get(_client.getCurrentKitchen()))) { //TODO: This probably won't work
-    			//TODO: do this check outside this else
-    			//TODO: Finish this check
-    		} else*/ 
-    		if (!validDate){
-    			newEventActionText.setText("Can't create an event in the past.");
-    		} else if (hour.getValue() == null || min.getValue() == null || amPm.getValue() == null){
-    			newEventActionText.setText("Invalid time!");
-    		}
-    		else {
-    			newEventActionText.setText("you fucked up!");
-    		}
     	}
     	
    // 	System.out.println("TEXT: " + createEventField.getText());
@@ -1400,22 +1387,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 		} else {
 			disableEvents();
 		}
-		
-		
-		
-//		if(eventSelector.getValue()== null && _currentEventName !=null){
-//			System.out.println("value was null but current event is " + _currentEventName);
-//			eventSelector.setEditable(true);
-//			eventSelector.setValue(_currentEventName);
-//			eventSelector.setEditable(false);
-//			System.out.println("I WOULD display event: " + _currentEventName);
-//		}
-//		else if(eventSelector.getValue() != null && !eventSelector.getValue().equals("Select an Event")){
-//			System.out.println("setting current event to " + eventSelector.getValue());
-//			_currentEventName = eventSelector.getValue();
-//			populateEventMenu();
-//			populateEventShoppingList();
-//		}
 	}
 	
 	private void disableEvents(){
@@ -1518,6 +1489,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 		populateEditEventTime();
 		_newTimeShouldDisplay = true;
 		eventNameEdit.setText(getCurrentEvent().getName());
+		editDatePicker.setSelectedDate(getCurrentEvent().getDate());
 		editPane.setVisible(true);
 		
 	}
