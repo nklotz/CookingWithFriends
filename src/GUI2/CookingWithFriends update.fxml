@@ -65,9 +65,6 @@
                   </children>
                 </Pane>
                 <Label layoutX="629.0" layoutY="95.0" styleClass="sectionHeader" text="My Profile">
-                  <stylesheets>
-                    <URL value="@style.css" />
-                  </stylesheets>
                 </Label>
                 <Pane layoutX="86.0" layoutY="123.0" prefHeight="525.0" prefWidth="412.0" styleClass="section">
                   <children>
@@ -101,9 +98,6 @@
                       </children>
                     </Pane>
                   </children>
-                  <stylesheets>
-                    <URL value="file:/gpfs/main/home/jschear/course/cs032/CookingWithFriends/src/GUI2/style.css" />
-                  </stylesheets>
                 </Pane>
                 <Pane fx:id="changePassPane" layoutX="608.0" layoutY="86.0" prefHeight="184.0" prefWidth="348.0" styleClass="section" visible="false">
                   <children>
