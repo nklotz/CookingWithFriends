@@ -13,9 +13,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller2">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" scaleX="0.9" scaleY="0.9" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI2.Controller2">
   <children>
-    <TabPane fx:id="tabPane" disable="false" focusTraversable="true" layoutX="0.0" layoutY="0.0" prefHeight="768.0" prefWidth="1024.0" rotateGraphic="false" side="TOP" tabClosingPolicy="UNAVAILABLE">
+    <TabPane fx:id="tabPane" disable="false" focusTraversable="true" layoutX="1.0" layoutY="1.0" prefHeight="768.0" prefWidth="1024.0" rotateGraphic="false" side="TOP" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab fx:id="profileTab" text="Profile">
           <content>
@@ -64,8 +64,7 @@
                     <Label fx:id="emailLabel" layoutX="93.0" layoutY="80.0" text="Label" />
                   </children>
                 </Pane>
-                <Label layoutX="629.0" layoutY="95.0" styleClass="sectionHeader" text="My Profile">
-                </Label>
+                <Label layoutX="629.0" layoutY="95.0" styleClass="sectionHeader" text="My Profile" />
                 <Pane layoutX="86.0" layoutY="123.0" prefHeight="525.0" prefWidth="412.0" styleClass="section">
                   <children>
                     <Label layoutX="0.0" layoutY="-25.0" styleClass="sectionHeader" text="About" />
@@ -594,7 +593,7 @@
                 <Label layoutX="367.0" layoutY="208.0" styleClass="sectionHeader" text="Results" />
                 <Label fx:id="NoSearchResults" layoutX="482.0" layoutY="182.0" prefHeight="40.858642578125" prefWidth="506.0" text="No Search Results :(" textFill="WHITE" visible="false" wrapText="true">
                   <font>
-                    <Font name="Shlop" size="13.0" />
+                    <Font size="14.0" />
                   </font>
                 </Label>
                 <Label fx:id="lengthRecipeSearchLabel" font="$x1" layoutX="453.0" layoutY="184.0" prefWidth="470.0" text="" textFill="WHITE" visible="false" />
