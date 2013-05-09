@@ -271,7 +271,7 @@ public class Controller2 implements Initializable {
 	public void initializeComboBoxes(){
 		kitchenSelector.getItems().clear();
 		//eventSelector.getItems().clear();
-	//	eventShoppingComboBox.getItems().clear();
+		eventIng.getItems().clear();
     	addRestrictionBar.getItems().clear();
     	newIngredient.getItems().clear();
     	addAllergyBar.getItems().clear();
