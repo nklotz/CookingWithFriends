@@ -41,7 +41,7 @@
 
 .sectionHeader {
 	-fx-font: 16px Tahoma; 
-	-fx-font-weight: bolder; 
+	-fx-font-weight: bold; 
 	-fx-text-fill: lightgray;
 }
 
