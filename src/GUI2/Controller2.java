@@ -1398,6 +1398,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 		} else {
 			disableEvents();
 		}
+
+		for(EventIngredientBox s: eventShoppingList.getItems()){
+			RemoveButton rButton = s.getRemover();
+			rButton.setVisible(removeIngFromEvent.isSelected());
+		}
 	}
 	
 	private void disableEvents(){
