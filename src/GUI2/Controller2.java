@@ -145,7 +145,7 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Label changePassErrorLabel;
     @FXML private TabPane eventTabPane;
     @FXML private Tab kitchenIngTab;
-
+    @FXML private Pane searchPromptPane;
     @FXML private Label lengthRecipeSearchLabel;
 
     @FXML private GridPane eventGridPane;
@@ -180,6 +180,8 @@ public class Controller2 extends AnchorPane implements Initializable {
     @FXML private Text editEventActionText;
     @FXML private Label addIngredientActionLabel;
     @FXML private Label shoppingListActionLabel;
+    @FXML private Pane noEventRecipePane;
+    
     //Date Picker
     private DatePicker eventDatePicker;
     private DatePicker editDatePicker;
@@ -855,7 +857,7 @@ public class Controller2 extends AnchorPane implements Initializable {
 							System.out.println(_client.getCurrentKitchen().getID() + " != " + id);
 							System.out.println("SETTING CURRENT EVENT NAME TO NULL");
 							_currentEventName = null;
-							//clearEventPane();
+							disableEvents();
 							
 						}
 					}
@@ -1189,6 +1191,9 @@ public class Controller2 extends AnchorPane implements Initializable {
             
             KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
             e.addRecipe(r);
+            
+            
+            
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
         }
 
@@ -1379,12 +1384,14 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 		
 		if(eventSelector.getValue()!=null){
-			displayEventInfo();
-			enableEvents();
-			populateEventMenu();
-			populateEventShoppingList();
-			//populateEventSelector();
-			displayMessages();
+			if(getCurrentEvent()!= null){
+				displayEventInfo();
+				enableEvents();
+				populateEventMenu();
+				populateEventShoppingList();
+				//populateEventSelector();
+				displayMessages();
+			}
 		} else {
 			disableEvents();
 		}
@@ -1415,6 +1422,9 @@ public class Controller2 extends AnchorPane implements Initializable {
 		eventCommentDisplayField.setText("");
 		eventCommentWriteField.setText("");
 		eventRecipes.getChildren().clear();
+		eventShoppingList.getItems().clear();
+		eventRecipes.getChildren().clear();
+		
 	}
 	
 	private void disableEventsLite(){
@@ -1606,7 +1616,9 @@ public class Controller2 extends AnchorPane implements Initializable {
     		if(k!=null){
     			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
     			if (e != null){
+    				noEventRecipePane.setVisible(true);
 					for (Recipe recipe : e.getMenuRecipes()){
+						noEventRecipePane.setVisible(false);
 						eventRecipes.getChildren().add(new RecipeBox(recipe, this, k, e, _client));
 					}
     			}
@@ -1902,20 +1914,11 @@ public class Controller2 extends AnchorPane implements Initializable {
 					dummyList, _currentKitchenPane.getRestrictions(), _currentKitchenPane.getAllergies());
 			
 			if (results.size() == 0) {
-				System.out.println("no results!!");
-				String message = "Your search didn't yield any results.\n You searched for:  /'" + searchField.getText() + "/'\n";
-				if (selectedIngredients.size() != 0) {
-					message += "with required ingredients: ";
-					for (int i = 0; i < selectedIngredients.size(); i++){
-						message += selectedIngredients.get(i);
-						if(i != selectedIngredients.size() - 1)
-							message += ", ";
-					}
-				}
-				NoSearchResults.setText(message);
+				searchPromptPane.setVisible(true);
 				NoSearchResults.setVisible(true);
 			}
 			else {
+		    	searchPromptPane.setVisible(false);
 				for (Recipe recipe : results)
 					resultsFlow.getChildren().add(new RecipeBox(recipe, this));
 			}
