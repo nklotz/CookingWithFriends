@@ -537,14 +537,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 		}
 		public void setPassFieldsVisible(boolean display){
 			changePassPane.setVisible(display);
-			oldPassField.setVisible(display);
-			newPassField1.setVisible(display);
-			newPassField2.setVisible(display);
-			savePassButton.setVisible(display);
-			cancelPassButton.setVisible(display);
-			oldPassLabel.setVisible(display);
-			newPassLabel1.setVisible(display);
-			newPassLabel2.setVisible(display);
 		}
 		public void savePassButtonListener(){
 			System.out.println("SAVE PASS");
@@ -778,7 +770,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 	        Stage stage = new Stage();
 	        stage.setScene(new Scene(p));
 	        stage.setTitle("Text Shopping List");
-	        stage.initModality(Modality.APPLICATION_MODAL);
 	        smsController.setUp(stage, new ArrayList<Ingredient>(_account.getShoppingList()));
 		    stage.show();
 		} catch (IOException e) {
@@ -1603,7 +1594,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 			        Stage stage = new Stage();
 			        stage.setScene(new Scene(p));
 			        stage.setTitle("InviteChef");
-			        stage.initModality(Modality.APPLICATION_MODAL);
 				    stage.show();
 				} catch (IOException e) {
 					System.out.println("ERROR: IN GUI 2 Frame");
@@ -1831,7 +1821,6 @@ public class Controller2 extends AnchorPane implements Initializable {
 			Stage stage = new Stage();
 	        stage.setScene(new Scene(p));
 	        stage.setTitle("View Recipe");
-	        stage.initModality(Modality.APPLICATION_MODAL);
 	        //stage.sizeToScene();
 		    //stage.centerOnScreen();
 		    stage.show();		
