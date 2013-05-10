@@ -79,13 +79,11 @@ public class KitchenPool {
 	public void addUserAllergy(String userID, String allergy){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			_idToKitchen.get(kn.getID()).addAllergy(allergy, userID);
-			System.out.println(_idToKitchen.get(kn.getID()));
 			broadCastKitchen(_idToKitchen.get(kn.getID()));
 		}
 	}
 	
 	public void addRequestedUser(KitchenName kn, String userID){
-		System.out.println("adding requested user");
 		Kitchen k = _idToKitchen.get(kn.getID());
 		k.addRequestedUser(userID);
 		broadCastKitchen(k);
@@ -101,9 +99,7 @@ public class KitchenPool {
 		return null;
 	}
 	
-	public void removeUserFromKitchen(String userID, String kID){
-		System.out.println("ermoving " + userID + " from " + kID);
-		
+	public void removeUserFromKitchen(String userID, String kID){		
 		//removing a user from a kitchen
 		Kitchen k = _idToKitchen.get(kID);
 		
@@ -181,7 +177,6 @@ public class KitchenPool {
 	 * active users
 	 */
 	public void addNewKitchen(Kitchen kitchen){
-		System.out.println("add newly created kitchen to pool!!!");
 		
 		_idToKitchen.put(kitchen.getID(), kitchen);
 		_kIDtoUsers.put(kitchen.getKitchenName(), kitchen.getActiveUsers());
@@ -267,24 +262,19 @@ public class KitchenPool {
 	}
 	
 	public void updateKitchen(Request request){
-		System.out.println("I'm updating a kitchennnn " + request.getKitchenID());
 		if(request.getKitchenID()==null ){
 			return;
 		}
 		Kitchen k = getKitchen(request.getKitchenID());
 		if(k==null){
-			System.out.println("kitchen isn't active!");
 			k = _helper.getKitchen(request.getKitchenID());
 			if(k==null){
-				System.out.println("kitchen DOESN'T EXIST!");
 				return;
 			}
 		}
 		
-		System.out.println("update type: " + request.getType());
 		switch (request.getType()){
 			case 3: //add user to kitchen
-	  			System.out.println("ADDING USER " +  request.getKitchenUserID() + " to kitchen");
 				k.addActiveUser(request.getAccount());
 				break;
 			case 4: //remove user from kitchen
@@ -295,9 +285,6 @@ public class KitchenPool {
 		  		k.addEvent(request.getEvent());
 		  		break;
 		  	case 6: //remove event from kitchen
-		  		System.out.println("well I am running it and about to remove it");
-		  		System.out.println("what the fuck is null? is it k: " + k + " ...is it request: " + request);
-		  		System.out.println("...is it request event: " + request.getEvent());
 		  		k.removeEvent(new KitchenEvent(request.getEvent().getName(), null, null, k));
 		  		break;
 		  	case 7: //add recipe to kitchen
@@ -310,14 +297,10 @@ public class KitchenPool {
 		  		k.addIngredient(request.getUsername(), request.getIngredient());
 	  			break;	
 	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	  			System.out.println("CASE 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
 	  			break;
 	  		case 16:
-	  			System.out.println("CASE 16");
-	  			System.out.println(k);
 	  			k.removeRequestedUser(request.getUsername());
-	  			System.out.println(k);
 	  			break;
 	  		case 17:
 	  			KitchenEvent e = k.getEvent(new KitchenEvent(request.getEventName(), null, k));
@@ -327,7 +310,6 @@ public class KitchenPool {
 	  		case 20:
 	  			KitchenEvent messagEvent = k.getEvent(new KitchenEvent(request.getEventName(), null, k));
 	  			messagEvent.addMessages(request.getNewMessages());
-	  			System.out.println("added messages!");
 	  			k.addEvent(messagEvent);
 	  			break;
 	  		case 34:
