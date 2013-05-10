@@ -349,7 +349,6 @@ public class Controller2 implements Initializable {
 			return;
 		}
 		
-		System.out.println(profileEditor.getText());
 		if(profileEditor.getText().equals("Edit Profile")){
 			nameField.setVisible(true);
 			locationField.setVisible(true);
@@ -425,7 +424,6 @@ public class Controller2 implements Initializable {
 	
     public void restrictionComboListener(){
     	String text = addRestrictionBar.getEditor().getText();
-    	System.out.println("hurr");
     	addRestrictionBar.getEditor().setText("Select a Restriction to add it");
     	List<String> suggs = null;
     	if(text.trim().length()!=0)
@@ -553,7 +551,6 @@ public class Controller2 implements Initializable {
 			changePassPane.setVisible(display);
 		}
 		public void savePassButtonListener(){
-			System.out.println("SAVE PASS");
 			String old = oldPassField.getText();
 			if(old.length()>Utils.MAX_FIELD_LEN){
 				changePassErrorLabel.setText("You may not enter a password greater than " + Utils.MAX_FIELD_LEN + " chars.");
@@ -561,7 +558,6 @@ public class Controller2 implements Initializable {
 			}
 			if(old!=null&&old.trim().length()!=0){
 				//Will receive a boolean, which will call the changePass method if true.
-				System.out.println("SHOULD CALL CLIENT PASS MATCH.");
 				_client.passwordMatches(_account.getID(), old);
 			}
 			else{
@@ -628,7 +624,6 @@ public class Controller2 implements Initializable {
     	}
     	
     	public void remove(){
-    		System.out.println("removing ingredient " + _toDisplay);
     		Ingredient ing = new Ingredient(_toDisplay);
     		_account.removeIngredient(ing);
     		_client.storeAccount(_account, ing);
@@ -813,7 +808,6 @@ public class Controller2 implements Initializable {
 	 */
 
 	public void populateKitchenSelector(){
-		System.out.println("POPULATE");
 		_kitchenIds = _client.getKitchenIdMap();
 
 		kitchenSelector.getItems().clear();
@@ -836,7 +830,6 @@ public class Controller2 implements Initializable {
 							setText("Select Kitchen");
 							super.updateItem("Select Kitchen", empty);
 						} else {
-							System.out.println(_kitchenIds);
 							setText(_kitchenIds.get(name).getName());
 							
 						}
@@ -848,7 +841,6 @@ public class Controller2 implements Initializable {
 		kitchenSelector.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e){
-				System.out.println("I have been clicked! " + kitchenSelector.getValue());
 				
 				//disable the pane that hides everything
 				kitchenJunk.setDisable(false);
@@ -858,8 +850,6 @@ public class Controller2 implements Initializable {
 				if(id!= null){
 					if(_client.getCurrentKitchen()!= null){
 						if(!_client.getCurrentKitchen().getID().equals(id)){
-							System.out.println(_client.getCurrentKitchen().getID() + " != " + id);
-							System.out.println("SETTING CURRENT EVENT NAME TO NULL");
 							_currentEventName = null;
 							disableEvents();
 							
@@ -869,16 +859,9 @@ public class Controller2 implements Initializable {
 						@Override
 						protected void updateItem(String name, boolean empty) {
 							super.updateItem(name, empty);
-							
-							System.out.println("updataesetButtonCell");
-							System.out.println(name ==null);
-							System.out.println(empty);
-							System.out.println(!_kitchenSelectorDisplay);
 							if (name == null || empty) {
 								setText("Select Kitchen");
 							} else {
-								System.out.println("nameeee ? " + name);
-								System.out.println("kitchen nmae ? " + _kitchenIds.get(name));
 								setText(_kitchenIds.get(name).getName());
 							}
 						}
@@ -894,7 +877,6 @@ public class Controller2 implements Initializable {
 	}
 	
 	public void displayKitchen(KitchenName kn){
-		System.out.println("I WANT TO DISPLAY KITCHEN: " + kn.getName() + "   -->  " + kn.getID());
 		
 		populateUserIngredientsInKitchen();
 		
@@ -1022,7 +1004,6 @@ public class Controller2 implements Initializable {
     	} else {
     		populateEventSelector();
     	}
-		System.out.println("ABOVE LOAD EVENT");
 		//if (_currentEventName != null){
 			loadEvent();
 		//}
@@ -1048,7 +1029,6 @@ public class Controller2 implements Initializable {
     	}
     	
     	public void remove(){
-    		System.out.println("removing ingredient " + _ing);
     		Ingredient ing = new Ingredient(_ing);
     		_client.removeIngredient(_client.getCurrentKitchen().getID(), ing);
     		ObservableList<UserIngredientBox> listItems = fridgeList.getItems();
@@ -1085,7 +1065,6 @@ public class Controller2 implements Initializable {
 	
 	public void reDisplayKitchen() {
 		if(_client.getCurrentKitchen() != null){
-			//System.out.println("I would redisplay");
 			displayKitchen(_client.getCurrentKitchen());
 		}
 	}
@@ -1130,7 +1109,6 @@ public class Controller2 implements Initializable {
 	public void leaveKitchen(){
 
 		if(kitchenSelector.getValue()!=null){
-			System.out.println("leavvving");
 			clearKitchenDisplay();
 			_currentEventName = null;
 			eventSelector.setValue(null);
@@ -1169,7 +1147,6 @@ public class Controller2 implements Initializable {
 			this.setOnDragDetected(new EventHandler <MouseEvent>() {
 	            public void handle(MouseEvent event) {
 	                /* drag was detected, start drag-and-drop gesture*/
-	                System.out.println("onDragDetected");
 	                
 	                /* allow any transfer mode */
 	                Dragboard db = _self.startDragAndDrop(TransferMode.ANY);
@@ -1197,7 +1174,6 @@ public class Controller2 implements Initializable {
 		Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            System.out.println("Dropped: " + db.getString());
             success = true;
             _client.addIngredient(_client.getCurrentKitchen().getID(), new Ingredient(db.getString()));
         }
@@ -1205,26 +1181,20 @@ public class Controller2 implements Initializable {
 	}
 	
 	@FXML void acceptRecipe(DragEvent event){
-		System.out.println("IN ACCEPT RECIPE");
 		Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            System.out.println("RECIPE Dropped: " + db.getString());
             success = true;
             Recipe r  = getRecipeBoxFromString(db.getString()); 
-            System.out.println(r);
             
             HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     		Kitchen k = kitchens.get(_client.getCurrentKitchen());
             KitchenEvent e = _client.getKitchens().get(_client.getCurrentKitchen()).getEvent(new KitchenEvent(_currentEventName, null, null));
             e.addRecipe(r);
             Set<Ingredient> diff = r.getIngredientDifference(k.getIngredients());
-            System.out.println("ABOVE ADDING ING");
             for(Ingredient i: diff){
-            	System.out.println("ADDING INGREDIENT");
             	e.addShoppingIngredient(i);
             }
-            System.out.println("EVENT SHOPPING IS NOW: " + e.getShoppingIngredients());
             populateEventShoppingList();
 
             _client.addEvent(_client.getCurrentKitchen().getID(), e);
@@ -1253,7 +1223,6 @@ public class Controller2 implements Initializable {
 	}
 	
 	public void populateEventTime(ComboBox<String> a, ComboBox<String> b, ComboBox<String> c){
-		System.out.println("CALLING POPULATE EVENT TIME");
 		a.getItems().clear();
 		//hour.setItems(null);
 		a.setValue(null);
@@ -1359,7 +1328,6 @@ public class Controller2 implements Initializable {
     		newEventActionText.setVisible(true);
     	}
     	
-   // 	System.out.println("TEXT: " + createEventField.getText());
     }
 	
     public void addEventShoppingListListener() {
@@ -1468,7 +1436,6 @@ public class Controller2 implements Initializable {
     	}
     	
     	public void remove(){
-    		System.out.println("removing ingredient " + _toDisplay);
     		Ingredient ing = new Ingredient(_toDisplay);
     		
     		KitchenEvent e = getCurrentEvent();
@@ -1498,7 +1465,6 @@ public class Controller2 implements Initializable {
 	
 	private void displayEventInfo(){
 		KitchenEvent event = getCurrentEvent();
-		System.out.println("event, mofucka: " + event);
 		eventDate.setText(sdf.format(event.getDate()));
 		eventTime.setText(event.getTime());
 	}
@@ -1538,9 +1504,7 @@ public class Controller2 implements Initializable {
     	cal.add(Calendar.DATE, -1);
     	Date yesterday = cal.getTime();
     	boolean validDate = date.after(yesterday);
-    	System.out.println("date: " + date.toString());
     	String time = editHour.getValue() + ":" + editMin.getValue() + " " + editAmPm.getValue();
-    	System.out.println("time: " + time);
     	HashMap<KitchenName, Kitchen> kitchens = _client.getKitchens();
     	if(date!=null && validDate//TODO: what are the combo boxes' default 
     			&& editHour.getValue()!= null && editMin.getValue() != null && editAmPm.getValue()!=null){
@@ -1554,7 +1518,6 @@ public class Controller2 implements Initializable {
             	postChangeAsMessage(time, date);
             	//eventTabPane.getSelectionModel().select(eventTab);
             	cancelEditListener();
-            	System.out.println(_currentEventName);
     		}
     		
     	} else {
@@ -1573,8 +1536,6 @@ public class Controller2 implements Initializable {
 	}
 	
 	public void deleteEvent(){
-
-		System.out.println("leavvving event");
 		_client.removeEvent(_client.getCurrentKitchen().getID(), getCurrentEvent());
 		_currentEventName = null;
 		eventSelector.setValue(null);
@@ -1610,10 +1571,6 @@ public class Controller2 implements Initializable {
 					}
 				}
 			});
-			//DBUG
-			for (String e : k.getEventNames()){
-				System.out.println("an event: " + e);
-			}
 		}
 		//eventSelector.setValue(null);
 		
@@ -1660,12 +1617,9 @@ public class Controller2 implements Initializable {
     		if(k!=null){
     			KitchenEvent e = k.getEvent(new KitchenEvent(_currentEventName, null, k));
     			if (e != null){
-    				System.out.println("event: " + e);
-    				System.out.println("messages: " + e.getMessages());
     				String messages = e.getMessages().toString();
     				//eventCommentDisplayField.setVisible(false);
     				eventCommentDisplayField.setText(messages);
-    				System.out.println("about to move caret");
     				eventCommentDisplayField.positionCaret(messages.length());
     				//eventCommentDisplayField.setVisible(true);
     				//TODO: see if we can make this look less shitty.
@@ -1692,7 +1646,6 @@ public class Controller2 implements Initializable {
 			}
 			eventCommentDisplayField.setText(pre + mid + post);
 			String forServer = mid+post+"\n";
-			System.out.println("trying to add this " + forServer);
 			_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 		}
 	}
@@ -1708,7 +1661,6 @@ public class Controller2 implements Initializable {
 			mid = id;
 		}
 		String forServer = mid+ " changed the date/time of this event to " + post + "\n";
-		System.out.println("trying to add this " + forServer);
 		_client.addMessageToEvent(_currentEventName, forServer, _client.getCurrentKitchen().getID());
 	}
     
@@ -1748,7 +1700,6 @@ public class Controller2 implements Initializable {
 		String message = "Hi there, \n " + _account.getName() + "(" + _account.getID() +") "
 				+ "wants to invite you to join Cooking with Friends, the social cooking coordinator.";
 		message += "To accept this invitation, you must log in and accept.";
-		System.out.println("SENDING TO : " + email);
 		Sender.send(email, message);
 		
 	}
@@ -1756,7 +1707,6 @@ public class Controller2 implements Initializable {
 	
 	
 	public void checkAndSendEmail(String email){
-		System.out.println("IN CHECK AND SEND EMAIL.");
 		if(email != null){
 			//Will call sendInviteEmail.
 			_client.userInDatabase(email);
@@ -1817,8 +1767,6 @@ public class Controller2 implements Initializable {
 	    		accept.setOnAction(new EventHandler<ActionEvent>(){
 	    			@Override
 	    			public void handle(ActionEvent e){
-	    			//	System.out.println("Accept invitatioN!!!");
-	    				
 	    				_account.getInvitions().remove(_invite.getKitchenID());
 	    				_account.getKitchens().add(_invite.getKitchenID());
 	    				_client.storeAccount(_account);
@@ -1830,9 +1778,7 @@ public class Controller2 implements Initializable {
 	    		Button decline = new Button("Decline");
 	    		decline.setOnAction(new EventHandler<ActionEvent>(){
 	    			@Override
-	    			public void handle(ActionEvent e){
-	    			//	System.out.println("REJECT invitatioN!!!");
-	    				
+	    			public void handle(ActionEvent e){	    				
 	    				_account.getInvitions().remove(_invite.getKitchenID());
 	    				_client.storeAccount(_account);
 	    				_client.removeRequestedKitchenUser(_invite.getKitchenID().getID());
@@ -1855,7 +1801,6 @@ public class Controller2 implements Initializable {
 		HashMap<KitchenName, Invitation> invites = _account.getInvitions();
 		numberOfInvites.setText(Integer.toString(invites.size()));
 
-		System.out.println("user has " + invites.size() + " invitations!!!");
 		if(invites.size()==0){
 			invitationsList.setVisible(false);
 			enablePleasantries(true);
@@ -2110,7 +2055,6 @@ public class Controller2 implements Initializable {
     		addShoppingIngredient.getItems().clear();
     		List<String> suggs = null;
     		if(text.trim().length()!=0){
-    			System.out.println("TEXT: " + text);
 	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
 
 	    	    if(suggs!=null){
@@ -2131,7 +2075,6 @@ public class Controller2 implements Initializable {
     		newIngredient.getItems().clear();
     		List<String> suggs = null;
     		if(text.trim().length()!=0){
-    			System.out.println("TEXT: " + text);
 	    		suggs = _engines.getIngredientSuggestions(text.toLowerCase());
 
 	    	    if(suggs!=null){
@@ -2148,7 +2091,6 @@ public class Controller2 implements Initializable {
 
 	public void eventIngredientComboListener(){
 		String text = eventIng.getEditor().getText();
-		System.out.println("EVENT COMBO: " + text);
     	if(text != null){
     		eventIng.getItems().clear();
     		List<String> suggs = null;

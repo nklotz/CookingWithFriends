@@ -1,5 +1,5 @@
 /**
- * 
+ * The database. We use mongodb. We have username-pass word db, username-account, and username-kitchens.
  */
 package Database;
 import java.io.BufferedReader;
@@ -93,7 +93,6 @@ public class DBHelper implements DBHelperInterface{
 
 	@Override
 	public Account getAccount(String username) {
-		System.out.println("Making object in db helper get account.");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		DBCursor cursor = userCollection_.find(searchQuery);
@@ -101,9 +100,7 @@ public class DBHelper implements DBHelperInterface{
 		while (cursor.hasNext()) {
 			String s  = cursor.next().get("account").toString();
 			return (Account)getObjectFromString(s);
-			//System.out.println(cursor.next());
 		}
-		System.out.println("GET ACCOUNT RETURNING NULL");
 		return null;
 	}
 
@@ -131,7 +128,6 @@ public class DBHelper implements DBHelperInterface{
 		
 		DBCursor cursor = kitchenCollection_.find(searchQuery);
 		while (cursor.hasNext()) {
-			//System.out.println(cursor.next());
 			String s = cursor.next().get("kitchen").toString();
 			return (Kitchen)getObjectFromString(s);
 		}
@@ -150,7 +146,6 @@ public class DBHelper implements DBHelperInterface{
 		
 		//Adds it if it doesn't exist  currently.
 		if(kitchenCollection_.find(searchQuery).length() == 0){
-			System.out.println("kitchen wasn't in DB");
 			kitchenCollection_.insert(document);
 		}
 		//Otherwise remove the current object, and add the new kitchen.
@@ -166,7 +161,6 @@ public class DBHelper implements DBHelperInterface{
 	 * @return Password to return so client can display it.
 	 */
 	public String changePasswordGivenPassword(String username, String pass){
-		System.out.println("CHANGING TO: " + pass);
 		storeUsernamePassword(username, pass);
 		return pass;
 	}
@@ -177,9 +171,7 @@ public class DBHelper implements DBHelperInterface{
 	 * @return Password to return so client can display it.
 	 */
 	public String changePassword(String username){
-		System.out.println("IN DB CHANGE PASSWORD!!!!");
 		String pass = generateRandomPassword();
-		System.out.println("CHANGING TO: " + pass);
 		storeUsernamePassword(username, pass);
 		return pass;
 	}
@@ -208,7 +200,6 @@ public class DBHelper implements DBHelperInterface{
 	
 	@Override
 	public boolean checkUsernamePassword(String username, String password) {
-		System.out.println("IN DB CHECK USERNAME PASSWORD");
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("username", username);
 		if(inDatabase(username)){
@@ -295,21 +286,6 @@ public class DBHelper implements DBHelperInterface{
     	
     }
 	
-//    /**
-//     * Returns true if it is a valid username, ie if nobody already has that username.
-//     */
-//	public boolean uniqueUsername(String username){
-//		System.out.println("IN DATABASE: " + username);
-//		BasicDBObject searchQuery = new BasicDBObject();
-//		searchQuery.put("username", username);
-//		DBCursor cursor = userPassCollection_.find(searchQuery);
-//		System.out.println("CURSOR: " + cursor);
-//		if(cursor.size() !=0) {
-//			
-//			return false;
-//		}
-//		return true;
-//	}
 	
     /**
      * Returns true if it is a valid username, ie if nobody already has that username.
@@ -322,10 +298,8 @@ public class DBHelper implements DBHelperInterface{
 		DBCursor cursor = userPassCollection_.find(searchQuery);
 		System.out.println("CURSOR: " + cursor);
 		if(cursor.size() !=0) {
-			System.out.println("REUTRNING TRUE");
 			return true;
 		}
-		System.out.println("RETURNING FALSE");
 		return false;
 	}
 	

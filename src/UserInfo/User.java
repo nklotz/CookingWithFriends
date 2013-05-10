@@ -19,8 +19,6 @@ public class User implements Serializable{
 	private HashSet<String[]> _kitchens;
 	private String _address;
 	private String _id;
-	//private String _password;
-	//private Preferences _preferences;
 	private HashSet<String> _restrictions;
 	
 	public User(HashSet<String[]> kitchensPairs, String address, String id, HashSet<String> restrictions){
@@ -28,12 +26,10 @@ public class User implements Serializable{
 		_address = address;
 		_id = id;
 		_restrictions = restrictions;
-		//_password = password;
 	}
 	
 	public User(String id){
 		_id = id;
-		//_password = password;
 		_kitchens = new HashSet<String[]>();
 		_restrictions = new HashSet<String>();
 	}
@@ -53,14 +49,6 @@ public class User implements Serializable{
 	public String getID(){
 		return _id;
 	}
-	
-	/**
-	 * Returns the password.
-	 * @return String password.
-//	 */
-//	public String getPassword(){
-//		return _password;
-//	}
 	
 	/**
 	 * Adds a kitchen to the user.
@@ -96,14 +84,6 @@ public class User implements Serializable{
 	public void setRestrictions(HashSet<String> restrictions){
 		_restrictions = restrictions;
 	}
-	
-	/**
-	 * Sets the user's preferences.
-	 * @param pref Preferences for the user to set.
-	 */
-//	public void setPreferences(Preferences pref){
-//		_preferences = pref;
-//	}
 	
 	public void setAddress(String add){
 		_address = add;
