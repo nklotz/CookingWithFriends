@@ -11,8 +11,11 @@ import java.util.Set;
 import UserInfo.Ingredient;
 import UserInfo.Nameable;
 import UserInfo.Recipe;
+
 /**
  * Recipe stored by the user.
+ * This is instantiated only by GSON in the YummlyAPIWrapper.
+ * 
  * @author jschear
  *
  */
@@ -23,16 +26,11 @@ public class YummlyRecipe implements Recipe, Nameable {
 	//Fields from Yummly search query
 	private String id;
 	private String recipeName;
-	//private double rating;
 	private String[] smallImageUrls;
-	//private String sourceDisplayName;
 	private int totalTimeInSeconds;
 	private String[] ingredients;
-	private Map<String, String[]> attributes;
-	private Map<String, Double> flavors;
 	
 	//Additional fields from Yummly recipe query
-	private Map<String, String> attribution;
 	private String[] ingredientLines;
 	private ImageUrls[] images;
 	private String name;
@@ -63,6 +61,9 @@ public class YummlyRecipe implements Recipe, Nameable {
 	}
 
 
+	/**
+	 * Returns a list of ingredients.
+	 */
 	@Override
 	public List<Ingredient> getIngredients() {
 		if (_ingredients.isEmpty()) {
@@ -94,6 +95,10 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return id;
 	}
 
+	/**
+	 * Returns how much time it takes to make the recipe,
+	 * or null if the information isn't present.
+	 */
 	@Override
 	public String getTime() {
 		if (totalTime == null) {
@@ -162,16 +167,12 @@ public class YummlyRecipe implements Recipe, Nameable {
 
 	@Override
 	public Set<Ingredient> getIngredientDifference(Set<Ingredient> fridge) {
-		System.out.println("GET INGREDIENT DIFFERENCE");
 		Set<Ingredient> difference = new HashSet<Ingredient>();
-		
 		for(String i: ingredients) {
-			System.out.println("INGRE: " + i);
 			if(!fridge.contains(i)) {
 				difference.add(new Ingredient(i));
 			}
 		}
-		
 		return difference;
 	}
 
@@ -202,6 +203,11 @@ public class YummlyRecipe implements Recipe, Nameable {
 		return true;
 	}
 
+	/**
+	 * Private class used by GSON to store the image urls.
+	 * @author jschear
+	 *
+	 */
 	private class ImageUrls implements Serializable {
 		private static final long serialVersionUID = 1L;
 		public String hostedLargeUrl, hostedSmallUrl, hostedMediumUrl;

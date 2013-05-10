@@ -21,6 +21,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * This builds the API's search dictionaries.
+ * 
+ * @author jschear
+ *
+ */
 public class YummlySearchBuilder {
 	
 	// API ID and Key

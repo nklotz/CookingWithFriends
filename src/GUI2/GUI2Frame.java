@@ -58,6 +58,7 @@ public class GUI2Frame extends JFrame {
     		@Override
     		public void run() {
 				try {
+					//Creates the GUI from an FXML file, then adds it to the javafx frame.
 					URL location = this.getClass().getResource("CookingWithFriends update.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					fxmlLoader.setLocation(location);
@@ -69,13 +70,20 @@ public class GUI2Frame extends JFrame {
 			        _panel.setScene(scene);
 				} catch (IOException e) {
 					System.out.println("ERROR: Failed to create javafx panel.");
-					e.printStackTrace();
 				}
-    	
     		}
 		});
 	}
 	
+	/***
+	 * The following methods serve as callbacks to the controller, and use Platform.runLater to 
+	 * schedule updates on the JavaFX thread.
+	 */
+	
+	/**
+	 * Tells the controller to invite an
+	 * @param userInDatabase
+	 */
 	public void sendEmail(final boolean userInDatabase){
 		Platform.runLater(new Runnable() {
     		@Override
@@ -86,6 +94,9 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	/**
+	 * Tells the controller to update the current kitchen.
+	 */
 	public void updateKitchen(){
 		Platform.runLater(new Runnable() {
     		@Override
@@ -95,6 +106,10 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
+	/**
+	 * Returns whether or not the old password is correct.
+	 * @param matches
+	 */
 	public void changePasswords(final boolean matches){
 		Platform.runLater(new Runnable() {
     		@Override
@@ -104,7 +119,10 @@ public class GUI2Frame extends JFrame {
 		});
 	}
 	
-	//TODO: Make sure this jives.
+	/**
+	 * Displays a new kitchen.
+	 * @param k
+	 */
 	public void displayNewKitchen(final Kitchen k){
 		Platform.runLater(new Runnable() {
 			@Override

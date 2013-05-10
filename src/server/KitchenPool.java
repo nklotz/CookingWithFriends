@@ -216,7 +216,6 @@ public class KitchenPool {
 	 * that kitchen is removed from memory.
 	 */
 	public void removeUser(String userID){
-	
 		HashSet<KitchenName> kitchens = _userToKitchens.get(userID);
 		if (kitchens != null){
 			for(KitchenName k: kitchens){
