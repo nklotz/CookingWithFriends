@@ -17,7 +17,7 @@ public class Main {
 		try{
 			new Client(args[0], port);
 		} catch(IOException e){
-			//e.printStackTrace();
+			System.err.println("ERROR: Couldn't instantiate client: " + e.getMessage());
 		}
 	}
 	
