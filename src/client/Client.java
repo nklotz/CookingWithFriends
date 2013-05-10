@@ -90,14 +90,12 @@ public class Client extends Thread {
     public void checkPassword(String username, String password) throws IOException{
     	Request userPass;
     	if (_login.isNewAccount()){
-    		//System.out.println("NEW ACCOUNT");
     		userPass = new Request(13);
     	} else {
     		userPass = new Request(1);
     	}
     	userPass.setUsername(username);
     	userPass.setPasword(password);
-    	//System.out.println("about to send " + username + " x " + password);
     	send(userPass);
     }
 
@@ -114,38 +112,30 @@ public class Client extends Thread {
 				//Response will have 
 				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
-				//System.out.println("received  password response");
 				if (response != null){
 					int type = response.getType();
-					//System.out.println("got response");
 					assert(type == 1);
 					if (response.getCorrect()){
 						if (_login.isNewAccount()){
-							//System.out.println("read as new account");
 							_login.dispose();
 							_login = new LoginWindow(this);
 						} else {
 							_verified = true;	//successful login
-							System.out.println("read as login");
 							_autocorrect = response.getAPIInfo();
 							_login.dispose();
 							_kitchens = response.getKitchenMap();
 							_kitchenIdToName = kitchenIdMap(_kitchens);
 							_kitchenNames = kitchenNameSet(_kitchens);
 							_id = response.getAccount().getID();
-							System.out.println("SHOULD CREATE NEW GUI");
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
 							
 						
 						}
-					} else {
-						System.out.println("SHOULD DISPLAY: " + response.getErrorMessage());
-						
+					} else {						
 						_login.displayIncorrect(response.getErrorMessage());
 					}
 					
 				} else {
-					System.out.println("is server disconnected??");
 					_login.displayIncorrect("Sorry! The server is down.");
 				}
 			}
@@ -156,28 +146,20 @@ public class Client extends Thread {
 						int type = response.getType();
 						if(type == 2){
 							Kitchen k = response.getKitchen();
-							System.out.println("got new kitchen: " + k.getName());
 							_kitchens.put(k.getKitchenName(), k);
 							_kitchenIdToName.put(k.getKitchenName().getID(), k.getKitchenName());
-							System.out.println(_kitchenIdToName);
 							_kitchenNames.add(k.getKitchenName().getName());
 							_gui.updateKitchenDropDown();
 							_gui.refreshSearchAccordian();
-							System.out.println("well I'm here");
 							if(_currentKitchen != null || k.getKitchenName().getName().equals(_newKitchen)){
-								System.out.println("got Kitchen: " + k.getName());
 								if(_currentKitchen != null){
 									if(_currentKitchen.equals(k.getKitchenName())){
-										System.out.println("new kitchen is gui's current!!!");
 										_gui.updateKitchen(); 
 									} else if (k.getKitchenName().getName().equals(_newKitchen)){
-										System.out.println("this is the new kitchen");
-										System.out.println(_kitchenIdToName);
 										_gui.passNewKitchen(k);
 										_gui.displayNewKitchen(k);
 									} //TODO: this is ugly as shit. Better way to do it? I'm too tired to think.
 								} else if (k.getKitchenName().getName().equals(_newKitchen)){
-									System.out.println("this is the new kitchen");
 									_gui.displayNewKitchen(k);
 								}
 							}
@@ -186,13 +168,11 @@ public class Client extends Thread {
 							_gui.sendInvite(response.getInvitation());
 						}
 						else if(type == 4){
-							System.out.println("TYPE IS 19 IN CLIENT");
 							//If the user exists, then it is not a valid user.
 							boolean userInDatabase = (response.getUserInDatabase());
 							_gui.sendEmail(userInDatabase);
 						}
 						else if(type == 5){
-							System.out.println("PASSWORDS MATCH!!!!!!");
 							boolean passWordsMatch = (response.getPasswordsMatch());
 							_gui.changePasswords(passWordsMatch);
 						}
@@ -242,7 +222,6 @@ public class Client extends Thread {
 	 */
 
     public void createNewKitchen(String kitchenName, Account account){
-    	System.out.println("Creating new kitchen");
     	Request r = new Request(14);
     	r.setKitchenName(kitchenName);
     	r.setAccount(account);
@@ -250,17 +229,14 @@ public class Client extends Thread {
     }
     
     public void addMessageToEvent(String eventName, String message, String kitchenId){
-    	System.out.println("sending message request");
     	Request r = new Request(20);
     	r.setEventName(eventName);
     	r.setKitchenID(kitchenId);
-    	System.out.println("messages in event: " + message);
     	r.setMessages(message);
     	send(r);
     }
     
     public void addIngToEventShopping(String eventName, String kId, Ingredient ing){
-    	System.out.println("sending event ing request");
     	Request r = new Request(17);
     	r.setEventName(eventName);
     	r.setKitchenID(kId);
@@ -305,8 +281,6 @@ public class Client extends Thread {
     }
     
     public void addEvent(String id, KitchenEvent event){
-    	System.out.println("We are ADDING AN EVENT");
-    	System.out.println("eeeeeee " + event.toString());
     	Request r = new Request(5);
     	r.setKitchenID(id);
     	r.setEvent(event);
@@ -376,8 +350,6 @@ public class Client extends Thread {
     
   
     public void storeAccount(Account account, int type, String restricAl){
-    	System.out.println("making account store of type: " + type);
-    	System.out.println("change item: " + restricAl);
     	Request r = new Request(11);
     	r.setAccount(account);
     	r.setChangeType(type);
@@ -420,7 +392,6 @@ public class Client extends Thread {
     }
     
     public void changePassword(String email, String password){
-    	System.out.println("CHANGE PASSWORD IN CLIENT");
     	Request r = new Request(18);
     	r.setUsername(email);
     	r.setPasword(password);
@@ -428,7 +399,6 @@ public class Client extends Thread {
     }
     
     public void updatePassword(String email){
-    	System.out.println("CLIENT IN UPDATE PASSWORD.");
     	Request r = new Request(22);
     	r.setUsername(email);
     	send(r);
@@ -451,7 +421,6 @@ public class Client extends Thread {
      * Method to shut down streams and socket.
      */
     public void close(){
-    	System.out.println("CLOSING CLINET");
     	_running = false;
         try {
         	closeAccount();
@@ -459,7 +428,6 @@ public class Client extends Thread {
             _in.close();
 			_kkSocket.close();
 		} catch (IOException e) {
-			//System.err.println("ERROR trying to close client resources");
 			System.exit(1);
 		}
     }
