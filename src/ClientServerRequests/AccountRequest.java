@@ -27,7 +27,6 @@ public class AccountRequest implements Runnable {
 		RequestReturn toReturn = new RequestReturn(1);
 		toReturn.setCorrect(true);
 		toReturn.setAccount(_helper.getAccount(_ID));
-		System.out.println("accoutn request: " + toReturn.getAccount());
 		toReturn.setAPIInfo(_autocorrect);
 		if(toReturn.getAccount()!= null){
 			_activeKitchens.addAccount(toReturn.getAccount());

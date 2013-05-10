@@ -1,5 +1,7 @@
 package GUI2;
-
+/**
+ * 
+ */
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,6 +83,12 @@ import UserInfo.Recipe;
 import client.Client;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 
+/**
+ * The controller class, contains ALL action listeners. Fxml has a reference to Controller.
+ * 
+ * @author hacheson, esfriedm, nklotz, jschear
+ *
+ */
 public class Controller2 implements Initializable {
 
     @FXML private ResourceBundle resources;
@@ -214,7 +222,6 @@ public class Controller2 implements Initializable {
         eventDatePicker.getCalendarView().todayButtonTextProperty().set("Today");
         eventDatePicker.getCalendarView().setShowWeeks(false);
         eventDatePicker.getStylesheets().add("GUI2/DatePicker.css");
-        
         editDatePicker = new DatePicker(Locale.ENGLISH);
         editDatePicker.setPromptText("Select a date");
         editDatePicker.setDateFormat(new SimpleDateFormat("MM/dd/yyyy"));
@@ -224,7 +231,6 @@ public class Controller2 implements Initializable {
         // Add DatePicker to grid
         eventGridPane.add(eventDatePicker, 2, 2);
         editEventGrid.add(editDatePicker, 0, 0);
-        
 	}
 	
 	public void setUp(Client client, Account account, Map<KitchenName,Kitchen> kitchens, AutocorrectEngines engines){
@@ -268,15 +274,18 @@ public class Controller2 implements Initializable {
     	}
 	}
 	
+	/**
+	 * Initializes all comboboxes to remove the default crap in them. Adds the allergies and dietary
+	 * restrictions hardcoded in combo boxes.
+	 * to combo boxes.
+	 */
 	public void initializeComboBoxes(){
 		kitchenSelector.getItems().clear();
-		//eventSelector.getItems().clear();
 		eventIng.getItems().clear();
     	addRestrictionBar.getItems().clear();
     	newIngredient.getItems().clear();
     	addAllergyBar.getItems().clear();
     	addShoppingIngredient.getItems().clear();
-    	//searchAdditionalBox.getItems().clear();
     	addRestrictionBar.getItems().addAll("Vegan", "Lacto vegetarian", "Ovo vegetarian", 
     			"Pescetarian", "Lacto-ovo vegetarian");
     	addAllergyBar.getItems().addAll("Wheat-Free", "Gluten-Free", "Peanut-Free", 
@@ -340,6 +349,9 @@ public class Controller2 implements Initializable {
 	 **********************************************************
 	 */
 	
+	/**
+	 * Contains all info relating to editing the profile pages. 
+	 */
 	public void EditOrSaveAccountChanges(){
 		if(locationField.getText().length()>Utils.MAX_FIELD_LEN || 
 				nameField.getText().length()>Utils.MAX_FIELD_LEN){
