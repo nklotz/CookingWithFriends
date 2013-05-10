@@ -22,7 +22,7 @@ public class Main {
 		try{
 			new Client(args[0], port);
 		} catch(IOException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
