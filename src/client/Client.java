@@ -46,7 +46,6 @@ public class Client extends Thread {
     private boolean _verified;
 	
     public Client(String hostname, int port) throws IOException {
-    	///System.out.println("IN CLIENT CONSTRUCTOR");
         try {
             _kkSocket = new Socket(hostname, port);
             _out = new ObjectOutputStream(_kkSocket.getOutputStream());
@@ -72,7 +71,6 @@ public class Client extends Thread {
      */
     public void send(Object o){
     	try{
-    		//System.out.println("SENDING: " + o);
     		_out.writeObject(o);
         	_out.flush();
         	_out.reset();
@@ -105,12 +103,9 @@ public class Client extends Thread {
     public void run(){
     	try {
 			RequestReturn response;
-			String input;
 			_verified = false;
 			//Wait to receive account verification
 			while (!_verified){
-				//Response will have 
-				//TODO: Deal with catching if someone tries to open the same account from somewhere else.
 				response = (RequestReturn) _in.readObject();
 				if (response != null){
 					int type = response.getType();
@@ -128,8 +123,6 @@ public class Client extends Thread {
 							_kitchenNames = kitchenNameSet(_kitchens);
 							_id = response.getAccount().getID();
 							_gui = new GUI2Frame(this, response.getAccount(), _kitchens, _autocorrect);
-							
-						
 						}
 					} else {						
 						_login.displayIncorrect(response.getErrorMessage());
@@ -158,7 +151,7 @@ public class Client extends Thread {
 									} else if (k.getKitchenName().getName().equals(_newKitchen)){
 										_gui.passNewKitchen(k);
 										_gui.displayNewKitchen(k);
-									} //TODO: this is ugly as shit. Better way to do it? I'm too tired to think.
+									}
 								} else if (k.getKitchenName().getName().equals(_newKitchen)){
 									_gui.displayNewKitchen(k);
 								}
@@ -190,12 +183,9 @@ public class Client extends Thread {
 
     		}
     		else{
-    			//TODO: GUI POP UP THAT SERVER IS DOWN
     			e.printStackTrace();
     		}
     	}
-
-    	
     }
     
     /*

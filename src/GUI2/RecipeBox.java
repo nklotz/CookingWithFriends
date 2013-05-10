@@ -1,12 +1,9 @@
 package GUI2;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
-import UserInfo.Recipe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -23,14 +20,31 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+
+import org.apache.commons.codec.binary.Base64;
+
 import UserInfo.Account;
 import UserInfo.Kitchen;
 import UserInfo.KitchenEvent;
 import UserInfo.Recipe;
 import client.Client;
-import org.apache.commons.codec.binary.Base64;
 
-public class RecipeBox extends VBox{
+/**
+ * Displays a recipe.
+ * @author jschear
+ *
+ */
+public class RecipeBox extends VBox {
+	
+	private Recipe _recipe;
+    private Controller2 _controller;
+    private RecipeBox _this;
+	private ContextMenu _contextMenu;
+	private Client _client;
+	
+	private Account _user;
+	private Kitchen _kitchen;
+	private KitchenEvent _event;
 	
 	@Override
 	public int hashCode() {
@@ -57,19 +71,6 @@ public class RecipeBox extends VBox{
 		return true;
 	}
 
-
-
-
-	private Recipe _recipe;
-    private Controller2 _controller;
-    private RecipeBox _this;
-	private ContextMenu _contextMenu;
-	private Client _client;
-	
-	private Account _user;
-	private Kitchen _kitchen;
-	private KitchenEvent _event;
-    
     //Constructor for a user recipe
     public RecipeBox(Recipe recipe, Controller2 controller, Account user, Client client) {
     	super(8);
@@ -97,9 +98,7 @@ public class RecipeBox extends VBox{
 		
 		this.setOnDragDetected(new EventHandler <MouseEvent>() {
             public void handle(MouseEvent event) {
-                /* drag was detected, start drag-and-drop gesture*/
-                System.out.println("onDragDetected");
-                
+                /* drag was detected, start drag-and-drop gesture*/                
                 /* allow any transfer mode */
                 Dragboard db = _self.startDragAndDrop(TransferMode.ANY);
                 
@@ -107,7 +106,6 @@ public class RecipeBox extends VBox{
                 ClipboardContent content = new ClipboardContent();
 
                 content.putString(RecipeBox.getString(_recipe));
-                System.out.println("has string: " + db.hasString());
                 db.setContent(content);          
                 event.consume();
             }
@@ -157,6 +155,12 @@ public class RecipeBox extends VBox{
 		});
 	}
 
+    /**
+     * Generic constructor.
+     * @param recipe
+     * @param controller
+     * @param client
+     */
 	private void initialize(Recipe recipe, Controller2 controller, Client client) {
     	_recipe = recipe;
 		_controller = controller;
@@ -201,11 +205,7 @@ public class RecipeBox extends VBox{
 				}
 			}
 		});
-		
-		
 	}
-    
-    
     
     
 	public static String getString(Recipe rb) {
@@ -222,7 +222,6 @@ public class RecipeBox extends VBox{
 		Base64 encoder = new Base64();
         return new String(encoder.encode(baos.toByteArray()));
     }
-
-
+	
 }
 

@@ -2,6 +2,7 @@
  * The database. We use mongodb. We have username-pass word db, username-account, and username-kitchens.
  */
 package Database;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.SecretKey;
@@ -20,13 +20,8 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-
-//import sun.misc.BASE64Decoder;
-
-import Test.MockUser;
 import UserInfo.Account;
 import UserInfo.Kitchen;
-import UserInfo.KitchenName;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -35,9 +30,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 
-//import sun.security.provider.SecureRandom;
-//import org.apache.commons.codec.binary.Base6;
-//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * @author hacheson
@@ -66,7 +58,6 @@ public class DBHelper implements DBHelperInterface{
 		    }
 		    in.close();
 			String s = "mongod --port 27017 -dbpath /course/cs032/asgn/lab2_git/CWF/" + result + "/Data/";
-			String[] args = s.split(" ");
 			p = Runtime.getRuntime().exec(s);
 		} catch(IOException e){
 			e.printStackTrace();
@@ -181,9 +172,6 @@ public class DBHelper implements DBHelperInterface{
 		BasicDBObject document = new BasicDBObject();
 		document.put("username", username.trim());
 		document.put("password", encryptedPassword);
-		//document.put("encryptKey", getEncryptedKey(password));
-		//Adds it if it doesn't exist  currently.
-		//if(uniqueUsername(username)){
 		if(!inDatabase(username)){
 			userPassCollection_.insert(document);
 		}
@@ -261,7 +249,6 @@ public class DBHelper implements DBHelperInterface{
 		}
 		//TODO: Change back to empty string.
 		return null;
-		
 	}
 	
     // using PBKDF2 from Sun, an alternative is https://github.com/wg/scrypt

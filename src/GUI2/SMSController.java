@@ -16,7 +16,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-
+/**
+ * Controller for the SMS popup window.
+ * @author jschear
+ *
+ */
 public class SMSController {
 
     @FXML private ResourceBundle resources;

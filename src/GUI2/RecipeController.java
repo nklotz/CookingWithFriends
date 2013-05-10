@@ -25,6 +25,11 @@ import UserInfo.KitchenName;
 import UserInfo.Recipe;
 import client.Client;
 
+/**
+ * Controller for the recipe information popup.
+ * @author jschear
+ *
+ */
 public class RecipeController {
 
     @FXML private ResourceBundle resources;
@@ -116,8 +121,7 @@ public class RecipeController {
     	try {
 			java.awt.Desktop.getDesktop().browse(new URI(_completeRecipe.getSourceUrl()));
 		} catch (IOException | URISyntaxException e) {
-			System.out.println("Error opening link.");
-			//TODO: Handle this better
+			System.err.println("Error opening link.");
 		}
     }
         

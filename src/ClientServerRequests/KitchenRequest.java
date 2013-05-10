@@ -2,7 +2,6 @@ package ClientServerRequests;
 
 import server.ClientHandler;
 import server.KitchenPool;
-import Database.DBHelper;
 
 public class KitchenRequest implements Runnable {
 

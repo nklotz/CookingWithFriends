@@ -18,8 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javax.swing.JFrame;
@@ -84,7 +82,6 @@ public class LoginWindow extends JFrame {
         grid.add(_actiontarget, 1, 6);
         
         Scene scene = new Scene(grid, 300, 275);
-        //scene.getStylesheets().add("src/GUI2/style.css");
         
         Text scenetitle = new Text("Welcome to Cooking with Friends");
         scenetitle.setStyle(Style.LOGIN_HEADER);
@@ -125,7 +122,7 @@ public class LoginWindow extends JFrame {
         		if(email.length()>Utils.MAX_FIELD_LEN){
         			_actiontarget.setText("Your email must not exceed " + Utils.MAX_FIELD_LEN + " characters long.");
         		}
-        		if(email!=null || email.trim().length()==0){
+        		if(email != null || email.trim().length()==0){
         			if(Utils.isValidEmailStructure(email)){
         				//String pass = String.valueOf(Utils.generateRandomPassword());
         				_client.updatePassword(email);
@@ -139,7 +136,7 @@ public class LoginWindow extends JFrame {
         			}
         			
         		}
-        		else{
+        		else {
         			_actiontarget.setFill(Color.WHITE);
             		_actiontarget.setText("You must enter a username.");
         		}
@@ -167,10 +164,8 @@ public class LoginWindow extends JFrame {
             			_actiontarget.setText("");
     					_client.checkPassword(userTextField.getText(), pwBox.getText());
     				} catch (IOException e1) {
-    					// TODO Auto-generated catch block
     					e1.printStackTrace();
     				} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
             	}
@@ -244,12 +239,7 @@ public class LoginWindow extends JFrame {
         	
         	@Override
         	public void handle(ActionEvent e){
-                /*if(!isValidEmailStructure(userTextField.getText())){
-            		_actiontarget.setText("You must input a username and password");
-                }
-                else{*/
-        		loadLogin();
-                //}
+                loadLogin();
         	}
         });
         
@@ -284,10 +274,8 @@ public class LoginWindow extends JFrame {
             				_actiontarget.setText("You must enter a valid email address.");
     					
     				} catch (IOException e1) {
-    					// TODO Auto-generated catch block
     					e1.printStackTrace();
     				} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
             	}

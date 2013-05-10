@@ -3,7 +3,6 @@ package ClientServerRequests;
 import server.ClientHandler;
 import server.KitchenPool;
 import Database.DBHelper;
-import UserInfo.Kitchen;
 
 public class UpdateKitchenRequest implements Runnable {
 

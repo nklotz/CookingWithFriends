@@ -42,7 +42,7 @@ public class GUI2Frame extends JFrame {
 		});
 			
     	_panel = new JFXPanel();
-    	_panel.setPreferredSize(new java.awt.Dimension(1024, 680));
+    	_panel.setPreferredSize(new java.awt.Dimension(1024, 768));
 
     	this.add(_panel);
     	this.setVisible(true);

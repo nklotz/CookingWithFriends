@@ -1,14 +1,13 @@
 package ClientServerRequests;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import UserInfo.Account;
-import UserInfo.KitchenEvent;
 import UserInfo.Ingredient;
 import UserInfo.Invitation;
 import UserInfo.Kitchen;
+import UserInfo.KitchenEvent;
 import UserInfo.KitchenName;
 import UserInfo.Recipe;
 

@@ -2,14 +2,9 @@ package client;
 
 import java.io.IOException;
 
-import Email.Sender;
-
-//import sun.rmi.transport.Transport;
-
 public class Main {
 
 	public static void main(String[] args) {
-		//Sender.send("hannah_acheson-field@brown.edu", "Email message");
 		if (args.length != 2)
 			usage();
 		
@@ -27,13 +22,10 @@ public class Main {
 	}
 	
 	private static void usage() {
+		System.err.println("Usage: client <hostname> <port>");
 		System.exit(1);
 	}
 	
-	
-		
-
-
 }
 
 
