@@ -42,7 +42,6 @@ public class ClientPool {
 	 * @return true if the client was removed, false if they were not there.
 	 */
 	public synchronized boolean remove(ClientHandler client) {
-		System.out.println("removing handler of client " +client.getID() + " from client pool");
 		_ids.remove(client.getID());
 		return _clients.remove(client);
 	}
@@ -55,16 +54,12 @@ public class ClientPool {
 			client.send(toReturn);
 		}
 	}
-	
 	/**
 	 * Send a RequestReturn to a list clients in the pool.
 	 */
 	public synchronized void broadcastList(HashSet<String> clients, RequestReturn toReturn) {
-		System.out.println("BROAD CASTING");
 		for (String c : clients) {
-			System.out.println("client: " + c);
 			if(_ids.get(c)!=null){
-				System.out.println("client handler " +_ids.get(c));
 				_ids.get(c).send(toReturn);
 			}
 		}
@@ -91,8 +86,6 @@ public class ClientPool {
 	}
 	
 	public boolean isActiveClient(String id){
-		System.out.println("is Active Client!! " + id);
-		System.out.println(_ids);
 		return _ids.containsKey(id);
 	}
 	

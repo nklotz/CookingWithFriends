@@ -86,10 +86,8 @@ public class ClientHandler extends Thread {
 				while(_running && _client.isConnected()) {
 					if((request = (Request) _objectIn.readObject()) != null){
 						type = request.getType();
-						System.out.println("recieved request type: " + type);
 						switch (type){
 							case 1:  //verify account
-								System.out.println("SHOULD CHECK PASSWORD");
 								checkPassword(request);
 								break;
 							case 2:  //getKitchen
@@ -97,14 +95,12 @@ public class ClientHandler extends Thread {
 								break;
 							//case 3 -- 10, and 17 are update kitchens (handled by default
 							case 11: //store Account
-								System.out.println("client handler recieved store acount request!");
 								storeAccount(request);
 								break;
 							case 12: //close client
 								kill();
 								break;
 							case 13: //create new account	
-								System.out.println("SHOULD CREATE NEW USER");
 								createNewUser(request);
 								break;
 							case 14: //create new Kitchen
@@ -115,20 +111,16 @@ public class ClientHandler extends Thread {
 								break;
 							//CHANGE THE PASSWORD.
 							case 18:
-								System.out.println("IN CASE 18");
 								changePassword(request);
 								break;
 							//IS VALID USER NAME.	
 							case 19:
-								System.out.println("CASE 19 USER IN DATABASE");
 								userInDatabase(request);
 								break;
 							case 21:
-								System.out.println("IN CLIENT HANDLER 21");
 								passwordsMatch(request);
 								break;
 							case 22:
-								System.out.println("CASE 22: updating password");
 								updatePassword(request);
 								break;
 								
@@ -167,11 +159,6 @@ public class ClientHandler extends Thread {
 				_objectOut.flush();
 				_objectOut.reset();
 			} catch (IOException e) {
-//				try {
-//					kill();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
 			}
 		}
 	}
@@ -180,7 +167,6 @@ public class ClientHandler extends Thread {
 	 * Close this socket and its related streams.
 	 */
 	public void kill() throws IOException {
-		System.out.println("killing myself (client handler of clinet " + _clientID + ")" );
 		_objectIn.close();
 		try{
 			_objectOut.close();
@@ -192,11 +178,12 @@ public class ClientHandler extends Thread {
 		_client.close();
 	}	
 	
-	
+	/**
+	 * checks if a username password combination is valid
+	 */
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
 			if(!_pool.isActiveClient(request.getUsername())){
-				System.out.println("executing task");
 				_taskPool.execute(new AccountRequest(this, request.getUsername(), _helper, _activeKitchens, _autocorrect));
 			}
 			else{
@@ -219,8 +206,6 @@ public class ClientHandler extends Thread {
 	 * @param request
 	 */
 	private void changePassword(Request request){
-		System.out.println("CHANGING PASSWORD");
-		System.out.println("CHANGE PASSWORD IN CLIENT HANDLER");
 		_helper.changePasswordGivenPassword(request.getUsername(), request.getPassword());
 	}
 	
@@ -229,12 +214,9 @@ public class ClientHandler extends Thread {
 	 * @param request
 	 */
 	private void updatePassword(Request request){
-	
-		System.out.println("SERVER UPDATING PASS");
 		RequestReturn req = new RequestReturn(1);
 	    req.setCorrect(false);
 		if(_helper.inDatabase(request.getUsername())){
-			System.out.println("IS A VALID ACCOUNT");
 			String pass = _helper.changePassword(request.getUsername());
 			String message = "Your new password is: " + pass;
 			Sender.send(request.getUsername(), message);
@@ -242,7 +224,6 @@ public class ClientHandler extends Thread {
 		    req.setErrorMessage(error);
 		}
 		else{
-			System.out.println("NOT A VALID ACCOUNT");
 			String error = "That is not a valid account. You must create an account.";
 			req.setErrorMessage(error);
 		}
@@ -255,7 +236,6 @@ public class ClientHandler extends Thread {
 	}
 	
 	public void updateKitchen(Request request){
-		System.out.println("upadting kitchen!");
 		_taskPool.execute(new UpdateKitchenRequest(_activeKitchens, request));
 	}
 	
@@ -276,16 +256,11 @@ public class ClientHandler extends Thread {
 	}
 	
 	private void invite(Request request) {
-		System.out.println("OOO an invite!");
-		_taskPool.execute(new InvitationRequest(this, _pool, _helper, request.getInvitation(), _activeKitchens));
-		
-		// TODO Auto-generated method stub
-		
+		_taskPool.execute(new InvitationRequest(this, _pool, _helper, request.getInvitation(), _activeKitchens));	
 	}
 	
 	public void userInDatabase(Request request){
 		boolean inDB = _helper.inDatabase(request.getUsername());
-		System.out.println("USER IN DATABASE CLIENT HANDLER: " + inDB);
 		//If it's a unique user ie if it's not already in the data base.
 		RequestReturn req = new RequestReturn(4);
 		req.setUserInDatabase(inDB);
@@ -293,7 +268,6 @@ public class ClientHandler extends Thread {
 	}
 	
 	public void passwordsMatch(Request request){
-		System.out.println("PASSING PASS MATCH IN SERVER");
 		boolean passwordsMatch = _helper.passwordsMatch(request.getUsername(), request.getPassToCheck());
 		RequestReturn req = new RequestReturn(5);
 		req.setPasswordMatch(passwordsMatch);

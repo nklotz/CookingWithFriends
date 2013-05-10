@@ -22,25 +22,15 @@ public class NewKitchenRequest implements Runnable {
 		_account = account;
 	}
 	@Override
-	public void run() {
-		System.out.println("NEW KITCHEN");
-		
+	public void run() {		
 		RequestReturn toReturn = new RequestReturn(2);
 		
 		Kitchen k = new Kitchen(_request.getKitchenName());
 		k.setID(_helper.createKitchenId());
-		System.out.println("NEW Kitchen's ID is" + k.getID());
 		
 		k.addActiveUser(_helper.getAccount(_ch.getID()));
-		_kitchens.addNewKitchen(k);
-		
-		//_account.addKitchen(k.getKitchenName());
-		//_helper.storeAccount(_account);
-		
-		System.out.println("acc: " + _account);
-		
+		_kitchens.addNewKitchen(k);		
 		toReturn.setKitchen(k);
-		
 		_ch.send(toReturn);
 	}
 

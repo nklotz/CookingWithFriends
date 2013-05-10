@@ -98,6 +98,9 @@ public class Server {
 		_socket.close();
 	}
 	
+	/**
+	 * Serializes an object into into a string for storage
+	 */
     private static String toString(Serializable o) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream( baos );
@@ -105,7 +108,5 @@ public class Server {
         oos.close();
         Base64 encoder = new Base64();
         return new String(encoder.encode(baos.toByteArray()));
-        //return new String( Base64.encode( baos.toByteArray() ) );
-        //return new String( Base64.encode( baos.toByteArray() ) );
     }
 }

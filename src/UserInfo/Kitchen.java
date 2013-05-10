@@ -48,12 +48,9 @@ public class Kitchen implements Serializable, Nameable{
 	 */
 	public KitchenEvent getEvent(KitchenEvent event){
 		for(KitchenEvent e: _events){
-		//	System.out.println("comparing " + event + " and " + e);
-		//	System.out.println("comparing k: " + event.getKitchen().hashCode() + " n: " + event.getName().hashCode() + " to k: " + e.getKitchen().getID()+ " n: " + event.getName().hashCode());
 			if(e.equals(event))
 				return e;
 		}
-		System.out.println("UNABLE TO GET EVENT IN KITCEHN");
 		return null;
 	}
 	public String getName(){
@@ -74,7 +71,6 @@ public class Kitchen implements Serializable, Nameable{
 	
 	
 	public void addActiveUser(Account user){
-		System.out.println("trying to add active user: " + user.getName() + " to myself (" + _id + ")");
 		removeRequestedUser(user.getID());
 		for(String r: user.getDietaryRestrictions()){
 			addDietaryRestriction(r, user.getID());
@@ -94,11 +90,7 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeRequestedUser(String user){
-		System.out.println("removing requested User!");
-		System.out.println(_requestedUsers);
-		System.out.println(user);
 		_requestedUsers.remove(user);
-		System.out.println(_requestedUsers);
 	}
 	
 	public HashSet<String> getActiveUsers(){
@@ -130,7 +122,6 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void addIngredient(String user, Ingredient ing) {
-		System.out.println("adding " + ing.getName() + " from " + user);
 		if(!_ingToUsers.containsKey(ing)){
 			_ingToUsers.put(ing, new HashSet<String>());
 		}
@@ -138,7 +129,6 @@ public class Kitchen implements Serializable, Nameable{
 	}
 	
 	public void removeIngredient(String user, Ingredient ing){
-		System.out.println("removing " + ing.getName() + " by " + user);
 		if(_ingToUsers.containsKey(ing)){
 			HashSet<String> hs = _ingToUsers.get(ing);
 			hs.remove(user);
