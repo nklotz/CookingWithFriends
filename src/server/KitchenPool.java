@@ -43,6 +43,10 @@ public class KitchenPool {
 		_clients = clients;
 	}
 	
+	/**
+	 * Removes the user's ingredient from all kitchens in which it was shared
+	 * and broadcasts the change
+	 */
 	public void removeUserIngredient(String userID, Ingredient ing){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());	
@@ -52,6 +56,10 @@ public class KitchenPool {
 		}
 	}
 	
+	/**
+	 * Removes a removed dietary restriction from all of the users kitchens 
+	 * and broad casts the change
+	 */
 	public void removeUserDietRestriction(String userID, String restric){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
@@ -60,6 +68,10 @@ public class KitchenPool {
 		}
 	}
 	
+	/**
+	 * Removes a removed allergy from all of the users kitchens 
+	 * and broadcasts the change
+	 */
 	public void removeUserAllergy(String userID, String allergy){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
@@ -68,6 +80,9 @@ public class KitchenPool {
 		}
 	}
 	
+	/**
+	 * The same as above but with additions
+	 */
 	public void addUserDietRestriction(String userID, String restric){
 		for(KitchenName kn: _userToKitchens.get(userID)){
 			Kitchen k = _idToKitchen.get(kn.getID());
@@ -261,6 +276,9 @@ public class KitchenPool {
 		return kitchens;	
 	}
 	
+	/**
+	 * Reads the update request type and performs the valid action
+	 */
 	public void updateKitchen(Request request){
 		if(request.getKitchenID()==null ){
 			return;
@@ -293,10 +311,10 @@ public class KitchenPool {
 		  	case 8: //remove recipe from kitchen
 		  		k.removeRecipe(request.getRecipe());
 		  		break;
-	  		case 9: //added ingredient to fridge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	  		case 9: //added ingredient to fridge
 		  		k.addIngredient(request.getUsername(), request.getIngredient());
 	  			break;	
-	  		case 10: //remove ingredient from fridge	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	  		case 10: //remove ingredient from fridge	
 		  		k.removeIngredient(request.getUsername(), request.getIngredient());
 	  			break;
 	  		case 16:
@@ -321,12 +339,10 @@ public class KitchenPool {
   				return;
 		}
 		
-		
 		RequestReturn toReturn = new RequestReturn(2);
 		toReturn.setKitchen(k);
 		updateKitchenReferences(k);
-		
-		
+			
 		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
 		
 	}
@@ -338,6 +354,9 @@ public class KitchenPool {
 		_clients.broadcastList(_kIDtoUsers.get(k.getKitchenName()), toReturn);
 	}
 	
+	/**
+	 * Update all references to the kitchen in the lists
+	 */
 	public void updateKitchenReferences(Kitchen kitchen){
 	
 		_idToKitchen.put(kitchen.getID(), kitchen);

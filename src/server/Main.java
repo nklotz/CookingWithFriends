@@ -24,7 +24,7 @@ public class Main {
 	}
 	
 	private static void usage() {
-		System.out.println("Usage: server <port>");
+		System.err.println("Usage: server <port>");
 		System.exit(1);
 	}
 

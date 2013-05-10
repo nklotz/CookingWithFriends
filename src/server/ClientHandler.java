@@ -178,7 +178,9 @@ public class ClientHandler extends Thread {
 		_client.close();
 	}	
 	
-	
+	/**
+	 * checks if a username password combination is valid
+	 */
 	public void checkPassword(Request request){
 		if(_helper.checkUsernamePassword(request.getUsername(), request.getPassword())){
 			if(!_pool.isActiveClient(request.getUsername())){
